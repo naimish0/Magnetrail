@@ -86,6 +86,8 @@ class GameViewModelTest {
         assertSame(original, state.boardState)
         assertTrue(state.undoHistory.isEmpty())
         assertTrue(state.inputEnabled)
+        assertEquals(1, state.moves)
+        assertEquals(1, state.overloads)
     }
 
     @Test
@@ -132,6 +134,22 @@ class GameViewModelTest {
         assertSame(initial, state.boardState)
         assertTrue(state.undoHistory.isEmpty())
         assertFalse(state.isComplete)
+        assertEquals(0, state.moves)
+        assertEquals(0, state.overloads)
+    }
+
+    @Test
+    fun `undo preserves accepted action accounting`() {
+        val viewModel = viewModel()
+        viewModel.onAction(GameAction.SelectLevel(index = 1))
+        viewModel.onAction(GameAction.LaunchArrow("A"))
+        viewModel.onAction(GameAction.AnimationCompleted)
+        viewModel.onAction(GameAction.LaunchArrow("B"))
+        viewModel.onAction(GameAction.AnimationCompleted)
+        viewModel.onAction(GameAction.Undo)
+
+        assertEquals(2, viewModel.uiState.value.moves)
+        assertEquals(1, viewModel.uiState.value.overloads)
     }
 
     @Test

@@ -10,4 +10,6 @@ data class SolverResult(
     val shortestDepth: Int?,
     val validFirstActions: List<PlayerAction>,
     val exploredStateCount: Int,
+    val searchComplete: Boolean = true,
+    val terminationReason: String? = null,
 )

@@ -15,6 +15,7 @@ fun MagnetrailApp(
         AppDestination.HOME -> HomeScreen(
             uiState = uiState,
             onPlay = { onAction(GameAction.Play) },
+            onOpenDaily = { onAction(GameAction.OpenDailyChallenge) },
             onOpenLevels = { onAction(GameAction.OpenLevelSelection) },
             onOpenSettings = { onAction(GameAction.OpenSettings) },
         )
@@ -23,6 +24,7 @@ fun MagnetrailApp(
             currentLevelIndex = uiState.currentLevelIndex,
             highestUnlockedLevel = uiState.progress.highestUnlockedLevel,
             completedLevelIds = uiState.progress.completedLevelIds,
+            recordsByLevel = uiState.progress.recordsByLevel,
             debugUnlockAll = debugUnlockAll,
             onBack = { onAction(GameAction.CloseLevelSelection) },
             onLevelSelected = { onAction(GameAction.SelectLevel(it)) },

@@ -47,6 +47,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.rameshta.magnetrail.core.engine.TerminalEvent
 import com.rameshta.magnetrail.core.model.Polarity
+import com.rameshta.magnetrail.core.economy.EconomyConfig
 import com.rameshta.magnetrail.game.render.MagnetrailBoard
 import com.rameshta.magnetrail.game.render.rememberTurnVisualState
 import com.rameshta.magnetrail.ui.theme.LocalMagnetrailDimensions
@@ -84,7 +85,11 @@ fun GameScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             GameTopBar(
-                levelNumber = uiState.currentLevel.number,
+                title = if (uiState.gameMode == GameMode.DAILY) {
+                    "Daily · ${uiState.dailyDateLabel}"
+                } else {
+                    "Level ${uiState.currentLevel.number.toString().padStart(2, '0')}"
+                },
                 enabled = uiState.inFlightResult == null,
                 onHome = { onAction(GameAction.NavigateHome) },
                 onSettings = { onAction(GameAction.OpenSettings) },
@@ -97,24 +102,7 @@ fun GameScreen(
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground,
             )
-            Row(
-                modifier = Modifier.padding(top = spacing.xxs),
-                horizontalArrangement = Arrangement.spacedBy(spacing.sm),
-            ) {
-                Text(
-                    text = "Arrows ${uiState.remainingArrowCount}/${uiState.initialArrowCount}",
-                    modifier = Modifier.semantics {
-                        contentDescription = "Arrows remaining: ${uiState.remainingArrowCount}"
-                    },
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MagnetrailMuted,
-                )
-                Text(
-                    text = "Moves ${uiState.moves}",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MagnetrailMuted,
-                )
-            }
+            GameplayMetrics(uiState)
 
             PolarityLegend(uiState)
             StatusLine(uiState)
@@ -134,8 +122,8 @@ fun GameScreen(
                     inputEnabled = uiState.inputEnabled,
                     onArrowTapped = { onAction(GameAction.LaunchArrow(it)) },
                     modifier = Modifier
+                        .widthIn(max = if (uiState.isComplete) 220.dp else dimensions.boardMaxSize)
                         .fillMaxWidth()
-                        .widthIn(max = dimensions.boardMaxSize)
                         .aspectRatio(1f)
                         .shadow(
                             elevation = dimensions.boardElevation,
@@ -161,7 +149,7 @@ fun GameScreen(
 
 @Composable
 private fun GameTopBar(
-    levelNumber: Int,
+    title: String,
     enabled: Boolean,
     onHome: () -> Unit,
     onSettings: () -> Unit,
@@ -176,7 +164,7 @@ private fun GameTopBar(
                 .semantics { contentDescription = "Return home" },
         ) { Text("Home") }
         Text(
-            text = "Level ${levelNumber.toString().padStart(2, '0')}",
+            text = title,
             modifier = Modifier.align(Alignment.Center),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
@@ -192,21 +180,26 @@ private fun GameTopBar(
 
 @Composable
 private fun PolarityLegend(uiState: GameUiState) {
-    val magnet = uiState.boardState.magnets.firstOrNull() ?: return
-    val pull = magnet.polarity == Polarity.PULL
-    Surface(
-        modifier = Modifier.padding(top = 8.dp).semantics {
-            contentDescription = if (pull) "PULL, inward magnetic field" else "PUSH, outward magnetic field"
-        },
-        shape = RoundedCornerShape(999.dp),
-        color = if (pull) MagnetrailPullSoft else com.rameshta.magnetrail.ui.theme.MagnetrailPushSoft,
-    ) {
-        Text(
-            text = if (pull) "PULL  ›‹" else "PUSH  ‹›",
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-            style = MaterialTheme.typography.labelSmall,
-            color = if (pull) MagnetrailPull else MagnetrailPush,
-        )
+    val polarities = uiState.boardState.magnets.map { it.polarity }.distinct()
+    if (polarities.isEmpty()) return
+    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        polarities.forEach { polarity ->
+            val pull = polarity == Polarity.PULL
+            Surface(
+                modifier = Modifier.padding(top = 8.dp).semantics {
+                    contentDescription = if (pull) "PULL, inward magnetic field" else "PUSH, outward magnetic field"
+                },
+                shape = RoundedCornerShape(999.dp),
+                color = if (pull) MagnetrailPullSoft else com.rameshta.magnetrail.ui.theme.MagnetrailPushSoft,
+            ) {
+                Text(
+                    text = if (pull) "PULL  ›‹" else "PUSH  ‹›",
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = if (pull) MagnetrailPull else MagnetrailPush,
+                )
+            }
+        }
     }
 }
 
@@ -232,6 +225,34 @@ private fun StatusLine(uiState: GameUiState) {
 }
 
 @Composable
+private fun GameplayMetrics(uiState: GameUiState) {
+    val largeText = LocalDensity.current.fontScale >= 1.3f
+    val content: @Composable () -> Unit = {
+        Text(
+            text = "Arrows ${uiState.remainingArrowCount}/${uiState.initialArrowCount}",
+            modifier = Modifier.semantics {
+                contentDescription = "Arrows remaining: ${uiState.remainingArrowCount}"
+            },
+            style = MaterialTheme.typography.labelLarge,
+            color = MagnetrailMuted,
+        )
+        Text("Actions ${uiState.moves}", style = MaterialTheme.typography.labelLarge, color = MagnetrailMuted)
+        Text("Overloads ${uiState.overloads}", style = MaterialTheme.typography.labelLarge, color = MagnetrailMuted)
+    }
+    if (largeText) {
+        Column(
+            modifier = Modifier.padding(top = 4.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) { content() }
+    } else {
+        Row(
+            modifier = Modifier.padding(top = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) { content() }
+    }
+}
+
+@Composable
 private fun GameControls(uiState: GameUiState, onAction: (GameAction) -> Unit) {
     val spacing = LocalMagnetrailSpacing.current
     val largeText = LocalDensity.current.fontScale >= 1.3f
@@ -251,8 +272,14 @@ private fun GameControls(uiState: GameUiState, onAction: (GameAction) -> Unit) {
             modifier = rowModifier,
         )
         ActionButton(
-            text = if (uiState.isHintLoading) "Finding…" else "Hint",
-            description = if (uiState.isHintLoading) "Hint loading" else "Request a solver hint",
+            text = when {
+                uiState.isHintLoading || uiState.isHintPurchaseInProgress -> "Finding…"
+                else -> "Hint · ${EconomyConfig.HINT_COST}"
+            },
+            description = when {
+                uiState.isHintLoading || uiState.isHintPurchaseInProgress -> "Hint loading"
+                else -> "Request a solver hint"
+            },
             enabled = uiState.canRequestHint,
             onClick = { onAction(GameAction.RequestHint) },
             modifier = rowModifier,
@@ -315,13 +342,26 @@ private fun CompletionCard(
                 fontWeight = FontWeight.Bold,
                 color = MagnetrailSuccess,
             )
-            Row(
-                modifier = Modifier.padding(top = spacing.xs),
-                horizontalArrangement = Arrangement.spacedBy(spacing.lg),
-            ) {
+            val receipt = uiState.completionReceipt
+            Text(
+                text = buildString {
+                    repeat(3) { star -> append(if (star < (receipt?.grade?.stars ?: 1)) "★" else "☆") }
+                },
+                modifier = Modifier.padding(top = spacing.xs).semantics {
+                    contentDescription = "${receipt?.grade?.stars ?: 1} stars earned"
+                },
+                style = MaterialTheme.typography.headlineSmall,
+                color = MagnetrailPush,
+            )
+            val completionMetrics: @Composable () -> Unit = {
                 Text(
-                    "Moves ${uiState.moves}",
+                    "Actions ${uiState.moves}",
                     modifier = Modifier.semantics { contentDescription = "Moves: ${uiState.moves}" },
+                    style = MaterialTheme.typography.labelLarge,
+                )
+                Text(
+                    "Overloads ${uiState.overloads}",
+                    modifier = Modifier.semantics { contentDescription = "Overloads: ${uiState.overloads}" },
                     style = MaterialTheme.typography.labelLarge,
                 )
                 Text(
@@ -330,6 +370,48 @@ private fun CompletionCard(
                     style = MaterialTheme.typography.labelLarge,
                 )
             }
+            if (LocalDensity.current.fontScale >= 1.3f) {
+                Column(
+                    modifier = Modifier.padding(top = spacing.xs),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) { completionMetrics() }
+            } else {
+                Row(
+                    modifier = Modifier.padding(top = spacing.xs),
+                    horizontalArrangement = Arrangement.spacedBy(spacing.lg),
+                ) { completionMetrics() }
+            }
+            receipt?.let { completion ->
+                val best = completion.bestRecord
+                Text(
+                    "Best ${best.bestStars}★ · ${best.lowestActions ?: uiState.moves} actions",
+                    modifier = Modifier.padding(top = spacing.xs),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MagnetrailMuted,
+                )
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(top = spacing.xs),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text("First clear +${completion.rewards.firstClearReward} coins")
+                    Text("New stars +${completion.rewards.newStarReward} coins")
+                    Text("Daily clear +${completion.rewards.dailyReward} coins")
+                    Text(
+                        "Balance ${completion.rewards.resultingBalance} coins",
+                        modifier = Modifier.semantics {
+                            contentDescription = "Resulting coin balance: ${completion.rewards.resultingBalance}"
+                        },
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                    if (uiState.gameMode == GameMode.DAILY) {
+                        Text(
+                            "Current streak ${uiState.progress.currentStreak} · Best ${uiState.progress.bestStreak}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MagnetrailMuted,
+                        )
+                    }
+                }
+            }
             Row(
                 modifier = Modifier.padding(top = spacing.sm),
                 horizontalArrangement = Arrangement.spacedBy(spacing.sm),
@@ -337,7 +419,13 @@ private fun CompletionCard(
             ) {
                 TextButton(onClick = { onAction(GameAction.Replay) }) { Text("Replay") }
                 Button(onClick = { onAction(GameAction.NextLevel) }) {
-                    Text(if (uiState.hasNextLevel) "Next level" else "Level selection")
+                    Text(
+                        when {
+                            uiState.gameMode == GameMode.DAILY -> "Home"
+                            uiState.hasNextLevel -> "Next level"
+                            else -> "Level selection"
+                        },
+                    )
                 }
             }
         }

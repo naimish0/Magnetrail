@@ -5,3 +5,27 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.serialization) apply false
 }
+
+tasks.register("certifyCampaignContent") {
+    group = "verification"
+    description = "Certify the checked-in Magnetrail M3 campaign and daily fallback bank."
+    dependsOn(":level-tools:certifyCampaign")
+}
+
+tasks.register("generateLevelCandidates") {
+    group = "magnetrail content"
+    description = "Generate candidates to level-tools/build/m3-staging."
+    dependsOn(":level-tools:generateCandidates")
+}
+
+tasks.register("benchmarkDailyChallenge") {
+    group = "verification"
+    description = "Benchmark 31 deterministic daily candidates on the host JVM."
+    dependsOn(":level-tools:benchmarkDaily")
+}
+
+tasks.register("promoteCampaignContent") {
+    group = "magnetrail content"
+    description = "Explicitly rebuild checked-in M3 content after review."
+    dependsOn(":level-tools:promoteCampaign")
+}

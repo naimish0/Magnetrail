@@ -11,6 +11,16 @@ This folder is the source of truth for the Android implementation of Magnetrail.
 5. `Magnetrail_Game_Design_Spec_v0.1.docx` — complete product and gameplay specification.
 6. `CODEX_M0_PROMPT.md` — paste this into Codex to begin implementation.
 
+## M3 shipped content
+
+- `Magnetrail_Campaign_Levels_v3.json` — canonical 100-level campaign asset.
+- `Magnetrail_Daily_Fallbacks_v1.json` — seven certified deterministic fallbacks.
+- `M3_CONTENT_REPORT.csv` / `.md` — reproducible certification and distribution report.
+- `M3_CONTENT_TOOLING.md` — bounded generation, staging, promotion, and certification commands.
+- `M3_ECONOMY_SIMULATION.md` — frozen economy scenario results.
+- `M3_DAILY_BENCHMARK.md` — repeatable host JVM timing record.
+- `M3_MANUAL_QA.md` — campaign, Daily, economy, accessibility, and clock-change checks.
+
 ## Authority order
 
 When files appear to conflict, follow this order:

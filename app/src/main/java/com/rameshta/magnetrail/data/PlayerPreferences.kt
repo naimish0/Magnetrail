@@ -1,6 +1,11 @@
 package com.rameshta.magnetrail.data
 
-const val PLAYER_PREFERENCES_SCHEMA_VERSION = 1
+import com.rameshta.magnetrail.core.daily.DailySeed
+import com.rameshta.magnetrail.core.economy.EconomyConfig
+import com.rameshta.magnetrail.core.generation.CONTENT_VERSION
+import com.rameshta.magnetrail.core.generation.GENERATOR_VERSION
+
+const val PLAYER_PREFERENCES_SCHEMA_VERSION = 3
 
 data class PlayerSettings(
     val soundEnabled: Boolean = true,
@@ -15,6 +20,32 @@ data class PlayerProgress(
     val completedLevelIds: Set<String> = emptySet(),
     val lastSelectedLevelId: String,
     val bestMovesByLevel: Map<String, Int> = emptyMap(),
+    val recordsByLevel: Map<String, LevelRecord> = emptyMap(),
+    val firstClearRewardedLevelIds: Set<String> = emptySet(),
+    val coinBalance: Int = EconomyConfig.STARTING_BALANCE,
+    val economyVersion: Int = EconomyConfig.VERSION,
+    val completedDailyIds: Set<String> = emptySet(),
+    val rewardedDailyIds: Set<String> = emptySet(),
+    val currentStreak: Int = 0,
+    val bestStreak: Int = 0,
+    val lastTrustedDailyDate: String? = null,
+    val dailyCache: DailyCache? = null,
+    val contentVersion: Int = CONTENT_VERSION,
+    val generatorVersion: Int = GENERATOR_VERSION,
+    val dailyGeneratorVersion: Int = DailySeed.GENERATOR_VERSION,
+)
+
+data class LevelRecord(
+    val bestStars: Int = 0,
+    val lowestActions: Int? = null,
+    val lowestOverloads: Int? = null,
+    val lowestHints: Int? = null,
+)
+
+data class DailyCache(
+    val dailyId: String,
+    val contentFingerprint: String,
+    val catalogJson: String,
 )
 
 data class PlayerPreferences(

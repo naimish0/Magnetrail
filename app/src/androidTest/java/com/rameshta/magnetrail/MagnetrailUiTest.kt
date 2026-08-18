@@ -15,6 +15,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToIndex
+import androidx.compose.ui.test.hasScrollAction
 import org.junit.Rule
 import org.junit.Test
 
@@ -31,6 +33,7 @@ class MagnetrailUiTest {
             .assertIsDisplayed()
             .assertHasClickAction()
         composeRule.onNodeWithContentDescription("Open settings").assertIsDisplayed()
+        composeRule.onNodeWithText("DAILY CHALLENGE").performScrollTo().assertIsDisplayed().assertHasClickAction()
     }
 
     @Test
@@ -80,8 +83,11 @@ class MagnetrailUiTest {
         composeRule.onNodeWithContentDescription("Level 1: First release, completed")
             .assertIsDisplayed()
         composeRule.onNodeWithContentDescription("Level 2: Clear the blocker, available")
+            .performScrollTo()
             .assertIsDisplayed()
         composeRule.onNodeWithTag("level_12").performScrollTo().assertHasClickAction()
+        composeRule.onNode(hasScrollAction()).performScrollToIndex(105)
+        composeRule.onNodeWithTag("level_100").assertIsDisplayed().assertHasClickAction()
     }
 
     @Test
@@ -126,6 +132,9 @@ class MagnetrailUiTest {
 
         composeRule.onNodeWithContentDescription("Moves: 1").assertIsDisplayed()
         composeRule.onNodeWithContentDescription("Hints: 0").assertIsDisplayed()
+        composeRule.onNodeWithText("First clear", substring = true).assertIsDisplayed()
+        composeRule.onNodeWithText("New stars", substring = true).assertIsDisplayed()
+        composeRule.onNodeWithText("Daily clear", substring = true).assertIsDisplayed()
     }
 
     @Test

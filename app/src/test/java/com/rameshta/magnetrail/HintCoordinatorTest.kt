@@ -127,4 +127,18 @@ class HintCoordinatorTest {
         assertFalse(viewModel.uiState.value.inputEnabled)
         assertTrue(viewModel.uiState.value.isComplete)
     }
+
+    @Test
+    fun `shown hint makes three stars unavailable for the attempt`() = runTest(mainDispatcherRule.dispatcher) {
+        val viewModel = GameViewModel(
+            catalog = prototypeCatalog(),
+            hintProvider = HintProvider { HintOutcome.SuggestedArrow("A") },
+        )
+        viewModel.onAction(GameAction.RequestHint)
+        advanceUntilIdle()
+        viewModel.onAction(GameAction.LaunchArrow("A"))
+        viewModel.onAction(GameAction.AnimationCompleted)
+
+        assertEquals(2, viewModel.uiState.value.completionReceipt?.grade?.stars)
+    }
 }

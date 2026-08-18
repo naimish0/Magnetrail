@@ -25,4 +25,5 @@ dependencyResolutionManagement {
 rootProject.name = "Magnetrail"
 include(":app")
 include(":game-core")
+include(":level-tools")
  
