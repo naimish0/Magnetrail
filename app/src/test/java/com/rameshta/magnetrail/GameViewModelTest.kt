@@ -185,7 +185,10 @@ class GameViewModelTest {
         assertSame(original, viewModel.uiState.value.boardState)
     }
 
-    private fun viewModel(): GameViewModel = GameViewModel(prototypeCatalog())
+    private fun viewModel(): GameViewModel = GameViewModel(
+        catalog = prototypeCatalog(),
+        debugUnlockAll = true,
+    )
 
     private fun prototypeCatalog(): LevelCatalog {
         val resource = checkNotNull(javaClass.getResource("/Magnetrail_Prototype_Levels_v1.json"))

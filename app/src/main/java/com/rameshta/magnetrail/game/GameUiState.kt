@@ -3,6 +3,15 @@ package com.rameshta.magnetrail.game
 import com.rameshta.magnetrail.core.engine.ResolutionResult
 import com.rameshta.magnetrail.core.model.BoardState
 import com.rameshta.magnetrail.core.model.LevelDefinition
+import com.rameshta.magnetrail.data.PlayerProgress
+import com.rameshta.magnetrail.data.PlayerSettings
+
+enum class AppDestination {
+    HOME,
+    LEVELS,
+    GAME,
+    SETTINGS,
+}
 
 enum class TurnAnimationPhase {
     IDLE,
@@ -18,17 +27,34 @@ data class GameUiState(
     val currentLevel: LevelDefinition,
     val initialState: BoardState,
     val boardState: BoardState,
+    val destination: AppDestination = AppDestination.HOME,
+    val returnDestination: AppDestination = AppDestination.HOME,
+    val settings: PlayerSettings = PlayerSettings(),
+    val progress: PlayerProgress = PlayerProgress(lastSelectedLevelId = currentLevel.id),
+    val preferencesLoaded: Boolean = false,
     val undoHistory: List<BoardState> = emptyList(),
     val inFlightResult: ResolutionResult? = null,
     val animationPhase: TurnAnimationPhase = TurnAnimationPhase.IDLE,
     val inputEnabled: Boolean = true,
     val isComplete: Boolean = false,
     val isDeadlocked: Boolean = false,
-    val isLevelSelectionVisible: Boolean = false,
+    val moves: Int = 0,
+    val hintsUsed: Int = 0,
+    val isHintLoading: Boolean = false,
+    val suggestedArrowId: String? = null,
+    val hintMessage: String? = null,
+    val hintPreviewResult: ResolutionResult? = null,
 ) {
     val remainingArrowCount: Int get() = boardState.arrows.size
     val initialArrowCount: Int get() = initialState.arrows.size
     val canUndo: Boolean get() = undoHistory.isNotEmpty() && inFlightResult == null
     val canRestart: Boolean get() = inFlightResult == null
+    val canRequestHint: Boolean
+        get() = inputEnabled && !isComplete && !isHintLoading && suggestedArrowId == null
     val hasNextLevel: Boolean get() = currentLevelIndex < levels.lastIndex
+    val hasProgress: Boolean
+        get() = progress.completedLevelIds.isNotEmpty() || progress.highestUnlockedLevel > 1
+
+    fun isLevelUnlocked(index: Int, debugUnlockAll: Boolean): Boolean =
+        debugUnlockAll || index < progress.highestUnlockedLevel
 }
