@@ -3,6 +3,12 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+val syncPrototypeLevels by tasks.registering(Sync::class) {
+    from(rootProject.layout.projectDirectory.file("docs/Magnetrail_Prototype_Levels_v1.json"))
+    into(layout.buildDirectory.dir("generated/magnetrailAssets/levels"))
+    rename { "magnetrail_prototype_levels_v1.json" }
+}
+
 android {
     namespace = "com.rameshta.magnetrail"
     compileSdk = 37
@@ -33,13 +39,30 @@ android {
     buildFeatures {
         compose = true
     }
+    sourceSets {
+        named("main") {
+            assets.directories.add(
+                layout.buildDirectory.dir("generated/magnetrailAssets").get().asFile.absolutePath,
+            )
+        }
+        named("test") {
+            resources.directories.add(rootProject.file("docs").absolutePath)
+        }
+    }
+}
+
+tasks.named("preBuild") {
+    dependsOn(syncPrototypeLevels)
 }
 
 dependencies {
+    implementation(project(":game-core"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
