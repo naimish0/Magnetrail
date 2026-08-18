@@ -17,6 +17,8 @@ sealed interface GameAction {
 
     data object Play : GameAction
 
+    data object OpenDailyChallenge : GameAction
+
     data object OpenLevelSelection : GameAction
 
     data object CloseLevelSelection : GameAction
@@ -30,6 +32,8 @@ sealed interface GameAction {
     data class UpdateSetting(val key: SettingKey, val enabled: Boolean) : GameAction
 
     data object RequestHint : GameAction
+
+    data object CancelHintConfirmation : GameAction
 
     data object Replay : GameAction
 

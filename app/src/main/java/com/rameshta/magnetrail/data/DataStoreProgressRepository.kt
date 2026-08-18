@@ -2,6 +2,7 @@ package com.rameshta.magnetrail.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
@@ -10,12 +11,23 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.rameshta.magnetrail.core.daily.DailySeed
+import com.rameshta.magnetrail.core.daily.StreakPolicy
+import com.rameshta.magnetrail.core.daily.StreakState
+import com.rameshta.magnetrail.core.economy.EconomyConfig
+import com.rameshta.magnetrail.core.economy.RewardPolicy
+import com.rameshta.magnetrail.core.generation.CONTENT_VERSION
+import com.rameshta.magnetrail.core.generation.GENERATOR_VERSION
+import com.rameshta.magnetrail.core.grading.GradingPolicy
 import com.rameshta.magnetrail.core.level.LevelCatalog
+import com.rameshta.magnetrail.core.model.GradingThresholds
 import java.io.IOException
+import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 
 private val Context.magnetrailDataStore: DataStore<Preferences> by preferencesDataStore(
     name = "magnetrail_player_v1",
@@ -47,12 +59,13 @@ class DataStoreProgressRepository private constructor(
         .catch { error ->
             if (error is IOException) emit(emptyPreferences()) else throw error
         }
+        .onStart { migrateToM3() }
         .map(::decode)
         .distinctUntilChanged()
 
     override suspend fun updateSetting(key: SettingKey, enabled: Boolean) {
         dataStore.edit { stored ->
-            ensureCurrentSchema(stored)
+            migrateStored(stored)
             stored[key.preferenceKey] = enabled
         }
     }
@@ -61,65 +74,209 @@ class DataStoreProgressRepository private constructor(
         val selectedIndex = catalog.levels.indexOfFirst { it.id == levelId }
         if (selectedIndex < 0) return
         dataStore.edit { stored ->
-            ensureCurrentSchema(stored)
-            val highestUnlocked = (stored[Keys.highestUnlockedLevel] ?: 1)
-                .coerceIn(1, catalog.levels.size)
-            if (selectedIndex < highestUnlocked) {
-                stored[Keys.lastSelectedLevelId] = levelId
-            }
+            migrateStored(stored)
+            val highestUnlocked = stored.highestUnlocked()
+            if (selectedIndex < highestUnlocked) stored[Keys.lastSelectedLevelId] = levelId
         }
     }
 
     override suspend fun recordCompletion(levelId: String, moves: Int) {
+        if (moves <= 0) return
+        recordCampaignCompletion(levelId, AttemptSummary(moves, overloads = 0, hintsUsed = 0))
+    }
+
+    override suspend fun recordCampaignCompletion(
+        levelId: String,
+        attempt: AttemptSummary,
+    ): CompletionReceipt {
+        require(attempt.actions > 0 && attempt.overloads >= 0 && attempt.hintsUsed >= 0) {
+            "Invalid completion attempt counters"
+        }
         val completedIndex = catalog.levels.indexOfFirst { it.id == levelId }
-        if (completedIndex < 0) return
+        require(completedIndex >= 0) { "Unknown campaign level '$levelId'" }
+        val level = catalog.levels[completedIndex]
+        val thresholds = level.metadata?.grading ?: GradingThresholds(
+            parActions = level.arrows.size,
+            twoStarMaxActions = level.arrows.size + maxOf(2, (level.arrows.size + 3) / 4),
+        )
+        val grade = GradingPolicy.grade(
+            actions = attempt.actions,
+            overloads = attempt.overloads,
+            hintsUsed = attempt.hintsUsed,
+            thresholds = thresholds,
+        )
+        lateinit var receipt: CompletionReceipt
         dataStore.edit { stored ->
-            ensureCurrentSchema(stored)
-            val currentHighest = (stored[Keys.highestUnlockedLevel] ?: 1)
-                .coerceIn(1, catalog.levels.size)
-            if (completedIndex >= currentHighest) return@edit
-            val completed = stored[Keys.completedLevelIds].orEmpty()
-                .filterTo(mutableSetOf()) { id -> catalog.levels.any { it.id == id } }
+            migrateStored(stored)
+            val currentHighest = stored.highestUnlocked()
+            require(completedIndex < currentHighest) { "Level '$levelId' is locked" }
+            val records = decodeRecords(stored[Keys.levelRecords]).toMutableMap()
+            val previous = records[levelId] ?: LevelRecord()
+            val best = LevelRecord(
+                bestStars = maxOf(previous.bestStars, grade.stars),
+                lowestActions = minPositive(previous.lowestActions, attempt.actions),
+                lowestOverloads = minNonNegative(previous.lowestOverloads, attempt.overloads),
+                lowestHints = minNonNegative(previous.lowestHints, attempt.hintsUsed),
+            )
+            records[levelId] = best
+
+            val completed = stored[Keys.completedLevelIds].orEmpty().validLevelIds().toMutableSet()
             completed += levelId
+            val firstClearRewarded = stored[Keys.firstClearRewardedIds].orEmpty().validLevelIds().toMutableSet()
+            val balance = stored.coinBalance()
+            val rewards = RewardPolicy.campaignCompletion(
+                previousBalance = balance,
+                wasFirstClearRewarded = levelId in firstClearRewarded,
+                previousBestStars = previous.bestStars,
+                earnedStars = grade.stars,
+            )
+            firstClearRewarded += levelId
+
             stored[Keys.completedLevelIds] = completed
+            stored[Keys.firstClearRewardedIds] = firstClearRewarded
             stored[Keys.highestUnlockedLevel] = maxOf(
                 currentHighest,
                 (completedIndex + 2).coerceAtMost(catalog.levels.size),
             )
-            if (moves > 0) {
-                val bestMoves = decodeBestMoves(stored[Keys.bestMoves]).toMutableMap()
-                bestMoves[levelId] = minOf(bestMoves[levelId] ?: Int.MAX_VALUE, moves)
-                stored[Keys.bestMoves] = encodeBestMoves(bestMoves)
+            stored[Keys.levelRecords] = encodeRecords(records)
+            stored[Keys.bestMoves] = encodeBestMoves(records.mapNotNull { (id, record) ->
+                record.lowestActions?.let { id to it }
+            }.toMap())
+            stored[Keys.coinBalance] = rewards.resultingBalance
+            receipt = CompletionReceipt(grade, best, rewards)
+        }
+        return receipt
+    }
+
+    override suspend fun recordDailyCompletion(dailyId: String): DailyCompletionReceipt {
+        val date = parseDailyDate(dailyId)
+        lateinit var receipt: DailyCompletionReceipt
+        dataStore.edit { stored ->
+            migrateStored(stored)
+            val completed = stored[Keys.completedDailyIds].orEmpty().toMutableSet()
+            val firstCompletion = completed.add(dailyId)
+            val rewarded = stored[Keys.rewardedDailyIds].orEmpty().toMutableSet()
+            val lastDate = stored[Keys.lastTrustedDailyDate]?.let(::parseDateOrNull)
+            val trustworthyForwardDate = lastDate == null || date.isAfter(lastDate)
+            val alreadyRewardedForDate = rewarded.any { parseDailyDateOrNull(it) == date }
+            val rewardAllowed = firstCompletion && trustworthyForwardDate && !alreadyRewardedForDate
+            val rewards = RewardPolicy.dailyCompletion(
+                previousBalance = stored.coinBalance(),
+                wasRewarded = !rewardAllowed,
+            )
+            if (rewardAllowed) rewarded += dailyId
+
+            val previousStreak = StreakState(
+                current = (stored[Keys.currentStreak] ?: 0).coerceAtLeast(0),
+                best = maxOf(
+                    (stored[Keys.bestStreak] ?: 0).coerceAtLeast(0),
+                    (stored[Keys.currentStreak] ?: 0).coerceAtLeast(0),
+                ),
+                lastTrustedCompletionDate = lastDate,
+            )
+            val streak = if (firstCompletion) StreakPolicy.complete(date, previousStreak).state else previousStreak
+            stored[Keys.completedDailyIds] = completed.boundedHistory()
+            stored[Keys.rewardedDailyIds] = rewarded.boundedHistory()
+            stored[Keys.currentStreak] = streak.current
+            stored[Keys.bestStreak] = streak.best
+            streak.lastTrustedCompletionDate?.let { stored[Keys.lastTrustedDailyDate] = it.toString() }
+            stored[Keys.coinBalance] = rewards.resultingBalance
+            receipt = DailyCompletionReceipt(
+                rewards = rewards,
+                currentStreak = streak.current,
+                bestStreak = streak.best,
+                firstCompletion = firstCompletion,
+            )
+        }
+        return receipt
+    }
+
+    override suspend fun spendHintCoins(): HintSpendResult {
+        lateinit var result: HintSpendResult
+        dataStore.edit { stored ->
+            migrateStored(stored)
+            val balance = stored.coinBalance()
+            result = if (balance >= EconomyConfig.HINT_COST) {
+                val remaining = balance - EconomyConfig.HINT_COST
+                stored[Keys.coinBalance] = remaining
+                HintSpendResult.Approved(remaining)
+            } else {
+                HintSpendResult.InsufficientBalance(balance, EconomyConfig.HINT_COST)
             }
+        }
+        return result
+    }
+
+    override suspend fun cacheDailyChallenge(cache: DailyCache) {
+        require(cache.dailyId.isNotBlank() && cache.catalogJson.isNotBlank()) { "Daily cache cannot be blank" }
+        dataStore.edit { stored ->
+            migrateStored(stored)
+            stored[Keys.dailyCacheId] = cache.dailyId
+            stored[Keys.dailyCacheFingerprint] = cache.contentFingerprint
+            stored[Keys.dailyCacheCatalogJson] = cache.catalogJson
         }
     }
 
-    private fun decode(stored: Preferences): PlayerPreferences {
-        val default = defaultPreferences()
-        val schemaVersion = stored[Keys.schemaVersion] ?: PLAYER_PREFERENCES_SCHEMA_VERSION
-        if (schemaVersion != PLAYER_PREFERENCES_SCHEMA_VERSION) return default
+    private suspend fun migrateToM3() {
+        dataStore.edit(::migrateStored)
+    }
 
-        val validIds = catalog.levels.mapTo(linkedSetOf()) { it.id }
-        val completedIds = stored[Keys.completedLevelIds].orEmpty().filterTo(linkedSetOf()) {
-            it in validIds
+    private fun migrateStored(stored: MutablePreferences) {
+        val version = stored[Keys.schemaVersion]
+        if (version != null && version !in setOf(M2_SCHEMA_VERSION, PLAYER_PREFERENCES_SCHEMA_VERSION)) {
+            stored.clear()
         }
+        if (stored[Keys.schemaVersion] != PLAYER_PREFERENCES_SCHEMA_VERSION) {
+            val completed = stored[Keys.completedLevelIds].orEmpty().validLevelIds()
+            val oldBestMoves = decodeBestMoves(stored[Keys.bestMoves]).filterKeys { it in validLevelIds }
+            val migratedRecords = completed.associateWith { id ->
+                LevelRecord(
+                    bestStars = 1,
+                    lowestActions = oldBestMoves[id],
+                    lowestOverloads = null,
+                    lowestHints = null,
+                )
+            } + oldBestMoves.filterKeys { it !in completed }.mapValues { (_, moves) ->
+                LevelRecord(lowestActions = moves)
+            }
+            stored[Keys.levelRecords] = encodeRecords(migratedRecords)
+            stored[Keys.firstClearRewardedIds] = completed
+            stored[Keys.coinBalance] = stored[Keys.coinBalance]?.coerceAtLeast(0)
+                ?: EconomyConfig.STARTING_BALANCE
+            stored[Keys.completedDailyIds] = stored[Keys.completedDailyIds].orEmpty().boundedHistory()
+            stored[Keys.rewardedDailyIds] = stored[Keys.rewardedDailyIds].orEmpty().boundedHistory()
+        }
+        stored[Keys.schemaVersion] = PLAYER_PREFERENCES_SCHEMA_VERSION
+        stored[Keys.economyVersion] = EconomyConfig.VERSION
+        stored[Keys.contentVersion] = CONTENT_VERSION
+        stored[Keys.generatorVersion] = GENERATOR_VERSION
+        stored[Keys.dailyGeneratorVersion] = DailySeed.GENERATOR_VERSION
+        stored[Keys.coinBalance] = stored.coinBalance()
+        stored[Keys.highestUnlockedLevel] = stored.highestUnlocked()
+    }
+
+    private fun decode(stored: Preferences): PlayerPreferences {
+        if (stored[Keys.schemaVersion] != PLAYER_PREFERENCES_SCHEMA_VERSION) return defaultPreferences()
+        val completedIds = stored[Keys.completedLevelIds].orEmpty().validLevelIds()
         val completedUnlock = completedIds.maxOfOrNull { id ->
-            val index = catalog.levels.indexOfFirst { it.id == id }
-            (index + 2).coerceAtMost(catalog.levels.size)
+            (catalog.levels.indexOfFirst { it.id == id } + 2).coerceAtMost(catalog.levels.size)
         } ?: 1
-        val highestUnlocked = maxOf(
-            (stored[Keys.highestUnlockedLevel] ?: 1).coerceIn(1, catalog.levels.size),
-            completedUnlock,
-        )
-        val requestedLevelId = stored[Keys.lastSelectedLevelId]
-        val requestedIndex = catalog.levels.indexOfFirst { it.id == requestedLevelId }
+        val highestUnlocked = maxOf(stored.highestUnlocked(), completedUnlock)
+        val requestedIndex = catalog.levels.indexOfFirst { it.id == stored[Keys.lastSelectedLevelId] }
         val lastSelected = if (requestedIndex in 0 until highestUnlocked) {
             catalog.levels[requestedIndex].id
         } else {
             catalog.levels[highestUnlocked - 1].id
         }
-        val bestMoves = decodeBestMoves(stored[Keys.bestMoves])
-            .filter { (id, moves) -> id in validIds && moves > 0 }
+        val records = decodeRecords(stored[Keys.levelRecords])
+            .filterKeys { it in validLevelIds }
+            .mapValues { (_, value) -> value.sanitized() }
+        val legacyBest = decodeBestMoves(stored[Keys.bestMoves])
+            .filter { (id, moves) -> id in validLevelIds && moves > 0 }
+        val bestMoves = records.mapNotNull { (id, record) -> record.lowestActions?.let { id to it } }.toMap() + legacyBest
+        val trustedDailyDate = stored[Keys.lastTrustedDailyDate]?.takeIf { parseDateOrNull(it) != null }
+        val currentStreak = if (trustedDailyDate == null) 0 else (stored[Keys.currentStreak] ?: 0).coerceAtLeast(0)
+        val bestStreak = maxOf((stored[Keys.bestStreak] ?: 0).coerceAtLeast(0), currentStreak)
 
         return PlayerPreferences(
             settings = PlayerSettings(
@@ -134,6 +291,19 @@ class DataStoreProgressRepository private constructor(
                 completedLevelIds = completedIds,
                 lastSelectedLevelId = lastSelected,
                 bestMovesByLevel = bestMoves,
+                recordsByLevel = records,
+                firstClearRewardedLevelIds = stored[Keys.firstClearRewardedIds].orEmpty().validLevelIds(),
+                coinBalance = stored.coinBalance(),
+                economyVersion = stored[Keys.economyVersion] ?: EconomyConfig.VERSION,
+                completedDailyIds = stored[Keys.completedDailyIds].orEmpty().validDailyIds(),
+                rewardedDailyIds = stored[Keys.rewardedDailyIds].orEmpty().validDailyIds(),
+                currentStreak = currentStreak,
+                bestStreak = bestStreak,
+                lastTrustedDailyDate = trustedDailyDate,
+                dailyCache = decodeDailyCache(stored),
+                contentVersion = stored[Keys.contentVersion] ?: CONTENT_VERSION,
+                generatorVersion = stored[Keys.generatorVersion] ?: GENERATOR_VERSION,
+                dailyGeneratorVersion = stored[Keys.dailyGeneratorVersion] ?: DailySeed.GENERATOR_VERSION,
             ),
         )
     }
@@ -143,27 +313,30 @@ class DataStoreProgressRepository private constructor(
         progress = PlayerProgress(lastSelectedLevelId = catalog.levels.first().id),
     )
 
-    private fun ensureCurrentSchema(stored: androidx.datastore.preferences.core.MutablePreferences) {
-        if (stored[Keys.schemaVersion] != null &&
-            stored[Keys.schemaVersion] != PLAYER_PREFERENCES_SCHEMA_VERSION
-        ) {
-            stored.clear()
-        }
-        stored[Keys.schemaVersion] = PLAYER_PREFERENCES_SCHEMA_VERSION
+    private fun decodeDailyCache(stored: Preferences): DailyCache? {
+        val id = stored[Keys.dailyCacheId]?.takeIf(String::isNotBlank) ?: return null
+        val fingerprint = stored[Keys.dailyCacheFingerprint]?.takeIf(String::isNotBlank) ?: return null
+        val json = stored[Keys.dailyCacheCatalogJson]?.takeIf(String::isNotBlank) ?: return null
+        return DailyCache(id, fingerprint, json)
     }
 
-    private object Keys {
-        val schemaVersion = intPreferencesKey("schema_version")
-        val soundEnabled = booleanPreferencesKey("sound_enabled")
-        val hapticsEnabled = booleanPreferencesKey("haptics_enabled")
-        val reducedMotion = booleanPreferencesKey("reduced_motion")
-        val highContrastFields = booleanPreferencesKey("high_contrast_fields")
-        val pathPreviewAssistance = booleanPreferencesKey("path_preview_assistance")
-        val highestUnlockedLevel = intPreferencesKey("highest_unlocked_level")
-        val completedLevelIds = stringSetPreferencesKey("completed_level_ids")
-        val lastSelectedLevelId = stringPreferencesKey("last_selected_level_id")
-        val bestMoves = stringSetPreferencesKey("best_moves")
-    }
+    private fun Preferences.highestUnlocked(): Int = (this[Keys.highestUnlockedLevel] ?: 1)
+        .coerceIn(1, catalog.levels.size)
+
+    private fun Preferences.coinBalance(): Int = (this[Keys.coinBalance] ?: EconomyConfig.STARTING_BALANCE)
+        .coerceAtLeast(0)
+
+    private val validLevelIds: Set<String> get() = catalog.levels.mapTo(linkedSetOf()) { it.id }
+
+    private fun Set<String>.validLevelIds(): Set<String> = filterTo(linkedSetOf()) { it in validLevelIds }
+
+    private fun Set<String>.boundedHistory(): Set<String> = sortedDescending()
+        .take(MAX_DAILY_HISTORY)
+        .toCollection(linkedSetOf())
+
+    private fun Set<String>.validDailyIds(): Set<String> = filterTo(linkedSetOf()) {
+        parseDailyDateOrNull(it) != null
+    }.boundedHistory()
 
     private val SettingKey.preferenceKey: Preferences.Key<Boolean>
         get() = when (this) {
@@ -184,5 +357,86 @@ class DataStoreProgressRepository private constructor(
         .toMap()
 
     private fun encodeBestMoves(values: Map<String, Int>): Set<String> = values
+        .filterValues { it > 0 }
         .mapTo(linkedSetOf()) { (id, moves) -> "$id:$moves" }
+
+    private fun decodeRecords(values: Set<String>?): Map<String, LevelRecord> = values.orEmpty()
+        .mapNotNull { encoded ->
+            val parts = encoded.split('|')
+            if (parts.size != 5 || parts[0].isBlank()) return@mapNotNull null
+            val stars = parts[1].toIntOrNull() ?: return@mapNotNull null
+            parts[0] to LevelRecord(
+                bestStars = stars,
+                lowestActions = parts[2].nullableInt(),
+                lowestOverloads = parts[3].nullableInt(),
+                lowestHints = parts[4].nullableInt(),
+            )
+        }
+        .toMap()
+
+    private fun encodeRecords(records: Map<String, LevelRecord>): Set<String> = records
+        .mapTo(linkedSetOf()) { (id, record) ->
+            listOf(
+                id,
+                record.bestStars.coerceIn(0, 3),
+                record.lowestActions ?: -1,
+                record.lowestOverloads ?: -1,
+                record.lowestHints ?: -1,
+            ).joinToString("|")
+        }
+
+    private fun String.nullableInt(): Int? = toIntOrNull()?.takeIf { it >= 0 }
+
+    private fun LevelRecord.sanitized(): LevelRecord = LevelRecord(
+        bestStars = bestStars.coerceIn(0, 3),
+        lowestActions = lowestActions?.takeIf { it > 0 },
+        lowestOverloads = lowestOverloads?.takeIf { it >= 0 },
+        lowestHints = lowestHints?.takeIf { it >= 0 },
+    )
+
+    private fun minPositive(previous: Int?, candidate: Int): Int = minOf(previous ?: Int.MAX_VALUE, candidate)
+
+    private fun minNonNegative(previous: Int?, candidate: Int): Int = minOf(previous ?: Int.MAX_VALUE, candidate)
+
+    private fun parseDailyDate(dailyId: String): LocalDate = requireNotNull(parseDailyDateOrNull(dailyId)) {
+        "Invalid daily ID '$dailyId'"
+    }
+
+    private fun parseDailyDateOrNull(dailyId: String): LocalDate? =
+        parseDateOrNull(dailyId.substringBefore("-v"))
+
+    private fun parseDateOrNull(value: String): LocalDate? = runCatching { LocalDate.parse(value) }.getOrNull()
+
+    private object Keys {
+        val schemaVersion = intPreferencesKey("schema_version")
+        val soundEnabled = booleanPreferencesKey("sound_enabled")
+        val hapticsEnabled = booleanPreferencesKey("haptics_enabled")
+        val reducedMotion = booleanPreferencesKey("reduced_motion")
+        val highContrastFields = booleanPreferencesKey("high_contrast_fields")
+        val pathPreviewAssistance = booleanPreferencesKey("path_preview_assistance")
+        val highestUnlockedLevel = intPreferencesKey("highest_unlocked_level")
+        val completedLevelIds = stringSetPreferencesKey("completed_level_ids")
+        val lastSelectedLevelId = stringPreferencesKey("last_selected_level_id")
+        val bestMoves = stringSetPreferencesKey("best_moves")
+        val levelRecords = stringSetPreferencesKey("level_records_v3")
+        val firstClearRewardedIds = stringSetPreferencesKey("first_clear_rewarded_ids")
+        val coinBalance = intPreferencesKey("coin_balance")
+        val economyVersion = intPreferencesKey("economy_version")
+        val completedDailyIds = stringSetPreferencesKey("completed_daily_ids")
+        val rewardedDailyIds = stringSetPreferencesKey("rewarded_daily_ids")
+        val currentStreak = intPreferencesKey("current_daily_streak")
+        val bestStreak = intPreferencesKey("best_daily_streak")
+        val lastTrustedDailyDate = stringPreferencesKey("last_trusted_daily_date")
+        val dailyCacheId = stringPreferencesKey("daily_cache_id")
+        val dailyCacheFingerprint = stringPreferencesKey("daily_cache_fingerprint")
+        val dailyCacheCatalogJson = stringPreferencesKey("daily_cache_catalog_json")
+        val contentVersion = intPreferencesKey("content_version")
+        val generatorVersion = intPreferencesKey("generator_version")
+        val dailyGeneratorVersion = intPreferencesKey("daily_generator_version")
+    }
+
+    companion object {
+        private const val M2_SCHEMA_VERSION = 1
+        private const val MAX_DAILY_HISTORY = 512
+    }
 }

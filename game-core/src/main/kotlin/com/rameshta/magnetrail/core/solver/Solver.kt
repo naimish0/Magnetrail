@@ -9,8 +9,13 @@ import kotlin.math.min
 class Solver(
     private val gameEngine: GameEngine = DefaultGameEngine(),
 ) {
-    fun solve(initialState: BoardState, solutionLimit: Int = DEFAULT_SOLUTION_LIMIT): SolverResult {
+    fun solve(
+        initialState: BoardState,
+        solutionLimit: Int = DEFAULT_SOLUTION_LIMIT,
+        maxExploredStates: Int = Int.MAX_VALUE,
+    ): SolverResult {
         require(solutionLimit > 0) { "solutionLimit must be positive" }
+        require(maxExploredStates > 0) { "maxExploredStates must be positive" }
 
         val internalLimit = if (solutionLimit == Int.MAX_VALUE) Int.MAX_VALUE else solutionLimit + 1
         val memo = mutableMapOf<StateKey, StateAnalysis>()
@@ -19,6 +24,7 @@ class Solver(
         fun analyze(state: BoardState): StateAnalysis {
             val key = StateKey.from(state)
             memo[key]?.let { return it }
+            if (exploredStateCount >= maxExploredStates) throw SearchCapReached()
             exploredStateCount += 1
 
             if (state.arrows.isEmpty()) {
@@ -48,7 +54,21 @@ class Solver(
             return StateAnalysis(solutionCount, oneSolution, shortestDepth).also { memo[key] = it }
         }
 
-        val root = analyze(initialState)
+        val root = try {
+            analyze(initialState)
+        } catch (_: SearchCapReached) {
+            return SolverResult(
+                solvable = false,
+                oneCleanSolution = null,
+                solutionCount = 0,
+                solutionCountCapped = false,
+                shortestDepth = null,
+                validFirstActions = emptyList(),
+                exploredStateCount = exploredStateCount,
+                searchComplete = false,
+                terminationReason = "explored-state-cap:$maxExploredStates",
+            )
+        }
         val validFirstActions = if (initialState.arrows.isEmpty()) {
             emptyList()
         } else {
@@ -75,6 +95,8 @@ class Solver(
         val oneSolution: List<PlayerAction>?,
         val shortestDepth: Int?,
     )
+
+    private class SearchCapReached : RuntimeException()
 
     companion object {
         const val DEFAULT_SOLUTION_LIMIT = 100

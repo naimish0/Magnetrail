@@ -7,11 +7,13 @@ import com.rameshta.magnetrail.core.model.Magnet
 import com.rameshta.magnetrail.core.model.Polarity
 import com.rameshta.magnetrail.core.model.Position
 import com.rameshta.magnetrail.core.model.Wall
+import com.rameshta.magnetrail.core.content.ContentFingerprint
 
 class LevelValidationException(message: String) : IllegalArgumentException(message)
 
 object LevelValidation {
     const val SUPPORTED_SCHEMA_VERSION = 1
+    const val M3_SCHEMA_VERSION = 2
     const val SUPPORTED_RULE_VERSION = "magnetrail-core-1"
 
     internal fun toDomain(catalog: LevelCatalogDto): LevelCatalog {
@@ -21,12 +23,14 @@ object LevelValidation {
             ruleVersion = catalog.ruleVersion,
             catalogId = catalog.catalogId,
             levels = catalog.levels.map(::toDomain),
+            contentVersion = catalog.contentVersion ?: 1,
+            generatorVersion = catalog.generatorVersion,
         )
     }
 
     private fun validateCatalog(catalog: LevelCatalogDto) {
-        failUnless(catalog.schemaVersion == SUPPORTED_SCHEMA_VERSION) {
-            "Unsupported schemaVersion ${catalog.schemaVersion}; expected $SUPPORTED_SCHEMA_VERSION"
+        failUnless(catalog.schemaVersion in setOf(SUPPORTED_SCHEMA_VERSION, M3_SCHEMA_VERSION)) {
+            "Unsupported schemaVersion ${catalog.schemaVersion}; expected 1 or 2"
         }
         failUnless(catalog.ruleVersion == SUPPORTED_RULE_VERSION) {
             "Unsupported ruleVersion '${catalog.ruleVersion}'; expected '$SUPPORTED_RULE_VERSION'"
@@ -36,6 +40,17 @@ object LevelValidation {
         rejectDuplicates(catalog.levels.map { it.id }, "level ID")
         rejectDuplicates(catalog.levels.map { it.number }, "level number")
         catalog.levels.forEach(::validateLevel)
+        if (catalog.schemaVersion == M3_SCHEMA_VERSION) {
+            failUnless((catalog.contentVersion ?: 0) > 0) {
+                "schemaVersion 2 requires a positive contentVersion"
+            }
+            failUnless((catalog.generatorVersion ?: 0) > 0) {
+                "schemaVersion 2 requires a positive generatorVersion"
+            }
+            catalog.levels.forEach { level ->
+                failUnless(level.metadata != null) { "Level '${level.id}' requires M3 certification metadata" }
+            }
+        }
     }
 
     private fun validateLevel(level: LevelDto) {
@@ -84,29 +99,49 @@ object LevelValidation {
         }
     }
 
-    private fun toDomain(level: LevelDto): LevelDefinition = LevelDefinition(
-        id = level.id,
-        number = level.number,
-        title = level.title,
-        width = level.width,
-        height = level.height,
-        arrows = level.arrows.map { arrow ->
-            Arrow(
-                id = arrow.id,
-                position = Position(arrow.row, arrow.column),
-                printedDirection = parseDirection("Level '${level.id}'", arrow),
-            )
-        },
-        magnets = level.magnets.map { magnet ->
-            Magnet(
-                id = magnet.id,
-                position = Position(magnet.row, magnet.column),
-                polarity = parsePolarity("Level '${level.id}'", magnet),
-            )
-        },
-        walls = level.walls.map { Wall(Position(it.row, it.column)) },
-        designedSolutions = level.designedSolutions.map { it.toList() },
-    )
+    private fun toDomain(level: LevelDto): LevelDefinition {
+        val domain = LevelDefinition(
+            id = level.id,
+            number = level.number,
+            title = level.title,
+            width = level.width,
+            height = level.height,
+            arrows = level.arrows.map { arrow ->
+                Arrow(
+                    id = arrow.id,
+                    position = Position(arrow.row, arrow.column),
+                    printedDirection = parseDirection("Level '${level.id}'", arrow),
+                )
+            },
+            magnets = level.magnets.map { magnet ->
+                Magnet(
+                    id = magnet.id,
+                    position = Position(magnet.row, magnet.column),
+                    polarity = parsePolarity("Level '${level.id}'", magnet),
+                )
+            },
+            walls = level.walls.map { Wall(Position(it.row, it.column)) },
+            designedSolutions = level.designedSolutions.map { it.toList() },
+            metadata = try {
+                level.metadata?.toDomain()
+            } catch (error: IllegalArgumentException) {
+                throw LevelValidationException("Level '${level.id}' has invalid metadata: ${error.message}")
+            },
+        )
+        domain.metadata?.let { metadata ->
+            val actualFingerprint = ContentFingerprint.of(domain)
+            failUnless(metadata.contentFingerprint == actualFingerprint) {
+                "Level '${level.id}' content-hash mismatch: expected ${metadata.contentFingerprint}, actual $actualFingerprint"
+            }
+            failUnless(metadata.certifiedSolutionLength == domain.arrows.size) {
+                "Level '${level.id}' certifiedSolutionLength must equal its arrow count"
+            }
+            failUnless(metadata.grading.parActions == metadata.certifiedSolutionLength) {
+                "Level '${level.id}' parActions must equal certifiedSolutionLength"
+            }
+        }
+        return domain
+    }
 
     private fun validatePosition(
         prefix: String,

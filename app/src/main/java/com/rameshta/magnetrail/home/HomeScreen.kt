@@ -39,6 +39,7 @@ import com.rameshta.magnetrail.ui.theme.MagnetrailPullSoft
 fun HomeScreen(
     uiState: GameUiState,
     onPlay: () -> Unit,
+    onOpenDaily: () -> Unit,
     onOpenLevels: () -> Unit,
     onOpenSettings: () -> Unit,
     modifier: Modifier = Modifier,
@@ -55,8 +56,17 @@ fun HomeScreen(
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
+                Text(
+                    text = "${uiState.progress.coinBalance} coins",
+                    modifier = Modifier.semantics {
+                        contentDescription = "Coin balance: ${uiState.progress.coinBalance}"
+                    },
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
                 TextButton(
                     onClick = onOpenSettings,
                     modifier = Modifier
@@ -151,6 +161,56 @@ fun HomeScreen(
                 shape = MaterialTheme.shapes.small,
             ) {
                 Text("Level select")
+            }
+            Card(
+                onClick = onOpenDaily,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = spacing.md)
+                    .semantics {
+                        contentDescription = buildString {
+                            append("Daily Challenge for device local date ${uiState.dailyDateLabel}. ")
+                            append("Current streak ${uiState.progress.currentStreak}. ")
+                            append(if (uiState.todayDailyCompleted) "Completed today" else "Not completed today")
+                        }
+                    },
+                enabled = !uiState.isDailyLoading,
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            ) {
+                Column(modifier = Modifier.padding(spacing.lg)) {
+                    Text("DAILY CHALLENGE", style = MaterialTheme.typography.labelSmall, color = MagnetrailPull)
+                    Text(
+                        if (uiState.todayDailyCompleted) "Today’s board cleared" else "A field for ${uiState.dailyDateLabel}",
+                        modifier = Modifier.padding(top = spacing.xs),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Text(
+                        if (uiState.isDailyLoading) {
+                            "Preparing a certified board…"
+                        } else {
+                            "Current streak ${uiState.progress.currentStreak} · Best ${uiState.progress.bestStreak}"
+                        },
+                        modifier = Modifier.padding(top = spacing.xxs),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MagnetrailMuted,
+                    )
+                    Text(
+                        "Uses this device’s local date. Playable offline.",
+                        modifier = Modifier.padding(top = spacing.xs),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MagnetrailMuted,
+                    )
+                }
+            }
+            uiState.dailyError?.let { message ->
+                Text(
+                    message,
+                    modifier = Modifier.padding(top = spacing.xs),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.error,
+                )
             }
             Spacer(Modifier.height(spacing.screenBottom))
         }

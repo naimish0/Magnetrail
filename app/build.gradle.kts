@@ -3,10 +3,12 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
-val syncPrototypeLevels by tasks.registering(Sync::class) {
-    from(rootProject.layout.projectDirectory.file("docs/Magnetrail_Prototype_Levels_v1.json"))
+val syncM3Levels by tasks.registering(Sync::class) {
+    from(rootProject.layout.projectDirectory.file("docs/Magnetrail_Campaign_Levels_v3.json"))
+    from(rootProject.layout.projectDirectory.file("docs/Magnetrail_Daily_Fallbacks_v1.json"))
     into(layout.buildDirectory.dir("generated/magnetrailAssets/levels"))
-    rename { "magnetrail_prototype_levels_v1.json" }
+    rename("Magnetrail_Campaign_Levels_v3.json", "magnetrail_campaign_levels_v3.json")
+    rename("Magnetrail_Daily_Fallbacks_v1.json", "magnetrail_daily_fallbacks_v1.json")
 }
 
 android {
@@ -33,6 +35,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -53,10 +56,11 @@ android {
 }
 
 tasks.named("preBuild") {
-    dependsOn(syncPrototypeLevels)
+    dependsOn(syncM3Levels)
 }
 
 dependencies {
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
     implementation(project(":game-core"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

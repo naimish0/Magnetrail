@@ -10,6 +10,7 @@ data class LevelDefinition(
     val magnets: List<Magnet>,
     val walls: List<Wall>,
     val designedSolutions: List<List<String>>,
+    val metadata: LevelMetadata? = null,
 ) {
     fun initialState(): BoardState = BoardState(
         levelId = id,

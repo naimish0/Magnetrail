@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rameshta.magnetrail.data.AssetLevelCatalog
 import com.rameshta.magnetrail.data.DataStoreProgressRepository
+import com.rameshta.magnetrail.daily.DailyChallengeService
 import com.rameshta.magnetrail.feedback.FeedbackController
 import com.rameshta.magnetrail.feedback.SynthSoundController
 import com.rameshta.magnetrail.feedback.ViewHapticController
@@ -51,10 +52,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             MagnetrailTheme {
                 val catalogResult = remember {
-                    runCatching { AssetLevelCatalog(applicationContext).load() }
+                    runCatching {
+                        val assets = AssetLevelCatalog(applicationContext)
+                        assets.load() to assets.loadDailyFallbacks()
+                    }
                 }
                 catalogResult.fold(
-                    onSuccess = { catalog ->
+                    onSuccess = { (catalog, dailyFallbacks) ->
                         val repository = remember(catalog) {
                             DataStoreProgressRepository(
                                 context = applicationContext,
@@ -62,10 +66,14 @@ class MainActivity : ComponentActivity() {
                                 defaultReducedMotion = systemPrefersReducedMotion(),
                             )
                         }
+                        val dailyChallengeService = remember(catalog, dailyFallbacks) {
+                            DailyChallengeService(catalog.levels, dailyFallbacks)
+                        }
                         val gameViewModel: GameViewModel = viewModel(
                             factory = GameViewModel.factory(
                                 catalog = catalog,
                                 repository = repository,
+                                dailyChallengeService = dailyChallengeService,
                                 debugUnlockAll = BuildConfig.DEBUG,
                             ),
                         )

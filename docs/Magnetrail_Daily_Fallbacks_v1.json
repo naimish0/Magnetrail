@@ -1,0 +1,592 @@
+{
+    "schemaVersion": 2,
+    "ruleVersion": "magnetrail-core-1",
+    "catalogId": "magnetrail-daily-fallback-v1",
+    "levels": [
+        {
+            "id": "daily-fallback-01",
+            "number": 1,
+            "title": "Daily fallback 1",
+            "width": 6,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "A",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "B",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "C",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "M1",
+                    "row": 4,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 5
+                },
+                {
+                    "row": 6,
+                    "column": 3
+                },
+                {
+                    "row": 1,
+                    "column": 6
+                },
+                {
+                    "row": 1,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "B",
+                    "A",
+                    "C"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 3,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 1,
+                "generatorSeed": 880001,
+                "generationProfile": "daily-v1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 2,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 7,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "daily-fallback",
+                "mechanicTags": [
+                    "PULL",
+                    "PUSH",
+                    "POLARITY_FLIP",
+                    "WALLS",
+                    "ORDER_DEPENDENCY"
+                ],
+                "contentFingerprint": "sha256:9e930fdd68929be837f84b768a1a6dde1bacb33f8c57ff48f16c795655270742"
+            }
+        },
+        {
+            "id": "daily-fallback-02",
+            "number": 2,
+            "title": "Daily fallback 2",
+            "width": 6,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "A",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "B",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "C",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "M1",
+                    "row": 3,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 5,
+                    "column": 6
+                },
+                {
+                    "row": 6,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "A",
+                    "C",
+                    "B"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 3,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 1,
+                "generatorSeed": 880002,
+                "generationProfile": "daily-v1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 2,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 5,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "daily-fallback",
+                "mechanicTags": [
+                    "PULL",
+                    "PUSH",
+                    "POLARITY_FLIP",
+                    "WALLS",
+                    "OCCLUSION",
+                    "ORDER_DEPENDENCY"
+                ],
+                "contentFingerprint": "sha256:9bf37756f187234bb3f57563f38450855e90d742451def043af94cfad03aa698"
+            }
+        },
+        {
+            "id": "daily-fallback-03",
+            "number": 3,
+            "title": "Daily fallback 3",
+            "width": 6,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "A",
+                    "row": 4,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "B",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "C",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "M1",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 2
+                },
+                {
+                    "row": 4,
+                    "column": 1
+                },
+                {
+                    "row": 6,
+                    "column": 2
+                },
+                {
+                    "row": 5,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "A",
+                    "C",
+                    "B"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 3,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 1,
+                "generatorSeed": 880003,
+                "generationProfile": "daily-v1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 2,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 5,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "daily-fallback",
+                "mechanicTags": [
+                    "PULL",
+                    "PUSH",
+                    "POLARITY_FLIP",
+                    "WALLS",
+                    "OCCLUSION",
+                    "ORDER_DEPENDENCY"
+                ],
+                "contentFingerprint": "sha256:ca7216ec35c11d0e2cf651da8264660f42eca838858e56dee6ebb5cd5a50b9e5"
+            }
+        },
+        {
+            "id": "daily-fallback-04",
+            "number": 4,
+            "title": "Daily fallback 4",
+            "width": 6,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "A",
+                    "row": 4,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "B",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "C",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "M1",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 2
+                },
+                {
+                    "row": 4,
+                    "column": 1
+                },
+                {
+                    "row": 6,
+                    "column": 2
+                },
+                {
+                    "row": 5,
+                    "column": 4
+                },
+                {
+                    "row": 3,
+                    "column": 6
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "A",
+                    "C",
+                    "B"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 3,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 1,
+                "generatorSeed": 880004,
+                "generationProfile": "daily-v1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 2,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 5,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "daily-fallback",
+                "mechanicTags": [
+                    "PULL",
+                    "PUSH",
+                    "POLARITY_FLIP",
+                    "WALLS",
+                    "OCCLUSION",
+                    "ORDER_DEPENDENCY"
+                ],
+                "contentFingerprint": "sha256:014cac2f5f7a4926689b0840a2586e466bb6f5e5aee4f4326d8261f81e9adfcf"
+            }
+        },
+        {
+            "id": "daily-fallback-05",
+            "number": 5,
+            "title": "Daily fallback 5",
+            "width": 6,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "A",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "B",
+                    "row": 4,
+                    "column": 5,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "C",
+                    "row": 5,
+                    "column": 4,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "M1",
+                    "row": 4,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 6
+                },
+                {
+                    "row": 6,
+                    "column": 4
+                },
+                {
+                    "row": 3,
+                    "column": 5
+                },
+                {
+                    "row": 3,
+                    "column": 6
+                },
+                {
+                    "row": 6,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "B",
+                    "A",
+                    "C"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 3,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 1,
+                "generatorSeed": 880005,
+                "generationProfile": "daily-v1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 2,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 7,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "daily-fallback",
+                "mechanicTags": [
+                    "PULL",
+                    "PUSH",
+                    "POLARITY_FLIP",
+                    "WALLS",
+                    "ORDER_DEPENDENCY"
+                ],
+                "contentFingerprint": "sha256:a794407595802299802d65a8c973a1f2ad17b252ae1a8df9d62cbbb2fd9982fb"
+            }
+        },
+        {
+            "id": "daily-fallback-06",
+            "number": 6,
+            "title": "Daily fallback 6",
+            "width": 6,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "A",
+                    "row": 3,
+                    "column": 6,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "B",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "C",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "M1",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 2
+                },
+                {
+                    "row": 1,
+                    "column": 4
+                },
+                {
+                    "row": 6,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "B",
+                    "A",
+                    "C"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 3,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 1,
+                "generatorSeed": 880006,
+                "generationProfile": "daily-v1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 2,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 7,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "daily-fallback",
+                "mechanicTags": [
+                    "PULL",
+                    "PUSH",
+                    "POLARITY_FLIP",
+                    "WALLS",
+                    "ORDER_DEPENDENCY"
+                ],
+                "contentFingerprint": "sha256:b0c451e158da0cf6a376e115bb5e1491269a310d5a4879e19db0b5acd0614ad6"
+            }
+        },
+        {
+            "id": "daily-fallback-07",
+            "number": 7,
+            "title": "Daily fallback 7",
+            "width": 6,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "A",
+                    "row": 4,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "B",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "C",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "M1",
+                    "row": 4,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 1
+                },
+                {
+                    "row": 6,
+                    "column": 3
+                },
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "B",
+                    "A",
+                    "C"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 3,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 1,
+                "generatorSeed": 880007,
+                "generationProfile": "daily-v1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 2,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 7,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "daily-fallback",
+                "mechanicTags": [
+                    "PULL",
+                    "PUSH",
+                    "POLARITY_FLIP",
+                    "WALLS",
+                    "ORDER_DEPENDENCY"
+                ],
+                "contentFingerprint": "sha256:a58ef0add943f6d53df48861894c56e13c0e235b414c6c098e173707909920ad"
+            }
+        }
+    ],
+    "contentVersion": 3,
+    "generatorVersion": 1
+}
