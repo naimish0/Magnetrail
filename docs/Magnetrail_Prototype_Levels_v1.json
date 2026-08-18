@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "ruleVersion": "magnetrail-core-1",
+  "catalogId": "magnetrail-prototype-v1",
+  "levels": [
+    {
+      "id": "proto-001",
+      "number": 1,
+      "title": "First release",
+      "width": 4,
+      "height": 4,
+      "arrows": [{"id": "A", "row": 2, "column": 2, "printedDirection": "E"}],
+      "magnets": [],
+      "walls": [],
+      "designedSolutions": [["A"]]
+    },
+    {
+      "id": "proto-002",
+      "number": 2,
+      "title": "Clear the blocker",
+      "width": 4,
+      "height": 4,
+      "arrows": [
+        {"id": "A", "row": 2, "column": 1, "printedDirection": "E"},
+        {"id": "B", "row": 2, "column": 2, "printedDirection": "N"}
+      ],
+      "magnets": [],
+      "walls": [],
+      "designedSolutions": [["B", "A"]]
+    },
+    {
+      "id": "proto-003",
+      "number": 3,
+      "title": "Pull",
+      "width": 5,
+      "height": 5,
+      "arrows": [{"id": "A", "row": 3, "column": 1, "printedDirection": "N"}],
+      "magnets": [{"id": "M1", "row": 3, "column": 3, "initialPolarity": "PULL"}],
+      "walls": [],
+      "designedSolutions": [["A"]]
+    },
+    {
+      "id": "proto-004",
+      "number": 4,
+      "title": "Push",
+      "width": 5,
+      "height": 5,
+      "arrows": [{"id": "A", "row": 3, "column": 1, "printedDirection": "N"}],
+      "magnets": [{"id": "M1", "row": 3, "column": 3, "initialPolarity": "PUSH"}],
+      "walls": [],
+      "designedSolutions": [["A"]]
+    },
+    {
+      "id": "proto-005",
+      "number": 5,
+      "title": "Automatic flip",
+      "width": 5,
+      "height": 5,
+      "arrows": [
+        {"id": "A", "row": 3, "column": 1, "printedDirection": "N"},
+        {"id": "B", "row": 1, "column": 3, "printedDirection": "E"}
+      ],
+      "magnets": [{"id": "M1", "row": 3, "column": 3, "initialPolarity": "PULL"}],
+      "walls": [],
+      "designedSolutions": [["A", "B"], ["B", "A"]]
+    },
+    {
+      "id": "proto-006",
+      "number": 6,
+      "title": "Order matters",
+      "width": 5,
+      "height": 5,
+      "arrows": [
+        {"id": "A", "row": 3, "column": 1, "printedDirection": "N"},
+        {"id": "B", "row": 3, "column": 4, "printedDirection": "S"}
+      ],
+      "magnets": [{"id": "M1", "row": 3, "column": 3, "initialPolarity": "PULL"}],
+      "walls": [{"row": 3, "column": 5}],
+      "designedSolutions": [["B", "A"]]
+    },
+    {
+      "id": "proto-007",
+      "number": 7,
+      "title": "Field occlusion",
+      "width": 5,
+      "height": 5,
+      "arrows": [
+        {"id": "A", "row": 3, "column": 1, "printedDirection": "E"},
+        {"id": "B", "row": 3, "column": 3, "printedDirection": "N"}
+      ],
+      "magnets": [{"id": "M1", "row": 3, "column": 4, "initialPolarity": "PULL"}],
+      "walls": [],
+      "designedSolutions": [["B", "A"]]
+    },
+    {
+      "id": "proto-008",
+      "number": 8,
+      "title": "Shielded field",
+      "width": 5,
+      "height": 5,
+      "arrows": [{"id": "A", "row": 3, "column": 1, "printedDirection": "N"}],
+      "magnets": [{"id": "M1", "row": 3, "column": 4, "initialPolarity": "PULL"}],
+      "walls": [{"row": 3, "column": 3}],
+      "designedSolutions": [["A"]]
+    },
+    {
+      "id": "proto-009",
+      "number": 9,
+      "title": "Alternating gates",
+      "width": 5,
+      "height": 5,
+      "arrows": [
+        {"id": "A", "row": 3, "column": 1, "printedDirection": "N"},
+        {"id": "B", "row": 3, "column": 4, "printedDirection": "S"},
+        {"id": "C", "row": 2, "column": 3, "printedDirection": "E"}
+      ],
+      "magnets": [{"id": "M1", "row": 3, "column": 3, "initialPolarity": "PULL"}],
+      "walls": [{"row": 3, "column": 5}, {"row": 1, "column": 3}],
+      "designedSolutions": [["B", "A", "C"], ["C", "A", "B"]]
+    },
+    {
+      "id": "proto-010",
+      "number": 10,
+      "title": "Reveal the relay",
+      "width": 6,
+      "height": 6,
+      "arrows": [
+        {"id": "A", "row": 3, "column": 2, "printedDirection": "N"},
+        {"id": "B", "row": 3, "column": 3, "printedDirection": "E"},
+        {"id": "C", "row": 3, "column": 4, "printedDirection": "S"}
+      ],
+      "magnets": [{"id": "M1", "row": 3, "column": 5, "initialPolarity": "PULL"}],
+      "walls": [],
+      "designedSolutions": [["A", "C", "B"], ["C", "A", "B"]]
+    },
+    {
+      "id": "proto-011",
+      "number": 11,
+      "title": "Reverse gate",
+      "width": 5,
+      "height": 5,
+      "arrows": [
+        {"id": "A", "row": 3, "column": 1, "printedDirection": "N"},
+        {"id": "B", "row": 3, "column": 4, "printedDirection": "S"}
+      ],
+      "magnets": [{"id": "M1", "row": 3, "column": 3, "initialPolarity": "PUSH"}],
+      "walls": [{"row": 3, "column": 5}],
+      "designedSolutions": [["A", "B"]]
+    },
+    {
+      "id": "proto-012",
+      "number": 12,
+      "title": "Prototype capstone",
+      "width": 7,
+      "height": 7,
+      "arrows": [
+        {"id": "A", "row": 4, "column": 6, "printedDirection": "N"},
+        {"id": "B", "row": 4, "column": 2, "printedDirection": "S"},
+        {"id": "C", "row": 2, "column": 4, "printedDirection": "E"},
+        {"id": "D", "row": 6, "column": 4, "printedDirection": "W"}
+      ],
+      "magnets": [{"id": "M1", "row": 4, "column": 4, "initialPolarity": "PULL"}],
+      "walls": [{"row": 4, "column": 7}, {"row": 1, "column": 4}],
+      "designedSolutions": [
+        ["A", "B", "C", "D"],
+        ["A", "D", "C", "B"],
+        ["C", "B", "A", "D"],
+        ["C", "D", "A", "B"]
+      ]
+    }
+  ]
+}
