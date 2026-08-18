@@ -3,6 +3,7 @@ package com.rameshta.magnetrail.ui.theme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 
 private val MagnetrailLightColors = lightColorScheme(
     primary = MagnetrailPrimary,
@@ -26,9 +27,15 @@ private val MagnetrailLightColors = lightColorScheme(
 
 @Composable
 fun MagnetrailTheme(content: @Composable () -> Unit) {
-    MaterialTheme(
-        colorScheme = MagnetrailLightColors,
-        typography = Typography,
-        content = content,
-    )
+    CompositionLocalProvider(
+        LocalMagnetrailSpacing provides MagnetrailSpacing(),
+        LocalMagnetrailDimensions provides MagnetrailDimensions(),
+    ) {
+        MaterialTheme(
+            colorScheme = MagnetrailLightColors,
+            typography = Typography,
+            shapes = MagnetrailShapes,
+            content = content,
+        )
+    }
 }
