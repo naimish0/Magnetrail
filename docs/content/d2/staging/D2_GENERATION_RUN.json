@@ -1,0 +1,7 @@
+{
+    "candidateCatalog": "docs/content/d2/staging/D2_CAMPAIGN_V5_CANDIDATES.json",
+    "sourceCampaignSha256Before": "1852f5eee4792cf937adb17d7443041bd879486cbf33d3e7294d09542eef6ec8",
+    "sourceCampaignSha256After": "1852f5eee4792cf937adb17d7443041bd879486cbf33d3e7294d09542eef6ec8",
+    "sourceCampaignChanged": false,
+    "normalBuildRegeneratesContent": false
+}

@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.rameshta.magnetrail.data.DataStoreProgressRepository
+import com.rameshta.magnetrail.data.PLAYER_PREFERENCES_SCHEMA_VERSION
 import com.rameshta.magnetrail.data.RewardedCreditGrantResult
 import com.rameshta.magnetrail.ads.RewardedCallbackLedger
 import com.rameshta.magnetrail.ads.RewardedOutcome
@@ -68,7 +69,7 @@ class M4RewardedAndMigrationTest {
         val first = repository.preferences.first()
         val second = repository.preferences.first()
 
-        assertEquals(5, first.schemaVersion)
+        assertEquals(PLAYER_PREFERENCES_SCHEMA_VERSION, first.schemaVersion)
         assertFalse(first.settings.soundEnabled)
         assertEquals(211, first.progress.coinBalance)
         assertEquals(3, first.progress.recordsByLevel["proto-001"]?.bestStars)
@@ -153,7 +154,7 @@ class M4RewardedAndMigrationTest {
     fun `fresh and partial corrupt M4 data recover conservatively`() = runTest {
         val store = dataStore(this)
         var restored = repository(store).preferences.first()
-        assertEquals(5, restored.schemaVersion)
+        assertEquals(PLAYER_PREFERENCES_SCHEMA_VERSION, restored.schemaVersion)
         assertFalse(restored.settings.diagnosticsEnabled)
 
         store.edit { values ->

@@ -232,7 +232,7 @@ class LevelQualityAnalyzer(
         in 1..10 -> band <= DifficultyBandV2.NORMAL
         in 11..25 -> band <= DifficultyBandV2.MEDIUM
         in 26..60 -> band in DifficultyBandV2.EASY..DifficultyBandV2.HARD
-        in 61..100 -> band >= DifficultyBandV2.NORMAL
+        in 61..200 -> band >= DifficultyBandV2.NORMAL
         else -> false
     }
 }

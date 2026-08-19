@@ -30,3 +30,10 @@ sourceSets {
 tasks.test {
     useJUnit()
 }
+
+tasks.named("processTestResources") {
+    // D1 reports live under docs, which is also a test-resource source. Preserve ordering
+    // only when diagnostic writers and tests are explicitly requested together.
+    mustRunAfter(":level-tools:analyzeCampaignDifficultyV4")
+    mustRunAfter(":level-tools:calibrateDifficultyV4")
+}

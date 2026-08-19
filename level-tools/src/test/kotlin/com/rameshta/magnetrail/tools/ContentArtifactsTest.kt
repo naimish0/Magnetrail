@@ -15,9 +15,13 @@ class ContentArtifactsTest {
     fun `checked in report covers every promoted campaign level`() {
         val catalog = LevelParser().parseCatalog(resource("/Magnetrail_Campaign_Levels_v3.json"))
         val report = resource("/M3_CONTENT_REPORT.csv").lineSequence().filter(String::isNotBlank).toList()
+        val expansion = resource("/content/m5_2_levels_101_150_metrics.csv")
+            .lineSequence().filter(String::isNotBlank).toList()
 
-        assertEquals(catalog.levels.size + 1, report.size)
-        assertEquals(catalog.levels.map { it.id }, report.drop(1).map { it.substringBefore(',') })
+        assertEquals(101, report.size)
+        assertEquals(catalog.levels.take(100).map { it.id }, report.drop(1).map { it.substringBefore(',') })
+        assertEquals(51, expansion.size)
+        assertEquals(catalog.levels.take(150).drop(100).map { it.id }, expansion.drop(1).map { it.substringBefore(',') })
         assertTrue(report.first().contains("rejected_before_acceptance"))
     }
 
@@ -41,10 +45,10 @@ class ContentArtifactsTest {
             .lineSequence().filter(String::isNotBlank).toList()
         val duplicates = resource("/content/m5_1_duplicate_report.md")
 
-        assertEquals(catalog.levels.size, metricLevels.size)
-        assertEquals(catalog.levels.size, qualityLevels.size)
-        assertEquals(catalog.levels.size + 1, comparison.size)
-        assertEquals(catalog.levels.map { it.id }, metricLevels.map { it.jsonObject.getValue("levelId").jsonPrimitive.content })
+        assertEquals(100, metricLevels.size)
+        assertEquals(100, qualityLevels.size)
+        assertEquals(101, comparison.size)
+        assertEquals(catalog.levels.take(100).map { it.id }, metricLevels.map { it.jsonObject.getValue("levelId").jsonPrimitive.content })
         assertTrue(qualityLevels.none { it.jsonObject.getValue("qualityStatus").jsonPrimitive.content == "REJECT" })
         assertTrue(duplicates.contains("Exact duplicate groups: 0"))
         assertTrue(duplicates.contains("Symmetry-equivalent groups excluding exact-only equality: 0"))

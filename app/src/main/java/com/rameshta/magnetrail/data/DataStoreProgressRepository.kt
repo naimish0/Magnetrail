@@ -16,9 +16,9 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.rameshta.magnetrail.core.daily.DailySeed
 import com.rameshta.magnetrail.core.daily.StreakPolicy
 import com.rameshta.magnetrail.core.daily.StreakState
+import com.rameshta.magnetrail.core.content.ContentFingerprint
 import com.rameshta.magnetrail.core.economy.EconomyConfig
 import com.rameshta.magnetrail.core.economy.RewardPolicy
-import com.rameshta.magnetrail.core.generation.CONTENT_VERSION
 import com.rameshta.magnetrail.core.generation.GENERATOR_VERSION
 import com.rameshta.magnetrail.core.grading.GradingPolicy
 import com.rameshta.magnetrail.core.level.LevelCatalog
@@ -123,13 +123,15 @@ class DataStoreProgressRepository private constructor(
             migrateStored(stored)
             val currentHighest = stored.highestUnlocked()
             require(completedIndex < currentHighest) { "Level '$levelId' is locked" }
-            val records = decodeRecords(stored[Keys.levelRecords]).toMutableMap()
+            val records = decodeVersionedRecords(stored).toMutableMap()
             val previous = records[levelId] ?: LevelRecord()
             val best = LevelRecord(
                 bestStars = maxOf(previous.bestStars, grade.stars),
                 lowestActions = minPositive(previous.lowestActions, attempt.actions),
                 lowestOverloads = minNonNegative(previous.lowestOverloads, attempt.overloads),
                 lowestHints = minNonNegative(previous.lowestHints, attempt.hintsUsed),
+                boardFingerprint = currentFingerprint(level),
+                legacyRecords = previous.legacyRecords,
             )
             records[levelId] = best
 
@@ -152,10 +154,7 @@ class DataStoreProgressRepository private constructor(
                 currentHighest,
                 (completedIndex + 2).coerceAtMost(catalog.levels.size),
             )
-            stored[Keys.levelRecords] = encodeRecords(records)
-            stored[Keys.bestMoves] = encodeBestMoves(records.mapNotNull { (id, record) ->
-                record.lowestActions?.let { id to it }
-            }.toMap())
+            writeVersionedRecords(stored, records)
             stored[Keys.coinBalance] = rewards.resultingBalance
             if (isFirstClear) {
                 stored[Keys.interstitialEligibleCompletions] =
@@ -323,11 +322,13 @@ class DataStoreProgressRepository private constructor(
     }
 
     private fun migrateStored(stored: MutablePreferences) {
+        val previousContentVersion = stored[Keys.contentVersion] ?: 0
         val version = stored[Keys.schemaVersion]
         if (version != null && version !in setOf(
                 M2_SCHEMA_VERSION,
                 M3_SCHEMA_VERSION,
                 M4_SCHEMA_VERSION,
+                M5_SCHEMA_VERSION,
                 PLAYER_PREFERENCES_SCHEMA_VERSION,
             )
         ) {
@@ -367,13 +368,103 @@ class DataStoreProgressRepository private constructor(
             .filter { it.isNotBlank() && it.length <= 100 }
             .takeLast(MAX_REWARD_TRANSACTION_HISTORY)
             .toSet()
+        migrateExpandedCampaignContinue(stored, previousContentVersion)
+        migrateBoardRevisionRecords(stored, previousContentVersion)
         stored[Keys.schemaVersion] = PLAYER_PREFERENCES_SCHEMA_VERSION
         stored[Keys.economyVersion] = EconomyConfig.VERSION
-        stored[Keys.contentVersion] = CONTENT_VERSION
-        stored[Keys.generatorVersion] = GENERATOR_VERSION
+        stored[Keys.contentVersion] = catalog.contentVersion
+        stored[Keys.generatorVersion] = catalog.generatorVersion ?: GENERATOR_VERSION
         stored[Keys.dailyGeneratorVersion] = DailySeed.GENERATOR_VERSION
         stored[Keys.coinBalance] = stored.coinBalance()
         stored[Keys.highestUnlockedLevel] = stored.highestUnlocked()
+    }
+
+    /** Stable-ID bridges for each approved fixed-campaign expansion. */
+    private fun migrateExpandedCampaignContinue(
+        stored: MutablePreferences,
+        previousContentVersion: Int,
+    ) {
+        if (previousContentVersion >= catalog.contentVersion) return
+        val completed = stored[Keys.completedLevelIds].orEmpty().validLevelIds()
+        listOf(
+            CampaignExpansionBridge(introducedContentVersion = 4, oldFinalNumber = 100, continuationNumber = 101),
+            CampaignExpansionBridge(introducedContentVersion = 6, oldFinalNumber = 150, continuationNumber = 151),
+        ).forEach { bridge ->
+            if (previousContentVersion >= bridge.introducedContentVersion) return@forEach
+            val oldFinalIndex = catalog.levels.indexOfFirst { it.number == bridge.oldFinalNumber }
+            val continuationIndex = catalog.levels.indexOfFirst { it.number == bridge.continuationNumber }
+            if (oldFinalIndex < 0 || continuationIndex != oldFinalIndex + 1) return@forEach
+            val oldFinalId = catalog.levels[oldFinalIndex].id
+            val continuationId = catalog.levels[continuationIndex].id
+            val selected = stored[Keys.lastSelectedLevelId]
+            if (oldFinalId in completed) {
+                stored[Keys.highestUnlockedLevel] = maxOf(
+                    stored.highestUnlocked(),
+                    continuationIndex + 1,
+                )
+                if (selected == null || selected == oldFinalId) {
+                    stored[Keys.lastSelectedLevelId] = continuationId
+                }
+            }
+        }
+    }
+
+    private data class CampaignExpansionBridge(
+        val introducedContentVersion: Int,
+        val oldFinalNumber: Int,
+        val continuationNumber: Int,
+    )
+
+    /**
+     * Separates incomparable board revisions without discarding earned value. Completion,
+     * stars, first-clear rewards, unlocks and currency stay keyed by stable level ID. Move,
+     * overload and hint minima are archived under the old board fingerprint, then restarted
+     * for the current fingerprint.
+     */
+    private fun migrateBoardRevisionRecords(
+        stored: MutablePreferences,
+        previousContentVersion: Int,
+    ) {
+        val records = decodeVersionedRecords(stored).toMutableMap()
+        records.entries.toList().forEach { (levelId, record) ->
+            val level = catalog.levels.firstOrNull { it.id == levelId } ?: return@forEach
+            val current = currentFingerprint(level)
+            val metadata = level.metadata
+            val source = when {
+                record.boardFingerprint != null -> record.boardFingerprint
+                metadata?.previousContentFingerprint != null -> metadata.previousContentFingerprint
+                else -> current
+            }
+            if (source == current) {
+                records[levelId] = record.copy(boardFingerprint = current)
+                return@forEach
+            }
+            val earned = record.bestStars > 0 || record.lowestActions != null ||
+                record.lowestOverloads != null || record.lowestHints != null
+            val archive = if (earned) {
+                LegacyLevelRecord(
+                    boardFingerprint = source,
+                    sourceContentVersion = previousContentVersion.coerceAtLeast(0),
+                    bestStars = record.bestStars,
+                    lowestActions = record.lowestActions,
+                    lowestOverloads = record.lowestOverloads,
+                    lowestHints = record.lowestHints,
+                )
+            } else {
+                null
+            }
+            val history = (record.legacyRecords + listOfNotNull(archive))
+                .distinctBy { it.boardFingerprint to it.sourceContentVersion }
+                .takeLast(MAX_LEGACY_BOARD_RECORDS_PER_LEVEL)
+            records[levelId] = record.copy(
+                lowestActions = null,
+                lowestOverloads = null,
+                lowestHints = null,
+                boardFingerprint = current,
+                legacyRecords = history,
+            )
+        }
+        if (records.isNotEmpty()) writeVersionedRecords(stored, records)
     }
 
     private fun decode(stored: Preferences): PlayerPreferences {
@@ -389,7 +480,7 @@ class DataStoreProgressRepository private constructor(
         } else {
             catalog.levels[highestUnlocked - 1].id
         }
-        val records = decodeRecords(stored[Keys.levelRecords])
+        val records = decodeVersionedRecords(stored)
             .filterKeys { it in validLevelIds }
             .mapValues { (_, value) -> value.sanitized() }
         val legacyBest = decodeBestMoves(stored[Keys.bestMoves])
@@ -423,8 +514,8 @@ class DataStoreProgressRepository private constructor(
                 bestStreak = bestStreak,
                 lastTrustedDailyDate = trustedDailyDate,
                 dailyCache = decodeDailyCache(stored),
-                contentVersion = stored[Keys.contentVersion] ?: CONTENT_VERSION,
-                generatorVersion = stored[Keys.generatorVersion] ?: GENERATOR_VERSION,
+                contentVersion = stored[Keys.contentVersion] ?: catalog.contentVersion,
+                generatorVersion = stored[Keys.generatorVersion] ?: catalog.generatorVersion ?: GENERATOR_VERSION,
                 dailyGeneratorVersion = stored[Keys.dailyGeneratorVersion] ?: DailySeed.GENERATOR_VERSION,
                 monetization = AdMonetizationState(
                     interstitialEligibleCompletions = (stored[Keys.interstitialEligibleCompletions] ?: 0).coerceAtLeast(0),
@@ -509,6 +600,17 @@ class DataStoreProgressRepository private constructor(
         }
         .toMap()
 
+    private fun decodeVersionedRecords(stored: Preferences): Map<String, LevelRecord> {
+        val fingerprints = decodeRecordFingerprints(stored[Keys.levelRecordFingerprints])
+        val histories = decodeLegacyRecords(stored[Keys.legacyLevelRecords])
+        return decodeRecords(stored[Keys.levelRecords]).mapValues { (id, record) ->
+            record.copy(
+                boardFingerprint = fingerprints[id],
+                legacyRecords = histories[id].orEmpty(),
+            )
+        }
+    }
+
     private fun encodeRecords(records: Map<String, LevelRecord>): Set<String> = records
         .mapTo(linkedSetOf()) { (id, record) ->
             listOf(
@@ -520,6 +622,71 @@ class DataStoreProgressRepository private constructor(
             ).joinToString("|")
         }
 
+    private fun decodeRecordFingerprints(values: Set<String>?): Map<String, String> = values.orEmpty()
+        .mapNotNull { encoded ->
+            val separator = encoded.indexOf('|')
+            if (separator <= 0) return@mapNotNull null
+            val fingerprint = encoded.substring(separator + 1)
+            if (!isSha256(fingerprint)) return@mapNotNull null
+            encoded.substring(0, separator) to fingerprint
+        }
+        .toMap()
+
+    private fun encodeRecordFingerprints(records: Map<String, LevelRecord>): Set<String> = records
+        .mapNotNullTo(linkedSetOf()) { (id, record) ->
+            record.boardFingerprint?.takeIf(::isSha256)?.let { "$id|$it" }
+        }
+
+    private fun decodeLegacyRecords(values: Set<String>?): Map<String, List<LegacyLevelRecord>> = values.orEmpty()
+        .mapNotNull { encoded ->
+            val parts = encoded.split('|')
+            if (parts.size != 7 || parts[0].isBlank()) return@mapNotNull null
+            val fingerprint = parts[2].takeUnless { it == "-" }
+            if (fingerprint != null && !isSha256(fingerprint)) return@mapNotNull null
+            val contentVersion = parts[1].toIntOrNull()?.takeIf { it >= 0 } ?: return@mapNotNull null
+            val stars = parts[3].toIntOrNull() ?: return@mapNotNull null
+            parts[0] to LegacyLevelRecord(
+                boardFingerprint = fingerprint,
+                sourceContentVersion = contentVersion,
+                bestStars = stars.coerceIn(0, 3),
+                lowestActions = parts[4].nullableInt()?.takeIf { it > 0 },
+                lowestOverloads = parts[5].nullableInt(),
+                lowestHints = parts[6].nullableInt(),
+            )
+        }
+        .groupBy({ it.first }, { it.second })
+        .mapValues { (_, rows) ->
+            rows.distinctBy { it.boardFingerprint to it.sourceContentVersion }
+                .takeLast(MAX_LEGACY_BOARD_RECORDS_PER_LEVEL)
+        }
+
+    private fun encodeLegacyRecords(records: Map<String, LevelRecord>): Set<String> = records
+        .flatMapTo(linkedSetOf()) { (id, record) ->
+            record.legacyRecords.takeLast(MAX_LEGACY_BOARD_RECORDS_PER_LEVEL).map { legacy ->
+                listOf(
+                    id,
+                    legacy.sourceContentVersion.coerceAtLeast(0),
+                    legacy.boardFingerprint ?: "-",
+                    legacy.bestStars.coerceIn(0, 3),
+                    legacy.lowestActions ?: -1,
+                    legacy.lowestOverloads ?: -1,
+                    legacy.lowestHints ?: -1,
+                ).joinToString("|")
+            }
+        }
+
+    private fun writeVersionedRecords(
+        stored: MutablePreferences,
+        records: Map<String, LevelRecord>,
+    ) {
+        stored[Keys.levelRecords] = encodeRecords(records)
+        stored[Keys.levelRecordFingerprints] = encodeRecordFingerprints(records)
+        stored[Keys.legacyLevelRecords] = encodeLegacyRecords(records)
+        stored[Keys.bestMoves] = encodeBestMoves(records.mapNotNull { (id, record) ->
+            record.lowestActions?.let { id to it }
+        }.toMap())
+    }
+
     private fun String.nullableInt(): Int? = toIntOrNull()?.takeIf { it >= 0 }
 
     private fun LevelRecord.sanitized(): LevelRecord = LevelRecord(
@@ -527,7 +694,24 @@ class DataStoreProgressRepository private constructor(
         lowestActions = lowestActions?.takeIf { it > 0 },
         lowestOverloads = lowestOverloads?.takeIf { it >= 0 },
         lowestHints = lowestHints?.takeIf { it >= 0 },
+        boardFingerprint = boardFingerprint?.takeIf(::isSha256),
+        legacyRecords = legacyRecords.map { legacy ->
+            legacy.copy(
+                boardFingerprint = legacy.boardFingerprint?.takeIf(::isSha256),
+                sourceContentVersion = legacy.sourceContentVersion.coerceAtLeast(0),
+                bestStars = legacy.bestStars.coerceIn(0, 3),
+                lowestActions = legacy.lowestActions?.takeIf { it > 0 },
+                lowestOverloads = legacy.lowestOverloads?.takeIf { it >= 0 },
+                lowestHints = legacy.lowestHints?.takeIf { it >= 0 },
+            )
+        }.distinctBy { it.boardFingerprint to it.sourceContentVersion }
+            .takeLast(MAX_LEGACY_BOARD_RECORDS_PER_LEVEL),
     )
+
+    private fun currentFingerprint(level: com.rameshta.magnetrail.core.model.LevelDefinition): String =
+        level.metadata?.contentFingerprint ?: ContentFingerprint.of(level)
+
+    private fun isSha256(value: String): Boolean = value.startsWith("sha256:") && value.length == 71
 
     private fun minPositive(previous: Int?, candidate: Int): Int = minOf(previous ?: Int.MAX_VALUE, candidate)
 
@@ -561,6 +745,8 @@ class DataStoreProgressRepository private constructor(
         val lastSelectedLevelId = stringPreferencesKey("last_selected_level_id")
         val bestMoves = stringSetPreferencesKey("best_moves")
         val levelRecords = stringSetPreferencesKey("level_records_v3")
+        val levelRecordFingerprints = stringSetPreferencesKey("level_record_fingerprints_v6")
+        val legacyLevelRecords = stringSetPreferencesKey("legacy_level_records_v6")
         val firstClearRewardedIds = stringSetPreferencesKey("first_clear_rewarded_ids")
         val coinBalance = intPreferencesKey("coin_balance")
         val economyVersion = intPreferencesKey("economy_version")
@@ -589,9 +775,11 @@ class DataStoreProgressRepository private constructor(
         private const val M2_SCHEMA_VERSION = 1
         private const val M3_SCHEMA_VERSION = 3
         private const val M4_SCHEMA_VERSION = 4
+        private const val M5_SCHEMA_VERSION = 5
         private const val MAX_DAILY_HISTORY = 512
         private const val MAX_REWARDED_GRANTS_PER_DAY = 5
         private const val MAX_INTERSTITIALS_PER_DAY = 4
         private const val MAX_REWARD_TRANSACTION_HISTORY = 16
+        private const val MAX_LEGACY_BOARD_RECORDS_PER_LEVEL = 4
     }
 }

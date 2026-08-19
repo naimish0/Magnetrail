@@ -8,6 +8,8 @@ import com.rameshta.magnetrail.core.level.LevelParser
 import com.rameshta.magnetrail.core.model.DifficultyBand
 import com.rameshta.magnetrail.core.model.LevelOrigin
 import com.rameshta.magnetrail.core.solver.Solver
+import com.rameshta.magnetrail.core.generation.v5.D2_STAGING_CONTENT_VERSION
+import com.rameshta.magnetrail.core.generation.v5.GENERATOR_VERSION_V5
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -20,18 +22,23 @@ class ShippedContentTest {
     @Test
     fun `all campaign content is unique certified and replayable`() {
         val campaign = load("/Magnetrail_Campaign_Levels_v3.json")
-        assertEquals(100, campaign.levels.size)
-        assertEquals(100, campaign.levels.map { it.id }.toSet().size)
-        assertEquals((1..100).toList(), campaign.levels.map { it.number })
-        assertEquals(100, campaign.levels.map(ContentFingerprint::of).toSet().size)
-        assertEquals(100, campaign.levels.map(ContentFingerprint::symmetryNormalized).toSet().size)
-        assertEquals(30, campaign.levels.count { it.metadata?.origin == LevelOrigin.HANDCRAFTED })
-        assertEquals(70, campaign.levels.count { it.metadata?.origin == LevelOrigin.GENERATOR_ASSISTED })
+        assertEquals(200, campaign.levels.size)
+        assertEquals(200, campaign.levels.map { it.id }.toSet().size)
+        assertEquals((1..200).toList(), campaign.levels.map { it.number })
+        assertEquals(200, campaign.levels.map(ContentFingerprint::of).toSet().size)
+        assertEquals(200, campaign.levels.map(ContentFingerprint::symmetryNormalized).toSet().size)
+        assertEquals(0, campaign.levels.count { it.metadata?.origin == LevelOrigin.HANDCRAFTED })
+        assertEquals(200, campaign.levels.count { it.metadata?.origin == LevelOrigin.GENERATOR_ASSISTED })
+        assertEquals(D2_STAGING_CONTENT_VERSION, campaign.contentVersion)
+        assertEquals(GENERATOR_VERSION_V5, campaign.generatorVersion)
+        assertTrue(campaign.levels.all { it.metadata?.previousContentFingerprint != null })
+        assertTrue(campaign.levels.all { it.width in 3..8 && it.height in 3..8 })
+        assertTrue(campaign.levels.none { it.width == 9 || it.height == 9 })
         assertEquals((1..12).map { "proto-${it.toString().padStart(3, '0')}" }, campaign.levels.take(12).map { it.id })
 
         campaign.levels.forEach { level ->
             val metadata = requireNotNull(level.metadata)
-            val solved = Solver().solve(level.initialState(), solutionLimit = 32, maxExploredStates = 20_000)
+            val solved = Solver().solve(level.initialState(), solutionLimit = 100_000, maxExploredStates = 200_000)
             assertTrue("${level.id} solver incomplete", solved.searchComplete)
             assertTrue("${level.id} unsolved", solved.solvable)
             assertEquals(metadata.certifiedSolutionLength, solved.shortestDepth)
@@ -51,7 +58,15 @@ class ShippedContentTest {
         assertEquals(setOf(DifficultyBand.INTRO, DifficultyBand.DEVELOPING, DifficultyBand.ADVANCED),
             campaign.levels.mapNotNull { it.metadata?.difficultyBand }.toSet())
         assertTrue(campaign.levels.flatMap { it.metadata?.mechanicTags.orEmpty() }.containsAll(
-            listOf("PULL", "PUSH", "WALLS", "OCCLUSION", "CANCELLATION", "MULTIPLE_MAGNETS"),
+            listOf(
+                "MAGNET_CONTROL",
+                "POLARITY_DEPENDENCY",
+                "WALLS",
+                "OCCLUSION",
+                "CANCELLATION",
+                "ORDER_DEPENDENCY",
+                "EXPOSURE_REVEAL",
+            ),
         ))
     }
 

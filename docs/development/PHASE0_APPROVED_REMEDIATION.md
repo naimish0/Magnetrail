@@ -1,0 +1,165 @@
+# Phase 0 approved campaign remediation
+
+Status: **OWNER APPROVED AND PROMOTED**
+
+- Owner approval: APPROVED_BY_PROJECT_OWNER on 2026-08-19
+- Approved assignments: 150/150
+- Automated approvals represented as human approvals: 0
+- Human playtesting: **NOT_PERFORMED**
+- Stable IDs: 150/150
+- Exact/symmetry fingerprints: 150/150
+
+Owner approval authorizes the recorded candidate mapping and its reported Quality exceptions. It does not claim that every board was manually played. Automated certification and owner approval remain distinct evidence.
+
+| # | Stable ID | Decision | Candidate | V3 | Quality | Similar neighbors | Approval | Playtested |
+|---:|---|---|---|---:|---|---:|---|---|
+| 1 | proto-001 | TUNE | phase0-tutorial-4750013 | 10 | 68/REVIEW | 9 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 2 | proto-002 | TUNE | phase0-tutorial-4750001 | 11 | 66/REVIEW | 9 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 3 | proto-003 | TUNE | phase0-tutorial-4750006 | 11 | 68/REVIEW | 9 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 4 | proto-004 | TUNE | phase0-tutorial-4750004 | 12 | 66/REVIEW | 9 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 5 | proto-005 | TUNE | phase0-tutorial-4750015 | 10 | 68/REVIEW | 9 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 6 | proto-006 | TUNE | phase0-tutorial-4750003 | 11 | 66/REVIEW | 9 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 7 | proto-007 | TUNE | phase0-tutorial-4750016 | 12 | 66/REVIEW | 9 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 8 | proto-008 | TUNE | phase0-tutorial-4750010 | 11 | 68/REVIEW | 9 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 9 | proto-009 | TUNE | phase0-tutorial-4750007 | 11 | 66/REVIEW | 9 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 10 | proto-010 | TUNE | phase0-tutorial-4750021 | 11 | 66/REVIEW | 9 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 11 | proto-011 | REPLACE | phase0-easy-750102 | 19 | 78/REVIEW | 10 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 12 | proto-012 | TUNE | phase0-easy-750008 | 21 | 75/REVIEW | 3 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 13 | campaign-013 | REPLACE | phase0-easy-750144 | 19 | 78/REVIEW | 10 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 14 | campaign-014 | REPLACE | phase0-easy-750290 | 19 | 78/REVIEW | 10 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 15 | campaign-015 | TUNE | phase0-easy-750340 | 19 | 78/REVIEW | 10 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 16 | campaign-016 | REPLACE | phase0-easy-750009 | 21 | 75/REVIEW | 3 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 17 | campaign-017 | REPLACE | phase0-easy-750212 | 19 | 78/REVIEW | 10 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 18 | campaign-018 | REPLACE | phase0-easy-750261 | 19 | 78/REVIEW | 10 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 19 | campaign-019 | TUNE | phase0-easy-750305 | 19 | 78/REVIEW | 10 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 20 | campaign-020 | TUNE | phase0-easy-750385 | 19 | 78/REVIEW | 10 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 21 | campaign-021 | REPLACE | phase0-easy-750018 | 21 | 75/REVIEW | 3 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 22 | campaign-022 | TUNE | phase0-easy-750374 | 19 | 78/REVIEW | 10 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 23 | campaign-023 | TUNE | phase0-easy-750414 | 19 | 78/REVIEW | 10 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 24 | campaign-024 | REPLACE | phase0-easy-750514 | 19 | 78/REVIEW | 10 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 25 | campaign-025 | REPLACE | phase0-easy-750027 | 21 | 75/REVIEW | 3 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 26 | campaign-026 | TUNE | phase0-planning-intro-3750184 | 43 | 85/REVIEW | 6 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 27 | campaign-027 | TUNE | phase0-planning-intro-3750014 | 44 | 85/REVIEW | 6 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 28 | campaign-028 | TUNE | phase0-planning-intro-3751641 | 44 | 79/REVIEW | 1 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 29 | campaign-029 | TUNE | phase0-planning-intro-3750304 | 43 | 85/REVIEW | 6 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 30 | campaign-030 | TUNE | phase0-planning-intro-3751362 | 44 | 85/REVIEW | 6 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 31 | campaign-031 | TUNE | phase0-planning-intro-3750315 | 44 | 78/REVIEW | 4 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 32 | campaign-032 | TUNE | phase0-planning-intro-3750402 | 45 | 79/REVIEW | 1 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 33 | campaign-033 | REPLACE | phase0-planning-intro-3751062 | 43 | 85/REVIEW | 6 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 34 | campaign-034 | REPLACE | phase0-planning-intro-3750233 | 44 | 77/REVIEW | 6 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 35 | campaign-035 | REPLACE | phase0-planning-intro-3751331 | 44 | 78/REVIEW | 4 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 36 | campaign-036 | REPLACE | phase0-planning-intro-3751403 | 44 | 77/REVIEW | 6 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 37 | campaign-037 | REPLACE | phase0-planning-intro-3750830 | 45 | 86/REVIEW | 6 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 38 | campaign-038 | REPLACE | phase0-planning-intro-3751025 | 44 | 79/REVIEW | 11 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 39 | campaign-039 | TUNE | phase0-planning-intro-3750354 | 44 | 85/REVIEW | 11 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 40 | campaign-040 | TUNE | phase0-planning-intro-3750035 | 45 | 81/REVIEW | 11 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 41 | campaign-041 | TUNE | phase0-medium-2750542 | 45 | 84/REVIEW | 3 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 42 | campaign-042 | REPLACE | phase0-medium-2751011 | 45 | 84/REVIEW | 2 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 43 | campaign-043 | TUNE | phase0-medium-2750264 | 58 | 84/REVIEW | 5 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 44 | campaign-044 | REPLACE | phase0-medium-2751442 | 58 | 84/REVIEW | 5 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 45 | campaign-045 | TUNE | phase0-medium-2751990 | 59 | 84/REVIEW | 8 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 46 | campaign-046 | TUNE | phase0-medium-2750042 | 48 | 90/REVIEW | 3 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 47 | campaign-047 | TUNE | phase0-medium-2751390 | 59 | 84/REVIEW | 3 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 48 | campaign-048 | REPLACE | phase0-medium-2751090 | 59 | 84/REVIEW | 3 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 49 | campaign-049 | REPLACE | phase0-medium-2751152 | 59 | 84/REVIEW | 2 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 50 | campaign-050 | REPLACE | phase0-medium-2752753 | 59 | 84/REVIEW | 2 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 51 | campaign-051 | REPLACE | phase0-medium-2750304 | 60 | 90/REVIEW | 6 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 52 | campaign-052 | REPLACE | phase0-medium-2750504 | 60 | 90/REVIEW | 6 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 53 | campaign-053 | TUNE | phase0-medium-2750550 | 60 | 88/REVIEW | 3 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 54 | campaign-054 | REPLACE | phase0-medium-2750034 | 60 | 88/REVIEW | 3 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 55 | campaign-055 | REPLACE | phase0-medium-2751164 | 45 | 85/REVIEW | 3 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 56 | campaign-056 | TUNE | phase0-medium-2752342 | 60 | 90/REVIEW | 6 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 57 | campaign-057 | TUNE | phase0-medium-2751440 | 60 | 84/REVIEW | 6 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 58 | campaign-058 | TUNE | phase0-medium-2750664 | 60 | 84/REVIEW | 5 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 59 | campaign-059 | REPLACE | phase0-medium-2752222 | 59 | 84/REVIEW | 2 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 60 | campaign-060 | TUNE | phase0-medium-2751072 | 60 | 88/REVIEW | 3 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 61 | campaign-061 | REPLACE | phase0-hard-1750272 | 68 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 62 | campaign-062 | REPLACE | phase0-hard-1752724 | 69 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 63 | campaign-063 | REPLACE | phase0-hard-1750971 | 71 | 84/REVIEW | 1 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 64 | campaign-064 | REPLACE | phase0-hard-1751660 | 71 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 65 | campaign-065 | REPLACE | phase0-hard-1750332 | 71 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 66 | campaign-066 | REPLACE | phase0-hard-1750985 | 71 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 67 | campaign-067 | REPLACE | phase0-hard-1751370 | 71 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 68 | campaign-068 | REPLACE | phase0-hard-1751141 | 71 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 69 | campaign-069 | REPLACE | phase0-hard-1751425 | 71 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 70 | campaign-070 | REPLACE | phase0-hard-1751685 | 71 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 71 | campaign-071 | REPLACE | phase0-hard-1752674 | 71 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 72 | campaign-072 | REPLACE | phase0-hard-1750934 | 72 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 73 | campaign-073 | REPLACE | phase0-hard-1751605 | 73 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 74 | campaign-074 | TUNE | phase0-hard-1750262 | 73 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 75 | campaign-075 | TUNE | phase0-hard-1751974 | 74 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 76 | campaign-076 | TUNE | phase0-hard-1752570 | 74 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 77 | campaign-077 | REPLACE | phase0-hard-1750914 | 74 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 78 | campaign-078 | TUNE | phase0-hard-1751573 | 74 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 79 | campaign-079 | TUNE | phase0-hard-1752362 | 74 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 80 | campaign-080 | TUNE | phase0-hard-1751703 | 75 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 81 | campaign-081 | REPLACE | phase0-very-hard-8750131 | 77 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 82 | campaign-082 | REPLACE | phase0-very-hard-8750002 | 77 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 83 | campaign-083 | REPLACE | phase0-very-hard-8750220 | 78 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 84 | campaign-084 | REPLACE | phase0-very-hard-8750122 | 78 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 85 | campaign-085 | REPLACE | phase0-very-hard-8750184 | 79 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 86 | campaign-086 | REPLACE | phase0-very-hard-8750073 | 79 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 87 | campaign-087 | REPLACE | phase0-very-hard-8750153 | 80 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 88 | campaign-088 | REPLACE | phase0-very-hard-8750200 | 81 | 100/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 89 | campaign-089 | REPLACE | phase0-very-hard-8750021 | 81 | 98/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 90 | campaign-090 | REPLACE | phase0-very-hard-8750150 | 82 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 91 | campaign-091 | REPLACE | phase0-very-hard-8750143 | 83 | 98/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 92 | campaign-092 | REPLACE | phase0-very-hard-8750044 | 83 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 93 | campaign-093 | REPLACE | phase0-very-hard-8750101 | 85 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 94 | campaign-094 | REPLACE | phase0-very-hard-8750015 | 86 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 95 | campaign-095 | REPLACE | phase0-very-hard-8750108 | 86 | 98/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 96 | campaign-096 | REPLACE | phase0-very-hard-8750185 | 86 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 97 | campaign-097 | REPLACE | phase0-very-hard-8750005 | 88 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 98 | campaign-098 | REPLACE | phase0-very-hard-8750077 | 88 | 100/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 99 | campaign-099 | REPLACE | phase0-very-hard-8750093 | 90 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 100 | campaign-100 | REPLACE | phase0-very-hard-8750142 | 90 | 98/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 101 | campaign-101 | TUNE | phase0-upper-hard-5750742 | 71 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 102 | campaign-102 | TUNE | phase0-upper-hard-5750725 | 72 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 103 | campaign-103 | TUNE | phase0-upper-hard-5750094 | 74 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 104 | campaign-104 | TUNE | phase0-upper-hard-5750351 | 75 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 105 | campaign-105 | REPLACE | phase0-upper-peak-6750045 | 77 | 98/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 106 | campaign-106 | TUNE | phase0-upper-recovery-7750430 | 64 | 90/REVIEW | 2 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 107 | campaign-107 | TUNE | phase0-upper-hard-5750077 | 75 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 108 | campaign-108 | TUNE | phase0-upper-hard-5750750 | 76 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 109 | campaign-109 | REPLACE | phase0-upper-hard-5750180 | 76 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 110 | campaign-110 | REPLACE | phase0-upper-peak-6750031 | 78 | 98/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 111 | campaign-111 | REPLACE | phase0-upper-hard-5750353 | 76 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 112 | campaign-112 | TUNE | phase0-upper-recovery-7750024 | 62 | 88/REVIEW | 2 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 113 | campaign-113 | REPLACE | phase0-upper-hard-5750553 | 76 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 114 | campaign-114 | REPLACE | phase0-upper-hard-5750672 | 76 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 115 | campaign-115 | REPLACE | phase0-upper-peak-6750101 | 79 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 116 | campaign-116 | REPLACE | phase0-upper-hard-5750091 | 77 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 117 | campaign-117 | REPLACE | phase0-upper-hard-5750583 | 77 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 118 | campaign-118 | TUNE | phase0-upper-recovery-7750110 | 65 | 84/REVIEW | 1 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 119 | campaign-119 | REPLACE | phase0-upper-hard-5750120 | 77 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 120 | campaign-120 | REPLACE | phase0-upper-peak-6750095 | 81 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 121 | campaign-121 | REPLACE | phase0-upper-hard-5750083 | 77 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 122 | campaign-122 | REPLACE | phase0-upper-hard-5750692 | 77 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 123 | campaign-123 | TUNE | phase0-upper-hard-5750043 | 77 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 124 | campaign-124 | TUNE | phase0-upper-recovery-7750224 | 65 | 90/REVIEW | 2 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 125 | campaign-125 | REPLACE | phase0-upper-peak-6750002 | 82 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 126 | campaign-126 | REPLACE | phase0-upper-hard-5750700 | 77 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 127 | campaign-127 | TUNE | phase0-upper-hard-5750274 | 78 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 128 | campaign-128 | REPLACE | phase0-upper-hard-5750053 | 78 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 129 | campaign-129 | TUNE | phase0-upper-hard-5750452 | 78 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 130 | campaign-130 | REPLACE | phase0-upper-peak-6750044 | 84 | 98/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 131 | campaign-131 | TUNE | phase0-upper-recovery-7750182 | 62 | 84/REVIEW | 2 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 132 | campaign-132 | REPLACE | phase0-upper-hard-5750334 | 78 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 133 | campaign-133 | TUNE | phase0-upper-hard-5750011 | 78 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 134 | campaign-134 | REPLACE | phase0-upper-hard-5750642 | 78 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 135 | campaign-135 | REPLACE | phase0-upper-peak-6750077 | 86 | 98/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 136 | campaign-136 | REPLACE | phase0-upper-hard-5750735 | 78 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 137 | campaign-137 | TUNE | phase0-upper-recovery-7750512 | 61 | 88/REVIEW | 6 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 138 | campaign-138 | REPLACE | phase0-upper-hard-5750402 | 78 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 139 | campaign-139 | TUNE | phase0-upper-hard-5750650 | 78 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 140 | campaign-140 | REPLACE | phase0-upper-peak-6750066 | 88 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 141 | campaign-141 | TUNE | phase0-upper-hard-5750555 | 78 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 142 | campaign-142 | TUNE | phase0-upper-hard-5750480 | 78 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 143 | campaign-143 | TUNE | phase0-upper-recovery-7750282 | 62 | 90/REVIEW | 8 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 144 | campaign-144 | TUNE | phase0-upper-hard-5750381 | 79 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 145 | campaign-145 | REPLACE | phase0-upper-peak-6750087 | 88 | 97/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 146 | campaign-146 | TUNE | phase0-upper-hard-5750222 | 79 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 147 | campaign-147 | TUNE | phase0-upper-hard-5750474 | 80 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 148 | campaign-148 | TUNE | phase0-upper-recovery-7750392 | 65 | 90/REVIEW | 2 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 149 | campaign-149 | TUNE | phase0-upper-hard-5750202 | 80 | 94/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |
+| 150 | campaign-150 | REPLACE | phase0-upper-peak-6750015 | 83 | 96/ACCEPT | 0 | OWNER_APPROVED_NOT_PLAYTESTED | NO |

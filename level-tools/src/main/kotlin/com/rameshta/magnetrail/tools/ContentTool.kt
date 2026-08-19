@@ -13,6 +13,10 @@ import com.rameshta.magnetrail.core.generation.GenerationProfile
 import com.rameshta.magnetrail.core.generation.GenerationRequest
 import com.rameshta.magnetrail.core.generation.GenerationResult
 import com.rameshta.magnetrail.core.generation.LevelGenerator
+import com.rameshta.magnetrail.core.generation.v5.CertificationPipelineV5
+import com.rameshta.magnetrail.core.generation.v5.CertificationResultV5
+import com.rameshta.magnetrail.core.generation.v5.GENERATOR_VERSION_V5
+import com.rameshta.magnetrail.core.generation.v5.GenerationProfilesV5
 import com.rameshta.magnetrail.core.level.LevelCatalog
 import com.rameshta.magnetrail.core.level.LevelParser
 import com.rameshta.magnetrail.core.model.DifficultyBand
@@ -36,6 +40,24 @@ fun main(arguments: Array<String>) {
         "analyze-difficulty", "analyze-quality", "check-duplicates", "audit-pacing", "certify-quality" ->
             runM51(arguments.first(), options)
         "deduplicate-symmetry" -> stageSymmetryDeduplication(options)
+        "stage-m52-expansion" -> stageM52Expansion(options)
+        "certify-m52-review" -> certifyM52Review(options)
+        "analyze-phase0" -> analyzePhase0Current(options)
+        "stage-phase0-candidates" -> stagePhase0Candidates(options)
+        "plan-phase0-remediation" -> planPhase0Remediation(options)
+        "promote-approved-phase0" -> promoteApprovedPhase0(options)
+        "finalize-promoted-phase0" -> finalizePromotedPhase0(options)
+        "stage-phase1-expansion" -> stagePhase1Expansion(options)
+        "promote-approved-phase1" -> promoteApprovedPhase1(options)
+        "finalize-promoted-phase1" -> finalizePromotedPhase1(options)
+        "analyze-difficulty-v4" -> analyzeCampaignDifficultyV4(options)
+        "calibrate-difficulty-v4" -> calibrateDifficultyV4(options)
+        "generate-d2-v5" -> generateD2CampaignV5(options)
+        "analyze-d2-v5" -> analyzeD2Artifacts(options, "generation")
+        "analyze-d2-objects-v5" -> analyzeD2Artifacts(options, "objects")
+        "analyze-d2-graphs-v5" -> analyzeD2Artifacts(options, "graphs")
+        "refresh-d2-v5" -> refreshD2CampaignV5(options)
+        "promote-d2-v5" -> promoteD2Campaign(options)
         else -> error("Unknown command '${arguments.first()}'")
     }
 }
@@ -260,6 +282,7 @@ private fun validateCatalog(catalog: LevelCatalog, dailyFallback: Boolean = fals
     val fingerprints = mutableSetOf<String>()
     val symmetryFingerprints = mutableSetOf<String>()
     val pipeline = CertificationPipeline()
+    val pipelineV5 = CertificationPipelineV5()
     catalog.levels.forEach { level ->
         val metadata = requireNotNull(level.metadata) { "${level.id} has no M3 metadata" }
         check(fingerprints.add(metadata.contentFingerprint)) { "Duplicate fingerprint ${metadata.contentFingerprint}" }
@@ -267,19 +290,43 @@ private fun validateCatalog(catalog: LevelCatalog, dailyFallback: Boolean = fals
             "Symmetry duplicate ${level.id}"
         }
         check(metadata.contentFingerprint == ContentFingerprint.of(level)) { "Stale fingerprint for ${level.id}" }
-        val profile = if (dailyFallback) GenerationProfile.DAILY_CHALLENGE else profileFor(level)
-        val result = pipeline.certify(
-            level.copy(metadata = null),
-            CertificationRequest(
+        if (!dailyFallback && metadata.generatorVersion == GENERATOR_VERSION_V5) {
+            val profile = GenerationProfilesV5.productionCandidateProfiles.singleOrNull {
+                it.id == metadata.generationProfile
+            } ?: error("Unknown V5 profile '${metadata.generationProfile}' for ${level.id}")
+            val result = pipelineV5.certify(
+                level = level.copy(metadata = null),
                 profile = profile,
-                origin = metadata.origin,
+                seed = requireNotNull(metadata.generatorSeed),
                 packId = metadata.packId,
-                generatorVersion = metadata.generatorVersion,
-                generatorSeed = metadata.generatorSeed,
-                generationProfile = metadata.generationProfile,
-            ),
-        ).requireAccepted(level.id)
-        check(result.level.metadata == metadata) { "Certification metadata mismatch for ${level.id}" }
+                contentVersion = metadata.contentVersion,
+                previousContentFingerprint = metadata.previousContentFingerprint,
+            )
+            val accepted = result as? CertificationResultV5.Accepted ?: error(
+                "V5 certification rejected ${level.id}: " +
+                    (result as CertificationResultV5.Rejected).reasons.joinToString(),
+            )
+            check(accepted.level.metadata == metadata) { "V5 certification metadata mismatch for ${level.id}" }
+            check(accepted.level.designedSolutions == level.designedSolutions) {
+                "V5 certified solution mismatch for ${level.id}"
+            }
+        } else {
+            val profile = if (dailyFallback) GenerationProfile.DAILY_CHALLENGE else profileFor(level)
+            val result = pipeline.certify(
+                level.copy(metadata = null),
+                CertificationRequest(
+                    profile = profile,
+                    origin = metadata.origin,
+                    packId = metadata.packId,
+                    generatorVersion = metadata.generatorVersion,
+                    generatorSeed = metadata.generatorSeed,
+                    generationProfile = metadata.generationProfile,
+                    contentVersion = metadata.contentVersion,
+                    previousContentFingerprint = metadata.previousContentFingerprint,
+                ),
+            ).requireAccepted(level.id)
+            check(result.level.metadata == metadata) { "Certification metadata mismatch for ${level.id}" }
+        }
     }
 }
 

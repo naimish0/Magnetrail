@@ -25,6 +25,30 @@ class MagneticDiagnostics(
     private val engine: GameEngine = DefaultGameEngine(),
     private val tracer: DeterministicRouteTracer = DeterministicRouteTracer(),
 ) {
+    /**
+     * Cells that participate in an authored aligned arrow/magnet relationship. This is a
+     * build-time spatial diagnostic, not a second visibility resolver: actual control still
+     * comes from [DeterministicRouteTracer.explainControl]. Blocked corridor cells are included
+     * because the blocker and empty cells may be purposeful even when the magnet is hidden.
+     */
+    fun relationshipCells(
+        state: BoardState,
+        arrow: Arrow,
+        magnetIds: Set<String>? = null,
+    ): Set<Position> = buildSet {
+        state.magnets.filter { magnet ->
+            aligned(arrow.position, magnet.position) && (magnetIds == null || magnet.id in magnetIds)
+        }.forEach { magnet ->
+            var position = arrow.position
+            val direction = Direction.between(arrow.position, magnet.position)
+            while (position != magnet.position) {
+                add(position)
+                position = position.move(direction)
+            }
+            add(magnet.position)
+        }
+    }
+
     fun explain(
         state: BoardState,
         arrow: Arrow,

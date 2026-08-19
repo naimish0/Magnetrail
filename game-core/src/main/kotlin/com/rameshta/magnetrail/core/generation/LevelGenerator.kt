@@ -20,6 +20,8 @@ data class GenerationRequest(
     val profile: GenerationProfile,
     val packId: String,
     val origin: LevelOrigin = LevelOrigin.GENERATOR_ASSISTED,
+    val contentVersion: Int = CONTENT_VERSION,
+    val generatorVersion: Int = GENERATOR_VERSION,
 )
 
 sealed interface GenerationResult {
@@ -74,7 +76,8 @@ class LevelGenerator(
                     profile = request.profile,
                     origin = request.origin,
                     packId = request.packId,
-                    generatorVersion = GENERATOR_VERSION.takeIf {
+                    contentVersion = request.contentVersion,
+                    generatorVersion = request.generatorVersion.takeIf {
                         request.origin == LevelOrigin.GENERATOR_ASSISTED
                     },
                     generatorSeed = request.seed.takeIf {
@@ -106,12 +109,23 @@ class LevelGenerator(
         val minSize = maxOf(baseSize, request.profile.minBoardSize)
         val boardSize = minSize + random.nextInt(request.profile.maxBoardSize - minSize + 1)
         val transform = random.nextInt(8)
-        val rowOffset = random.nextInt(boardSize - baseSize + 1)
-        val columnOffset = random.nextInt(boardSize - baseSize + 1)
+        val spreadAcrossBoard = request.profile == GenerationProfile.PHASE1_ADVANCED_V3
+        val rowOffset = if (spreadAcrossBoard) 0 else random.nextInt(boardSize - baseSize + 1)
+        val columnOffset = if (spreadAcrossBoard) 0 else random.nextInt(boardSize - baseSize + 1)
+
+        fun spread(value: Int): Int = if (baseSize <= 1) {
+            1
+        } else {
+            1 + (value - 1) * (boardSize - 1) / (baseSize - 1)
+        }
 
         fun position(value: Position): Position {
             val transformed = transformPosition(value, baseSize, transform)
-            return Position(transformed.row + rowOffset, transformed.column + columnOffset)
+            return if (spreadAcrossBoard) {
+                Position(spread(transformed.row), spread(transformed.column))
+            } else {
+                Position(transformed.row + rowOffset, transformed.column + columnOffset)
+            }
         }
 
         fun direction(value: Position, direction: Direction): Direction {
@@ -135,7 +149,13 @@ class LevelGenerator(
             }
         }.toMutableList()
         shuffle(available, random)
-        val desiredExtraWalls = random.nextInt((request.profile.maxWalls - baseWalls.size + 1).coerceAtLeast(1))
+        val desiredExtraWalls = if (request.profile == GenerationProfile.PHASE1_ADVANCED_V3) {
+            // Phase 1 adds walls later only when production counterfactual analysis proves
+            // that they reduce unused space without becoming decorative clutter.
+            0
+        } else {
+            random.nextInt((request.profile.maxWalls - baseWalls.size + 1).coerceAtLeast(1))
+        }
         val walls = baseWalls.toMutableList()
         available.take(desiredExtraWalls).forEach { position ->
             val trial = LevelDefinition(

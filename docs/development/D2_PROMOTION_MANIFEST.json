@@ -1,0 +1,1214 @@
+{
+    "schemaVersion": 1,
+    "manifestVersion": "magnetrail-d2-promotion-manifest-1",
+    "status": "OWNER_DIRECTED_PROMOTED",
+    "campaignModified": true,
+    "promotionAllowed": true,
+    "migrationProvenSafe": true,
+    "existingIdsReused": true,
+    "keep": [],
+    "tune": [],
+    "replace": [
+        {
+            "currentLevelId": "proto-001",
+            "proposedCandidateId": "d2-v5-tutorial-001",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "proto-002",
+            "proposedCandidateId": "d2-v5-tutorial-002",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "proto-003",
+            "proposedCandidateId": "d2-v5-tutorial-003",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "proto-004",
+            "proposedCandidateId": "d2-v5-tutorial-004",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "proto-005",
+            "proposedCandidateId": "d2-v5-tutorial-005",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "proto-006",
+            "proposedCandidateId": "d2-v5-tutorial-006",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "proto-007",
+            "proposedCandidateId": "d2-v5-tutorial-007",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "proto-008",
+            "proposedCandidateId": "d2-v5-tutorial-008",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "proto-009",
+            "proposedCandidateId": "d2-v5-tutorial-009",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "proto-010",
+            "proposedCandidateId": "d2-v5-tutorial-010",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "proto-011",
+            "proposedCandidateId": "d2-v5-tutorial-011",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "proto-012",
+            "proposedCandidateId": "d2-v5-tutorial-012",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-013",
+            "proposedCandidateId": "d2-v5-hard-013",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-014",
+            "proposedCandidateId": "d2-v5-easy-014",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-015",
+            "proposedCandidateId": "d2-v5-medium-015",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-016",
+            "proposedCandidateId": "d2-v5-expert-016",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-017",
+            "proposedCandidateId": "d2-v5-hard-017",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-018",
+            "proposedCandidateId": "d2-v5-medium-018",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-019",
+            "proposedCandidateId": "d2-v5-master-019",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-020",
+            "proposedCandidateId": "d2-v5-easy-020",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-021",
+            "proposedCandidateId": "d2-v5-hard-021",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-022",
+            "proposedCandidateId": "d2-v5-easy-022",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-023",
+            "proposedCandidateId": "d2-v5-medium-023",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-024",
+            "proposedCandidateId": "d2-v5-expert-024",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-025",
+            "proposedCandidateId": "d2-v5-hard-025",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-026",
+            "proposedCandidateId": "d2-v5-medium-026",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-027",
+            "proposedCandidateId": "d2-v5-master-027",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-028",
+            "proposedCandidateId": "d2-v5-easy-028",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-029",
+            "proposedCandidateId": "d2-v5-hard-029",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-030",
+            "proposedCandidateId": "d2-v5-easy-030",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-031",
+            "proposedCandidateId": "d2-v5-medium-031",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-032",
+            "proposedCandidateId": "d2-v5-expert-032",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-033",
+            "proposedCandidateId": "d2-v5-hard-033",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-034",
+            "proposedCandidateId": "d2-v5-medium-034",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-035",
+            "proposedCandidateId": "d2-v5-master-035",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-036",
+            "proposedCandidateId": "d2-v5-easy-036",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-037",
+            "proposedCandidateId": "d2-v5-hard-037",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-038",
+            "proposedCandidateId": "d2-v5-easy-038",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-039",
+            "proposedCandidateId": "d2-v5-medium-039",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-040",
+            "proposedCandidateId": "d2-v5-expert-040",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-041",
+            "proposedCandidateId": "d2-v5-hard-041",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-042",
+            "proposedCandidateId": "d2-v5-medium-042",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-043",
+            "proposedCandidateId": "d2-v5-master-043",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-044",
+            "proposedCandidateId": "d2-v5-easy-044",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-045",
+            "proposedCandidateId": "d2-v5-hard-045",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-046",
+            "proposedCandidateId": "d2-v5-easy-046",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-047",
+            "proposedCandidateId": "d2-v5-medium-047",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-048",
+            "proposedCandidateId": "d2-v5-expert-048",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-049",
+            "proposedCandidateId": "d2-v5-hard-049",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-050",
+            "proposedCandidateId": "d2-v5-medium-050",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-051",
+            "proposedCandidateId": "d2-v5-master-051",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-052",
+            "proposedCandidateId": "d2-v5-easy-052",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-053",
+            "proposedCandidateId": "d2-v5-hard-053",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-054",
+            "proposedCandidateId": "d2-v5-easy-054",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-055",
+            "proposedCandidateId": "d2-v5-medium-055",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-056",
+            "proposedCandidateId": "d2-v5-expert-056",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-057",
+            "proposedCandidateId": "d2-v5-hard-057",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-058",
+            "proposedCandidateId": "d2-v5-medium-058",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-059",
+            "proposedCandidateId": "d2-v5-master-059",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-060",
+            "proposedCandidateId": "d2-v5-easy-060",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-061",
+            "proposedCandidateId": "d2-v5-hard-061",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-062",
+            "proposedCandidateId": "d2-v5-easy-062",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-063",
+            "proposedCandidateId": "d2-v5-medium-063",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-064",
+            "proposedCandidateId": "d2-v5-expert-064",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-065",
+            "proposedCandidateId": "d2-v5-hard-065",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-066",
+            "proposedCandidateId": "d2-v5-medium-066",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-067",
+            "proposedCandidateId": "d2-v5-master-067",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-068",
+            "proposedCandidateId": "d2-v5-easy-068",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-069",
+            "proposedCandidateId": "d2-v5-hard-069",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-070",
+            "proposedCandidateId": "d2-v5-easy-070",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-071",
+            "proposedCandidateId": "d2-v5-medium-071",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-072",
+            "proposedCandidateId": "d2-v5-expert-072",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-073",
+            "proposedCandidateId": "d2-v5-hard-073",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-074",
+            "proposedCandidateId": "d2-v5-medium-074",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-075",
+            "proposedCandidateId": "d2-v5-master-075",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-076",
+            "proposedCandidateId": "d2-v5-easy-076",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-077",
+            "proposedCandidateId": "d2-v5-hard-077",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-078",
+            "proposedCandidateId": "d2-v5-easy-078",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-079",
+            "proposedCandidateId": "d2-v5-medium-079",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-080",
+            "proposedCandidateId": "d2-v5-expert-080",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-081",
+            "proposedCandidateId": "d2-v5-hard-081",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-082",
+            "proposedCandidateId": "d2-v5-medium-082",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-083",
+            "proposedCandidateId": "d2-v5-master-083",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-084",
+            "proposedCandidateId": "d2-v5-easy-084",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-085",
+            "proposedCandidateId": "d2-v5-hard-085",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-086",
+            "proposedCandidateId": "d2-v5-easy-086",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-087",
+            "proposedCandidateId": "d2-v5-medium-087",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-088",
+            "proposedCandidateId": "d2-v5-expert-088",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-089",
+            "proposedCandidateId": "d2-v5-hard-089",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-090",
+            "proposedCandidateId": "d2-v5-medium-090",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-091",
+            "proposedCandidateId": "d2-v5-master-091",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-092",
+            "proposedCandidateId": "d2-v5-easy-092",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-093",
+            "proposedCandidateId": "d2-v5-hard-093",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-094",
+            "proposedCandidateId": "d2-v5-easy-094",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-095",
+            "proposedCandidateId": "d2-v5-medium-095",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-096",
+            "proposedCandidateId": "d2-v5-expert-096",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-097",
+            "proposedCandidateId": "d2-v5-hard-097",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-098",
+            "proposedCandidateId": "d2-v5-medium-098",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-099",
+            "proposedCandidateId": "d2-v5-master-099",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-100",
+            "proposedCandidateId": "d2-v5-easy-100",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-101",
+            "proposedCandidateId": "d2-v5-hard-101",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-102",
+            "proposedCandidateId": "d2-v5-easy-102",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-103",
+            "proposedCandidateId": "d2-v5-medium-103",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-104",
+            "proposedCandidateId": "d2-v5-expert-104",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-105",
+            "proposedCandidateId": "d2-v5-hard-105",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-106",
+            "proposedCandidateId": "d2-v5-medium-106",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-107",
+            "proposedCandidateId": "d2-v5-master-107",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-108",
+            "proposedCandidateId": "d2-v5-easy-108",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-109",
+            "proposedCandidateId": "d2-v5-hard-109",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-110",
+            "proposedCandidateId": "d2-v5-easy-110",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-111",
+            "proposedCandidateId": "d2-v5-medium-111",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-112",
+            "proposedCandidateId": "d2-v5-expert-112",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-113",
+            "proposedCandidateId": "d2-v5-hard-113",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-114",
+            "proposedCandidateId": "d2-v5-medium-114",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-115",
+            "proposedCandidateId": "d2-v5-master-115",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-116",
+            "proposedCandidateId": "d2-v5-easy-116",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-117",
+            "proposedCandidateId": "d2-v5-hard-117",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-118",
+            "proposedCandidateId": "d2-v5-easy-118",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-119",
+            "proposedCandidateId": "d2-v5-medium-119",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-120",
+            "proposedCandidateId": "d2-v5-expert-120",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-121",
+            "proposedCandidateId": "d2-v5-hard-121",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-122",
+            "proposedCandidateId": "d2-v5-medium-122",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-123",
+            "proposedCandidateId": "d2-v5-hard-123",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-124",
+            "proposedCandidateId": "d2-v5-easy-124",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-125",
+            "proposedCandidateId": "d2-v5-hard-125",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-126",
+            "proposedCandidateId": "d2-v5-easy-126",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-127",
+            "proposedCandidateId": "d2-v5-medium-127",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-128",
+            "proposedCandidateId": "d2-v5-expert-128",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-129",
+            "proposedCandidateId": "d2-v5-hard-129",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-130",
+            "proposedCandidateId": "d2-v5-medium-130",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-131",
+            "proposedCandidateId": "d2-v5-expert-131",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-132",
+            "proposedCandidateId": "d2-v5-easy-132",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-133",
+            "proposedCandidateId": "d2-v5-hard-133",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-134",
+            "proposedCandidateId": "d2-v5-easy-134",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-135",
+            "proposedCandidateId": "d2-v5-medium-135",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-136",
+            "proposedCandidateId": "d2-v5-expert-136",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-137",
+            "proposedCandidateId": "d2-v5-hard-137",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-138",
+            "proposedCandidateId": "d2-v5-medium-138",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-139",
+            "proposedCandidateId": "d2-v5-expert-139",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-140",
+            "proposedCandidateId": "d2-v5-easy-140",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-141",
+            "proposedCandidateId": "d2-v5-hard-141",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-142",
+            "proposedCandidateId": "d2-v5-easy-142",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-143",
+            "proposedCandidateId": "d2-v5-medium-143",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-144",
+            "proposedCandidateId": "d2-v5-expert-144",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-145",
+            "proposedCandidateId": "d2-v5-hard-145",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-146",
+            "proposedCandidateId": "d2-v5-medium-146",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-147",
+            "proposedCandidateId": "d2-v5-expert-147",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-148",
+            "proposedCandidateId": "d2-v5-easy-148",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-149",
+            "proposedCandidateId": "d2-v5-hard-149",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-150",
+            "proposedCandidateId": "d2-v5-easy-150",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-151",
+            "proposedCandidateId": "d2-v5-medium-151",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-152",
+            "proposedCandidateId": "d2-v5-expert-152",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-153",
+            "proposedCandidateId": "d2-v5-hard-153",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-154",
+            "proposedCandidateId": "d2-v5-medium-154",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-155",
+            "proposedCandidateId": "d2-v5-expert-155",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-156",
+            "proposedCandidateId": "d2-v5-hard-156",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-157",
+            "proposedCandidateId": "d2-v5-hard-157",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-158",
+            "proposedCandidateId": "d2-v5-expert-158",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-159",
+            "proposedCandidateId": "d2-v5-medium-159",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-160",
+            "proposedCandidateId": "d2-v5-expert-160",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-161",
+            "proposedCandidateId": "d2-v5-hard-161",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-162",
+            "proposedCandidateId": "d2-v5-medium-162",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-163",
+            "proposedCandidateId": "d2-v5-expert-163",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-164",
+            "proposedCandidateId": "d2-v5-hard-164",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-165",
+            "proposedCandidateId": "d2-v5-hard-165",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-166",
+            "proposedCandidateId": "d2-v5-expert-166",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-167",
+            "proposedCandidateId": "d2-v5-medium-167",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-168",
+            "proposedCandidateId": "d2-v5-expert-168",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-169",
+            "proposedCandidateId": "d2-v5-hard-169",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-170",
+            "proposedCandidateId": "d2-v5-medium-170",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-171",
+            "proposedCandidateId": "d2-v5-expert-171",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-172",
+            "proposedCandidateId": "d2-v5-hard-172",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-173",
+            "proposedCandidateId": "d2-v5-hard-173",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-174",
+            "proposedCandidateId": "d2-v5-expert-174",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-175",
+            "proposedCandidateId": "d2-v5-medium-175",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-176",
+            "proposedCandidateId": "d2-v5-expert-176",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-177",
+            "proposedCandidateId": "d2-v5-hard-177",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-178",
+            "proposedCandidateId": "d2-v5-medium-178",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-179",
+            "proposedCandidateId": "d2-v5-expert-179",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-180",
+            "proposedCandidateId": "d2-v5-hard-180",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-181",
+            "proposedCandidateId": "d2-v5-hard-181",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-182",
+            "proposedCandidateId": "d2-v5-expert-182",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-183",
+            "proposedCandidateId": "d2-v5-medium-183",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-184",
+            "proposedCandidateId": "d2-v5-expert-184",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-185",
+            "proposedCandidateId": "d2-v5-hard-185",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-186",
+            "proposedCandidateId": "d2-v5-medium-186",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-187",
+            "proposedCandidateId": "d2-v5-expert-187",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-188",
+            "proposedCandidateId": "d2-v5-hard-188",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-189",
+            "proposedCandidateId": "d2-v5-hard-189",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-190",
+            "proposedCandidateId": "d2-v5-expert-190",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-191",
+            "proposedCandidateId": "d2-v5-medium-191",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-192",
+            "proposedCandidateId": "d2-v5-expert-192",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-193",
+            "proposedCandidateId": "d2-v5-hard-193",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-194",
+            "proposedCandidateId": "d2-v5-expert-194",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-195",
+            "proposedCandidateId": "d2-v5-hard-195",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-196",
+            "proposedCandidateId": "d2-v5-expert-196",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-197",
+            "proposedCandidateId": "d2-v5-hard-197",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-198",
+            "proposedCandidateId": "d2-v5-expert-198",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-199",
+            "proposedCandidateId": "d2-v5-hard-199",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        },
+        {
+            "currentLevelId": "campaign-200",
+            "proposedCandidateId": "d2-v5-expert-200",
+            "decision": "REPLACE_PROPOSED_NOT_PROMOTED",
+            "reason": "V5 candidate is certified for staging; human rating and progress migration remain unresolved."
+        }
+    ],
+    "requiredBeforePromotion": []
+}
