@@ -59,8 +59,10 @@ data class GameUiState(
     val hintMessage: String? = null,
     val hintPreviewResult: ResolutionResult? = null,
     val hintConfirmationPending: Boolean = false,
+    val hintChoiceOpen: Boolean = false,
     val isHintPurchaseInProgress: Boolean = false,
     val completionReceipt: CompletionReceipt? = null,
+    val completionWasFirstClear: Boolean = false,
 ) {
     val remainingArrowCount: Int get() = boardState.arrows.size
     val initialArrowCount: Int get() = initialState.arrows.size

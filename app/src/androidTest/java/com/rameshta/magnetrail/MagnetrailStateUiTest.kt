@@ -2,6 +2,10 @@ package com.rameshta.magnetrail
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import com.rameshta.magnetrail.core.model.Arrow
@@ -12,12 +16,70 @@ import com.rameshta.magnetrail.game.GameScreen
 import com.rameshta.magnetrail.game.GameUiState
 import com.rameshta.magnetrail.levels.LevelSelectionScreen
 import com.rameshta.magnetrail.ui.theme.MagnetrailTheme
+import com.rameshta.magnetrail.ads.RewardedOffer
+import com.rameshta.magnetrail.ads.RewardedOfferStatus
+import com.rameshta.magnetrail.data.PlayerSettings
+import com.rameshta.magnetrail.settings.SettingsScreen
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
 class MagnetrailStateUiTest {
     @get:Rule
     val composeRule = createComposeRule()
+
+    @Test
+    fun hintChoiceExplainsCoinAndExplicitRewardedAlternatives() {
+        val level = level(1, "First release")
+        val initial = level.initialState()
+        var rewardedSelected = false
+        composeRule.setContent {
+            MagnetrailTheme {
+                GameScreen(
+                    uiState = GameUiState(
+                        levels = listOf(level),
+                        currentLevelIndex = 0,
+                        currentLevel = level,
+                        initialState = initial,
+                        boardState = initial,
+                        hintChoiceOpen = true,
+                    ),
+                    onAction = {},
+                    rewardedOffer = RewardedOffer(
+                        RewardedOfferStatus.AVAILABLE,
+                        true,
+                        "Watch an ad for one hint",
+                        "Watch an ad to reveal one safe move.",
+                    ),
+                    onRewardedHint = { rewardedSelected = true },
+                )
+            }
+        }
+
+        composeRule.onNodeWithText("Use 30 coins").assertIsDisplayed().assertIsEnabled()
+        composeRule.onNodeWithText("Watch an ad for one hint").assertIsDisplayed().assertIsEnabled().performClick()
+        composeRule.onNodeWithText("Watch an ad to reveal one safe move.").assertIsDisplayed()
+        composeRule.runOnIdle { assertTrue(rewardedSelected) }
+    }
+
+    @Test
+    fun settingsExposeDiagnosticsPrivacyOptionsAndDebugPolicyPlaceholder() {
+        composeRule.setContent {
+            MagnetrailTheme {
+                SettingsScreen(
+                    settings = PlayerSettings(),
+                    onBack = {},
+                    onSettingChanged = { _, _ -> },
+                    privacyOptionsRequired = true,
+                    showPrivacyPolicyPlaceholder = true,
+                )
+            }
+        }
+
+        composeRule.onNodeWithContentDescription("Usage & crash diagnostics").assertIsDisplayed()
+        composeRule.onNodeWithText("Privacy options").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("Privacy policy").performScrollTo().assertIsDisplayed().assertIsNotEnabled()
+    }
 
     @Test
     fun delayedHintLoadingStateIsAccessible() {

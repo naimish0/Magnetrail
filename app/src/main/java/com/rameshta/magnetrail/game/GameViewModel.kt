@@ -26,6 +26,13 @@ import com.rameshta.magnetrail.core.economy.RewardBreakdown
 import com.rameshta.magnetrail.core.grading.GradingPolicy
 import com.rameshta.magnetrail.core.model.GradingThresholds
 import com.rameshta.magnetrail.feedback.FeedbackEvent
+import com.rameshta.magnetrail.analytics.AnalyticsBuckets
+import com.rameshta.magnetrail.analytics.AnalyticsEvent
+import com.rameshta.magnetrail.analytics.AnalyticsTracker
+import com.rameshta.magnetrail.analytics.NoOpAnalyticsTracker
+import com.rameshta.magnetrail.crash.CrashReporter
+import com.rameshta.magnetrail.crash.NoOpCrashReporter
+import com.rameshta.magnetrail.daily.DailyLoadSource
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -45,6 +52,9 @@ class GameViewModel(
     private val dailyChallengeService: DailyChallengeService? = null,
     private val dateProvider: DateProvider = SystemDateProvider(),
     val debugUnlockAll: Boolean = false,
+    private val analytics: AnalyticsTracker = NoOpAnalyticsTracker,
+    private val crashReporter: CrashReporter = NoOpCrashReporter,
+    private val elapsedMillis: () -> Long = { System.nanoTime() / 1_000_000L },
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(createLevelState(levelIndex = 0))
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
@@ -54,6 +64,7 @@ class GameViewModel(
 
     private var hintJob: Job? = null
     private var hintGeneration = 0L
+    private var attemptStartedMillis = elapsedMillis()
 
     init {
         progressRepository?.let { repository ->
@@ -80,7 +91,11 @@ class GameViewModel(
             is GameAction.SelectLevel -> selectLevel(action.index)
             is GameAction.UpdateSetting -> updateSetting(action.key, action.enabled)
             GameAction.RequestHint -> requestHint()
-            GameAction.CancelHintConfirmation -> cancelHint(_uiState.value)
+            GameAction.OpenHintChoice -> openHintChoice()
+            GameAction.UseCoinHint -> requestHint(HintPayment.Coins)
+            is GameAction.UseRewardedHintCredit -> requestHint(HintPayment.Rewarded(action.transactionId))
+            is GameAction.ShowHintMessage -> showHintMessage(action.message)
+            GameAction.CancelHintConfirmation -> closeHintChoice()
             GameAction.NextLevel -> nextLevel()
         }
     }
@@ -120,6 +135,7 @@ class GameViewModel(
         val nextActions = state.moves + 1
         val nextOverloads = state.overloads + if (result.success) 0 else 1
         val campaignWin = result.isWin && state.gameMode == GameMode.CAMPAIGN
+        val wasFirstClear = campaignWin && state.currentLevel.id !in state.progress.firstClearRewardedLevelIds
         val completedIds = if (campaignWin) {
             state.progress.completedLevelIds + state.currentLevel.id
         } else {
@@ -166,6 +182,7 @@ class GameViewModel(
             moves = nextActions,
             overloads = nextOverloads,
             completionReceipt = immediateReceipt,
+            completionWasFirstClear = wasFirstClear,
             progress = state.progress.copy(
                 highestUnlockedLevel = highestUnlocked,
                 completedLevelIds = completedIds,
@@ -178,6 +195,29 @@ class GameViewModel(
         if (result.isWin) {
             emit(FeedbackEvent.BOARD_COMPLETION)
             persistCompletion(state, nextActions, nextOverloads)
+            val grade = requireNotNull(immediateReceipt).grade
+            if (state.gameMode == GameMode.CAMPAIGN) {
+                analytics.track(
+                    AnalyticsEvent.LevelComplete(
+                        levelId = state.currentLevel.id,
+                        stars = grade.stars,
+                        actions = nextActions,
+                        overloads = nextOverloads,
+                        hints = state.hintsUsed,
+                        durationBucket = AnalyticsBuckets.duration((elapsedMillis() - attemptStartedMillis) / 1_000L),
+                    ),
+                )
+            } else {
+                analytics.track(
+                    AnalyticsEvent.DailyComplete(
+                        difficulty = state.currentLevel.metadata?.difficultyBand?.name?.lowercase() ?: "unknown",
+                        stars = grade.stars,
+                        streakBucket = AnalyticsBuckets.count(state.progress.currentStreak),
+                    ),
+                )
+            }
+        } else if (result.isDeadlocked && !state.isDeadlocked) {
+            analytics.track(AnalyticsEvent.LevelDeadlock(state.currentLevel.id, AnalyticsBuckets.count(nextActions)))
         }
     }
 
@@ -280,7 +320,10 @@ class GameViewModel(
             overloads = 0,
             hintsUsed = 0,
             completionReceipt = null,
+            completionWasFirstClear = false,
         )
+        attemptStartedMillis = elapsedMillis()
+        analytics.track(AnalyticsEvent.LevelRestart(state.currentLevel.id, AnalyticsBuckets.count(state.moves + 1)))
         emit(FeedbackEvent.RESTART)
     }
 
@@ -318,6 +361,8 @@ class GameViewModel(
         val state = _uiState.value
         if (state.inFlightResult != null) return
         _uiState.value = state.copy(destination = AppDestination.GAME)
+        attemptStartedMillis = elapsedMillis()
+        trackLevelStart(state, "home")
     }
 
     private fun openDailyChallenge() {
@@ -343,6 +388,15 @@ class GameViewModel(
                         isDailyLoading = false,
                         destination = AppDestination.GAME,
                     )
+                    attemptStartedMillis = elapsedMillis()
+                    analytics.track(
+                        AnalyticsEvent.DailyStart(
+                            challenge.level.metadata?.difficultyBand?.name?.lowercase() ?: "unknown",
+                        ),
+                    )
+                    if (challenge.source == DailyLoadSource.BUNDLED_FALLBACK) {
+                        crashReporter.recordUnexpected(IllegalStateException("Daily generator fallback activated"))
+                    }
                     progressRepository?.cacheDailyChallenge(challenge.cache)
                 }
                 .onFailure { error ->
@@ -390,6 +444,8 @@ class GameViewModel(
             previous = _uiState.value,
             destination = AppDestination.GAME,
         )
+        attemptStartedMillis = elapsedMillis()
+        trackLevelStart(_uiState.value, "level_selection")
         progressRepository?.let { repository ->
             viewModelScope.launch { repository.selectLevel(catalog.levels[index].id) }
         }
@@ -416,12 +472,31 @@ class GameViewModel(
         progressRepository?.let { repository ->
             viewModelScope.launch { repository.updateSetting(key, enabled) }
         }
+        if (key == SettingKey.DIAGNOSTICS) {
+            analytics.track(AnalyticsEvent.DiagnosticsSettingChanged(enabled))
+        }
     }
 
-    private fun requestHint() {
+    private fun openHintChoice() {
+        val state = _uiState.value
+        if (!state.canRequestHint) return
+        _uiState.value = state.copy(hintChoiceOpen = true, hintMessage = null)
+        analytics.track(AnalyticsEvent.HintChoiceOpen(state.currentLevel.id))
+    }
+
+    private fun closeHintChoice() {
+        val state = _uiState.value
+        _uiState.value = state.copy(hintChoiceOpen = false, hintConfirmationPending = false)
+    }
+
+    private fun showHintMessage(message: String) {
+        _uiState.value = _uiState.value.copy(hintChoiceOpen = false, hintMessage = message.take(100))
+    }
+
+    private fun requestHint(payment: HintPayment = HintPayment.Coins) {
         val state = _uiState.value
         if (!state.canRequestHint || hintJob?.isActive == true) return
-        if (progressRepository != null && state.progress.coinBalance < EconomyConfig.HINT_COST) {
+        if (payment is HintPayment.Coins && progressRepository != null && state.progress.coinBalance < EconomyConfig.HINT_COST) {
             _uiState.value = state.copy(
                 hintMessage = "A hint costs ${EconomyConfig.HINT_COST} coins. Balance: ${state.progress.coinBalance}.",
             )
@@ -437,7 +512,7 @@ class GameViewModel(
         val requestedBoard = state.boardState
         val requestedLevelId = state.currentLevel.id
         val generation = ++hintGeneration
-        _uiState.value = state.copy(hintConfirmationPending = false, hintMessage = null)
+        _uiState.value = state.copy(hintConfirmationPending = false, hintChoiceOpen = false, hintMessage = null)
         hintJob = viewModelScope.launch {
             val loadingJob = launch {
                 delay(HINT_LOADING_DELAY_MILLIS)
@@ -470,32 +545,50 @@ class GameViewModel(
                         null
                     }
                     val repository = progressRepository
-                    if (repository == null) {
-                        showSuggestedHint(current, outcome.arrowId, preview, current.progress.coinBalance)
-                    } else {
+                    if (repository == null && payment is HintPayment.Coins) {
+                        showSuggestedHint(current, outcome.arrowId, preview, current.progress.coinBalance, "coins")
+                    } else if (repository != null) {
                         _uiState.value = current.copy(
                             isHintLoading = false,
                             isHintPurchaseInProgress = true,
                             inputEnabled = false,
                             hintMessage = "Preparing hint",
                         )
-                        when (val spend = repository.spendHintCoins()) {
-                            is HintSpendResult.Approved -> {
+                        when (payment) {
+                            HintPayment.Coins -> when (val spend = repository.spendHintCoins()) {
+                                is HintSpendResult.Approved -> {
+                                    analytics.track(AnalyticsEvent.HintCoinSpend(AnalyticsBuckets.count(spend.resultingBalance)))
+                                    val latest = _uiState.value
+                                    val stillCurrent = hintGeneration == generation &&
+                                        latest.currentLevel.id == requestedLevelId && latest.boardState == requestedBoard
+                                    check(stillCurrent) { "Hint state changed during serialized coin transaction" }
+                                    showSuggestedHint(latest, outcome.arrowId, preview, spend.resultingBalance, "coins")
+                                }
+                                is HintSpendResult.InsufficientBalance -> {
+                                    _uiState.value = _uiState.value.copy(
+                                        isHintPurchaseInProgress = false,
+                                        inputEnabled = true,
+                                        hintMessage = "A hint costs ${spend.required} coins. Balance: ${spend.balance}.",
+                                        progress = _uiState.value.progress.copy(coinBalance = spend.balance),
+                                    )
+                                }
+                            }
+                            is HintPayment.Rewarded -> if (repository.consumeRewardedHintCredit(payment.transactionId)) {
                                 val latest = _uiState.value
                                 val stillCurrent = hintGeneration == generation &&
                                     latest.currentLevel.id == requestedLevelId && latest.boardState == requestedBoard
                                 check(stillCurrent) { "Hint state changed during serialized coin transaction" }
-                                showSuggestedHint(latest, outcome.arrowId, preview, spend.resultingBalance)
-                            }
-                            is HintSpendResult.InsufficientBalance -> {
+                                showSuggestedHint(latest, outcome.arrowId, preview, latest.progress.coinBalance, "rewarded")
+                            } else {
                                 _uiState.value = _uiState.value.copy(
                                     isHintPurchaseInProgress = false,
                                     inputEnabled = true,
-                                    hintMessage = "A hint costs ${spend.required} coins. Balance: ${spend.balance}.",
-                                    progress = _uiState.value.progress.copy(coinBalance = spend.balance),
+                                    hintMessage = "No earned ad hint is available.",
                                 )
                             }
                         }
+                    } else {
+                        showHintFallback(current)
                     }
                 }
                 HintOutcome.NoSolution, null -> showHintFallback(current)
@@ -508,6 +601,7 @@ class GameViewModel(
         arrowId: String,
         preview: com.rameshta.magnetrail.core.engine.ResolutionResult?,
         resultingBalance: Int,
+        source: String,
     ) {
         _uiState.value = state.copy(
             isHintLoading = false,
@@ -519,6 +613,7 @@ class GameViewModel(
             hintsUsed = state.hintsUsed + 1,
             progress = state.progress.copy(coinBalance = resultingBalance),
         )
+        analytics.track(AnalyticsEvent.HintShown(source))
     }
 
     private fun showHintFallback(state: GameUiState) {
@@ -538,6 +633,7 @@ class GameViewModel(
             _uiState.value = state.copy(
                 isHintLoading = false,
                 hintConfirmationPending = false,
+                hintChoiceOpen = false,
                 suggestedArrowId = null,
                 hintMessage = null,
                 hintPreviewResult = null,
@@ -589,6 +685,23 @@ class GameViewModel(
 
     private fun emit(event: FeedbackEvent) {
         _feedbackEvents.tryEmit(event)
+    }
+
+    private fun trackLevelStart(state: GameUiState, origin: String) {
+        if (state.gameMode != GameMode.CAMPAIGN) return
+        analytics.track(
+            AnalyticsEvent.LevelStart(
+                levelId = state.currentLevel.id,
+                pack = state.currentLevel.metadata?.packId ?: "unknown",
+                difficulty = state.currentLevel.metadata?.difficultyBand?.name?.lowercase() ?: "unknown",
+                origin = origin,
+            ),
+        )
+    }
+
+    private sealed interface HintPayment {
+        data object Coins : HintPayment
+        data class Rewarded(val transactionId: String) : HintPayment
     }
 
     private fun createLevelState(
@@ -651,6 +764,8 @@ class GameViewModel(
             repository: ProgressRepository,
             dailyChallengeService: DailyChallengeService,
             debugUnlockAll: Boolean,
+            analytics: AnalyticsTracker = NoOpAnalyticsTracker,
+            crashReporter: CrashReporter = NoOpCrashReporter,
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -662,6 +777,8 @@ class GameViewModel(
                     progressRepository = repository,
                     dailyChallengeService = dailyChallengeService,
                     debugUnlockAll = debugUnlockAll,
+                    analytics = analytics,
+                    crashReporter = crashReporter,
                 ) as T
             }
         }

@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -57,12 +58,22 @@ import com.rameshta.magnetrail.ui.theme.MagnetrailPull
 import com.rameshta.magnetrail.ui.theme.MagnetrailPullSoft
 import com.rameshta.magnetrail.ui.theme.MagnetrailPush
 import com.rameshta.magnetrail.ui.theme.MagnetrailSuccess
+import com.rameshta.magnetrail.ads.RewardedOffer
+import com.rameshta.magnetrail.ads.RewardedOfferStatus
 
 @Composable
 fun GameScreen(
     uiState: GameUiState,
     onAction: (GameAction) -> Unit,
     modifier: Modifier = Modifier,
+    rewardedOffer: RewardedOffer = RewardedOffer(
+        RewardedOfferStatus.UNAVAILABLE,
+        false,
+        "Watch an ad for one hint",
+        "No ad available right now",
+    ),
+    onRewardedHint: () -> Unit = {},
+    onNextLevel: () -> Unit = { onAction(GameAction.NextLevel) },
 ) {
     val spacing = LocalMagnetrailSpacing.current
     val dimensions = LocalMagnetrailDimensions.current
@@ -134,7 +145,7 @@ fun GameScreen(
             }
 
             when {
-                uiState.isComplete -> CompletionCard(uiState, motionPolicy, onAction)
+                uiState.isComplete -> CompletionCard(uiState, motionPolicy, onAction, onNextLevel)
                 uiState.isDeadlocked -> DeadlockCard()
             }
 
@@ -145,6 +156,50 @@ fun GameScreen(
             }
         }
     }
+    if (uiState.hintChoiceOpen) {
+        HintChoiceDialog(
+            coinBalance = uiState.progress.coinBalance,
+            rewardedOffer = rewardedOffer,
+            onDismiss = { onAction(GameAction.CancelHintConfirmation) },
+            onUseCoins = { onAction(GameAction.UseCoinHint) },
+            onRewarded = onRewardedHint,
+        )
+    }
+}
+
+@Composable
+private fun HintChoiceDialog(
+    coinBalance: Int,
+    rewardedOffer: RewardedOffer,
+    onDismiss: () -> Unit,
+    onUseCoins: () -> Unit,
+    onRewarded: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Choose a hint") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Reveal one solver-verified safe move.")
+                Text("Balance: $coinBalance coins", style = MaterialTheme.typography.bodySmall, color = MagnetrailMuted)
+                OutlinedButton(onClick = onUseCoins, modifier = Modifier.fillMaxWidth()) {
+                    Text("Use 30 coins")
+                }
+                OutlinedButton(
+                    onClick = onRewarded,
+                    enabled = rewardedOffer.enabled,
+                    modifier = Modifier.fillMaxWidth(),
+                ) { Text(rewardedOffer.label) }
+                Text(
+                    rewardedOffer.supportingText,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MagnetrailMuted,
+                )
+            }
+        },
+        confirmButton = {},
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+    )
 }
 
 @Composable
@@ -281,7 +336,7 @@ private fun GameControls(uiState: GameUiState, onAction: (GameAction) -> Unit) {
                 else -> "Request a solver hint"
             },
             enabled = uiState.canRequestHint,
-            onClick = { onAction(GameAction.RequestHint) },
+            onClick = { onAction(GameAction.OpenHintChoice) },
             modifier = rowModifier,
         )
     }
@@ -323,6 +378,7 @@ private fun CompletionCard(
     uiState: GameUiState,
     motionPolicy: MotionPolicy,
     onAction: (GameAction) -> Unit,
+    onNextLevel: () -> Unit,
 ) {
     val spacing = LocalMagnetrailSpacing.current
     Card(
@@ -418,7 +474,7 @@ private fun CompletionCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 TextButton(onClick = { onAction(GameAction.Replay) }) { Text("Replay") }
-                Button(onClick = { onAction(GameAction.NextLevel) }) {
+                Button(onClick = onNextLevel) {
                     Text(
                         when {
                             uiState.gameMode == GameMode.DAILY -> "Home"

@@ -33,6 +33,14 @@ sealed interface GameAction {
 
     data object RequestHint : GameAction
 
+    data object OpenHintChoice : GameAction
+
+    data object UseCoinHint : GameAction
+
+    data class UseRewardedHintCredit(val transactionId: String) : GameAction
+
+    data class ShowHintMessage(val message: String) : GameAction
+
     data object CancelHintConfirmation : GameAction
 
     data object Replay : GameAction
