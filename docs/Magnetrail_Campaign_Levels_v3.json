@@ -2379,6 +2379,10 @@
                 {
                     "row": 1,
                     "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 2
                 }
             ],
             "designedSolutions": [
@@ -2408,7 +2412,7 @@
                     "POLARITY_FLIP",
                     "WALLS"
                 ],
-                "contentFingerprint": "sha256:e14431d8cc2b8eadd4da69c68fe2a8d12094ee7bfc1a3069e159df19dff53613"
+                "contentFingerprint": "sha256:99b0066e09ec4b53f56236affdde054eb5d5d1eccaa030182ea67615374e5f92"
             }
         },
         {
@@ -2898,7 +2902,12 @@
                     "initialPolarity": "PULL"
                 }
             ],
-            "walls": [],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
             "designedSolutions": [
                 [
                     "A",
@@ -2925,10 +2934,11 @@
                     "PULL",
                     "PUSH",
                     "POLARITY_FLIP",
+                    "WALLS",
                     "OCCLUSION",
                     "ORDER_DEPENDENCY"
                 ],
-                "contentFingerprint": "sha256:d5334e5869e83e9304b91c2c4ef2e2af44170ddf86e8e25de12aa664acf9ef5b"
+                "contentFingerprint": "sha256:063fd398153789bde6e45a58a8c5e8b35a33cd833ebe61bcd5efbc520407e8a0"
             }
         },
         {
@@ -3160,6 +3170,10 @@
                 {
                     "row": 1,
                     "column": 6
+                },
+                {
+                    "row": 1,
+                    "column": 1
                 }
             ],
             "designedSolutions": [
@@ -3191,7 +3205,7 @@
                     "WALLS",
                     "ORDER_DEPENDENCY"
                 ],
-                "contentFingerprint": "sha256:187514d7f263437fad5b987f11435afed0a8f957bedd856f7a7cd0cfc833f76c"
+                "contentFingerprint": "sha256:45efad02386a047fc8018ac7e2d36830a955a72fc0cf93b9ef80b81e4f02e413"
             }
         },
         {
@@ -3730,7 +3744,12 @@
                     "initialPolarity": "PULL"
                 }
             ],
-            "walls": [],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
             "designedSolutions": [
                 [
                     "B",
@@ -3756,10 +3775,11 @@
                     "PULL",
                     "PUSH",
                     "POLARITY_FLIP",
+                    "WALLS",
                     "OCCLUSION",
                     "ORDER_DEPENDENCY"
                 ],
-                "contentFingerprint": "sha256:e59e709d05fbbf16b75495cfa1d92c97ce0d58a803cb5dcb88ed7a51c099f5b1"
+                "contentFingerprint": "sha256:7755ed5a4de803a0a6c6939abd8af8f87e208ac8cad019568efe1fa5b5b1d580"
             }
         },
         {
@@ -3967,6 +3987,10 @@
                 {
                     "row": 7,
                     "column": 4
+                },
+                {
+                    "row": 1,
+                    "column": 1
                 }
             ],
             "designedSolutions": [
@@ -3999,7 +4023,7 @@
                     "WALLS",
                     "ORDER_DEPENDENCY"
                 ],
-                "contentFingerprint": "sha256:6a17e913dcce07a2f77c27c366db9f74a0206e70fcefe5f2ee1b18085c93a649"
+                "contentFingerprint": "sha256:39b4d79d62e800b7c33d4abeec5f021dc1f201fd30aea37d0c43415e3b76bb1f"
             }
         },
         {
@@ -4945,6 +4969,10 @@
                 {
                     "row": 1,
                     "column": 7
+                },
+                {
+                    "row": 1,
+                    "column": 1
                 }
             ],
             "designedSolutions": [
@@ -4974,7 +5002,7 @@
                     "POLARITY_FLIP",
                     "WALLS"
                 ],
-                "contentFingerprint": "sha256:db29f218dbde8eafc3c3efb2df3b4105ec0902716de4d98ab3bceecf230d9a46"
+                "contentFingerprint": "sha256:cade45fbc8a48e4e44f2ac464669a9321d78eb050286c70f58c2e4d4059c8845"
             }
         },
         {
@@ -5184,7 +5212,12 @@
                     "initialPolarity": "PULL"
                 }
             ],
-            "walls": [],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
             "designedSolutions": [
                 [
                     "A",
@@ -5211,10 +5244,11 @@
                     "PULL",
                     "PUSH",
                     "POLARITY_FLIP",
+                    "WALLS",
                     "OCCLUSION",
                     "ORDER_DEPENDENCY"
                 ],
-                "contentFingerprint": "sha256:0e188ce330989c88f68d2bbf4f8ea9807b19551779ce8c6bf2d3d19912b5c53e"
+                "contentFingerprint": "sha256:7c0c5bbe4e345ed51cf6f9fd5e5243951d054a71691403dfcf3bcd115a1511ba"
             }
         },
         {
@@ -5722,6 +5756,10 @@
                 {
                     "row": 4,
                     "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 3
                 }
             ],
             "designedSolutions": [
@@ -5756,7 +5794,7 @@
                     "WALLS",
                     "MULTIPLE_MAGNETS"
                 ],
-                "contentFingerprint": "sha256:da195c9f37ba5b34f81fdda5f336aa960c9405a1fba9755a9d6fa491e28c5abe"
+                "contentFingerprint": "sha256:8644e16e0b27b8982c002a5568a9917784cdb8c7e5b55ce4e7c939015d88f9ce"
             }
         },
         {
@@ -6351,6 +6389,10 @@
                 {
                     "row": 6,
                     "column": 6
+                },
+                {
+                    "row": 1,
+                    "column": 1
                 }
             ],
             "designedSolutions": [
@@ -6382,7 +6424,7 @@
                     "WALLS",
                     "ORDER_DEPENDENCY"
                 ],
-                "contentFingerprint": "sha256:23e80e4467376e0939f77a595c2e9493a3381aae76fc884f70e4c6cad9c582d7"
+                "contentFingerprint": "sha256:5728d3bf4b4bac70d4c451293fb466254fcbd8e5ea13723c01a424902abb7758"
             }
         },
         {
@@ -6550,6 +6592,10 @@
                 {
                     "row": 7,
                     "column": 4
+                },
+                {
+                    "row": 1,
+                    "column": 2
                 }
             ],
             "designedSolutions": [
@@ -6584,7 +6630,7 @@
                     "WALLS",
                     "MULTIPLE_MAGNETS"
                 ],
-                "contentFingerprint": "sha256:dfacb8f3690ef56a844189ed920e28fa4df41718b7f6a11478ee3bbe7a569229"
+                "contentFingerprint": "sha256:3bd846b8bd01a9b3b7ab1c5a3a9dc011aa9a81ce02923ee52e5fd6fbb40690dd"
             }
         },
         {
@@ -7123,6 +7169,10 @@
                 {
                     "row": 6,
                     "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 1
                 }
             ],
             "designedSolutions": [
@@ -7154,7 +7204,7 @@
                     "WALLS",
                     "ORDER_DEPENDENCY"
                 ],
-                "contentFingerprint": "sha256:3f13cfeda262e666cd6737202a8be6236305c64494334efb82fb648c28a1c617"
+                "contentFingerprint": "sha256:e08a118e71380d6980e4ff049ef71d146a8f4a9f9f39ba5476e0f080778f6026"
             }
         },
         {

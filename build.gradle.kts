@@ -13,7 +13,37 @@ plugins {
 tasks.register("certifyCampaignContent") {
     group = "verification"
     description = "Certify the checked-in Magnetrail M3 campaign and daily fallback bank."
-    dependsOn(":level-tools:certifyCampaign")
+    dependsOn(":level-tools:certifyCampaign", ":level-tools:certifyCampaignQuality")
+}
+
+tasks.register("analyzeCampaignDifficulty") {
+    group = "verification"
+    description = "Stage Magnetrail M5.1 V2 difficulty evidence."
+    dependsOn(":level-tools:analyzeCampaignDifficulty")
+}
+
+tasks.register("analyzeCampaignQuality") {
+    group = "verification"
+    description = "Stage Magnetrail M5.1 level-quality evidence."
+    dependsOn(":level-tools:analyzeCampaignQuality")
+}
+
+tasks.register("checkCampaignSymmetryDuplicates") {
+    group = "verification"
+    description = "Stage Magnetrail M5.1 symmetry duplicate findings."
+    dependsOn(":level-tools:checkCampaignSymmetryDuplicates")
+}
+
+tasks.register("auditCampaignPacing") {
+    group = "verification"
+    description = "Stage Magnetrail M5.1 fixed-sequence pacing audit."
+    dependsOn(":level-tools:auditCampaignPacing")
+}
+
+tasks.register("promoteM51CampaignAudit") {
+    group = "magnetrail content"
+    description = "Explicitly promote reviewed M5.1 reports with -PconfirmM51Promotion=true."
+    dependsOn(":level-tools:promoteM51CampaignAudit")
 }
 
 tasks.register("generateLevelCandidates") {

@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/baseline-profile" />
             <option value="$PROJECT_DIR$/game-core" />
             <option value="$PROJECT_DIR$/level-tools" />
           </set>

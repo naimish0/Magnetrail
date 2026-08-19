@@ -92,13 +92,21 @@ class DeterministicRouteTracer : RouteTracer {
     }
 
     fun findControllingMagnet(state: BoardState, arrow: Arrow): Magnet? {
+        return explainControl(state, arrow).controllingMagnet
+    }
+
+    fun explainControl(state: BoardState, arrow: Arrow): MagneticControlExplanation {
         val visibleAlignedMagnets = state.magnets.filter { magnet ->
             isAligned(arrow.position, magnet.position) && hasClearLineOfSight(state, arrow, magnet)
         }
         val nearestDistance = visibleAlignedMagnets.minOfOrNull { distance(arrow.position, it.position) }
-            ?: return null
+            ?: return MagneticControlExplanation(null, emptyList(), false)
         val nearest = visibleAlignedMagnets.filter { distance(arrow.position, it.position) == nearestDistance }
-        return nearest.singleOrNull()
+        return MagneticControlExplanation(
+            controllingMagnet = nearest.singleOrNull(),
+            equallyNearestVisibleMagnets = nearest.sortedBy { it.id },
+            cancelledByEqualNearestMagnets = nearest.size > 1,
+        )
     }
 
     private fun hasClearLineOfSight(state: BoardState, arrow: Arrow, magnet: Magnet): Boolean {

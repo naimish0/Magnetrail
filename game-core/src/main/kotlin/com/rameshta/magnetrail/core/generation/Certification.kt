@@ -1,6 +1,7 @@
 package com.rameshta.magnetrail.core.generation
 
 import com.rameshta.magnetrail.core.content.ContentFingerprint
+import com.rameshta.magnetrail.core.difficulty.DifficultyAnalyzer
 import com.rameshta.magnetrail.core.difficulty.DifficultyMetrics
 import com.rameshta.magnetrail.core.engine.DefaultGameEngine
 import com.rameshta.magnetrail.core.engine.GameEngine
@@ -77,7 +78,7 @@ class CertificationPipeline(
             return CertificationResult.Rejected(listOf("required-magnetic-mechanic-unused"))
         }
 
-        val metrics = calculateMetrics(level, solved, replay, profile)
+        val metrics = DifficultyAnalyzer(engine).analyze(level, solved).metrics
         val par = requireNotNull(solved.shortestDepth)
         val twoStar = par + maxOf(2, ceil(par * 0.25).toInt())
         val tags = mechanicTags(level, metrics)
@@ -135,53 +136,16 @@ class CertificationPipeline(
         )
     }
 
-    private fun calculateMetrics(
-        level: LevelDefinition,
-        solved: com.rameshta.magnetrail.core.solver.SolverResult,
-        replay: ReplayMetrics,
-        profile: GenerationProfile,
-    ): DifficultyMetrics {
-        val initial = level.initialState()
-        val hasFailedOpening = initial.arrows.any { arrow ->
-            !engine.resolve(initial, PlayerAction(arrow.id)).success
-        }
-        val occlusion = hasOcclusionOpportunity(level)
-        val cancellation = hasCancellationOpportunity(level)
-        val averageBranching = replay.branchingTotal.toDouble() / replay.steps.coerceAtLeast(1)
-        val score = level.arrows.size * 6 + level.magnets.size * 7 + level.walls.size * 2 +
-            replay.magnetControlledActions * 4 + replay.polarityFlips * 3 +
-            (averageBranching * 2).toInt() + if (occlusion) 5 else 0 +
-            if (cancellation) 8 else 0 + if (hasFailedOpening) 4 else 0
-        return DifficultyMetrics(
-            solutionLength = requireNotNull(solved.shortestDepth),
-            solutionCount = solved.solutionCount,
-            solutionCountCapped = solved.solutionCountCapped,
-            validFirstActionCount = solved.validFirstActions.size,
-            averageBranching = averageBranching,
-            magnetControlledActions = replay.magnetControlledActions,
-            polarityFlips = replay.polarityFlips,
-            exploredStateCount = solved.exploredStateCount,
-            hasPull = replay.usedPull || level.magnets.any { it.polarity == Polarity.PULL },
-            hasPush = replay.usedPush || level.magnets.any { it.polarity == Polarity.PUSH },
-            hasWalls = level.walls.isNotEmpty(),
-            hasOcclusionOpportunity = occlusion,
-            hasCancellationOpportunity = cancellation,
-            hasDeadEndOpportunity = hasFailedOpening || solved.validFirstActions.size < initial.arrows.size,
-            estimatedDifficultyScore = score,
-            assignedBand = profile.difficultyBand,
-        )
-    }
-
     private fun mechanicTags(level: LevelDefinition, metrics: DifficultyMetrics): List<String> = buildList {
         if (level.magnets.isEmpty()) add("MOVEMENT")
-        if (metrics.hasPull) add("PULL")
-        if (metrics.hasPush) add("PUSH")
-        if (metrics.polarityFlips > 0) add("POLARITY_FLIP")
-        if (metrics.hasWalls) add("WALLS")
-        if (metrics.hasOcclusionOpportunity) add("OCCLUSION")
-        if (metrics.hasCancellationOpportunity) add("CANCELLATION")
+        if (level.magnets.any { it.polarity == Polarity.PULL } || metrics.pullSolutionActions > 0) add("PULL")
+        if (level.magnets.any { it.polarity == Polarity.PUSH } || metrics.pushSolutionActions > 0) add("PUSH")
+        if (metrics.polarityFlipCount > 0) add("POLARITY_FLIP")
+        if (level.walls.isNotEmpty()) add("WALLS")
+        if (hasOcclusionOpportunity(level)) add("OCCLUSION")
+        if (hasCancellationOpportunity(level)) add("CANCELLATION")
         if (level.magnets.size > 1) add("MULTIPLE_MAGNETS")
-        if (metrics.hasDeadEndOpportunity) add("ORDER_DEPENDENCY")
+        if (metrics.successfulOpeningActions < metrics.plausibleOpeningActions) add("ORDER_DEPENDENCY")
     }.ifEmpty { listOf("MOVEMENT") }
 
     private fun hasOcclusionOpportunity(level: LevelDefinition): Boolean {
