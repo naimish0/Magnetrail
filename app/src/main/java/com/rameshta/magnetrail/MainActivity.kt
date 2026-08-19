@@ -23,7 +23,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.lifecycle.lifecycleScope
-import androidx.core.net.toUri
 import kotlinx.coroutines.launch
 import com.rameshta.magnetrail.ads.MonetizationController
 import com.rameshta.magnetrail.analytics.AnalyticsEvent
@@ -41,6 +40,7 @@ import com.rameshta.magnetrail.feedback.ViewHapticController
 import com.rameshta.magnetrail.game.GameViewModel
 import com.rameshta.magnetrail.game.GameAction
 import com.rameshta.magnetrail.game.MagnetrailApp
+import com.rameshta.magnetrail.privacy.ExternalUrlPolicy
 import com.rameshta.magnetrail.ui.theme.MagnetrailTheme
 
 class MainActivity : ComponentActivity() {
@@ -58,6 +58,7 @@ class MainActivity : ComponentActivity() {
             enabled = !isRunningInstrumentedTest(),
         )
         val services = (application as MagnetrailApplication).m4Services
+        val privacyPolicyUri = ExternalUrlPolicy.httpsUriOrNull(BuildConfig.PRIVACY_POLICY_URL)
         setContent {
             MagnetrailTheme {
                 val catalogResult = remember {
@@ -162,15 +163,20 @@ class MainActivity : ComponentActivity() {
                                 }
                             },
                             privacyOptionsRequired = privacyState.privacyOptionsRequired,
-                            privacyPolicyUrl = BuildConfig.PRIVACY_POLICY_URL.takeIf(String::isNotBlank),
-                            showPrivacyPolicyPlaceholder = BuildConfig.DEBUG && BuildConfig.PRIVACY_POLICY_URL.isBlank(),
+                            privacyPolicyUrl = privacyPolicyUri?.toString(),
+                            showPrivacyPolicyPlaceholder = BuildConfig.DEBUG && privacyPolicyUri == null,
                             onPrivacyOptions = {
                                 services.analytics.track(AnalyticsEvent.PrivacyOptionsOpen)
                                 services.privacyManager.showPrivacyOptions(this@MainActivity)
                             },
                             onPrivacyPolicy = {
-                                BuildConfig.PRIVACY_POLICY_URL.takeIf(String::isNotBlank)?.let { url ->
-                                    startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
+                                privacyPolicyUri?.let { uri ->
+                                    runCatching {
+                                        startActivity(
+                                            Intent(Intent.ACTION_VIEW, uri)
+                                                .addCategory(Intent.CATEGORY_BROWSABLE),
+                                        )
+                                    }
                                 }
                             },
                         )

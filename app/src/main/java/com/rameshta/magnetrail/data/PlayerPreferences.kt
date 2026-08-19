@@ -5,7 +5,7 @@ import com.rameshta.magnetrail.core.economy.EconomyConfig
 import com.rameshta.magnetrail.core.generation.CONTENT_VERSION
 import com.rameshta.magnetrail.core.generation.GENERATOR_VERSION
 
-const val PLAYER_PREFERENCES_SCHEMA_VERSION = 4
+const val PLAYER_PREFERENCES_SCHEMA_VERSION = 5
 
 data class PlayerSettings(
     val soundEnabled: Boolean = true,

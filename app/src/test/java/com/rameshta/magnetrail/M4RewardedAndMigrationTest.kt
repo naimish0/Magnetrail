@@ -68,7 +68,7 @@ class M4RewardedAndMigrationTest {
         val first = repository.preferences.first()
         val second = repository.preferences.first()
 
-        assertEquals(4, first.schemaVersion)
+        assertEquals(5, first.schemaVersion)
         assertFalse(first.settings.soundEnabled)
         assertEquals(211, first.progress.coinBalance)
         assertEquals(3, first.progress.recordsByLevel["proto-001"]?.bestStars)
@@ -153,7 +153,7 @@ class M4RewardedAndMigrationTest {
     fun `fresh and partial corrupt M4 data recover conservatively`() = runTest {
         val store = dataStore(this)
         var restored = repository(store).preferences.first()
-        assertEquals(4, restored.schemaVersion)
+        assertEquals(5, restored.schemaVersion)
         assertFalse(restored.settings.diagnosticsEnabled)
 
         store.edit { values ->

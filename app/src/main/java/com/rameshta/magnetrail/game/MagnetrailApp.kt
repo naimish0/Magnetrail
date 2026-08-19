@@ -1,6 +1,7 @@
 package com.rameshta.magnetrail.game
 
 import androidx.compose.runtime.Composable
+import androidx.activity.compose.BackHandler
 import com.rameshta.magnetrail.home.HomeScreen
 import com.rameshta.magnetrail.levels.LevelSelectionScreen
 import com.rameshta.magnetrail.settings.SettingsScreen
@@ -26,6 +27,16 @@ fun MagnetrailApp(
     onPrivacyOptions: () -> Unit = {},
     onPrivacyPolicy: () -> Unit = {},
 ) {
+    BackHandler(enabled = uiState.destination != AppDestination.HOME) {
+        onAction(
+            when (uiState.destination) {
+                AppDestination.LEVELS -> GameAction.CloseLevelSelection
+                AppDestination.SETTINGS -> GameAction.CloseSettings
+                AppDestination.GAME -> GameAction.NavigateHome
+                AppDestination.HOME -> return@BackHandler
+            },
+        )
+    }
     when (uiState.destination) {
         AppDestination.HOME -> HomeScreen(
             uiState = uiState,

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="500" viewBox="0 0 1024 500" role="img" aria-labelledby="title desc">
+  <title id="title">Magnetrail feature graphic</title>
+  <desc id="desc">A Rail Dart passes through a cyan and amber split magnetic field beside the Magnetrail name and tagline.</desc>
+  <rect width="1024" height="500" fill="#F4F7FB"/>
+  <g stroke="#D7DEE7" stroke-width="2">
+    <path d="M0 112h1024M0 250h1024M0 388h1024"/>
+    <path d="M112 0v500M250 0v500M388 0v500"/>
+  </g>
+  <circle cx="250" cy="250" r="176" fill="#183153"/>
+  <path d="M225 125c-76 12-121 65-121 125s45 113 121 125" fill="none" stroke="#18A7B8" stroke-width="42" stroke-linecap="round"/>
+  <path d="M275 125c76 12 121 65 121 125s-45 113-121 125" fill="none" stroke="#E79A2D" stroke-width="42" stroke-linecap="round"/>
+  <path d="M150 228h116v-38l84 60-84 60v-38H150z" fill="#ffffff"/>
+  <text x="490" y="228" fill="#183153" font-family="Arial, sans-serif" font-size="76" font-weight="700" letter-spacing="-2">Magnetrail</text>
+  <text x="494" y="292" fill="#5B6574" font-family="Arial, sans-serif" font-size="32" font-weight="500">Bend the path. Clear the board.</text>
+</svg>

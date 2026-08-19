@@ -2,6 +2,7 @@ package com.rameshta.magnetrail.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -32,8 +33,13 @@ import kotlinx.coroutines.flow.onStart
 import com.rameshta.magnetrail.crash.CrashReporter
 import com.rameshta.magnetrail.crash.NoOpCrashReporter
 
+internal val playerDataStoreCorruptionHandler = ReplaceFileCorruptionHandler<Preferences> {
+    emptyPreferences()
+}
+
 private val Context.magnetrailDataStore: DataStore<Preferences> by preferencesDataStore(
     name = "magnetrail_player_v1",
+    corruptionHandler = playerDataStoreCorruptionHandler,
 )
 
 class DataStoreProgressRepository private constructor(
@@ -318,7 +324,13 @@ class DataStoreProgressRepository private constructor(
 
     private fun migrateStored(stored: MutablePreferences) {
         val version = stored[Keys.schemaVersion]
-        if (version != null && version !in setOf(M2_SCHEMA_VERSION, M3_SCHEMA_VERSION, PLAYER_PREFERENCES_SCHEMA_VERSION)) {
+        if (version != null && version !in setOf(
+                M2_SCHEMA_VERSION,
+                M3_SCHEMA_VERSION,
+                M4_SCHEMA_VERSION,
+                PLAYER_PREFERENCES_SCHEMA_VERSION,
+            )
+        ) {
             crashReporter.recordUnexpected(IllegalStateException("Unsupported player schema recovered"))
             stored.clear()
         }
@@ -576,6 +588,7 @@ class DataStoreProgressRepository private constructor(
     companion object {
         private const val M2_SCHEMA_VERSION = 1
         private const val M3_SCHEMA_VERSION = 3
+        private const val M4_SCHEMA_VERSION = 4
         private const val MAX_DAILY_HISTORY = 512
         private const val MAX_REWARDED_GRANTS_PER_DAY = 5
         private const val MAX_INTERSTITIALS_PER_DAY = 4

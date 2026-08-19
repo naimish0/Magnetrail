@@ -1,0 +1,24 @@
+# Copy values into ~/.gradle/gradle.properties, CI secrets, environment variables,
+# or an untracked release.properties loader approved by the owner. Never commit real values.
+
+# Set true only for an owner-approved, uploadable production build.
+MAGNETRAIL_PRODUCTION_RELEASE=false
+
+# Production AdMob configuration. Google sample/test IDs are rejected.
+MAGNETRAIL_ADMOB_APP_ID=ca-app-pub-XXXXXXXXXXXXXXXX~YYYYYYYYYY
+MAGNETRAIL_REWARDED_AD_UNIT_ID=ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY
+MAGNETRAIL_INTERSTITIAL_AD_UNIT_ID=ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY
+MAGNETRAIL_ENABLE_LIVE_ADS=false
+
+# M5 currently permits live ads only after the owner confirms a general-audience launch.
+MAGNETRAIL_TARGET_AUDIENCE=general
+MAGNETRAIL_PRIVACY_POLICY_URL=https://REPLACE_WITH_PUBLIC_POLICY_URL
+
+# Owner-authorized upload key. The keystore and passwords must stay outside Git.
+MAGNETRAIL_UPLOAD_STORE_FILE=/absolute/path/to/upload-key.jks
+MAGNETRAIL_UPLOAD_KEY_ALIAS=REPLACE_WITH_ALIAS
+MAGNETRAIL_UPLOAD_STORE_PASSWORD=REPLACE_WITH_SECRET
+MAGNETRAIL_UPLOAD_KEY_PASSWORD=REPLACE_WITH_SECRET
+
+# Download the genuine Firebase Android config to app/google-services.json.
+# Do not create a placeholder JSON file with invented project identifiers.
