@@ -37,6 +37,11 @@ fun SettingsScreen(
     onBack: () -> Unit,
     onSettingChanged: (SettingKey, Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    privacyOptionsRequired: Boolean = false,
+    privacyPolicyUrl: String? = null,
+    showPrivacyPolicyPlaceholder: Boolean = false,
+    onPrivacyOptions: () -> Unit = {},
+    onPrivacyPolicy: () -> Unit = {},
 ) {
     val spacing = LocalMagnetrailSpacing.current
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -69,6 +74,34 @@ fun SettingsScreen(
                     checked = settings.soundEnabled,
                     onCheckedChange = { onSettingChanged(SettingKey.SOUND, it) },
                 )
+                HorizontalDivider()
+                SettingToggle(
+                    title = "Usage & crash diagnostics",
+                    detail = "Optional consent-aware usage events and crash reports",
+                    checked = settings.diagnosticsEnabled,
+                    onCheckedChange = { onSettingChanged(SettingKey.DIAGNOSTICS, it) },
+                )
+                if (privacyOptionsRequired) {
+                    HorizontalDivider()
+                    SettingsAction(
+                        title = "Privacy options",
+                        detail = "Review or change your privacy choices",
+                        onClick = onPrivacyOptions,
+                    )
+                }
+                if (privacyPolicyUrl != null || showPrivacyPolicyPlaceholder) {
+                    HorizontalDivider()
+                    SettingsAction(
+                        title = "Privacy policy",
+                        detail = if (privacyPolicyUrl != null) {
+                            "Open the Magnetrail privacy policy"
+                        } else {
+                            "Debug placeholder — production URL is not configured"
+                        },
+                        onClick = onPrivacyPolicy,
+                        enabled = privacyPolicyUrl != null,
+                    )
+                }
                 HorizontalDivider()
                 SettingToggle(
                     title = "Haptics",
@@ -104,6 +137,25 @@ fun SettingsScreen(
                     color = MagnetrailMuted,
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun SettingsAction(
+    title: String,
+    detail: String,
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+) {
+    TextButton(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = Modifier.fillMaxWidth().heightIn(min = 72.dp),
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text(title, style = MaterialTheme.typography.bodyLarge)
+            Text(detail, style = MaterialTheme.typography.bodyMedium, color = MagnetrailMuted)
         }
     }
 }

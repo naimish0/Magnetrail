@@ -5,7 +5,7 @@ import com.rameshta.magnetrail.core.economy.EconomyConfig
 import com.rameshta.magnetrail.core.generation.CONTENT_VERSION
 import com.rameshta.magnetrail.core.generation.GENERATOR_VERSION
 
-const val PLAYER_PREFERENCES_SCHEMA_VERSION = 3
+const val PLAYER_PREFERENCES_SCHEMA_VERSION = 4
 
 data class PlayerSettings(
     val soundEnabled: Boolean = true,
@@ -13,6 +13,18 @@ data class PlayerSettings(
     val reducedMotion: Boolean = false,
     val highContrastFields: Boolean = false,
     val pathPreviewAssistance: Boolean = false,
+    val diagnosticsEnabled: Boolean = false,
+)
+
+data class AdMonetizationState(
+    val interstitialEligibleCompletions: Int = 0,
+    val lastFullScreenAdWallTimeMillis: Long? = null,
+    val lastFullScreenAdDate: String? = null,
+    val interstitialsShownOnDate: Int = 0,
+    val rewardedGrantDate: String? = null,
+    val rewardedGrantsOnDate: Int = 0,
+    val pendingAdHintTransactionId: String? = null,
+    val processedRewardTransactionIds: Set<String> = emptySet(),
 )
 
 data class PlayerProgress(
@@ -33,6 +45,7 @@ data class PlayerProgress(
     val contentVersion: Int = CONTENT_VERSION,
     val generatorVersion: Int = GENERATOR_VERSION,
     val dailyGeneratorVersion: Int = DailySeed.GENERATOR_VERSION,
+    val monetization: AdMonetizationState = AdMonetizationState(),
 )
 
 data class LevelRecord(
@@ -60,6 +73,7 @@ enum class SettingKey {
     REDUCED_MOTION,
     HIGH_CONTRAST_FIELDS,
     PATH_PREVIEW_ASSISTANCE,
+    DIAGNOSTICS,
 }
 
 fun PlayerSettings.withValue(key: SettingKey, enabled: Boolean): PlayerSettings = when (key) {
@@ -68,4 +82,5 @@ fun PlayerSettings.withValue(key: SettingKey, enabled: Boolean): PlayerSettings 
     SettingKey.REDUCED_MOTION -> copy(reducedMotion = enabled)
     SettingKey.HIGH_CONTRAST_FIELDS -> copy(highContrastFields = enabled)
     SettingKey.PATH_PREVIEW_ASSISTANCE -> copy(pathPreviewAssistance = enabled)
+    SettingKey.DIAGNOSTICS -> copy(diagnosticsEnabled = enabled)
 }

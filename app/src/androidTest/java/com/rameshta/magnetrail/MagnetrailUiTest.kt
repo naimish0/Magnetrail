@@ -96,6 +96,7 @@ class MagnetrailUiTest {
         composeRule.onNodeWithContentDescription("Arrows remaining: 2").assertIsDisplayed()
 
         composeRule.onNodeWithContentDescription("Request a solver hint").performClick()
+        composeRule.onNodeWithText("Use 30 coins").performClick()
         waitForContentDescription("Hint: Try arrow B")
 
         composeRule.onNodeWithContentDescription("Arrow B, points south, suggested hint")

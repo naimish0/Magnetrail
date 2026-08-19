@@ -3,6 +3,7 @@ package com.rameshta.magnetrail.data
 import com.rameshta.magnetrail.core.economy.RewardBreakdown
 import com.rameshta.magnetrail.core.grading.AttemptGrade
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 
 data class AttemptSummary(
     val actions: Int,
@@ -28,6 +29,14 @@ sealed interface HintSpendResult {
     data class InsufficientBalance(val balance: Int, val required: Int) : HintSpendResult
 }
 
+sealed interface RewardedCreditGrantResult {
+    data object Granted : RewardedCreditGrantResult
+    data object Duplicate : RewardedCreditGrantResult
+    data object InventoryFull : RewardedCreditGrantResult
+    data object DailyCapReached : RewardedCreditGrantResult
+    data object DateRollback : RewardedCreditGrantResult
+}
+
 interface ProgressRepository {
     val preferences: Flow<PlayerPreferences>
 
@@ -44,4 +53,15 @@ interface ProgressRepository {
     suspend fun spendHintCoins(): HintSpendResult
 
     suspend fun cacheDailyChallenge(cache: DailyCache)
+
+    suspend fun grantRewardedHintCredit(transactionId: String, localDate: LocalDate): RewardedCreditGrantResult =
+        RewardedCreditGrantResult.InventoryFull
+
+    suspend fun consumeRewardedHintCredit(transactionId: String): Boolean = false
+
+    suspend fun recordFullScreenAdDismissal(
+        localDate: LocalDate,
+        wallTimeMillis: Long,
+        interstitialShown: Boolean,
+    ) = Unit
 }

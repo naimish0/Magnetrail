@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -28,6 +29,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import com.rameshta.magnetrail.crash.CrashReporter
+import com.rameshta.magnetrail.crash.NoOpCrashReporter
 
 private val Context.magnetrailDataStore: DataStore<Preferences> by preferencesDataStore(
     name = "magnetrail_player_v1",
@@ -37,15 +40,18 @@ class DataStoreProgressRepository private constructor(
     private val dataStore: DataStore<Preferences>,
     private val catalog: LevelCatalog,
     private val defaultReducedMotion: Boolean,
+    private val crashReporter: CrashReporter,
 ) : ProgressRepository {
     constructor(
         context: Context,
         catalog: LevelCatalog,
         defaultReducedMotion: Boolean,
+        crashReporter: CrashReporter = NoOpCrashReporter,
     ) : this(
         dataStore = context.applicationContext.magnetrailDataStore,
         catalog = catalog,
         defaultReducedMotion = defaultReducedMotion,
+        crashReporter = crashReporter,
     )
 
     internal constructor(
@@ -53,13 +59,14 @@ class DataStoreProgressRepository private constructor(
         catalog: LevelCatalog,
         defaultReducedMotion: Boolean,
         testMarker: Unit = Unit,
-    ) : this(dataStore, catalog, defaultReducedMotion)
+        crashReporter: CrashReporter = NoOpCrashReporter,
+    ) : this(dataStore, catalog, defaultReducedMotion, crashReporter)
 
     override val preferences: Flow<PlayerPreferences> = dataStore.data
         .catch { error ->
             if (error is IOException) emit(emptyPreferences()) else throw error
         }
-        .onStart { migrateToM3() }
+        .onStart { migrateToM4() }
         .map(::decode)
         .distinctUntilChanged()
 
@@ -123,6 +130,7 @@ class DataStoreProgressRepository private constructor(
             val completed = stored[Keys.completedLevelIds].orEmpty().validLevelIds().toMutableSet()
             completed += levelId
             val firstClearRewarded = stored[Keys.firstClearRewardedIds].orEmpty().validLevelIds().toMutableSet()
+            val isFirstClear = levelId !in firstClearRewarded
             val balance = stored.coinBalance()
             val rewards = RewardPolicy.campaignCompletion(
                 previousBalance = balance,
@@ -143,6 +151,10 @@ class DataStoreProgressRepository private constructor(
                 record.lowestActions?.let { id to it }
             }.toMap())
             stored[Keys.coinBalance] = rewards.resultingBalance
+            if (isFirstClear) {
+                stored[Keys.interstitialEligibleCompletions] =
+                    (stored[Keys.interstitialEligibleCompletions] ?: 0).coerceAtLeast(0) + 1
+            }
             receipt = CompletionReceipt(grade, best, rewards)
         }
         return receipt
@@ -217,16 +229,100 @@ class DataStoreProgressRepository private constructor(
         }
     }
 
-    private suspend fun migrateToM3() {
+    override suspend fun grantRewardedHintCredit(
+        transactionId: String,
+        localDate: LocalDate,
+    ): RewardedCreditGrantResult {
+        require(transactionId.isNotBlank() && transactionId.length <= 100) { "Invalid rewarded transaction ID" }
+        lateinit var result: RewardedCreditGrantResult
+        dataStore.edit { stored ->
+            migrateStored(stored)
+            val processed = stored[Keys.processedRewardTransactionIds].orEmpty()
+            val pending = stored[Keys.pendingAdHintTransactionId]
+            val storedDateRaw = stored[Keys.rewardedGrantDate]
+            val storedDate = storedDateRaw?.let(::parseDateOrNull)
+            result = when {
+                transactionId in processed || transactionId == pending -> RewardedCreditGrantResult.Duplicate
+                pending != null -> RewardedCreditGrantResult.InventoryFull
+                storedDateRaw != null && storedDate == null -> RewardedCreditGrantResult.DateRollback
+                storedDate != null && localDate.isBefore(storedDate) -> RewardedCreditGrantResult.DateRollback
+                else -> {
+                    val grants = if (storedDate == localDate) {
+                        (stored[Keys.rewardedGrantsOnDate] ?: 0).coerceIn(0, MAX_REWARDED_GRANTS_PER_DAY)
+                    } else {
+                        0
+                    }
+                    if (grants >= MAX_REWARDED_GRANTS_PER_DAY) {
+                        RewardedCreditGrantResult.DailyCapReached
+                    } else {
+                        stored[Keys.rewardedGrantDate] = localDate.toString()
+                        stored[Keys.rewardedGrantsOnDate] = grants + 1
+                        stored[Keys.pendingAdHintTransactionId] = transactionId
+                        stored[Keys.processedRewardTransactionIds] = (processed + transactionId).toList()
+                            .takeLast(MAX_REWARD_TRANSACTION_HISTORY)
+                            .toSet()
+                        RewardedCreditGrantResult.Granted
+                    }
+                }
+            }
+        }
+        return result
+    }
+
+    override suspend fun consumeRewardedHintCredit(transactionId: String): Boolean {
+        var consumed = false
+        dataStore.edit { stored ->
+            migrateStored(stored)
+            if (stored[Keys.pendingAdHintTransactionId] == transactionId) {
+                stored.remove(Keys.pendingAdHintTransactionId)
+                consumed = true
+            }
+        }
+        return consumed
+    }
+
+    override suspend fun recordFullScreenAdDismissal(
+        localDate: LocalDate,
+        wallTimeMillis: Long,
+        interstitialShown: Boolean,
+    ) {
+        require(wallTimeMillis >= 0L)
+        dataStore.edit { stored ->
+            migrateStored(stored)
+            val storedDateRaw = stored[Keys.lastFullScreenAdDate]
+            val storedDate = storedDateRaw?.let(::parseDateOrNull)
+            if (storedDateRaw != null && storedDate == null) return@edit
+            if (storedDate != null && localDate.isBefore(storedDate)) return@edit
+            val shown = if (storedDate == localDate) {
+                (stored[Keys.interstitialsShownOnDate] ?: 0).coerceIn(0, MAX_INTERSTITIALS_PER_DAY)
+            } else {
+                0
+            }
+            stored[Keys.lastFullScreenAdWallTime] = maxOf(
+                stored[Keys.lastFullScreenAdWallTime] ?: 0L,
+                wallTimeMillis,
+            )
+            stored[Keys.lastFullScreenAdDate] = localDate.toString()
+            if (interstitialShown) {
+                stored[Keys.interstitialsShownOnDate] = (shown + 1).coerceAtMost(MAX_INTERSTITIALS_PER_DAY)
+                stored[Keys.interstitialEligibleCompletions] = 0
+            } else if (storedDate != localDate) {
+                stored[Keys.interstitialsShownOnDate] = 0
+            }
+        }
+    }
+
+    private suspend fun migrateToM4() {
         dataStore.edit(::migrateStored)
     }
 
     private fun migrateStored(stored: MutablePreferences) {
         val version = stored[Keys.schemaVersion]
-        if (version != null && version !in setOf(M2_SCHEMA_VERSION, PLAYER_PREFERENCES_SCHEMA_VERSION)) {
+        if (version != null && version !in setOf(M2_SCHEMA_VERSION, M3_SCHEMA_VERSION, PLAYER_PREFERENCES_SCHEMA_VERSION)) {
+            crashReporter.recordUnexpected(IllegalStateException("Unsupported player schema recovered"))
             stored.clear()
         }
-        if (stored[Keys.schemaVersion] != PLAYER_PREFERENCES_SCHEMA_VERSION) {
+        if (stored[Keys.schemaVersion] == null || stored[Keys.schemaVersion] == M2_SCHEMA_VERSION) {
             val completed = stored[Keys.completedLevelIds].orEmpty().validLevelIds()
             val oldBestMoves = decodeBestMoves(stored[Keys.bestMoves]).filterKeys { it in validLevelIds }
             val migratedRecords = completed.associateWith { id ->
@@ -246,6 +342,19 @@ class DataStoreProgressRepository private constructor(
             stored[Keys.completedDailyIds] = stored[Keys.completedDailyIds].orEmpty().boundedHistory()
             stored[Keys.rewardedDailyIds] = stored[Keys.rewardedDailyIds].orEmpty().boundedHistory()
         }
+        stored[Keys.interstitialEligibleCompletions] =
+            (stored[Keys.interstitialEligibleCompletions] ?: 0).coerceAtLeast(0)
+        stored[Keys.interstitialsShownOnDate] =
+            (stored[Keys.interstitialsShownOnDate] ?: 0).coerceIn(0, MAX_INTERSTITIALS_PER_DAY)
+        stored[Keys.rewardedGrantsOnDate] =
+            (stored[Keys.rewardedGrantsOnDate] ?: 0).coerceIn(0, MAX_REWARDED_GRANTS_PER_DAY)
+        stored[Keys.pendingAdHintTransactionId]?.takeIf { it.isBlank() || it.length > 100 }?.let {
+            stored.remove(Keys.pendingAdHintTransactionId)
+        }
+        stored[Keys.processedRewardTransactionIds] = stored[Keys.processedRewardTransactionIds].orEmpty()
+            .filter { it.isNotBlank() && it.length <= 100 }
+            .takeLast(MAX_REWARD_TRANSACTION_HISTORY)
+            .toSet()
         stored[Keys.schemaVersion] = PLAYER_PREFERENCES_SCHEMA_VERSION
         stored[Keys.economyVersion] = EconomyConfig.VERSION
         stored[Keys.contentVersion] = CONTENT_VERSION
@@ -285,6 +394,7 @@ class DataStoreProgressRepository private constructor(
                 reducedMotion = stored[Keys.reducedMotion] ?: defaultReducedMotion,
                 highContrastFields = stored[Keys.highContrastFields] ?: false,
                 pathPreviewAssistance = stored[Keys.pathPreviewAssistance] ?: false,
+                diagnosticsEnabled = stored[Keys.diagnosticsEnabled] ?: false,
             ),
             progress = PlayerProgress(
                 highestUnlockedLevel = highestUnlocked,
@@ -304,6 +414,18 @@ class DataStoreProgressRepository private constructor(
                 contentVersion = stored[Keys.contentVersion] ?: CONTENT_VERSION,
                 generatorVersion = stored[Keys.generatorVersion] ?: GENERATOR_VERSION,
                 dailyGeneratorVersion = stored[Keys.dailyGeneratorVersion] ?: DailySeed.GENERATOR_VERSION,
+                monetization = AdMonetizationState(
+                    interstitialEligibleCompletions = (stored[Keys.interstitialEligibleCompletions] ?: 0).coerceAtLeast(0),
+                    lastFullScreenAdWallTimeMillis = stored[Keys.lastFullScreenAdWallTime]?.takeIf { it >= 0L },
+                    lastFullScreenAdDate = stored[Keys.lastFullScreenAdDate].conservativeDate(),
+                    interstitialsShownOnDate = (stored[Keys.interstitialsShownOnDate] ?: 0)
+                        .coerceIn(0, MAX_INTERSTITIALS_PER_DAY),
+                    rewardedGrantDate = stored[Keys.rewardedGrantDate].conservativeDate(),
+                    rewardedGrantsOnDate = (stored[Keys.rewardedGrantsOnDate] ?: 0)
+                        .coerceIn(0, MAX_REWARDED_GRANTS_PER_DAY),
+                    pendingAdHintTransactionId = stored[Keys.pendingAdHintTransactionId],
+                    processedRewardTransactionIds = stored[Keys.processedRewardTransactionIds].orEmpty(),
+                ),
             ),
         )
     }
@@ -345,6 +467,7 @@ class DataStoreProgressRepository private constructor(
             SettingKey.REDUCED_MOTION -> Keys.reducedMotion
             SettingKey.HIGH_CONTRAST_FIELDS -> Keys.highContrastFields
             SettingKey.PATH_PREVIEW_ASSISTANCE -> Keys.pathPreviewAssistance
+            SettingKey.DIAGNOSTICS -> Keys.diagnosticsEnabled
         }
 
     private fun decodeBestMoves(values: Set<String>?): Map<String, Int> = values.orEmpty()
@@ -407,6 +530,12 @@ class DataStoreProgressRepository private constructor(
 
     private fun parseDateOrNull(value: String): LocalDate? = runCatching { LocalDate.parse(value) }.getOrNull()
 
+    private fun String?.conservativeDate(): String? = when {
+        this == null -> null
+        parseDateOrNull(this) != null -> this
+        else -> LocalDate.MAX.toString()
+    }
+
     private object Keys {
         val schemaVersion = intPreferencesKey("schema_version")
         val soundEnabled = booleanPreferencesKey("sound_enabled")
@@ -414,6 +543,7 @@ class DataStoreProgressRepository private constructor(
         val reducedMotion = booleanPreferencesKey("reduced_motion")
         val highContrastFields = booleanPreferencesKey("high_contrast_fields")
         val pathPreviewAssistance = booleanPreferencesKey("path_preview_assistance")
+        val diagnosticsEnabled = booleanPreferencesKey("diagnostics_enabled")
         val highestUnlockedLevel = intPreferencesKey("highest_unlocked_level")
         val completedLevelIds = stringSetPreferencesKey("completed_level_ids")
         val lastSelectedLevelId = stringPreferencesKey("last_selected_level_id")
@@ -433,10 +563,22 @@ class DataStoreProgressRepository private constructor(
         val contentVersion = intPreferencesKey("content_version")
         val generatorVersion = intPreferencesKey("generator_version")
         val dailyGeneratorVersion = intPreferencesKey("daily_generator_version")
+        val interstitialEligibleCompletions = intPreferencesKey("interstitial_eligible_completions")
+        val lastFullScreenAdWallTime = longPreferencesKey("last_full_screen_ad_wall_time")
+        val lastFullScreenAdDate = stringPreferencesKey("last_full_screen_ad_date")
+        val interstitialsShownOnDate = intPreferencesKey("interstitials_shown_on_date")
+        val rewardedGrantDate = stringPreferencesKey("rewarded_grant_date")
+        val rewardedGrantsOnDate = intPreferencesKey("rewarded_grants_on_date")
+        val pendingAdHintTransactionId = stringPreferencesKey("pending_ad_hint_transaction_id")
+        val processedRewardTransactionIds = stringSetPreferencesKey("processed_reward_transaction_ids")
     }
 
     companion object {
         private const val M2_SCHEMA_VERSION = 1
+        private const val M3_SCHEMA_VERSION = 3
         private const val MAX_DAILY_HISTORY = 512
+        private const val MAX_REWARDED_GRANTS_PER_DAY = 5
+        private const val MAX_INTERSTITIALS_PER_DAY = 4
+        private const val MAX_REWARD_TRANSACTION_HISTORY = 16
     }
 }
