@@ -9,6 +9,7 @@ import com.rameshta.magnetrail.core.model.Polarity
 import com.rameshta.magnetrail.core.model.Position
 import com.rameshta.magnetrail.core.model.Wall
 import com.rameshta.magnetrail.game.GameAction
+import com.rameshta.magnetrail.game.GameUiState
 import com.rameshta.magnetrail.game.GameViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -201,6 +202,51 @@ class GameViewModelTest {
 
         assertTrue(viewModel.uiState.value.isDeadlocked)
         assertSame(original, viewModel.uiState.value.boardState)
+    }
+
+    @Test
+    fun `historical M5 2 review campaign offers next after 100 but stops at 150`() {
+        val levels = LevelParser().parseCatalog(
+            checkNotNull(javaClass.getResource("/content/m5_2_review_catalog.json")).readText(),
+        ).levels
+        fun state(index: Int): GameUiState {
+            val level = levels[index]
+            return GameUiState(
+                levels = levels,
+                currentLevelIndex = index,
+                currentLevel = level,
+                initialState = level.initialState(),
+                boardState = level.initialState(),
+            )
+        }
+
+        assertTrue(state(99).hasNextLevel)
+        assertEquals("campaign-101", levels[100].id)
+        assertFalse(state(149).hasNextLevel)
+        assertEquals("campaign-150", levels.last().id)
+    }
+
+    @Test
+    fun `promoted Phase 1 campaign crosses 150 to 151 and stops at 200`() {
+        val levels = LevelParser().parseCatalog(
+            checkNotNull(javaClass.getResource("/Magnetrail_Campaign_Levels_v3.json")).readText(),
+        ).levels
+        fun state(index: Int): GameUiState {
+            val level = levels[index]
+            return GameUiState(
+                levels = levels,
+                currentLevelIndex = index,
+                currentLevel = level,
+                initialState = level.initialState(),
+                boardState = level.initialState(),
+            )
+        }
+
+        assertEquals(200, levels.size)
+        assertTrue(state(149).hasNextLevel)
+        assertEquals("campaign-151", levels[150].id)
+        assertFalse(state(199).hasNextLevel)
+        assertEquals("campaign-200", levels.last().id)
     }
 
     private fun viewModel(): GameViewModel = GameViewModel(

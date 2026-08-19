@@ -1,0 +1,1215 @@
+{
+    "schemaVersion": 1,
+    "migrationId": "campaign-content-v4-to-v5",
+    "sourceContentVersion": 4,
+    "targetContentVersion": 5,
+    "sourceGeneratorVersion": 2,
+    "targetGeneratorVersion": 3,
+    "rows": [
+        {
+            "campaignNumber": 1,
+            "levelId": "proto-001",
+            "oldFingerprint": "sha256:a4a91352bc71bba6724bdef88df76b7f665db870ee07ffba435bd2132cc37671",
+            "newFingerprint": "sha256:b817f33d05cd96e56e632a6b89892b9ab9f5fc8c6b1377d3c990fbdcc5f0c578",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 2,
+            "levelId": "proto-002",
+            "oldFingerprint": "sha256:6b97688e15810d264ebf6073d3180bae64b3d90cf691dd0c85af907746c166db",
+            "newFingerprint": "sha256:1555b7d1950b5e4bb3a82375655ed4e4b51831ec9802917c1737806798987b2f",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 3,
+            "levelId": "proto-003",
+            "oldFingerprint": "sha256:0c27c20457ba64afc7fd8498c5a4114ea2668447e5625192a69afa72d02f4efd",
+            "newFingerprint": "sha256:aaf2b5d0478674c6f6e71e54bcd6c9daa97a5bd4675b8ec1f32a4e3edf30e771",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 4,
+            "levelId": "proto-004",
+            "oldFingerprint": "sha256:32ed043e342691046c84fe97aeebd579795024cadd1ed3418b1c0d729ad3e0ab",
+            "newFingerprint": "sha256:55f09474624b7f3151c4852b844c41af6da80b05e885d118ac2d3c11e94eb1e2",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 5,
+            "levelId": "proto-005",
+            "oldFingerprint": "sha256:9eb17aa105aed6f83bb4904c56d3e81f100063f7b2bda53c3dc75a1fefc95e9e",
+            "newFingerprint": "sha256:9efd985ffbf4dd5cc859947c552825dd4ea422f6592ccb916db6e60ba02ab4d7",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 6,
+            "levelId": "proto-006",
+            "oldFingerprint": "sha256:7c35191697432daa26b7dba7ce68525db64d947d2de9ad06bfc6dffa965dc1f6",
+            "newFingerprint": "sha256:b44c7e050193512eba7d66645a2f6c8b090779ed108e68961bb936598e487d1e",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 7,
+            "levelId": "proto-007",
+            "oldFingerprint": "sha256:924f1f2c3af72fda996aa67aa1b9aaef9934698d71889fdc65b030e4349e8974",
+            "newFingerprint": "sha256:167f55d7c28c9c6ccf7d4bc86daefb58864e6b90e9b9c87a3069a0f063162be7",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 8,
+            "levelId": "proto-008",
+            "oldFingerprint": "sha256:bc031205cce4f34b8fc84edbf72ff5da871435d6ba515aa8c4d7a11d2c797095",
+            "newFingerprint": "sha256:246e447416fc94d96ff6034e8697cd093fc761fda4476d3af85f18cb4ba521fa",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 9,
+            "levelId": "proto-009",
+            "oldFingerprint": "sha256:293f04931a3da518ad913786a7822789480beddc3a7babb937c00229d438edd0",
+            "newFingerprint": "sha256:6a7d39d09629b61b7f1336afd932f5c9cd123d2b5f3ecd47bfb0d61edb38b8be",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 10,
+            "levelId": "proto-010",
+            "oldFingerprint": "sha256:d84fc05081fd18202e5760b74f72f994be3a8d6da09c679caaca7a1c2d43cbd4",
+            "newFingerprint": "sha256:861f97e9fcc4111fa963e9ecddaa18385a6ac15a5659d4354ab8185cf4091f77",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 11,
+            "levelId": "proto-011",
+            "oldFingerprint": "sha256:10e407e4886069343276283e4b37b016b581bf0db1ff5d2d8adf020d0ad9aa50",
+            "newFingerprint": "sha256:7bef7f70482d725cb6f5f9eb77dd0b0deb8a8a7273ebc7a37a0aa7362376232a",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 12,
+            "levelId": "proto-012",
+            "oldFingerprint": "sha256:85da95de2be6eded0aeeebc65f54b0eb279eec50e59ed4371cfd8a11b6a088c9",
+            "newFingerprint": "sha256:108ed4ac8ddc6dc7e26a61fb93ead5fc6a859f9e01f47deed3cc7f1c42cbd6ca",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 13,
+            "levelId": "campaign-013",
+            "oldFingerprint": "sha256:19805bec1f9bdc6200692f5aeecd96b97a29db7e3772cb36b9707b3fc7ef91be",
+            "newFingerprint": "sha256:572bb8b4ab312d2702c934975ffb18730567a57de9f5613cdb949c1b76a61258",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 14,
+            "levelId": "campaign-014",
+            "oldFingerprint": "sha256:a3f2ce278d2be48909c7016843b125ad79a24cec6bb878408418c819410de6ee",
+            "newFingerprint": "sha256:fd09f4e930fd111eb8b92977607bdd6adc892164797638d1a1a13a271a76bcfa",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 15,
+            "levelId": "campaign-015",
+            "oldFingerprint": "sha256:af67804cb2e5bc772c04b784794dbcb1c2771b7ec197af3290d8be244339970f",
+            "newFingerprint": "sha256:120b5080e01e5e2fdd62e3c7250dbea06d3a5ff2f90afd74d739cac8fedef4ab",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 16,
+            "levelId": "campaign-016",
+            "oldFingerprint": "sha256:9bed21c8b02583da15393b35421ed5ba752811cf75c175255173b44d674a4804",
+            "newFingerprint": "sha256:5e227f515d8bff97defb57e448fca0852b55cf784f1b51aec7b56d462f1650ad",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 17,
+            "levelId": "campaign-017",
+            "oldFingerprint": "sha256:91bf45c555afe4b9cebb8c83d9f28b2e796e13b8966d0a9c4cb6751b68a34d6b",
+            "newFingerprint": "sha256:4fd5fa1c1e2b8937e41ae1d2e4b2eb6b6a3592a07c41d7b8d70bd7070a53c358",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 18,
+            "levelId": "campaign-018",
+            "oldFingerprint": "sha256:b8833772fcfc2c6e3c3b369cce81a99c73973ec07353fb76c84df0133e1bc428",
+            "newFingerprint": "sha256:2a1ef49ba0cd3cb0684430d3fd8a16e81050e2f4b45b14a366dd2c3f0304c125",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 19,
+            "levelId": "campaign-019",
+            "oldFingerprint": "sha256:dea80a33891641eda272060cbe084faaa44c2286ac43f4e3df66f2a70e1ea3a5",
+            "newFingerprint": "sha256:f71bc2f7e25018abc34b53b2aaa81eda25178c84c4ef0d96dd49ee104b71cbf7",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 20,
+            "levelId": "campaign-020",
+            "oldFingerprint": "sha256:4257ba8cbbc8b2d1eb64d83d1d889da8a7722e989681458ff2748587d3257020",
+            "newFingerprint": "sha256:11d88d559e397b3e2795dab2ef52f020a1343624d076b78f35310c5c6c53d82f",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 21,
+            "levelId": "campaign-021",
+            "oldFingerprint": "sha256:b84de1593df5abbceb745e9c5ae2c9578569bc6e422a4c556389b2bcff52af97",
+            "newFingerprint": "sha256:555315338bc3ec0ce708ecaceab82357f669f351e303e1479e5ec1240691e435",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 22,
+            "levelId": "campaign-022",
+            "oldFingerprint": "sha256:bd5249b0b035faf16a6bbf317b1c78b4746e9601f6f40555bfb120093b31b094",
+            "newFingerprint": "sha256:c94c76b948276d4a16be0675b2cca35aed9303b5e0c2bab76a7548e4822edc7c",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 23,
+            "levelId": "campaign-023",
+            "oldFingerprint": "sha256:0c2bad71a75f15f64f4660a0a339efa7fe3953bc67312789e94563307fbc8acf",
+            "newFingerprint": "sha256:4440a18b798dd131c51c586612a8a8e0e640987cd43d9145f422c61300c95d7f",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 24,
+            "levelId": "campaign-024",
+            "oldFingerprint": "sha256:473cabf0b888dab6dacd6110d78c905a0f246aa2a3c800341f7ac7f921bddf53",
+            "newFingerprint": "sha256:ecd706db97c1b31a67f0e11b56f0d0efe0a55564426aa8c5baf7c2143d426f41",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 25,
+            "levelId": "campaign-025",
+            "oldFingerprint": "sha256:da5100ab36ebc59e7d659461b149dc3e824068b82457f9001a5deec8fc7e5780",
+            "newFingerprint": "sha256:758edaf9ebbdc4b5e5029011fb53719d623088799c9da38bc972b3eba50ee6b0",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 26,
+            "levelId": "campaign-026",
+            "oldFingerprint": "sha256:58a1bdf517a4f0f36798fe0491ec9385b9675c4c40ed8cb62354d63b14b69bf6",
+            "newFingerprint": "sha256:178014dc38b10c136cdea9c17bd11b3b1dfbf961df328eab85d841fef8fea6be",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 27,
+            "levelId": "campaign-027",
+            "oldFingerprint": "sha256:47c00fe9037e5feb87719b3eaa1b68359811bf18a1c4ccf66fe69691b233bfca",
+            "newFingerprint": "sha256:f401f503ecc10882085d6d402c4e070f8ab580cf0b2740940eaad780def29ba4",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 28,
+            "levelId": "campaign-028",
+            "oldFingerprint": "sha256:fc6d484bcd8c874fc28cbfefc1bd8d3c1686e0374b6aa45f720663284fd36607",
+            "newFingerprint": "sha256:a32555b3fd05b58108c1813fa3f27bd4eab44db803084b20b16051fb02d365dd",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 29,
+            "levelId": "campaign-029",
+            "oldFingerprint": "sha256:283d561ead449f6e52ef10893359cbc5858e9ae0c536458089e835f4eadeced9",
+            "newFingerprint": "sha256:41535ff756b153fe279f425a5f58593ff921ab00b71f8c513cd9ba4bf0618c48",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 30,
+            "levelId": "campaign-030",
+            "oldFingerprint": "sha256:306df1aceee2d1dc0fd3f6d6b409f404e36a053a0965601312c1df106d767d2b",
+            "newFingerprint": "sha256:ce984d659d9f6733fe9a91d68506173e7aeda60a3c5a59486932116dae541940",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 31,
+            "levelId": "campaign-031",
+            "oldFingerprint": "sha256:d7a102ba8b8c066a7ad7c9f1e5cce41c7b8107b785d571d7890d8e3bd17b10e0",
+            "newFingerprint": "sha256:fd82d52e672f2c83def5ffad53e79bfb430a27e236713c9776dde774caad6d2a",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 32,
+            "levelId": "campaign-032",
+            "oldFingerprint": "sha256:a7422438b73f1de3f55809d455f7ef6a6a9ed28d1f1d2742cf0b3b8640f55217",
+            "newFingerprint": "sha256:a77679c6744329baa4083288f96e005c81e47acf99a3f349db853bc47600e6cf",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 33,
+            "levelId": "campaign-033",
+            "oldFingerprint": "sha256:6ff398443e42486277a567a67d7258b6cbad887bc1b914332915696094b3f0a4",
+            "newFingerprint": "sha256:590b3e81ca586810fd0075abc388a29df4f7cc66900b6bd239b14d151be058fa",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 34,
+            "levelId": "campaign-034",
+            "oldFingerprint": "sha256:679786c138832ae94af82772f947102ac3643ca9a7607c578f57ba6acc9eb433",
+            "newFingerprint": "sha256:fb278c3edb3b7f0799f5873d9c58eac93c9d3a8505c07f58c217de9022b5f3f8",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 35,
+            "levelId": "campaign-035",
+            "oldFingerprint": "sha256:09b0a746a6abb03aff26d1a5d6c6794448a82cfbeeba20a7f0c81b868d4e6bf5",
+            "newFingerprint": "sha256:dc565105a1f89dd2b7cc89121da0e7d2bc034b259dbdd5f7d12ffc26bb173f73",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 36,
+            "levelId": "campaign-036",
+            "oldFingerprint": "sha256:99b0066e09ec4b53f56236affdde054eb5d5d1eccaa030182ea67615374e5f92",
+            "newFingerprint": "sha256:3f2063f2ab4c5ee75680968c06ba8ae17027c72cf8b6657dcf066bef6c4f35b7",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 37,
+            "levelId": "campaign-037",
+            "oldFingerprint": "sha256:de7446ebe10a3bcbe3d3a673b87a4411f273c24868b96021d413cdf9b1c36bb3",
+            "newFingerprint": "sha256:8e89921eb6bdbe4aa4410c77903ffb69e249f9a9f3125c012d619d0dfeee2ec6",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 38,
+            "levelId": "campaign-038",
+            "oldFingerprint": "sha256:10b7b07d61e3f36907cef745211cd1f71f5cf5edb4ffc367cd162d8345b99f1f",
+            "newFingerprint": "sha256:d005f5f4f4990e5fafee9ecb6a59d21b645aa4fcd2044cec95e41a2ae5680345",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 39,
+            "levelId": "campaign-039",
+            "oldFingerprint": "sha256:82dea376958f8b6324401443e9e39f67a4d5acd56d7e5ac36e3d1b546bfde8d8",
+            "newFingerprint": "sha256:16663a7c7aba6f9cd3b2d043d9b93871c9a94f0b73214dec1f213502c8aab9eb",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 40,
+            "levelId": "campaign-040",
+            "oldFingerprint": "sha256:1bae7ab48a3c05e2d6c3b24e2705b3345df86cea8496a635fcc7d8e50720c0c0",
+            "newFingerprint": "sha256:fbe8723ac7149044370f5d314e3238881a6f0cb86693bda73a8a80aceded94a6",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 41,
+            "levelId": "campaign-041",
+            "oldFingerprint": "sha256:c288970d368bdcce2cf0d7cd8be2de0fb6af83e8125993004abb32c8b055fc02",
+            "newFingerprint": "sha256:60567eb857ae545f40faa9df9ec0b60af5be7facec82c8da8ab55e62cc7be1f8",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 42,
+            "levelId": "campaign-042",
+            "oldFingerprint": "sha256:4818842fb855b66344ce273437fcce6245e187a9d0bc294aab759ac4805993c3",
+            "newFingerprint": "sha256:989f429291d616f10d4111814cae1af1edf584434a52dcbb0e6938ab7cc9d3ba",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 43,
+            "levelId": "campaign-043",
+            "oldFingerprint": "sha256:063fd398153789bde6e45a58a8c5e8b35a33cd833ebe61bcd5efbc520407e8a0",
+            "newFingerprint": "sha256:fe1a3d68c651674bd95033d9bad215164faa76e7041d0e9f6a7b1f0598a23bae",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 44,
+            "levelId": "campaign-044",
+            "oldFingerprint": "sha256:2a8c4936b8ad53566c28a3ad609d2a8dc0f3528d946f54f225dd1db0b4ed8b77",
+            "newFingerprint": "sha256:8099722a85359805c9b87f59f49ccc5ae22220ccf2203284875dddaaaabca120",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 45,
+            "levelId": "campaign-045",
+            "oldFingerprint": "sha256:5c03744ec34b94e05f99ead47d99382a2b726b64c8ae9337d6caef21410e0d2c",
+            "newFingerprint": "sha256:515e9e3b6e965d00b45707e1961e5041522ac73ad93117709cbc6a17ca9fba46",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 46,
+            "levelId": "campaign-046",
+            "oldFingerprint": "sha256:45efad02386a047fc8018ac7e2d36830a955a72fc0cf93b9ef80b81e4f02e413",
+            "newFingerprint": "sha256:758310ec95ae5761aaa9428cf7930fc906c41f65e68bcd3440986c0ca4586edc",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 47,
+            "levelId": "campaign-047",
+            "oldFingerprint": "sha256:ecd7a15a4f6d00fc3c6b2c3d2c4619249d656cf65fbc960a3d6ccbdb6b5d1f77",
+            "newFingerprint": "sha256:18579c0741334c689b33f29722a45ff473f924408a9f50fe20ea450e6f94f72d",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 48,
+            "levelId": "campaign-048",
+            "oldFingerprint": "sha256:92e3247479ce177691994a955f4046365e70399a19cb3581e65559c6634ef3b2",
+            "newFingerprint": "sha256:d229d123e3385704abcf6b4d8ddd2a356a080344b5e730699d0c188d6bc68381",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 49,
+            "levelId": "campaign-049",
+            "oldFingerprint": "sha256:e8fd3f4e512c8edd82431fd0a235814392e48568abb555ba315ef37eeb62dcf4",
+            "newFingerprint": "sha256:e8681aa2e6f3672af65946bfacbc391bf0c3dedfde9b8d3676268c67cae4b05b",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 50,
+            "levelId": "campaign-050",
+            "oldFingerprint": "sha256:4cc809511676ad17d5fcd8224623cdf7c510d6a03cff626c0f71bb116d6ecc8e",
+            "newFingerprint": "sha256:79b08026128a2d42159fbd2bf86053c2b9e9aa4df1063b51f053036562c374fa",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 51,
+            "levelId": "campaign-051",
+            "oldFingerprint": "sha256:bb4e2841bfaeb5dcba20c8dc3c9902ce72f67509b6054b47cdd71aef7ab76384",
+            "newFingerprint": "sha256:30cb3b54ca77dd733972ee6d2920227fa34bb21d5d2f0476dc249b8440b0c8d8",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 52,
+            "levelId": "campaign-052",
+            "oldFingerprint": "sha256:113b5ce8faa499d1d26f0f019006dcec33f19fd3c1245bcac9f8c078d1b5620d",
+            "newFingerprint": "sha256:182bdf0937cb483d74cbb8498a44c0c0fab0e34c8865ff65d33813fb308c52cc",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 53,
+            "levelId": "campaign-053",
+            "oldFingerprint": "sha256:00f5e4d9c4472b09cd8d553572c1086f070fec043f1ac6e91e87ba7b6a3368af",
+            "newFingerprint": "sha256:34a0f0e4b45e632055ff46e725667b670c4957593e19ec8b2962458dd0c3823b",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 54,
+            "levelId": "campaign-054",
+            "oldFingerprint": "sha256:7755ed5a4de803a0a6c6939abd8af8f87e208ac8cad019568efe1fa5b5b1d580",
+            "newFingerprint": "sha256:0e220b9b5036c3fe7045f78538dd55bdc0042844a483e21d80c5cc41d5734fb0",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 55,
+            "levelId": "campaign-055",
+            "oldFingerprint": "sha256:cfe701368924e1b43696bf00f40300b0728d92b762a15e0c380e7044637b743e",
+            "newFingerprint": "sha256:daac44dd41e428f75bd0f3b0ec7059966a009ff120b0c5f36c95f64152873294",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 56,
+            "levelId": "campaign-056",
+            "oldFingerprint": "sha256:54913bf9ff7c1fd34804659444d14d303002e3d19be1db794af0dc239ed61a97",
+            "newFingerprint": "sha256:ffa15507edbdf0926b34a58565d71a81bcfbc20f75211f69398dabad73baf89f",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 57,
+            "levelId": "campaign-057",
+            "oldFingerprint": "sha256:39b4d79d62e800b7c33d4abeec5f021dc1f201fd30aea37d0c43415e3b76bb1f",
+            "newFingerprint": "sha256:75f6815551c509b800ec37f1f96a7f6f22d26e0e206a989ae641afac686f49f6",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 58,
+            "levelId": "campaign-058",
+            "oldFingerprint": "sha256:fb793ace33e7988fa5246c011fa3fb9da99bf23e5144d7e0bb3bcf96ccfb90c2",
+            "newFingerprint": "sha256:69be0a8af161f8197ffc110802d21d6bb22185c5905c0a29c336fbe6ab917388",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 59,
+            "levelId": "campaign-059",
+            "oldFingerprint": "sha256:5515d7c7938b2003dcd4bb0c88ba09bc2539b43b474adf12fdc1502e7d9f65a2",
+            "newFingerprint": "sha256:c883a2cbd90337e0fb97d40d768370fd313da5500d86fe31abf34db63fb1756e",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 60,
+            "levelId": "campaign-060",
+            "oldFingerprint": "sha256:9640cf28bc8e0bef4b39bc4917b26bed13b7587a2874329225dec5290b3b80c9",
+            "newFingerprint": "sha256:465eb6c6d6b35f03afccebf3db9db8ded8917ddc60701d6e3fab3ecb548c84de",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 61,
+            "levelId": "campaign-061",
+            "oldFingerprint": "sha256:4f131427fba9c3828e3f618452da6760db17d72f6f59fd7307e46ba5717fca92",
+            "newFingerprint": "sha256:dbd5916092b22da81a30974812fe2cd83d7d837d891fc57bd7fd81a32f075500",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 62,
+            "levelId": "campaign-062",
+            "oldFingerprint": "sha256:8ef891de1c9643fa8c605bc6c8b2c740b5d0f24fc71b794518174167d69cdefb",
+            "newFingerprint": "sha256:d943ca5866c509b6e87dadce13746c1b8bb46c6292e2857764ade0dc3cd8b3bf",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 63,
+            "levelId": "campaign-063",
+            "oldFingerprint": "sha256:85a9812a2b30a055f55652ca03c89d886b11d39fefff74eddeac895d43ad4ad4",
+            "newFingerprint": "sha256:bc1e6d678ddb9072b62abee0a9f298e42fdea3a61541fb3f36eaca55df60c294",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 64,
+            "levelId": "campaign-064",
+            "oldFingerprint": "sha256:f4e9d9be22c952d869ce2dfa3a428e1347487fc77cf6dc3dbc2c5cd33947fce7",
+            "newFingerprint": "sha256:608d869803269aa52084aaf07e394d925d0b2fbe80a8636bf597b93c9fa090d7",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 65,
+            "levelId": "campaign-065",
+            "oldFingerprint": "sha256:b3d56094df6bd1de60a8fa0e55efead09c5b4bd88062aeede8b8b4476d7f7f64",
+            "newFingerprint": "sha256:3fe2bc070411186a2ace3cb9ed9ef3ec219e9c4df0922c5b7cc11dfb059f552d",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 66,
+            "levelId": "campaign-066",
+            "oldFingerprint": "sha256:2016d48deab68269a6484a830b55fea124bff8204531d86f326af8845505df1d",
+            "newFingerprint": "sha256:37504d5a67409ba564adec9c8e8b93ea1fc756353001ae31d4860b1ec90ae692",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 67,
+            "levelId": "campaign-067",
+            "oldFingerprint": "sha256:d1ab76660fc9811f5b5012576b58888758c960675a0c6c725817ae65dbe943bd",
+            "newFingerprint": "sha256:24a89d483a8d4afe7f7fd6e577ec4eeea16c7ab2e913a3a888f139c057438815",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 68,
+            "levelId": "campaign-068",
+            "oldFingerprint": "sha256:10153d24f00aae068264bb00ed463bc75a6b1f2aee77ed9dd86e2b6b7080921f",
+            "newFingerprint": "sha256:1808bda67159fc6037680b1a66d011a2734a31e2854d6d869c44463e62aae6ae",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 69,
+            "levelId": "campaign-069",
+            "oldFingerprint": "sha256:e7f292aece89e43e988ac78a5b772acbd7006a2aac6a54d85be3c7647ba60ef2",
+            "newFingerprint": "sha256:4d601cf27b2f2ad01ba799ef274975e03cb1d2917979fd288db4b02828c44a9c",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 70,
+            "levelId": "campaign-070",
+            "oldFingerprint": "sha256:cade45fbc8a48e4e44f2ac464669a9321d78eb050286c70f58c2e4d4059c8845",
+            "newFingerprint": "sha256:748f994470d9c2c45e0958b4ede3bbe7e778cedfe0418e295ce57bf06c0b5886",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 71,
+            "levelId": "campaign-071",
+            "oldFingerprint": "sha256:fee411ba7a45a216c1b7747a6bd37b1cd3863eb84ba78fb3fc002136e206e9fc",
+            "newFingerprint": "sha256:6283c6e402a96b27ff725829f7d13a0a1416fb533b974ec530f0717f32cade78",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 72,
+            "levelId": "campaign-072",
+            "oldFingerprint": "sha256:438c53fdd1271392a824354ed007bd09a44fe92c0170fea9966f627f8e2dc074",
+            "newFingerprint": "sha256:e4097895bae8ce2f9de6a199c6a9a6bf5e8c77e6d50db670cf034600e2bfff59",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 73,
+            "levelId": "campaign-073",
+            "oldFingerprint": "sha256:7c0c5bbe4e345ed51cf6f9fd5e5243951d054a71691403dfcf3bcd115a1511ba",
+            "newFingerprint": "sha256:17a9571bfd4af5242055ff696427cdc6c00463eb0ce88a72d847b69998fcf0c9",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 74,
+            "levelId": "campaign-074",
+            "oldFingerprint": "sha256:05e038547cf3947bbb4b5299928324a0163b12531ccc4a82998835d131d6245f",
+            "newFingerprint": "sha256:3f170747f9d23f0ec926d01fd3d27cc9a7fd53dae9917ba21ea6e0071e4ff899",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 75,
+            "levelId": "campaign-075",
+            "oldFingerprint": "sha256:b7a560e35c4d449fabde919177083aed00cd286706ec905f59f5a71d4facc90a",
+            "newFingerprint": "sha256:09a30518217261252ecbd219b28ad6cdaad49376e2483a5fd8104576502d962d",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 76,
+            "levelId": "campaign-076",
+            "oldFingerprint": "sha256:e08978253a026297be60aa105964d69f1683ea551249dbeac44f0182429021c8",
+            "newFingerprint": "sha256:405e01cc332f053d256f2530725f74955a37e72d71b41986eb64cbd887b1d16f",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 77,
+            "levelId": "campaign-077",
+            "oldFingerprint": "sha256:358be07dfd95f9a6ca34c12181d6c654e4cc43c90801d0540671a5f374daf50d",
+            "newFingerprint": "sha256:9dc3f1a1834d222a690c38ec3f643478d229b2e31c781bf3b4f0262c10dcd8ce",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 78,
+            "levelId": "campaign-078",
+            "oldFingerprint": "sha256:8644e16e0b27b8982c002a5568a9917784cdb8c7e5b55ce4e7c939015d88f9ce",
+            "newFingerprint": "sha256:1886e334836fa03417545a1a9886e0e661d60485967251288be93fcfbc49264f",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 79,
+            "levelId": "campaign-079",
+            "oldFingerprint": "sha256:8a2d1edf84e47384d1bb84a94879f5faff15087bd6755d0200a5ca1904c8da00",
+            "newFingerprint": "sha256:64d2700d8f54f65135859c8f45b0a9ca3b3f685fec50a04885a8d83fe3df63f3",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 80,
+            "levelId": "campaign-080",
+            "oldFingerprint": "sha256:ccad578364ab7b110b1be218448e807da080e20acb47b110beeb02cb84a8c82e",
+            "newFingerprint": "sha256:5486a10416d4420f5a5e480e2249a24b69827e0adc331a4f5d2a435601b1db43",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 81,
+            "levelId": "campaign-081",
+            "oldFingerprint": "sha256:4042170f975d73ab6a1617d5079dec5aaa460b59353b8716a3a16b1c4f0cede5",
+            "newFingerprint": "sha256:b5299c6c7f5fe04b0c5058ae9704e9e6f5cd84ac53aa5a9e32eba13769a11b7e",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 82,
+            "levelId": "campaign-082",
+            "oldFingerprint": "sha256:f0d47d29ef736716d310c35bf9cc080ec956e119b98cade519112189fc82c2f2",
+            "newFingerprint": "sha256:fc7153a451cb758d412d53eab4a0bec0b4b5ad8cf8139fef323c8d229d4c5510",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 83,
+            "levelId": "campaign-083",
+            "oldFingerprint": "sha256:b6ce66406502093618361f1aff38ef9a43d242d0646b362a4a40630edc471dde",
+            "newFingerprint": "sha256:fd07f5e5110b96b2ea7c853fe17122303570eaf8e45269dd025b50714a5e7964",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 84,
+            "levelId": "campaign-084",
+            "oldFingerprint": "sha256:5728d3bf4b4bac70d4c451293fb466254fcbd8e5ea13723c01a424902abb7758",
+            "newFingerprint": "sha256:643095a461e6b342abd1ba855db19d70ae52c3495c99051245e539f4ca5bb14c",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 85,
+            "levelId": "campaign-085",
+            "oldFingerprint": "sha256:19b2d83aeb32b72d3cfa8dece8034dcf4e4a2366f8222da5f2c84939ce607622",
+            "newFingerprint": "sha256:c642525a8b50285c8e8718e1422bec63fe4ef9d1fdba2d7858544da485acc81a",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 86,
+            "levelId": "campaign-086",
+            "oldFingerprint": "sha256:3bd846b8bd01a9b3b7ab1c5a3a9dc011aa9a81ce02923ee52e5fd6fbb40690dd",
+            "newFingerprint": "sha256:6065afd5713e6b5138bd2faee383816b003bb0b5ba58f7d28c3732bb3a7a988c",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 87,
+            "levelId": "campaign-087",
+            "oldFingerprint": "sha256:5041624648c9bffecca785e70f66001d024b5656db7a673c8dc3fbe716423e9f",
+            "newFingerprint": "sha256:e69ee781c08c43233aee547a6319f7927fa4677ec02ad357f468d6acc381a2b2",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 88,
+            "levelId": "campaign-088",
+            "oldFingerprint": "sha256:2956483f3c71ba5041e7c5277ecc17f029c891a1d2e0d87d0737b87b2e4adf0e",
+            "newFingerprint": "sha256:7342c4bb3d445cdf88b91a7c4dc27f3d19edad3227e0de79cde0b731818ea21a",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 89,
+            "levelId": "campaign-089",
+            "oldFingerprint": "sha256:e956301b77c9a7b8ee8812c603184f196b6c96ac6b2d067b1d9ba030d035ed1a",
+            "newFingerprint": "sha256:75dd3301cb9e03de0598945b1b6009ba139f5e415af16b8d60349d5cd0a1fceb",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 90,
+            "levelId": "campaign-090",
+            "oldFingerprint": "sha256:aa8da70c2e5f66df7209aef04139626f0e04d9148bd6e0dd0d7e6b4cee0b62c5",
+            "newFingerprint": "sha256:d4f8b3bcfa6dc3ecd641698c2e8b191cca58a7a9ce31b1de517de1661f2bcaad",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 91,
+            "levelId": "campaign-091",
+            "oldFingerprint": "sha256:8d25ab38cb23a887ed75d00805f4ab6fde63db327fc39538707a08d7ee37e82f",
+            "newFingerprint": "sha256:6cf379e9971eb1d79c3bc96a60dcc2dddeeae49c76a6ae3c15f61bccc1c23f4e",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 92,
+            "levelId": "campaign-092",
+            "oldFingerprint": "sha256:e08a118e71380d6980e4ff049ef71d146a8f4a9f9f39ba5476e0f080778f6026",
+            "newFingerprint": "sha256:c04858c3bf6a1d60947e483d149319c81cc5eaba15b60bba3dda331333905715",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 93,
+            "levelId": "campaign-093",
+            "oldFingerprint": "sha256:9cda042691ebdef255982e3a92c5386b09c913ac351d82624c5ebce52f8284ae",
+            "newFingerprint": "sha256:bc838817d949c63b682fda1730b3b08a4494a353a4e81366ae0adbd1321e8209",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 94,
+            "levelId": "campaign-094",
+            "oldFingerprint": "sha256:89445517e531f9066584c1927cc3a153ba50502f669574107dc2aeb8cf7e3353",
+            "newFingerprint": "sha256:2c955f511323c93e725ecd35a18f141f48f4c4eb22b6265f265a8e33fa9f3b0f",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 95,
+            "levelId": "campaign-095",
+            "oldFingerprint": "sha256:848ca0895f6a1dd8ad8ed4de7b6ec1cb06da4cea587fbbaf3710968852704c8a",
+            "newFingerprint": "sha256:18fa97d16baf39f3f21adabf725826e00e2be256b4f9d6620854c2cc5f081cc9",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 96,
+            "levelId": "campaign-096",
+            "oldFingerprint": "sha256:28e152c0193776d465865ee98c43d52133979bd9d7e4249dcdfe6898f2b93c04",
+            "newFingerprint": "sha256:9f9b80f9511406ff89c0f3f09eea4f86048ce4efa79cbbf1795864245d6167c2",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 97,
+            "levelId": "campaign-097",
+            "oldFingerprint": "sha256:07f928ec834aadef2c02350889d6073ac4d7d3394824c9f423605cfc51555b19",
+            "newFingerprint": "sha256:292946788457f6780cd2ba4a6f41452c3a28ba2d1a939a2ba95fdaac70f42f86",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 98,
+            "levelId": "campaign-098",
+            "oldFingerprint": "sha256:78c2eb43b26f3737905de5e372918483a0fa866de1deca26da364b6e4b7abe5d",
+            "newFingerprint": "sha256:e529d9b6f05f79f419803d35ff422c540299bd3a62b4456e68c458caf7612ff5",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 99,
+            "levelId": "campaign-099",
+            "oldFingerprint": "sha256:6fbf9e8446d32dc083276d22494c41855db51b3dc770f84e8de379877d733ee0",
+            "newFingerprint": "sha256:3ce53084a58e1d430339c3d9b8b6df83b526c1e9c1f89c8c1c62293f1a8c6d9a",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 100,
+            "levelId": "campaign-100",
+            "oldFingerprint": "sha256:fec7f109d13e79ad1409b1c54feb4ecd7499705bab9d6e04becf8666603b1593",
+            "newFingerprint": "sha256:910613e0c5079a1606b1f6c659b132daf3ee918a49a3557ca3ac982c818acd24",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 101,
+            "levelId": "campaign-101",
+            "oldFingerprint": "sha256:e7d54fb4d6f48b391034ae3b926af155647a2875eeaa88396371c63b0bbd864e",
+            "newFingerprint": "sha256:c862fbea1161188dc1303adfc3043a04677b1758002e9e84fe2b2883503ddc80",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 102,
+            "levelId": "campaign-102",
+            "oldFingerprint": "sha256:35f345d41ce32c74179ad1603140266a6c8c99fa2a6d62148525205c63fd5f15",
+            "newFingerprint": "sha256:2c4a3cbb0e71c5b337b6e2567c2dea7f6e443b5bbeb44f45b3e2b0c6d0f0a44e",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 103,
+            "levelId": "campaign-103",
+            "oldFingerprint": "sha256:64e5f5d8a918aa4e2ca3f59094d4cbbea11afeea6a8d3723cd0aa70e3e15867d",
+            "newFingerprint": "sha256:ab89b54f28ca85cd33ced189ea8acdee5909887b9c06e5837831ec9c5f8162ad",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 104,
+            "levelId": "campaign-104",
+            "oldFingerprint": "sha256:d31387fb3994c773646f00e947c214f472317e727fbdb41dbc4710c6dd7536ad",
+            "newFingerprint": "sha256:51febc5385e7b83010a8389aa257cfb264df5dc59bb69fc3ebac867fb152c492",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 105,
+            "levelId": "campaign-105",
+            "oldFingerprint": "sha256:0371a2960b8f7ebb29cdefd627dd535aed03e8ec61823c0d974a815d098a77bd",
+            "newFingerprint": "sha256:46bb3e8b99c0247e9a3a7a924214cabf2ca92186bde20e3b823bc383bee54e41",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 106,
+            "levelId": "campaign-106",
+            "oldFingerprint": "sha256:e93b1301d5e557aac538799ed4448ef3cb519fba96ba05b69b48ea84eb562898",
+            "newFingerprint": "sha256:d3a29583e5437b3b707e9a3d2e183df8a4e070cb8bbc734906cf0fdb95c6f838",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 107,
+            "levelId": "campaign-107",
+            "oldFingerprint": "sha256:c8d9a996fa8ce00ab8375bd8677a43823437f1b43b383358e2ff3b8529319cec",
+            "newFingerprint": "sha256:10f0fa6dfabb634564ae8a78479cc25e6cd636dd05b77a1d44899518c3f07f79",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 108,
+            "levelId": "campaign-108",
+            "oldFingerprint": "sha256:1ff5c56372c16477c64f93f8250bf47ae84a68c1cae578325c90aed0c5b4f32d",
+            "newFingerprint": "sha256:3613fbb42d34f0241a29a441d9c9b19294e98306b8f5f291d4077682ce72ea32",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 109,
+            "levelId": "campaign-109",
+            "oldFingerprint": "sha256:01686557807a129242eff488fa8d65660a15ca4b91b31acb39b2d86275ec2ed7",
+            "newFingerprint": "sha256:54c5a4fe52315f58525308b560054f215dc762967156a06a94872ffb31f5d34a",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 110,
+            "levelId": "campaign-110",
+            "oldFingerprint": "sha256:05d8178f190381a2a0574e5a91a0e46da3f50e1c47968285ea22ebe0889ebbc9",
+            "newFingerprint": "sha256:457b1cc618e28c2fb6bca97cf4966dce5b0c19282efacf16277f8d6e68df0257",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 111,
+            "levelId": "campaign-111",
+            "oldFingerprint": "sha256:2d61f52377921e48f4421fde83e27d4021b96864623c85d4a4b6e7dad33272de",
+            "newFingerprint": "sha256:8d4488a67df995d5befd8a13bf0e71b3edf8fc3abe82039a6f03479677d9986e",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 112,
+            "levelId": "campaign-112",
+            "oldFingerprint": "sha256:1317b9be246ed4ea24cf362b81cda9ef305c508e5c7044c3af6ee36bd9886ed6",
+            "newFingerprint": "sha256:e0a5087287cc44198b8f334b5a025e661407638a873c8153d7febae611a071fe",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 113,
+            "levelId": "campaign-113",
+            "oldFingerprint": "sha256:e384d1f0f65657216f104a65a9d67e08ab0994638c4985135678c10b14372229",
+            "newFingerprint": "sha256:a40381f4d648168aabe4b920c33d74e8d1ac926b82a94f62eeccd1a822b7846c",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 114,
+            "levelId": "campaign-114",
+            "oldFingerprint": "sha256:ca4ae9acae6eb80097f34f393ede7350ba7fa38e59583b6d9e9f8f4df8044ee7",
+            "newFingerprint": "sha256:12ea531598d9b3068306a4fa74236e28fd4ae0c4dfbaf328a8eeab782193695d",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 115,
+            "levelId": "campaign-115",
+            "oldFingerprint": "sha256:0041f25d5a86f821e53f3773a75a53e771777b901a848e2dbd1e46d7b772a090",
+            "newFingerprint": "sha256:e3da7aee5c7004f1dcb4538c6f709fec8cd685927343b110f827efbd42304828",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 116,
+            "levelId": "campaign-116",
+            "oldFingerprint": "sha256:f57b2a53701fb365ea89917e5f9fa2557007df07f42ee6aa2d320918fe125da1",
+            "newFingerprint": "sha256:32aeb6ff67b7823c32d5cee05a1942904f7eecdf795179177020fd193070262c",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 117,
+            "levelId": "campaign-117",
+            "oldFingerprint": "sha256:ab68018bc3a432d34aa4b7ced75e41eb2b33998079e8906b299b74162de4ee18",
+            "newFingerprint": "sha256:18eecd9ca0db926aed4f346e0b74255a8fdbd98832e59b4f2eddeb4a67f50380",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 118,
+            "levelId": "campaign-118",
+            "oldFingerprint": "sha256:f8cc3e3199cc013b991c8143daf3c1210e014c6d01dda7627393ebb7aa63c937",
+            "newFingerprint": "sha256:b44710bf779ea13c820378d31f7d371c68e33aed88cf5bc77d3c7fb5906cb6f0",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 119,
+            "levelId": "campaign-119",
+            "oldFingerprint": "sha256:fe3a20d07038c5d9990074e94154ce8cbdf386332053e59137031f787e927cbc",
+            "newFingerprint": "sha256:f9f8a07175cbeb71c374d0d0b25b48d8e1f33da5c41972a702226e10e1fa885c",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 120,
+            "levelId": "campaign-120",
+            "oldFingerprint": "sha256:bb54218b197a027dbe6980068c0f3aa98d31b31f25d81fd95535dfe7345ea4ce",
+            "newFingerprint": "sha256:064905e1c13aefbf313157a04c2bb2eb2b9f15370ab45284c654896c69c6f9cd",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 121,
+            "levelId": "campaign-121",
+            "oldFingerprint": "sha256:5cad8367a83bbd3694f96a0191695ec2bb3fcb48a1ee41f5ba27a77a65b30d5d",
+            "newFingerprint": "sha256:318eb21a2e760064f1971f40deb8eed390a7609104c7460a17d112c80df58196",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 122,
+            "levelId": "campaign-122",
+            "oldFingerprint": "sha256:a03854b139a054dff2236e56cb42c38e5b2beee2817c13b8cbfca3a32104a739",
+            "newFingerprint": "sha256:477a0bec53a1671daf5db712a08ba7e86bb1387740eee4ee746966141e03e4ae",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 123,
+            "levelId": "campaign-123",
+            "oldFingerprint": "sha256:420d1508fc01b67bae7cdeb472bd4b57d6b216f3a8b040277e44d7a3eec51f88",
+            "newFingerprint": "sha256:01519605794b344b1a6b6c8a1486f76f2b725d74552cc00d6ed283d13b2be655",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 124,
+            "levelId": "campaign-124",
+            "oldFingerprint": "sha256:b47c7cf4a12cfeae852a0a6a4bda8a7de55728fd0fe85595dacfc04d42694af7",
+            "newFingerprint": "sha256:55f264216cd474c7af0b6902ea92c4c98838e34e8ee6b14f893e09d06d5a6dca",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 125,
+            "levelId": "campaign-125",
+            "oldFingerprint": "sha256:0131a2641d716bc74a8442c32bb14c78e8e8c4f176a4d20c332ad97118d8d69a",
+            "newFingerprint": "sha256:ddbac337e5cbee2ef05d8ae26da7a04ba4a8d3a9c5b9f568c8e452a19acb6a56",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 126,
+            "levelId": "campaign-126",
+            "oldFingerprint": "sha256:cf5bd3277f77c765343e68b0d781dacd3f90e19bc134740bb3047d06046125f1",
+            "newFingerprint": "sha256:48649e509e3f0af33b1e6c9d9b61b086e91936b2b116ccb5c78385ee33036ba1",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 127,
+            "levelId": "campaign-127",
+            "oldFingerprint": "sha256:343a5ac75104bc6f7e52508659053023811ece78bde4cdbed521e34e593a948a",
+            "newFingerprint": "sha256:667f5299d5b87349097c27639a83b88b8ffdc24bfceccc9dc820339358621d94",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 128,
+            "levelId": "campaign-128",
+            "oldFingerprint": "sha256:dd9a41d9d09fc68ad825a9b0953e4a6411be3fc4a31df10d6ec6a32e7ee190b6",
+            "newFingerprint": "sha256:6910fc119c52f2c17c0e1807e4655365bb655d6b898630d1739c3632503471a0",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 129,
+            "levelId": "campaign-129",
+            "oldFingerprint": "sha256:e9f9bbc05aad9ad984ec0ef7501ab08d3ea88f315a616e296e9db96182aec226",
+            "newFingerprint": "sha256:5d82d55f9322ecaa57de64021338a1e7dee44df4c86758c8b29e0c1253eadd0d",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 130,
+            "levelId": "campaign-130",
+            "oldFingerprint": "sha256:cd1670cee09cfe45f861e518d865bd9aab7b5c7c748868ddb46ceb4c8fad0bea",
+            "newFingerprint": "sha256:dff706382bb3579006041ad489e012a2aa12d1be66f2b6c1793381d7fa786336",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 131,
+            "levelId": "campaign-131",
+            "oldFingerprint": "sha256:0a11151fc8ccd54029dba4c63119a451a7602f3d9b5b8b92913c7807f0b5d45b",
+            "newFingerprint": "sha256:aecef39a0b56bf3f509b59e4b85d8d01b5d6a49600162a81e63ed463c09723af",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 132,
+            "levelId": "campaign-132",
+            "oldFingerprint": "sha256:a4654d5ed11c1ffc6ac471b57d64f9945f9016e13adfcb726f232158cd36dac9",
+            "newFingerprint": "sha256:af1467c096dae42a5d71c46590ced78f41dde906eca4b442f04e1415dae3d891",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 133,
+            "levelId": "campaign-133",
+            "oldFingerprint": "sha256:cdf780171c9febf0ff8400acb9fcfe5ed36d5c1b7ed48f77ef0ef0b7f572fc41",
+            "newFingerprint": "sha256:6c19e6b61b2deed85fbf74b6ca1384f60e82ab04f2e4f018e33bf222569b108b",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 134,
+            "levelId": "campaign-134",
+            "oldFingerprint": "sha256:777d0d16746254379a38589780c28914889b09206b45833ca1312e628bc34b69",
+            "newFingerprint": "sha256:2aa0ff1cf2fff49f12d965996c75cf6fa640b6c75235470335980f5e8165044b",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 135,
+            "levelId": "campaign-135",
+            "oldFingerprint": "sha256:97d803e6f78d6796569a0fa69dd02065e5db17b3cbf4507019fcf175c9380259",
+            "newFingerprint": "sha256:7ff8eb0d4ec542523a4a801bc4549f4519cd6319993586a0962e2a8b7ee4f48c",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 136,
+            "levelId": "campaign-136",
+            "oldFingerprint": "sha256:e49617213de87eed26c1a54f8263362bf32800ab2c09ec08efe62a4e2944c9e6",
+            "newFingerprint": "sha256:973fa822693209fb32721dae8eeb82d9c177c36f60deb5f32e2e90dfd0c74614",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 137,
+            "levelId": "campaign-137",
+            "oldFingerprint": "sha256:f45358f5da956c262b83492b9b4c4b2ba27d3b16df7b2ab6d3e52a1cc58196fa",
+            "newFingerprint": "sha256:0e42278251dbbfda4d290218abe1ed7d04a8c3ff1394f81e71b975b6cddf1692",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 138,
+            "levelId": "campaign-138",
+            "oldFingerprint": "sha256:6fecd89c315263862e7b4d5128a3c8f93fddd8aecd14853da603bc3ba404aa9a",
+            "newFingerprint": "sha256:e0605ba7bd9c5ea993221ddd1357c58d577150377b7465077dc554910cd1a21d",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 139,
+            "levelId": "campaign-139",
+            "oldFingerprint": "sha256:db991bc007465f87c1c91cce648acddda4b48aeedb3a77a4d4fd7bb84777b2a5",
+            "newFingerprint": "sha256:62bce7f2ca5931120d202df3bb5941518be178831a6100f7780db499f5d47bc4",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 140,
+            "levelId": "campaign-140",
+            "oldFingerprint": "sha256:1e1fa20b0fbb7d38d4e0978b30505e1ef3e926c485cc20b4ccc6a97976e7deee",
+            "newFingerprint": "sha256:9e7e2c8b50b6317d278e0ff359da1e35a196eb1feffeca8aacd361ef9fd85d3e",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 141,
+            "levelId": "campaign-141",
+            "oldFingerprint": "sha256:283299b8e429b55d8b4fcf0474f826144b8a6e5adfe71522f013a3d2847d6ca9",
+            "newFingerprint": "sha256:ce5ada4a20c8eb8f613b1400bc6f6ba4e02dad2d75df4007ebadf1602f93d7d3",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 142,
+            "levelId": "campaign-142",
+            "oldFingerprint": "sha256:4a886263b884d09e57d69073922005ac53264d5d352872a7e522746f1dc415d0",
+            "newFingerprint": "sha256:5932d7fbcad67d2def0fbe76135761b3267031e2857e34c5397f9f07d383fc5e",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 143,
+            "levelId": "campaign-143",
+            "oldFingerprint": "sha256:d541e42bc7682e82056c2d2f064adf8368177fc578b19e2dac98aae7f1665c74",
+            "newFingerprint": "sha256:2f67878ae8325c87c8003a1f400725a8614da00787dc14c30693e5d0828622a8",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 144,
+            "levelId": "campaign-144",
+            "oldFingerprint": "sha256:a1b36a4205db832ad98a3cc0e20e51b2c601bf9c1a5b680f7151408982eba34f",
+            "newFingerprint": "sha256:9e28215f8478b7e4d6d9095bb34458b8ce66dfbacdfa1bb23c781e4ad9506f7f",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 145,
+            "levelId": "campaign-145",
+            "oldFingerprint": "sha256:e1867b66b1d0d8b6ee98f5326acbb46fd482fd38e27516c083146392a3940cf6",
+            "newFingerprint": "sha256:f5da2e95bec5813a89eb2edee0b152b069cc1df854834e19d30c824dddc6055d",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 146,
+            "levelId": "campaign-146",
+            "oldFingerprint": "sha256:25a1d46433a9da6d2bb98265a4f1a4ff760f572c473b7bc7121a1c52d8564981",
+            "newFingerprint": "sha256:ae93cb17c056281525b0404a9f48599effbe209b1903d94ca020a061b76482e7",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 147,
+            "levelId": "campaign-147",
+            "oldFingerprint": "sha256:81ff1d887ae74392f15144f86b3ba1904894bd1072e1e447fc3b17aaaaeaa4d4",
+            "newFingerprint": "sha256:1ec7bc62344c00c009685febbc31bbc9cc7e0cd4397f888a6c59a70630f9cb02",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 148,
+            "levelId": "campaign-148",
+            "oldFingerprint": "sha256:c068bb5524619e97b60bf3c97589d7071469a3c9c1cdb8381def190bad7be3b1",
+            "newFingerprint": "sha256:f61b2d8d041b0a12cfd3489e5067834c12ceab9070dc79adf883a7dda2dce815",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 149,
+            "levelId": "campaign-149",
+            "oldFingerprint": "sha256:562df2df216e0b8982c18093c82afab35e4afbac680defcb1b50cb01fa6c8c6d",
+            "newFingerprint": "sha256:ce40f91a9c9940f9bd351c982a5d501643ca770bb3a7317adbf06846de729fcd",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        },
+        {
+            "campaignNumber": 150,
+            "levelId": "campaign-150",
+            "oldFingerprint": "sha256:a9f57511e28b273486b0df32d586be212d64e3d4cf3f996a7006cb23e6694cf4",
+            "newFingerprint": "sha256:9116f4976ff289fb7eb0f9c474d27608272da8aed58f169cf1b7dcbfead992a1",
+            "stableIdPreserved": true,
+            "recordPolicy": "PRESERVE_EARNED_VALUE_ARCHIVE_OLD_BEST_START_NEW_FINGERPRINT_RECORD"
+        }
+    ],
+    "stableIdsPreserved": 150,
+    "fingerprintsChanged": 150,
+    "preferenceSchemaVersion": 6,
+    "preservesCompletionStarsRewardsUnlocksAndCurrency": true,
+    "archivesIncomparableBestRecords": true
+}

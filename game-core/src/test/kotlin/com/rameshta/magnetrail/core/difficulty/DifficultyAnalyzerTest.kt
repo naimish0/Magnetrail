@@ -12,7 +12,7 @@ import org.junit.Test
 
 class DifficultyAnalyzerTest {
     private val catalog by lazy {
-        LevelParser().parseCatalog(checkNotNull(javaClass.getResource("/Magnetrail_Campaign_Levels_v3.json")).readText())
+        LevelParser().parseCatalog(checkNotNull(javaClass.getResource("/development/PHASE0_SOURCE_CONTENT_V4.json")).readText())
     }
 
     @Test

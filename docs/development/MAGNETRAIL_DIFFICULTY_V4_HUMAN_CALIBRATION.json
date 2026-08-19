@@ -1,0 +1,941 @@
+{
+  "schemaVersion": 1,
+  "calibrationVersion": 0,
+  "status": "HUMAN_RATINGS_COMPLETE",
+  "ratingScale": [
+    {
+      "value": 1,
+      "label": "Trivial"
+    },
+    {
+      "value": 2,
+      "label": "Very Easy"
+    },
+    {
+      "value": 3,
+      "label": "Easy"
+    },
+    {
+      "value": 4,
+      "label": "Moderate"
+    },
+    {
+      "value": 5,
+      "label": "Challenging"
+    },
+    {
+      "value": 6,
+      "label": "Hard"
+    },
+    {
+      "value": 7,
+      "label": "Very Hard"
+    },
+    {
+      "value": 8,
+      "label": "Expert"
+    }
+  ],
+  "groups": {
+    "referenceStrong": [
+      97,
+      140,
+      145,
+      100,
+      175,
+      198,
+      99,
+      199,
+      200,
+      93,
+      96,
+      95,
+      195,
+      147,
+      184,
+      185,
+      197,
+      98,
+      135,
+      173
+    ],
+    "weakControl": [
+      153,
+      71,
+      68,
+      40,
+      28,
+      32,
+      163,
+      152,
+      159,
+      191,
+      122,
+      31,
+      35,
+      26,
+      27
+    ],
+    "easyControl": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "raters": [
+    {
+      "raterId": "project-owner",
+      "displayName": "Project owner"
+    }
+  ],
+  "levels": [
+    {
+      "levelId": "campaign-097",
+      "levelNumber": 97,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:292946788457f6780cd2ba4a6f41452c3a28ba2d1a939a2ba95fdaac70f42f86"
+    },
+    {
+      "levelId": "campaign-140",
+      "levelNumber": 140,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 5,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:9e7e2c8b50b6317d278e0ff359da1e35a196eb1feffeca8aacd361ef9fd85d3e"
+    },
+    {
+      "levelId": "campaign-145",
+      "levelNumber": 145,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 4,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:f5da2e95bec5813a89eb2edee0b152b069cc1df854834e19d30c824dddc6055d"
+    },
+    {
+      "levelId": "campaign-100",
+      "levelNumber": 100,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 3,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:910613e0c5079a1606b1f6c659b132daf3ee918a49a3557ca3ac982c818acd24"
+    },
+    {
+      "levelId": "campaign-175",
+      "levelNumber": 175,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 2,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:e22b8e73a8a76c086dccd7dae4cf50369018d0290c9261389fe6a21d2abc4228"
+    },
+    {
+      "levelId": "campaign-198",
+      "levelNumber": 198,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 2,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:ee78a8b7ca470a31ac8adfc54a2147f19b13b56253a7bbba71a52c02e75c7978"
+    },
+    {
+      "levelId": "campaign-099",
+      "levelNumber": 99,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:3ce53084a58e1d430339c3d9b8b6df83b526c1e9c1f89c8c1c62293f1a8c6d9a"
+    },
+    {
+      "levelId": "campaign-199",
+      "levelNumber": 199,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:df1dccafca39de9ab38355a92358c54b5cc06d831dca224cc0b23d8e20c4c0d8"
+    },
+    {
+      "levelId": "campaign-200",
+      "levelNumber": 200,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 3,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:49886d7cf60e52a13e6ceefe52f1c189aca10c9c7ab3b54da063e74a8935a812"
+    },
+    {
+      "levelId": "campaign-093",
+      "levelNumber": 93,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:bc838817d949c63b682fda1730b3b08a4494a353a4e81366ae0adbd1321e8209"
+    },
+    {
+      "levelId": "campaign-096",
+      "levelNumber": 96,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:9f9b80f9511406ff89c0f3f09eea4f86048ce4efa79cbbf1795864245d6167c2"
+    },
+    {
+      "levelId": "campaign-095",
+      "levelNumber": 95,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:18fa97d16baf39f3f21adabf725826e00e2be256b4f9d6620854c2cc5f081cc9"
+    },
+    {
+      "levelId": "campaign-195",
+      "levelNumber": 195,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:b86058a5e98d27b0638e1fa51f77f38852ac2835832aadb6f3b12ddda068d032"
+    },
+    {
+      "levelId": "campaign-147",
+      "levelNumber": 147,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:1ec7bc62344c00c009685febbc31bbc9cc7e0cd4397f888a6c59a70630f9cb02"
+    },
+    {
+      "levelId": "campaign-184",
+      "levelNumber": 184,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:6dda943a03735844b8f4c4457b9ff14730041968a838b00886b3021183f5a2c2"
+    },
+    {
+      "levelId": "campaign-185",
+      "levelNumber": 185,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 2,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:3a9ca78bc35469f353611ea8bf975748fcdd3d59094c0d61259855e2ff6500ca"
+    },
+    {
+      "levelId": "campaign-197",
+      "levelNumber": 197,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 2,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:d0e1c3648591a42c7da268cdc8e9a1204beda921fe61520cd1ecd17d2607c95d"
+    },
+    {
+      "levelId": "campaign-098",
+      "levelNumber": 98,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:e529d9b6f05f79f419803d35ff422c540299bd3a62b4456e68c458caf7612ff5"
+    },
+    {
+      "levelId": "campaign-135",
+      "levelNumber": 135,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:7ff8eb0d4ec542523a4a801bc4549f4519cd6319993586a0962e2a8b7ee4f48c"
+    },
+    {
+      "levelId": "campaign-173",
+      "levelNumber": 173,
+      "group": "referenceStrong",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:2f637f1278cd964a1ad6d0a149229d0b13334b1f1eab0dde265a9a6269d3a166"
+    },
+    {
+      "levelId": "campaign-153",
+      "levelNumber": 153,
+      "group": "weakControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:eab624ab73d926d5a7d17f63e4290748cf49f601fdac229a7f4443c7eace000d"
+    },
+    {
+      "levelId": "campaign-071",
+      "levelNumber": 71,
+      "group": "weakControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:6283c6e402a96b27ff725829f7d13a0a1416fb533b974ec530f0717f32cade78"
+    },
+    {
+      "levelId": "campaign-068",
+      "levelNumber": 68,
+      "group": "weakControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:1808bda67159fc6037680b1a66d011a2734a31e2854d6d869c44463e62aae6ae"
+    },
+    {
+      "levelId": "campaign-040",
+      "levelNumber": 40,
+      "group": "weakControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:fbe8723ac7149044370f5d314e3238881a6f0cb86693bda73a8a80aceded94a6"
+    },
+    {
+      "levelId": "campaign-028",
+      "levelNumber": 28,
+      "group": "weakControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:a32555b3fd05b58108c1813fa3f27bd4eab44db803084b20b16051fb02d365dd"
+    },
+    {
+      "levelId": "campaign-032",
+      "levelNumber": 32,
+      "group": "weakControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:a77679c6744329baa4083288f96e005c81e47acf99a3f349db853bc47600e6cf"
+    },
+    {
+      "levelId": "campaign-163",
+      "levelNumber": 163,
+      "group": "weakControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:ffcc3b3694fb850b19ebfe67108005d176fb9fbd92804b62a801f2d693aff100"
+    },
+    {
+      "levelId": "campaign-152",
+      "levelNumber": 152,
+      "group": "weakControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:58c22d8c077f11a902a54d2d8bfd68a489b73a488bf0c598ed2ae33b79788c95"
+    },
+    {
+      "levelId": "campaign-159",
+      "levelNumber": 159,
+      "group": "weakControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:fa993b2684df014965bc9d565adf4c54ce9b06561ce2ad33cfa5618d134661d0"
+    },
+    {
+      "levelId": "campaign-191",
+      "levelNumber": 191,
+      "group": "weakControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:d6c50d94d38ff5e0d072012bf60315ee1d28e022be1718b779417999f75a917a"
+    },
+    {
+      "levelId": "campaign-122",
+      "levelNumber": 122,
+      "group": "weakControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:477a0bec53a1671daf5db712a08ba7e86bb1387740eee4ee746966141e03e4ae"
+    },
+    {
+      "levelId": "campaign-031",
+      "levelNumber": 31,
+      "group": "weakControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:fd82d52e672f2c83def5ffad53e79bfb430a27e236713c9776dde774caad6d2a"
+    },
+    {
+      "levelId": "campaign-035",
+      "levelNumber": 35,
+      "group": "weakControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:dc565105a1f89dd2b7cc89121da0e7d2bc034b259dbdd5f7d12ffc26bb173f73"
+    },
+    {
+      "levelId": "campaign-026",
+      "levelNumber": 26,
+      "group": "weakControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:178014dc38b10c136cdea9c17bd11b3b1dfbf961df328eab85d841fef8fea6be"
+    },
+    {
+      "levelId": "campaign-027",
+      "levelNumber": 27,
+      "group": "weakControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:f401f503ecc10882085d6d402c4e070f8ab580cf0b2740940eaad780def29ba4"
+    },
+    {
+      "levelId": "proto-001",
+      "levelNumber": 1,
+      "group": "easyControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:b817f33d05cd96e56e632a6b89892b9ab9f5fc8c6b1377d3c990fbdcc5f0c578"
+    },
+    {
+      "levelId": "proto-002",
+      "levelNumber": 2,
+      "group": "easyControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:1555b7d1950b5e4bb3a82375655ed4e4b51831ec9802917c1737806798987b2f"
+    },
+    {
+      "levelId": "proto-003",
+      "levelNumber": 3,
+      "group": "easyControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:aaf2b5d0478674c6f6e71e54bcd6c9daa97a5bd4675b8ec1f32a4e3edf30e771"
+    },
+    {
+      "levelId": "proto-004",
+      "levelNumber": 4,
+      "group": "easyControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:55f09474624b7f3151c4852b844c41af6da80b05e885d118ac2d3c11e94eb1e2"
+    },
+    {
+      "levelId": "proto-005",
+      "levelNumber": 5,
+      "group": "easyControl",
+      "ratings": [
+        {
+          "raterId": "project-owner",
+          "difficultyRating": 1,
+          "firstMoveObvious": null,
+          "meaningfulMistakeMade": null,
+          "requiredOrderingReasoning": null,
+          "requiredPolarityReasoning": null,
+          "interchangeableMovesObserved": null,
+          "neededUndo": null,
+          "neededRestart": null,
+          "perceivedFairness": null,
+          "comments": null
+        }
+      ],
+      "boardFingerprint": "sha256:9efd985ffbf4dd5cc859947c552825dd4ea422f6592ccb916db6e60ba02ab4d7"
+    }
+  ],
+  "notes": [
+    "Automated analysis is not human approval. Human ratings must be entered by an actual player after reviewing each selected level.",
+    "Ratings are bound to the content-v6 board fingerprint and must not transfer to replacement boards.",
+    "Reference groups are sampling categories, not objective difficulty labels.",
+    "The project owner directly supplied ratings for all 40 selected levels; all optional observations remain unrated."
+  ]
+}

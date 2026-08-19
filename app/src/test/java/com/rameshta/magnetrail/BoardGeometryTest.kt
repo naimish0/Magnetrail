@@ -45,4 +45,23 @@ class BoardGeometryTest {
         assertTrue(route.last().x > geometry.boardBounds.right)
         assertEquals(geometry.cellCenter(Position(2, 2)).y, route.last().y, 0.001f)
     }
+
+    @Test
+    fun `promoted eight by eight boards retain exact visual and input cell mapping`() {
+        val geometry = BoardGeometry.create(
+            canvasSize = Size(360f, 360f),
+            boardWidth = 8,
+            boardHeight = 8,
+            exitGutterPx = 12f,
+        )
+
+        for (row in 1..8) {
+            for (column in 1..8) {
+                val position = Position(row, column)
+                assertEquals(position, geometry.positionAt(geometry.cellCenter(position)))
+            }
+        }
+        assertEquals(42f, geometry.cellSize, 0.001f)
+        assertNull(geometry.positionAt(Offset(geometry.boardBounds.right + 1f, geometry.boardBounds.bottom)))
+    }
 }

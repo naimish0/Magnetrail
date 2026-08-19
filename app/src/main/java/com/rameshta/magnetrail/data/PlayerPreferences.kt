@@ -5,7 +5,7 @@ import com.rameshta.magnetrail.core.economy.EconomyConfig
 import com.rameshta.magnetrail.core.generation.CONTENT_VERSION
 import com.rameshta.magnetrail.core.generation.GENERATOR_VERSION
 
-const val PLAYER_PREFERENCES_SCHEMA_VERSION = 5
+const val PLAYER_PREFERENCES_SCHEMA_VERSION = 6
 
 data class PlayerSettings(
     val soundEnabled: Boolean = true,
@@ -53,6 +53,18 @@ data class LevelRecord(
     val lowestActions: Int? = null,
     val lowestOverloads: Int? = null,
     val lowestHints: Int? = null,
+    val boardFingerprint: String? = null,
+    val legacyRecords: List<LegacyLevelRecord> = emptyList(),
+)
+
+/** Earned history from an older board revision; never participates in current-board grading. */
+data class LegacyLevelRecord(
+    val boardFingerprint: String?,
+    val sourceContentVersion: Int,
+    val bestStars: Int,
+    val lowestActions: Int?,
+    val lowestOverloads: Int?,
+    val lowestHints: Int?,
 )
 
 data class DailyCache(

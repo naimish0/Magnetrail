@@ -42,7 +42,7 @@ internal fun runM51(command: String, options: Map<String, String>) {
         }
         "audit-pacing" -> {
             File(options.requiredM51("output")).writeReport(audit.auditMarkdown())
-            println("Audited deterministic 100-level pacing; no campaign content or order was rewritten.")
+            println("Audited deterministic ${audit.rows.size}-level pacing; no campaign content or order was rewritten.")
         }
         "certify-quality" -> {
             val rejected = audit.rows.filter { it.quality.qualityStatus == LevelQualityStatus.REJECT }
@@ -378,7 +378,7 @@ private data class CampaignAuditResult(
         appendLine()
         appendLine("The audit does not establish a high-confidence reason to reorder the release candidate before closed-test calibration. Stable IDs, campaign numbers, board content, fingerprints, grading, and saved-progress behavior are unchanged; therefore no sequence migration is required.")
         appendLine()
-        appendLine("Future catalog roadmap only: validate the current 100 in closed testing, then gate expansion to 150, 200, and approximately 300 levels. Optional Infinite Mode remains out of scope until retention and content-quality evidence justify it.")
+        appendLine("Future catalog roadmap only: validate the current ${rows.size}-level fixed catalog before separately gating later expansion targets. Optional Infinite Mode remains out of scope until retention and content-quality evidence justify it.")
     }
 
     private fun StringBuilder.appendGroups(groups: List<List<LevelDefinition>>) {

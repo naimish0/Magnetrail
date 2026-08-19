@@ -1,0 +1,4816 @@
+{
+    "schemaVersion": 1,
+    "ruleVersion": "magnetrail-core-1",
+    "catalogId": "magnetrail-d2-blind-review",
+    "levels": [
+        {
+            "id": "d2-review-001",
+            "number": 1,
+            "title": "Review puzzle 001",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 4,
+                    "column": 6,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a3",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a4",
+                    "row": 6,
+                    "column": 7,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a5",
+                    "row": 7,
+                    "column": 6,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 3,
+                    "column": 7,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m2",
+                    "row": 3,
+                    "column": 6,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 2,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a3",
+                    "a4",
+                    "a5",
+                    "a2"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-002",
+            "number": 2,
+            "title": "Review puzzle 002",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a3",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a5",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 3,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 2
+                },
+                {
+                    "row": 5,
+                    "column": 2
+                },
+                {
+                    "row": 5,
+                    "column": 1
+                },
+                {
+                    "row": 2,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a4",
+                    "a1",
+                    "a5",
+                    "a3"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-003",
+            "number": 3,
+            "title": "Review puzzle 003",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 8,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 5,
+                    "column": 8,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a4",
+                    "row": 6,
+                    "column": 7,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 8,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 5,
+                    "column": 7,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 5,
+                    "column": 2
+                },
+                {
+                    "row": 8,
+                    "column": 4
+                },
+                {
+                    "row": 5,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-004",
+            "number": 4,
+            "title": "Review puzzle 004",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a3",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a5",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 5,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 2,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 5,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a3",
+                    "a2",
+                    "a4",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-005",
+            "number": 5,
+            "title": "Review puzzle 005",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a2",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a3",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a4",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 3,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-006",
+            "number": 6,
+            "title": "Review puzzle 006",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a2",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a4",
+                    "row": 4,
+                    "column": 5,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 3,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 3,
+                    "column": 5,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 4
+                },
+                {
+                    "row": 2,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a1",
+                    "a3",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-007",
+            "number": 7,
+            "title": "Review puzzle 007",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a3",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 4,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 2,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 2
+                },
+                {
+                    "row": 3,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-008",
+            "number": 8,
+            "title": "Review puzzle 008",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a2",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 3,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 4
+                },
+                {
+                    "row": 2,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-009",
+            "number": 9,
+            "title": "Review puzzle 009",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a3",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 1,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 1
+                },
+                {
+                    "row": 3,
+                    "column": 2
+                },
+                {
+                    "row": 1,
+                    "column": 2
+                },
+                {
+                    "row": 5,
+                    "column": 3
+                },
+                {
+                    "row": 4,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a3",
+                    "a1",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-010",
+            "number": 10,
+            "title": "Review puzzle 010",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a2",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a3",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 4,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 2
+                },
+                {
+                    "row": 2,
+                    "column": 2
+                },
+                {
+                    "row": 1,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a3",
+                    "a1"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-011",
+            "number": 11,
+            "title": "Review puzzle 011",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a3",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a5",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a6",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 4
+                },
+                {
+                    "row": 5,
+                    "column": 1
+                },
+                {
+                    "row": 5,
+                    "column": 5
+                },
+                {
+                    "row": 2,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a3",
+                    "a2",
+                    "a4",
+                    "a1",
+                    "a5",
+                    "a6"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-012",
+            "number": 12,
+            "title": "Review puzzle 012",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a3",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a5",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 5,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 1,
+                    "column": 4,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 4
+                },
+                {
+                    "row": 2,
+                    "column": 4
+                },
+                {
+                    "row": 3,
+                    "column": 3
+                },
+                {
+                    "row": 4,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a3",
+                    "a4",
+                    "a5",
+                    "a2"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-013",
+            "number": 13,
+            "title": "Review puzzle 013",
+            "width": 6,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 1,
+                    "column": 5,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a3",
+                    "row": 4,
+                    "column": 6,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 1,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 1,
+                    "column": 6,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 4,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 2
+                },
+                {
+                    "row": 3,
+                    "column": 2
+                },
+                {
+                    "row": 2,
+                    "column": 6
+                },
+                {
+                    "row": 5,
+                    "column": 4
+                },
+                {
+                    "row": 5,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-014",
+            "number": 14,
+            "title": "Review puzzle 014",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a3",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a5",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 2,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m2",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 3
+                },
+                {
+                    "row": 1,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a3",
+                    "a4",
+                    "a5",
+                    "a1"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-015",
+            "number": 15,
+            "title": "Review puzzle 015",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a2",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a4",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a5",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 4,
+                    "column": 5,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m3",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a4",
+                    "a3",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-016",
+            "number": 16,
+            "title": "Review puzzle 016",
+            "width": 6,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a2",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 1,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 3,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m3",
+                    "row": 1,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m4",
+                    "row": 2,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-017",
+            "number": 17,
+            "title": "Review puzzle 017",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 8,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 1,
+                    "column": 7,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a3",
+                    "row": 7,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 7,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 7,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 7,
+                    "column": 7,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 7
+                },
+                {
+                    "row": 7,
+                    "column": 6
+                },
+                {
+                    "row": 7,
+                    "column": 1
+                },
+                {
+                    "row": 6,
+                    "column": 7
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a3",
+                    "a1",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-018",
+            "number": 18,
+            "title": "Review puzzle 018",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a3",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 5,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a5",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 2,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m3",
+                    "row": 4,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a5",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-019",
+            "number": 19,
+            "title": "Review puzzle 019",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a3",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a4",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 5,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 3
+                },
+                {
+                    "row": 2,
+                    "column": 4
+                },
+                {
+                    "row": 2,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a3",
+                    "a4",
+                    "a1"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-020",
+            "number": 20,
+            "title": "Review puzzle 020",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a2",
+                    "row": 5,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a3",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 1,
+                    "column": 5,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 1,
+                    "column": 4,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 4
+                },
+                {
+                    "row": 3,
+                    "column": 2
+                },
+                {
+                    "row": 5,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a3",
+                    "a2",
+                    "a1",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-021",
+            "number": 21,
+            "title": "Review puzzle 021",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a2",
+                    "row": 5,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a4",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a5",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a6",
+                    "row": 4,
+                    "column": 5,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 2,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m2",
+                    "row": 1,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 3,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m4",
+                    "row": 5,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a3",
+                    "a4",
+                    "a5",
+                    "a1",
+                    "a6"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-022",
+            "number": 22,
+            "title": "Review puzzle 022",
+            "width": 6,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 3,
+                    "column": 6,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a2",
+                    "row": 2,
+                    "column": 6,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a3",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a4",
+                    "row": 6,
+                    "column": 6,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a5",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 3,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 1,
+                    "column": 6,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 5,
+                    "column": 6
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-023",
+            "number": 23,
+            "title": "Review puzzle 023",
+            "width": 7,
+            "height": 7,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a3",
+                    "row": 6,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a4",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a5",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 2,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 2,
+                    "column": 7,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m3",
+                    "row": 6,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 1
+                },
+                {
+                    "row": 3,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a3",
+                    "a1",
+                    "a5",
+                    "a2",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-024",
+            "number": 24,
+            "title": "Review puzzle 024",
+            "width": 6,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 1,
+                    "column": 6,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a3",
+                    "row": 4,
+                    "column": 6,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a4",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 6,
+                    "column": 6,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 4,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m4",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 6
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a1",
+                    "a3",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-025",
+            "number": 25,
+            "title": "Review puzzle 025",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a4",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 5,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 2,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 2,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m4",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 5,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a4",
+                    "a3"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-026",
+            "number": 26,
+            "title": "Review puzzle 026",
+            "width": 6,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 6,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a2",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a3",
+                    "row": 2,
+                    "column": 6,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 4,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 3,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 2,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 4
+                },
+                {
+                    "row": 2,
+                    "column": 4
+                },
+                {
+                    "row": 4,
+                    "column": 4
+                },
+                {
+                    "row": 2,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a1",
+                    "a3",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-027",
+            "number": 27,
+            "title": "Review puzzle 027",
+            "width": 6,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a2",
+                    "row": 6,
+                    "column": 5,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a3",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a5",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 5,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 1,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 5,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a3",
+                    "a4",
+                    "a2",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-028",
+            "number": 28,
+            "title": "Review puzzle 028",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 4,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a5",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 2,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m3",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m4",
+                    "row": 1,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m5",
+                    "row": 5,
+                    "column": 5,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a4",
+                    "a2",
+                    "a5",
+                    "a3"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-029",
+            "number": 29,
+            "title": "Review puzzle 029",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a3",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 1,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 5,
+                    "column": 5,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m4",
+                    "row": 5,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 5,
+                    "column": 4
+                },
+                {
+                    "row": 3,
+                    "column": 2
+                },
+                {
+                    "row": 2,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a3",
+                    "a1",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-030",
+            "number": 30,
+            "title": "Review puzzle 030",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a2",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a3",
+                    "row": 4,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a4",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a5",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a6",
+                    "row": 1,
+                    "column": 5,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 1,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 5,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m4",
+                    "row": 2,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m5",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 5,
+                    "column": 5
+                },
+                {
+                    "row": 4,
+                    "column": 4
+                },
+                {
+                    "row": 4,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a3",
+                    "a5",
+                    "a6",
+                    "a1",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-031",
+            "number": 31,
+            "title": "Review puzzle 031",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 1,
+                    "column": 8,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a3",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a5",
+                    "row": 7,
+                    "column": 7,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 2,
+                    "column": 7,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 1,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 5,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m4",
+                    "row": 8,
+                    "column": 5,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m5",
+                    "row": 1,
+                    "column": 7,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m6",
+                    "row": 6,
+                    "column": 6,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 7,
+                    "column": 1
+                },
+                {
+                    "row": 2,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-032",
+            "number": 32,
+            "title": "Review puzzle 032",
+            "width": 7,
+            "height": 7,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a4",
+                    "row": 1,
+                    "column": 6,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a5",
+                    "row": 2,
+                    "column": 7,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 6,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m2",
+                    "row": 6,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 7,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m4",
+                    "row": 6,
+                    "column": 7,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 6,
+                    "column": 2
+                },
+                {
+                    "row": 6,
+                    "column": 6
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-033",
+            "number": 33,
+            "title": "Review puzzle 033",
+            "width": 7,
+            "height": 7,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a2",
+                    "row": 6,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 7,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a5",
+                    "row": 4,
+                    "column": 6,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 3,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m2",
+                    "row": 7,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 3,
+                    "column": 3,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 5,
+                    "column": 3
+                },
+                {
+                    "row": 4,
+                    "column": 5
+                },
+                {
+                    "row": 4,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a3",
+                    "a1",
+                    "a4",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-034",
+            "number": 34,
+            "title": "Review puzzle 034",
+            "width": 7,
+            "height": 7,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a3",
+                    "row": 1,
+                    "column": 7,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a5",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 5,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 6,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 6,
+                    "column": 7,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 7,
+                    "column": 7
+                },
+                {
+                    "row": 5,
+                    "column": 7
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a3",
+                    "a2",
+                    "a4",
+                    "a1",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-035",
+            "number": 35,
+            "title": "Review puzzle 035",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a2",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 1,
+                    "column": 6,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a4",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a5",
+                    "row": 7,
+                    "column": 6,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a6",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 5,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 8,
+                    "column": 6,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m4",
+                    "row": 7,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 4
+                },
+                {
+                    "row": 3,
+                    "column": 5
+                },
+                {
+                    "row": 2,
+                    "column": 1
+                },
+                {
+                    "row": 6,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4",
+                    "a5",
+                    "a6"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-036",
+            "number": 36,
+            "title": "Review puzzle 036",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 8,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 8,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a4",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a5",
+                    "row": 7,
+                    "column": 4,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 8,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 8,
+                    "column": 6,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 4,
+                    "column": 7,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m4",
+                    "row": 5,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m5",
+                    "row": 3,
+                    "column": 6,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 5
+                },
+                {
+                    "row": 8,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a3",
+                    "a4",
+                    "a5",
+                    "a1",
+                    "a2"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-037",
+            "number": 37,
+            "title": "Review puzzle 037",
+            "width": 7,
+            "height": 7,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a2",
+                    "row": 6,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 7,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 6,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a5",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 6,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 6,
+                    "column": 7,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 3
+                },
+                {
+                    "row": 5,
+                    "column": 2
+                },
+                {
+                    "row": 6,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a3",
+                    "a1",
+                    "a2",
+                    "a4",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-038",
+            "number": 38,
+            "title": "Review puzzle 038",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 1,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a2",
+                    "row": 1,
+                    "column": 6,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a3",
+                    "row": 8,
+                    "column": 8,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a5",
+                    "row": 1,
+                    "column": 7,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 1,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 1,
+                    "column": 8,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 8,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m4",
+                    "row": 3,
+                    "column": 8,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m5",
+                    "row": 5,
+                    "column": 7,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m6",
+                    "row": 6,
+                    "column": 6,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 7
+                },
+                {
+                    "row": 6,
+                    "column": 8
+                },
+                {
+                    "row": 3,
+                    "column": 5
+                },
+                {
+                    "row": 2,
+                    "column": 8
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a1",
+                    "a3",
+                    "a4",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-039",
+            "number": 39,
+            "title": "Review puzzle 039",
+            "width": 7,
+            "height": 7,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a3",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a4",
+                    "row": 7,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a5",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 3,
+                    "column": 3,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m2",
+                    "row": 7,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 1,
+                    "column": 7,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m4",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m5",
+                    "row": 3,
+                    "column": 6,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m6",
+                    "row": 4,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 4
+                },
+                {
+                    "row": 2,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a3",
+                    "a5",
+                    "a1",
+                    "a2",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-040",
+            "number": 40,
+            "title": "Review puzzle 040",
+            "width": 7,
+            "height": 7,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 7,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a2",
+                    "row": 7,
+                    "column": 6,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 7,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 4,
+                    "column": 7,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a5",
+                    "row": 6,
+                    "column": 5,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 7,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 7,
+                    "column": 7,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m4",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 3
+                },
+                {
+                    "row": 4,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a4",
+                    "a1",
+                    "a3",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-041",
+            "number": 41,
+            "title": "Review puzzle 041",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 1,
+                    "column": 7,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a2",
+                    "row": 1,
+                    "column": 6,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 8,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a5",
+                    "row": 8,
+                    "column": 1,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 8,
+                    "column": 6,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 8
+                },
+                {
+                    "row": 7,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a3",
+                    "a4",
+                    "a1",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-042",
+            "number": 42,
+            "title": "Review puzzle 042",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 5,
+                    "column": 7,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a2",
+                    "row": 6,
+                    "column": 7,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 7,
+                    "column": 6,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a4",
+                    "row": 8,
+                    "column": 8,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a5",
+                    "row": 5,
+                    "column": 4,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 2,
+                    "column": 7,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 8,
+                    "column": 7,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 1,
+                    "column": 6,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 6
+                },
+                {
+                    "row": 5,
+                    "column": 6
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-043",
+            "number": 43,
+            "title": "Review puzzle 043",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 7,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a2",
+                    "row": 7,
+                    "column": 6,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 8,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 6,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a5",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 7,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 7,
+                    "column": 8,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m3",
+                    "row": 6,
+                    "column": 7,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m4",
+                    "row": 8,
+                    "column": 6,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 6,
+                    "column": 5
+                },
+                {
+                    "row": 6,
+                    "column": 6
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-044",
+            "number": 44,
+            "title": "Review puzzle 044",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a3",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a4",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a5",
+                    "row": 7,
+                    "column": 3,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 4,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 2
+                },
+                {
+                    "row": 5,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a3",
+                    "a1",
+                    "a2",
+                    "a4",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-045",
+            "number": 45,
+            "title": "Review puzzle 045",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a3",
+                    "row": 6,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a4",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a5",
+                    "row": 6,
+                    "column": 5,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 2,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 2,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 6,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 7,
+                    "column": 2
+                },
+                {
+                    "row": 6,
+                    "column": 4
+                },
+                {
+                    "row": 5,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a3",
+                    "a5",
+                    "a1",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-046",
+            "number": 46,
+            "title": "Review puzzle 046",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 8,
+                    "column": 6,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a2",
+                    "row": 2,
+                    "column": 6,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a3",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a4",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a5",
+                    "row": 8,
+                    "column": 4,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 8,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 8,
+                    "column": 8
+                },
+                {
+                    "row": 6,
+                    "column": 4
+                },
+                {
+                    "row": 3,
+                    "column": 8
+                },
+                {
+                    "row": 3,
+                    "column": 4
+                },
+                {
+                    "row": 2,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-047",
+            "number": 47,
+            "title": "Review puzzle 047",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 5,
+                    "column": 6,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a2",
+                    "row": 3,
+                    "column": 8,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a3",
+                    "row": 8,
+                    "column": 8,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a4",
+                    "row": 8,
+                    "column": 6,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a5",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 2,
+                    "column": 6,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 2,
+                    "column": 8,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m3",
+                    "row": 8,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 6,
+                    "column": 6
+                },
+                {
+                    "row": 8,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a3",
+                    "a2",
+                    "a4",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-048",
+            "number": 48,
+            "title": "Review puzzle 048",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 5,
+                    "column": 5,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 2,
+                    "column": 6,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a3",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a5",
+                    "row": 5,
+                    "column": 8,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 5,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m2",
+                    "row": 5,
+                    "column": 6,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 2,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 5
+                },
+                {
+                    "row": 5,
+                    "column": 3
+                },
+                {
+                    "row": 1,
+                    "column": 3
+                },
+                {
+                    "row": 5,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-049",
+            "number": 49,
+            "title": "Review puzzle 049",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 4,
+                    "column": 7,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a3",
+                    "row": 7,
+                    "column": 6,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a4",
+                    "row": 3,
+                    "column": 7,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a5",
+                    "row": 4,
+                    "column": 6,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 6,
+                    "column": 6,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 1,
+                    "column": 7,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 2
+                },
+                {
+                    "row": 1,
+                    "column": 3
+                },
+                {
+                    "row": 1,
+                    "column": 6
+                },
+                {
+                    "row": 1,
+                    "column": 4
+                },
+                {
+                    "row": 1,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a4",
+                    "a5",
+                    "a3"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-050",
+            "number": 50,
+            "title": "Review puzzle 050",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 8,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 7,
+                    "column": 1,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 4,
+                    "column": 7,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m2",
+                    "row": 8,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 1,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 2
+                },
+                {
+                    "row": 4,
+                    "column": 4
+                },
+                {
+                    "row": 2,
+                    "column": 8
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-051",
+            "number": 51,
+            "title": "Review puzzle 051",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 6,
+                    "column": 6,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a2",
+                    "row": 8,
+                    "column": 6,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 7,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a5",
+                    "row": 6,
+                    "column": 5,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 6,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 6,
+                    "column": 7,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 6,
+                    "column": 3
+                },
+                {
+                    "row": 8,
+                    "column": 1
+                },
+                {
+                    "row": 7,
+                    "column": 2
+                },
+                {
+                    "row": 2,
+                    "column": 2
+                },
+                {
+                    "row": 8,
+                    "column": 8
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a3",
+                    "a4",
+                    "a5",
+                    "a1"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-052",
+            "number": 52,
+            "title": "Review puzzle 052",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 6,
+                    "column": 6,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a2",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a3",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 8,
+                    "column": 7,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 6,
+                    "column": 7,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 8,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m3",
+                    "row": 6,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 8,
+                    "column": 5
+                },
+                {
+                    "row": 4,
+                    "column": 6
+                },
+                {
+                    "row": 6,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-053",
+            "number": 53,
+            "title": "Review puzzle 053",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 7,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 8,
+                    "column": 8,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a3",
+                    "row": 7,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 7,
+                    "column": 8,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 7,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 6,
+                    "column": 8,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 7,
+                    "column": 6
+                },
+                {
+                    "row": 7,
+                    "column": 7
+                },
+                {
+                    "row": 1,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-054",
+            "number": 54,
+            "title": "Review puzzle 054",
+            "width": 8,
+            "height": 8,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 4,
+                    "column": 7,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a2",
+                    "row": 7,
+                    "column": 7,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 4,
+                    "column": 6,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a4",
+                    "row": 2,
+                    "column": 7,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a5",
+                    "row": 4,
+                    "column": 5,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m2",
+                    "row": 3,
+                    "column": 7,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 6,
+                    "column": 7
+                },
+                {
+                    "row": 5,
+                    "column": 5
+                },
+                {
+                    "row": 6,
+                    "column": 8
+                },
+                {
+                    "row": 4,
+                    "column": 3
+                },
+                {
+                    "row": 6,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4",
+                    "a5"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-055",
+            "number": 55,
+            "title": "Review puzzle 055",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 5,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a4",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 2,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 1,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 4,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m4",
+                    "row": 1,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m5",
+                    "row": 4,
+                    "column": 3,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a3",
+                    "a2",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-056",
+            "number": 56,
+            "title": "Review puzzle 056",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 1,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a4",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 2,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 3
+                },
+                {
+                    "row": 1,
+                    "column": 2
+                },
+                {
+                    "row": 1,
+                    "column": 3
+                },
+                {
+                    "row": 3,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a3",
+                    "a4",
+                    "a2"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-057",
+            "number": 57,
+            "title": "Review puzzle 057",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a4",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a5",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m2",
+                    "row": 5,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 5,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m4",
+                    "row": 2,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m5",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 5,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a3",
+                    "a2",
+                    "a5",
+                    "a1",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-058",
+            "number": 58,
+            "title": "Review puzzle 058",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 1,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a4",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 5,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 4,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 1,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m4",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a4",
+                    "a3"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-059",
+            "number": 59,
+            "title": "Review puzzle 059",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a3",
+                    "row": 5,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a4",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 5,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 4,
+                    "column": 5,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m3",
+                    "row": 1,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m4",
+                    "row": 3,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m5",
+                    "row": 2,
+                    "column": 5,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 4
+                },
+                {
+                    "row": 3,
+                    "column": 1
+                },
+                {
+                    "row": 2,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-060",
+            "number": 60,
+            "title": "Review puzzle 060",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a2",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a3",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a4",
+                    "row": 1,
+                    "column": 5,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 1,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m2",
+                    "row": 4,
+                    "column": 3,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m3",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m4",
+                    "row": 5,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a2",
+                    "a3",
+                    "a1",
+                    "a4"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-061",
+            "number": 61,
+            "title": "Review puzzle 061",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a2",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a3",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "a4",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 4,
+                    "column": 5,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m2",
+                    "row": 3,
+                    "column": 3,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m3",
+                    "row": 5,
+                    "column": 5,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m4",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m5",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a4",
+                    "a3"
+                ]
+            ]
+        },
+        {
+            "id": "d2-review-062",
+            "number": 62,
+            "title": "Review puzzle 062",
+            "width": 5,
+            "height": 5,
+            "arrows": [
+                {
+                    "id": "a1",
+                    "row": 1,
+                    "column": 5,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "a2",
+                    "row": 4,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "a3",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "a4",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "m1",
+                    "row": 5,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m2",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "m3",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "m4",
+                    "row": 2,
+                    "column": 5,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "a1",
+                    "a2",
+                    "a3",
+                    "a4"
+                ]
+            ]
+        }
+    ],
+    "contentVersion": 1
+}

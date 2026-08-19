@@ -3,11 +3,17 @@ package com.rameshta.magnetrail
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToIndex
+import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.semantics.SemanticsProperties
 import com.rameshta.magnetrail.core.model.Arrow
 import com.rameshta.magnetrail.core.model.Direction
 import com.rameshta.magnetrail.core.model.LevelDefinition
@@ -19,6 +25,7 @@ import com.rameshta.magnetrail.ui.theme.MagnetrailTheme
 import com.rameshta.magnetrail.ads.RewardedOffer
 import com.rameshta.magnetrail.ads.RewardedOfferStatus
 import com.rameshta.magnetrail.data.PlayerSettings
+import com.rameshta.magnetrail.data.LevelRecord
 import com.rameshta.magnetrail.settings.SettingsScreen
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -130,6 +137,36 @@ class MagnetrailStateUiTest {
         composeRule.onNodeWithContentDescription("Level 2: Clear the blocker, locked")
             .assertIsDisplayed()
             .assertIsNotEnabled()
+    }
+
+    @Test
+    fun expandedLevelSelectionLazilyScrollsThroughLevel200WithStableProgressSemantics() {
+        val levels = (1..200).map { level(it, "Board $it") }
+        composeRule.setContent {
+            MagnetrailTheme {
+                LevelSelectionScreen(
+                    levels = levels,
+                    currentLevelIndex = 150,
+                    highestUnlockedLevel = 152,
+                    completedLevelIds = setOf("test-151"),
+                    debugUnlockAll = false,
+                    recordsByLevel = mapOf("test-151" to LevelRecord(bestStars = 3)),
+                    onBack = {},
+                    onLevelSelected = {},
+                )
+            }
+        }
+
+        composeRule.onNode(hasScrollAction()).performScrollToIndex(151)
+        composeRule.onNodeWithContentDescription("Level 151: Board 151, completed")
+            .assertIsDisplayed()
+            .assertHasClickAction()
+            .assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "3 stars"))
+        composeRule.onNode(hasScrollAction()).performScrollToIndex(200)
+        composeRule.onNodeWithContentDescription("Level 200: Board 200, locked")
+            .assertIsDisplayed()
+            .assertIsNotEnabled()
+            .assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "0 stars"))
     }
 
     private fun level(number: Int, title: String): LevelDefinition = LevelDefinition(

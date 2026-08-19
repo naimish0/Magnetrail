@@ -91,6 +91,11 @@ fun LevelSelectionScreen(
                     val packId = level.metadata?.packId ?: "field-basics"
                     val previousPack = levels.getOrNull(index - 1)?.metadata?.packId ?: "field-basics"
                     if (index == 0 || packId != previousPack) {
+                        val packDifficultyBands = levels.asSequence()
+                            .filter { it.metadata?.packId == packId }
+                            .mapNotNull { it.metadata?.difficultyBand?.name }
+                            .distinct()
+                            .toList()
                         item(
                             key = "pack_$packId",
                             span = { androidx.compose.foundation.lazy.grid.GridItemSpan(3) },
@@ -103,8 +108,12 @@ fun LevelSelectionScreen(
                                     fontWeight = FontWeight.Bold,
                                 )
                                 Text(
-                                    level.metadata?.difficultyBand?.name?.lowercase()
-                                        ?.replaceFirstChar { it.uppercase() } ?: "Intro",
+                                    if (packDifficultyBands.size > 1) {
+                                        "Mixed difficulty"
+                                    } else {
+                                        packDifficultyBands.singleOrNull()?.lowercase()
+                                            ?.replaceFirstChar { it.uppercase() } ?: "Intro"
+                                    },
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MagnetrailMuted,
                                 )

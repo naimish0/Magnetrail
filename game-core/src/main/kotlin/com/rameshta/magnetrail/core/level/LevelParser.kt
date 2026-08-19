@@ -72,6 +72,7 @@ internal data class LevelMetadataDto(
     val packId: String,
     val mechanicTags: List<String>,
     val contentFingerprint: String,
+    val previousContentFingerprint: String? = null,
 )
 
 @Serializable
@@ -135,6 +136,7 @@ private fun LevelMetadata.toDto(): LevelMetadataDto = LevelMetadataDto(
     packId = packId,
     mechanicTags = mechanicTags,
     contentFingerprint = contentFingerprint,
+    previousContentFingerprint = previousContentFingerprint,
 )
 
 internal fun LevelMetadataDto.toDomain(): LevelMetadata = LevelMetadata(
@@ -153,4 +155,5 @@ internal fun LevelMetadataDto.toDomain(): LevelMetadata = LevelMetadata(
     packId = packId,
     mechanicTags = mechanicTags,
     contentFingerprint = contentFingerprint,
+    previousContentFingerprint = previousContentFingerprint,
 )

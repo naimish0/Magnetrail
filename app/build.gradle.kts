@@ -309,5 +309,9 @@ tasks.configureEach {
     when (name) {
         "preReleaseBuild" -> dependsOn(validateReleaseConfiguration)
         "bundleRelease" -> dependsOn(verifyReleaseManifest)
+        "processDebugUnitTestJavaRes", "processReleaseUnitTestJavaRes" -> {
+            mustRunAfter(":level-tools:finalizePhase0")
+            mustRunAfter(":level-tools:finalizePhase1")
+        }
     }
 }

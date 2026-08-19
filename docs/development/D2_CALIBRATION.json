@@ -1,0 +1,585 @@
+{
+    "schemaVersion": 1,
+    "status": "AWAITING_PROJECT_OWNER_RATINGS",
+    "ratingScale": {
+        "1": "Trivial",
+        "2": "Very Easy",
+        "3": "Easy",
+        "4": "Moderate",
+        "5": "Challenging",
+        "6": "Hard",
+        "7": "Very Hard",
+        "8": "Expert",
+        "9": "Extremely Difficult",
+        "10": "Master"
+    },
+    "blindCatalogPath": "docs/content/d2/staging/D2_HUMAN_REVIEW_CATALOG.json",
+    "ratingsAvailable": 0,
+    "pearson": null,
+    "spearman": null,
+    "meanAbsoluteError": null,
+    "confidence": "NOT MEASURABLE WITH CURRENT IMPLEMENTATION",
+    "levels": [
+        {
+            "reviewId": "d2-review-001",
+            "stagedLevelId": "d2-v5-easy-124",
+            "sampleGroups": [
+                "easy-calibration",
+                "easy-large-grid-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-002",
+            "stagedLevelId": "d2-v5-easy-070",
+            "sampleGroups": [
+                "easy-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-003",
+            "stagedLevelId": "d2-v5-easy-140",
+            "sampleGroups": [
+                "easy-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-004",
+            "stagedLevelId": "d2-v5-easy-062",
+            "sampleGroups": [
+                "easy-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-005",
+            "stagedLevelId": "d2-v5-easy-092",
+            "sampleGroups": [
+                "easy-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-006",
+            "stagedLevelId": "d2-v5-easy-060",
+            "sampleGroups": [
+                "easy-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-007",
+            "stagedLevelId": "d2-v5-easy-036",
+            "sampleGroups": [
+                "easy-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-008",
+            "stagedLevelId": "d2-v5-easy-052",
+            "sampleGroups": [
+                "easy-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-009",
+            "stagedLevelId": "d2-v5-easy-102",
+            "sampleGroups": [
+                "easy-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-010",
+            "stagedLevelId": "d2-v5-easy-014",
+            "sampleGroups": [
+                "easy-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-011",
+            "stagedLevelId": "d2-v5-medium-087",
+            "sampleGroups": [
+                "medium-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-012",
+            "stagedLevelId": "d2-v5-medium-074",
+            "sampleGroups": [
+                "medium-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-013",
+            "stagedLevelId": "d2-v5-medium-135",
+            "sampleGroups": [
+                "medium-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-014",
+            "stagedLevelId": "d2-v5-medium-042",
+            "sampleGroups": [
+                "medium-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-015",
+            "stagedLevelId": "d2-v5-medium-151",
+            "sampleGroups": [
+                "medium-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-016",
+            "stagedLevelId": "d2-v5-medium-050",
+            "sampleGroups": [
+                "medium-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-017",
+            "stagedLevelId": "d2-v5-medium-015",
+            "sampleGroups": [
+                "medium-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-018",
+            "stagedLevelId": "d2-v5-medium-170",
+            "sampleGroups": [
+                "medium-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-019",
+            "stagedLevelId": "d2-v5-medium-098",
+            "sampleGroups": [
+                "medium-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-020",
+            "stagedLevelId": "d2-v5-medium-095",
+            "sampleGroups": [
+                "medium-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-021",
+            "stagedLevelId": "d2-v5-hard-077",
+            "sampleGroups": [
+                "hard-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-022",
+            "stagedLevelId": "d2-v5-hard-057",
+            "sampleGroups": [
+                "hard-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-023",
+            "stagedLevelId": "d2-v5-hard-133",
+            "sampleGroups": [
+                "hard-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-024",
+            "stagedLevelId": "d2-v5-hard-065",
+            "sampleGroups": [
+                "hard-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-025",
+            "stagedLevelId": "d2-v5-hard-156",
+            "sampleGroups": [
+                "compact-hard-control",
+                "hard-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-026",
+            "stagedLevelId": "d2-v5-hard-180",
+            "sampleGroups": [
+                "hard-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-027",
+            "stagedLevelId": "d2-v5-hard-045",
+            "sampleGroups": [
+                "hard-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-028",
+            "stagedLevelId": "d2-v5-hard-037",
+            "sampleGroups": [
+                "hard-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-029",
+            "stagedLevelId": "d2-v5-hard-053",
+            "sampleGroups": [
+                "compact-hard-control",
+                "hard-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-030",
+            "stagedLevelId": "d2-v5-hard-188",
+            "sampleGroups": [
+                "hard-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-031",
+            "stagedLevelId": "d2-v5-expert-176",
+            "sampleGroups": [
+                "expert-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-032",
+            "stagedLevelId": "d2-v5-expert-104",
+            "sampleGroups": [
+                "expert-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-033",
+            "stagedLevelId": "d2-v5-expert-139",
+            "sampleGroups": [
+                "expert-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-034",
+            "stagedLevelId": "d2-v5-expert-190",
+            "sampleGroups": [
+                "expert-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-035",
+            "stagedLevelId": "d2-v5-expert-136",
+            "sampleGroups": [
+                "expert-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-036",
+            "stagedLevelId": "d2-v5-expert-056",
+            "sampleGroups": [
+                "expert-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-037",
+            "stagedLevelId": "d2-v5-expert-064",
+            "sampleGroups": [
+                "expert-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-038",
+            "stagedLevelId": "d2-v5-expert-171",
+            "sampleGroups": [
+                "expert-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-039",
+            "stagedLevelId": "d2-v5-expert-192",
+            "sampleGroups": [
+                "expert-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-040",
+            "stagedLevelId": "d2-v5-expert-112",
+            "sampleGroups": [
+                "expert-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-041",
+            "stagedLevelId": "d2-v5-master-107",
+            "sampleGroups": [
+                "master-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-042",
+            "stagedLevelId": "d2-v5-master-115",
+            "sampleGroups": [
+                "master-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-043",
+            "stagedLevelId": "d2-v5-master-035",
+            "sampleGroups": [
+                "master-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-044",
+            "stagedLevelId": "d2-v5-master-067",
+            "sampleGroups": [
+                "master-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-045",
+            "stagedLevelId": "d2-v5-master-019",
+            "sampleGroups": [
+                "master-calibration"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-046",
+            "stagedLevelId": "d2-v5-easy-022",
+            "sampleGroups": [
+                "easy-large-grid-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-047",
+            "stagedLevelId": "d2-v5-easy-044",
+            "sampleGroups": [
+                "easy-large-grid-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-048",
+            "stagedLevelId": "d2-v5-easy-046",
+            "sampleGroups": [
+                "easy-large-grid-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-049",
+            "stagedLevelId": "d2-v5-easy-054",
+            "sampleGroups": [
+                "easy-large-grid-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-050",
+            "stagedLevelId": "d2-v5-easy-068",
+            "sampleGroups": [
+                "easy-large-grid-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-051",
+            "stagedLevelId": "d2-v5-easy-076",
+            "sampleGroups": [
+                "easy-large-grid-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-052",
+            "stagedLevelId": "d2-v5-easy-084",
+            "sampleGroups": [
+                "easy-large-grid-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-053",
+            "stagedLevelId": "d2-v5-easy-094",
+            "sampleGroups": [
+                "easy-large-grid-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-054",
+            "stagedLevelId": "d2-v5-easy-116",
+            "sampleGroups": [
+                "easy-large-grid-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-055",
+            "stagedLevelId": "d2-v5-hard-013",
+            "sampleGroups": [
+                "compact-hard-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-056",
+            "stagedLevelId": "d2-v5-hard-021",
+            "sampleGroups": [
+                "compact-hard-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-057",
+            "stagedLevelId": "d2-v5-hard-041",
+            "sampleGroups": [
+                "compact-hard-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-058",
+            "stagedLevelId": "d2-v5-hard-061",
+            "sampleGroups": [
+                "compact-hard-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-059",
+            "stagedLevelId": "d2-v5-hard-085",
+            "sampleGroups": [
+                "compact-hard-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-060",
+            "stagedLevelId": "d2-v5-hard-121",
+            "sampleGroups": [
+                "compact-hard-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-061",
+            "stagedLevelId": "d2-v5-hard-161",
+            "sampleGroups": [
+                "compact-hard-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        },
+        {
+            "reviewId": "d2-review-062",
+            "stagedLevelId": "d2-v5-hard-165",
+            "sampleGroups": [
+                "compact-hard-control"
+            ],
+            "humanRating": null,
+            "comments": null
+        }
+    ]
+}

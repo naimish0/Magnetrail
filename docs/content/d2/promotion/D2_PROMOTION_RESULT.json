@@ -1,0 +1,31 @@
+{
+    "schemaVersion": 1,
+    "promotionVersion": 1,
+    "status": "OWNER_DIRECTED_PROMOTED",
+    "authorization": "PROJECT_OWNER_DIRECTIVE_2026_08_19_NO_FURTHER_APPROVAL",
+    "executionMode": "AUTOMATED_GUARDED_STABLE_ID_PROMOTION",
+    "promotionDate": "2026-08-19",
+    "sourceCampaignSha256": "1852f5eee4792cf937adb17d7443041bd879486cbf33d3e7294d09542eef6ec8",
+    "stagedCandidateSha256": "15ccd5d3cd9ea7d847520d4d96463d5057557a0f89549ab9edee96640efa0a37",
+    "promotedCampaignSha256": "8552d9ef7a2eeb140c4611ff5a9e3a40a04efb35878d752acef5e222a1dc8ca5",
+    "sourceContentVersion": 6,
+    "targetContentVersion": 7,
+    "sourceGeneratorVersion": 4,
+    "targetGeneratorVersion": 5,
+    "promotedLevelCount": 200,
+    "stableIdCount": 200,
+    "changedBoardCount": 200,
+    "recertifiedLevelCount": 200,
+    "truncatedLevelCount": 0,
+    "humanRatingsAvailable": 0,
+    "humanPlaytestStatus": "NOT_PERFORMED_OWNER_WAIVED_PRE_PROMOTION_PLAYTEST",
+    "automatedApprovalCount": 0,
+    "migrationProvenSafe": true,
+    "productionGameplayChanged": false,
+    "notes": [
+        "Automated certification is recorded as certification, never as human approval.",
+        "All production IDs remain stable; staging IDs are not written to player storage.",
+        "Existing board-specific minima are archived by fingerprint on first DataStore read.",
+        "The staging catalog and source archive remain available for rollback and diagnosis."
+    ]
+}

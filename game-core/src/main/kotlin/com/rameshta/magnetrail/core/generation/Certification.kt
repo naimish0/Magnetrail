@@ -3,6 +3,7 @@ package com.rameshta.magnetrail.core.generation
 import com.rameshta.magnetrail.core.content.ContentFingerprint
 import com.rameshta.magnetrail.core.difficulty.DifficultyAnalyzer
 import com.rameshta.magnetrail.core.difficulty.DifficultyMetrics
+import com.rameshta.magnetrail.core.difficulty.DifficultyScorer
 import com.rameshta.magnetrail.core.engine.DefaultGameEngine
 import com.rameshta.magnetrail.core.engine.GameEngine
 import com.rameshta.magnetrail.core.engine.PlayerAction
@@ -31,6 +32,8 @@ data class CertificationRequest(
     val generatorVersion: Int? = null,
     val generatorSeed: Long? = null,
     val generationProfile: String? = null,
+    val contentVersion: Int = CONTENT_VERSION,
+    val previousContentFingerprint: String? = null,
 )
 
 class CertificationPipeline(
@@ -79,6 +82,16 @@ class CertificationPipeline(
         }
 
         val metrics = DifficultyAnalyzer(engine).analyze(level, solved).metrics
+        val difficultyScore = DifficultyScorer.score(metrics).score
+        if (metrics.polarityFlipCount < profile.minPolarityFlips) {
+            return CertificationResult.Rejected(listOf("required-polarity-flips-unused"))
+        }
+        if (metrics.criticalOrderConstraintCount < profile.minCriticalOrderConstraints) {
+            return CertificationResult.Rejected(listOf("required-order-constraints-unused"))
+        }
+        if (difficultyScore !in profile.minDifficultyScoreV2..profile.maxDifficultyScoreV2) {
+            return CertificationResult.Rejected(listOf("difficulty-v2-out-of-profile"))
+        }
         val par = requireNotNull(solved.shortestDepth)
         val twoStar = par + maxOf(2, ceil(par * 0.25).toInt())
         val tags = mechanicTags(level, metrics)
@@ -86,7 +99,7 @@ class CertificationPipeline(
         val certified = level.copy(
             designedSolutions = listOf(requireNotNull(solution).map { it.arrowId }),
             metadata = LevelMetadata(
-                contentVersion = CONTENT_VERSION,
+                contentVersion = request.contentVersion,
                 origin = request.origin,
                 generatorVersion = request.generatorVersion,
                 generatorSeed = request.generatorSeed,
@@ -101,6 +114,7 @@ class CertificationPipeline(
                 packId = request.packId,
                 mechanicTags = tags,
                 contentFingerprint = fingerprint,
+                previousContentFingerprint = request.previousContentFingerprint,
             ),
         )
         return CertificationResult.Accepted(certified, metrics)

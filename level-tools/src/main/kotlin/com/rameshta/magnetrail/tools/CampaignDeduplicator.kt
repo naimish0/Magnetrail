@@ -121,6 +121,7 @@ private fun candidateRequest(level: LevelDefinition): CertificationRequest {
         generatorVersion = metadata.generatorVersion,
         generatorSeed = metadata.generatorSeed,
         generationProfile = metadata.generationProfile,
+        contentVersion = metadata.contentVersion,
     )
 }
 

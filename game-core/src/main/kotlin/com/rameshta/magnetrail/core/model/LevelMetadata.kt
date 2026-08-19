@@ -43,6 +43,7 @@ data class LevelMetadata(
     val packId: String,
     val mechanicTags: List<String>,
     val contentFingerprint: String,
+    val previousContentFingerprint: String? = null,
 ) {
     init {
         require(contentVersion > 0) { "contentVersion must be positive" }
@@ -54,6 +55,13 @@ data class LevelMetadata(
         require(mechanicTags.isNotEmpty()) { "mechanicTags must not be empty" }
         require(contentFingerprint.startsWith("sha256:") && contentFingerprint.length == 71) {
             "contentFingerprint must be a sha256 fingerprint"
+        }
+        require(
+            previousContentFingerprint == null ||
+                previousContentFingerprint.startsWith("sha256:") && previousContentFingerprint.length == 71
+        ) { "previousContentFingerprint must be null or a sha256 fingerprint" }
+        require(previousContentFingerprint == null || previousContentFingerprint != contentFingerprint) {
+            "previousContentFingerprint must differ from contentFingerprint"
         }
         if (origin == LevelOrigin.GENERATOR_ASSISTED) {
             require(generatorVersion != null && generatorVersion > 0) {

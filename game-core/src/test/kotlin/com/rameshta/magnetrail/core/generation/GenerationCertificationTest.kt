@@ -1,8 +1,11 @@
 package com.rameshta.magnetrail.core.generation
 
 import com.rameshta.magnetrail.core.content.ContentFingerprint
+import com.rameshta.magnetrail.core.difficulty.DifficultyAnalyzer
 import com.rameshta.magnetrail.core.level.LevelParser
 import com.rameshta.magnetrail.core.prototypeCatalog
+import com.rameshta.magnetrail.core.quality.LevelQualityAnalyzer
+import com.rameshta.magnetrail.core.quality.LevelQualityStatus
 import com.rameshta.magnetrail.core.solver.Solver
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -39,6 +42,37 @@ class GenerationCertificationTest {
     }
 
     @Test
+    fun `M5 2 advanced profile is deterministic versioned and independently acceptable`() {
+        val request = GenerationRequest(
+            stableId = "m52-profile-golden",
+            sequenceNumber = 150,
+            title = "M5.2 profile golden",
+            seed = 520_002L,
+            profile = GenerationProfile.M52_MASTERY,
+            packId = "mastery-set",
+            contentVersion = M52_CONTENT_VERSION,
+            generatorVersion = M52_GENERATOR_VERSION,
+        )
+        val generator = LevelGenerator(campaignCatalog().levels)
+        val first = generator.generate(request) as GenerationResult.Generated
+        val second = generator.generate(request) as GenerationResult.Generated
+
+        assertEquals(ContentFingerprint.exact(first.level), ContentFingerprint.exact(second.level))
+        assertEquals(first.metrics, second.metrics)
+        assertEquals(7, first.level.width)
+        assertTrue(first.level.height in 6..7)
+        assertEquals(M52_CONTENT_VERSION, first.level.metadata?.contentVersion)
+        assertEquals(M52_GENERATOR_VERSION, first.level.metadata?.generatorVersion)
+        assertEquals(GenerationProfile.M52_MASTERY.profileId, first.level.metadata?.generationProfile)
+        assertTrue(first.metrics.magnetControlledSolutionActions >= GenerationProfile.M52_MASTERY.minMagnetControlledActions)
+        assertTrue(first.metrics.polarityFlipCount >= GenerationProfile.M52_MASTERY.minPolarityFlips)
+        val analysis = DifficultyAnalyzer().analyze(first.level)
+        assertTrue(analysis.score.score in GenerationProfile.M52_MASTERY.minDifficultyScoreV2..
+            GenerationProfile.M52_MASTERY.maxDifficultyScoreV2)
+        assertEquals(LevelQualityStatus.ACCEPT, LevelQualityAnalyzer().analyze(first.level, analysis).qualityStatus)
+    }
+
+    @Test
     fun `solver explored-state cap terminates deterministically`() {
         val campaign = campaignCatalog()
         val state = campaign.levels.first { it.arrows.size >= 5 }.initialState()
@@ -50,7 +84,7 @@ class GenerationCertificationTest {
         assertEquals(first, second)
     }
 
-    private fun campaignCatalog() = resourceCatalog("/Magnetrail_Campaign_Levels_v3.json")
+    private fun campaignCatalog() = resourceCatalog("/development/PHASE0_SOURCE_CONTENT_V4.json")
 
     private fun resourceCatalog(path: String) = LevelParser().parseCatalog(
         checkNotNull(javaClass.getResource(path)).readText(),
