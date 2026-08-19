@@ -82,9 +82,10 @@ class MagnetrailUiTest {
 
         composeRule.onNodeWithContentDescription("Level 1: First release, completed")
             .assertIsDisplayed()
-        composeRule.onNodeWithContentDescription("Level 2: Clear the blocker, available")
+        composeRule.onNodeWithTag("level_2")
             .performScrollTo()
             .assertIsDisplayed()
+            .assertHasClickAction()
         composeRule.onNodeWithTag("level_12").performScrollTo().assertHasClickAction()
         composeRule.onNode(hasScrollAction()).performScrollToIndex(105)
         composeRule.onNodeWithTag("level_100").assertIsDisplayed().assertHasClickAction()

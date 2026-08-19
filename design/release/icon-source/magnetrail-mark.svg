@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Magnetrail split-ring and Rail Dart mark</title>
+  <desc id="desc">A cyan and amber split magnetic ring surrounds a white right-facing Rail Dart on a navy rail grid.</desc>
+  <rect width="1024" height="1024" rx="224" fill="#183153"/>
+  <g stroke="#ffffff" stroke-opacity="0.12" stroke-width="12">
+    <path d="M120 320h784M120 512h784M120 704h784"/>
+  </g>
+  <path d="M452 230C302 254 214 360 214 512s88 258 238 282" fill="none" stroke="#18A7B8" stroke-width="86" stroke-linecap="round"/>
+  <path d="M572 230c150 24 238 130 238 282s-88 258-238 282" fill="none" stroke="#E79A2D" stroke-width="86" stroke-linecap="round"/>
+  <path d="M324 468h244v-76l164 120-164 120v-76H324z" fill="#ffffff"/>
+</svg>

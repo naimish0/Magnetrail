@@ -11,7 +11,22 @@
 /build
 **/build/
 **/.kotlin/
+# Compiler/parser intermediates belong under ignored build directories. Keep a
+# defensive root-wide rule so interrupted tool runs cannot pollute source state.
+*.class
+*.tab
+*.keystream
+*.len
 /captures
 .externalNativeBuild
 .cxx
 local.properties
+# M5 owner-controlled release inputs and key material.
+/app/google-services.json
+/release.properties
+*.jks
+*.keystore
+*.p12
+*.pem
+*.der
+/release-records/

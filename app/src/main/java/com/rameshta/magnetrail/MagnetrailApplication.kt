@@ -26,6 +26,8 @@ import com.rameshta.magnetrail.privacy.NoOpPrivacyManager
 import com.rameshta.magnetrail.core.economy.EconomyConfig
 import com.rameshta.magnetrail.core.generation.CONTENT_VERSION
 import com.rameshta.magnetrail.core.generation.GENERATOR_VERSION
+import com.rameshta.magnetrail.release.ProductionReleaseConfiguration
+import com.rameshta.magnetrail.release.ProductionReleaseConfigurationValidator
 
 class MagnetrailApplication : Application() {
     lateinit var m4Services: M4Services
@@ -33,6 +35,21 @@ class MagnetrailApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        if (BuildConfig.PRODUCTION_RELEASE_REQUESTED) {
+            val problems = ProductionReleaseConfigurationValidator.problems(
+                ProductionReleaseConfiguration(
+                    adMobAppId = BuildConfig.ADMOB_APP_ID,
+                    rewardedAdUnitId = BuildConfig.REWARDED_AD_UNIT_ID,
+                    interstitialAdUnitId = BuildConfig.INTERSTITIAL_AD_UNIT_ID,
+                    privacyPolicyUrl = BuildConfig.PRIVACY_POLICY_URL,
+                    targetAudience = BuildConfig.TARGET_AUDIENCE,
+                    liveAdsEnabled = BuildConfig.MONETIZATION_ENABLED,
+                    firebaseConfigured = BuildConfig.FIREBASE_CONFIGURED,
+                    uploadSigningConfigured = BuildConfig.UPLOAD_SIGNING_CONFIGURED,
+                ),
+            )
+            check(problems.isEmpty()) { "Unsafe production release configuration" }
+        }
         val automatedTest = isRunningInstrumentedTest()
         val configuration = AdConfiguration.fromBuild().let { config ->
             if (automatedTest) config.copy(enabled = false, mode = "automated_test") else config
@@ -67,7 +84,7 @@ class MagnetrailApplication : Application() {
             rewarded.preloadIfAllowed()
             interstitial.preloadIfAllowed()
         }
-        privacyManager = if (automatedTest) {
+        privacyManager = if (automatedTest || !configuration.enabled) {
             NoOpPrivacyManager()
         } else {
             UmpPrivacyManager(
