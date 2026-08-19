@@ -190,6 +190,24 @@ tasks.register("testAdaptiveDifficultySelection") {
     dependsOn(":level-tools:testAdaptiveDifficultySelection")
 }
 
+tasks.register("generateD21SpatialDensityCandidates") {
+    group = "magnetrail content"
+    description = "Generate isolated D2.1 dense, meaningful staging candidates and diagnostics."
+    dependsOn(":level-tools:generateD21SpatialDensityCandidates")
+}
+
+tasks.register("analyzeD21SpatialDensity") {
+    group = "verification"
+    description = "Validate D2.1 spatial-density staging evidence and campaign immutability."
+    dependsOn(":level-tools:analyzeD21SpatialDensity")
+}
+
+tasks.register("benchmarkGeneratorV5Repair") {
+    group = "magnetrail content"
+    description = "Run the bounded solution-first Generator V5 repair benchmark in staging."
+    dependsOn(":level-tools:benchmarkGeneratorV5Repair")
+}
+
 tasks.register("promoteD2Campaign") {
     group = "magnetrail content"
     description = "Promote the owner-directed D2 V5 catalog with guarded stable-ID migration."

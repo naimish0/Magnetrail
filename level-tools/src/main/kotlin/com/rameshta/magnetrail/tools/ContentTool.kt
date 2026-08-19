@@ -58,6 +58,9 @@ fun main(arguments: Array<String>) {
         "analyze-d2-graphs-v5" -> analyzeD2Artifacts(options, "graphs")
         "refresh-d2-v5" -> refreshD2CampaignV5(options)
         "promote-d2-v5" -> promoteD2Campaign(options)
+        "generate-d2.1-spatial-density" -> generateD21SpatialDensityAudit(options)
+        "validate-d2.1-spatial-density" -> validateD21SpatialDensityAudit(options)
+        "benchmark-generator-v5-repair" -> generateGeneratorV5RepairAudit(options)
         else -> error("Unknown command '${arguments.first()}'")
     }
 }
