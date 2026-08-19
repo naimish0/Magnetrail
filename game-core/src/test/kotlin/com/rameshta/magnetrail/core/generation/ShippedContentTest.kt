@@ -24,6 +24,7 @@ class ShippedContentTest {
         assertEquals(100, campaign.levels.map { it.id }.toSet().size)
         assertEquals((1..100).toList(), campaign.levels.map { it.number })
         assertEquals(100, campaign.levels.map(ContentFingerprint::of).toSet().size)
+        assertEquals(100, campaign.levels.map(ContentFingerprint::symmetryNormalized).toSet().size)
         assertEquals(30, campaign.levels.count { it.metadata?.origin == LevelOrigin.HANDCRAFTED })
         assertEquals(70, campaign.levels.count { it.metadata?.origin == LevelOrigin.GENERATOR_ASSISTED })
         assertEquals((1..12).map { "proto-${it.toString().padStart(3, '0')}" }, campaign.levels.take(12).map { it.id })

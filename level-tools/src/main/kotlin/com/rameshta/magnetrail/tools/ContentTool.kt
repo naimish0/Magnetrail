@@ -2,6 +2,7 @@ package com.rameshta.magnetrail.tools
 
 import com.rameshta.magnetrail.core.content.ContentFingerprint
 import com.rameshta.magnetrail.core.difficulty.DifficultyMetrics
+import com.rameshta.magnetrail.core.difficulty.DifficultyScorer
 import com.rameshta.magnetrail.core.generation.CERTIFICATION_SOLUTION_LIMIT
 import com.rameshta.magnetrail.core.generation.CertificationPipeline
 import com.rameshta.magnetrail.core.generation.CertificationRequest
@@ -22,7 +23,7 @@ import java.time.LocalDate
 import com.rameshta.magnetrail.core.daily.DailySeed
 
 fun main(arguments: Array<String>) {
-    require(arguments.isNotEmpty()) { "Expected generate, promote, or certify" }
+    require(arguments.isNotEmpty()) { "Expected a content-tool command" }
     val options = arguments.drop(1).associate { argument ->
         require(argument.startsWith("--") && '=' in argument) { "Invalid option '$argument'" }
         argument.substringAfter("--").substringBefore('=') to argument.substringAfter('=')
@@ -32,6 +33,9 @@ fun main(arguments: Array<String>) {
         "promote" -> promote(options)
         "certify" -> certifyShipped(options)
         "benchmark" -> benchmarkDaily(options)
+        "analyze-difficulty", "analyze-quality", "check-duplicates", "audit-pacing", "certify-quality" ->
+            runM51(arguments.first(), options)
+        "deduplicate-symmetry" -> stageSymmetryDeduplication(options)
         else -> error("Unknown command '${arguments.first()}'")
     }
 }
@@ -100,7 +104,9 @@ private fun generateCandidates(options: Map<String, String>) {
             ),
         )) {
             is GenerationResult.Generated -> {
-                if (accepted.none { ContentFingerprint.of(it) == ContentFingerprint.of(result.level) }) {
+                if (accepted.none {
+                    ContentFingerprint.symmetryNormalized(it) == ContentFingerprint.symmetryNormalized(result.level)
+                }) {
                     accepted += result.level
                 } else {
                     rejected.increment("duplicate-fingerprint")
@@ -158,7 +164,7 @@ private fun buildCampaign(prototype: LevelCatalog): CatalogBuild {
     }
 
     val generator = LevelGenerator(rawHandcrafted)
-    val fingerprints = accepted.mapTo(mutableSetOf()) { ContentFingerprint.of(it) }
+    val fingerprints = accepted.mapTo(mutableSetOf()) { ContentFingerprint.symmetryNormalized(it) }
     val layoutKeys = accepted.mapTo(mutableSetOf(), ::nearDuplicateKey)
     var seedCursor = 310_001L
     for (number in 31..100) {
@@ -179,7 +185,7 @@ private fun buildCampaign(prototype: LevelCatalog): CatalogBuild {
             )) {
                 is GenerationResult.Generated -> {
                     rejectionCount += generated.rejectedReasons.values.sum()
-                    val fingerprint = ContentFingerprint.of(generated.level)
+                    val fingerprint = ContentFingerprint.symmetryNormalized(generated.level)
                     val layoutKey = nearDuplicateKey(generated.level)
                     if (fingerprint !in fingerprints && layoutKey !in layoutKeys) {
                         fingerprints += fingerprint
@@ -221,7 +227,7 @@ private fun buildFallbacks(templates: List<LevelDefinition>): CatalogBuild {
                 packId = "daily-fallback",
             ),
         )) {
-            is GenerationResult.Generated -> if (fingerprints.add(ContentFingerprint.of(generated.level))) {
+            is GenerationResult.Generated -> if (fingerprints.add(ContentFingerprint.symmetryNormalized(generated.level))) {
                 accepted += generated.level
                 rows += ReportRow(generated.level, generated.metrics, generated.attemptsUsed, 0)
             }
@@ -252,10 +258,14 @@ private fun certifyShipped(options: Map<String, String>) {
 
 private fun validateCatalog(catalog: LevelCatalog, dailyFallback: Boolean = false) {
     val fingerprints = mutableSetOf<String>()
+    val symmetryFingerprints = mutableSetOf<String>()
     val pipeline = CertificationPipeline()
     catalog.levels.forEach { level ->
         val metadata = requireNotNull(level.metadata) { "${level.id} has no M3 metadata" }
         check(fingerprints.add(metadata.contentFingerprint)) { "Duplicate fingerprint ${metadata.contentFingerprint}" }
+        check(symmetryFingerprints.add(ContentFingerprint.symmetryNormalized(level))) {
+            "Symmetry duplicate ${level.id}"
+        }
         check(metadata.contentFingerprint == ContentFingerprint.of(level)) { "Stale fingerprint for ${level.id}" }
         val profile = if (dailyFallback) GenerationProfile.DAILY_CHALLENGE else profileFor(level)
         val result = pipeline.certify(
@@ -300,7 +310,8 @@ private fun titleFor(number: Int): String {
 }
 
 /** Rejects candidates that differ from an accepted board only by wall dressing. */
-private fun nearDuplicateKey(level: LevelDefinition): String = ContentFingerprint.of(level.copy(walls = emptyList()))
+private fun nearDuplicateKey(level: LevelDefinition): String =
+    ContentFingerprint.symmetryNormalized(level.copy(walls = emptyList()))
 
 private fun csvReport(rows: List<ReportRow>): String = buildString {
     appendLine(
@@ -331,7 +342,7 @@ private fun csvReport(rows: List<ReportRow>): String = buildString {
                 "%.2f".format(java.util.Locale.ROOT, row.metrics.averageBranching),
                 row.metrics.magnetControlledActions,
                 row.metrics.polarityFlips,
-                row.metrics.estimatedDifficultyScore,
+                DifficultyScorer.score(row.metrics).score,
                 metadata.contentFingerprint,
                 row.attempts,
                 row.rejectedBeforeAcceptance,
