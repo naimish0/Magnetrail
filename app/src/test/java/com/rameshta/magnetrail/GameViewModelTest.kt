@@ -227,7 +227,7 @@ class GameViewModelTest {
     }
 
     @Test
-    fun `promoted Phase 1 campaign crosses 150 to 151 and stops at 200`() {
+    fun `content v8 campaign crosses 200 to 201 and stops at 205`() {
         val levels = LevelParser().parseCatalog(
             checkNotNull(javaClass.getResource("/Magnetrail_Campaign_Levels_v3.json")).readText(),
         ).levels
@@ -242,11 +242,13 @@ class GameViewModelTest {
             )
         }
 
-        assertEquals(200, levels.size)
+        assertEquals(205, levels.size)
         assertTrue(state(149).hasNextLevel)
         assertEquals("campaign-151", levels[150].id)
-        assertFalse(state(199).hasNextLevel)
-        assertEquals("campaign-200", levels.last().id)
+        assertTrue(state(199).hasNextLevel)
+        assertEquals("campaign-201", levels[200].id)
+        assertFalse(state(204).hasNextLevel)
+        assertEquals("campaign-205", levels.last().id)
     }
 
     private fun viewModel(): GameViewModel = GameViewModel(

@@ -5,10 +5,10 @@ Last consolidated: **2026-08-20 (Asia/Kolkata)**
 Repository: Android Studio project `Magnetrail`
 
 Package: `com.rameshta.magnetrail`
-Current checked-in campaign: **200 levels, content version 7, generator version 5**
+Current checked-in campaign: **205 levels, content version 8, generator version 5**
 
 Canonical campaign SHA-256:
-`8552d9ef7a2eeb140c4611ff5a9e3a40a04efb35878d752acef5e222a1dc8ca5`
+`6416c0a5677e66cba169cf9caaa9d7d7e6e70bc6e4e3e69b36277e3c69e78128`
 
 This is the single read-first handoff document for Magnetrail. It consolidates the product vision,
 frozen gameplay semantics, Android architecture, UI system, implemented milestones, campaign and
@@ -16,7 +16,7 @@ economy state, advertising/privacy behavior, build/release posture, known defect
 and future roadmap.
 
 It is intentionally self-contained at the system level. Canonical JSON remains the authority for
-the exact cell-by-cell contents of every level; duplicating 200 complete boards inside Markdown
+the exact cell-by-cell contents of every level; duplicating 205 complete boards inside Markdown
 would create a second content source that could drift.
 
 ---
@@ -38,7 +38,7 @@ Use this order when sources disagree:
 Important conflict resolutions:
 
 - The immutable existing rules remain `magnetrail-core-1`.
-- The current campaign contains 200 levels, not the 100 levels still mentioned by some historical
+- The current campaign contains 205 levels, not the 100 or 200 levels still mentioned by some historical
   M3/M5 documents.
 - The latest monetization directive is **ads only**. The Billing/Remove Ads section in
   `CODEX_MASTER_REMAINING_DEVELOPMENT_PROMPT.md` is superseded. Do not add Google Play Billing,
@@ -48,9 +48,9 @@ Important conflict resolutions:
   overwhelmingly easy. D1 diagnosed/calibrated that failure; D2 subsequently replaced all 200
   boards under stable IDs with content-v7 Generator-V5 boards. Content-v7 is technically
   certified, but it has not received human difficulty ratings and is not human-approved.
-- D2.1 and the later Generator-V5 root-cause repair are staging/generator work only. They have not
-  changed the canonical content-v7 campaign. The latest focused Expert repair remains blocked by
-  safe-choice, mandatory-ordering, interaction-density, and counterfactual-analysis constraints.
+- D2.1 and the later Generator-V5 repair began as staging work. On 2026-08-20 the owner directed an
+  append promotion: four current V5-certified boards became Levels 201–204 and the deterministic
+  V5.1 Expert board became Level 205 under an explicit structural-certification waiver. Master is excluded.
 - Strict phase isolation applies. Do not implement future-phase functionality while working on a
   current or reopened phase.
 
@@ -542,15 +542,15 @@ Canonical file: `docs/Magnetrail_Campaign_Levels_v3.json`.
 | Catalog schema | 2 |
 | Rule version | `magnetrail-core-1` |
 | Catalog ID | `magnetrail-campaign-v4` |
-| Content version | 7 |
+| Content version | 8 |
 | Generator version | 5 |
-| Level count | 200 |
-| SHA-256 | `8552d9ef7a2eeb140c4611ff5a9e3a40a04efb35878d752acef5e222a1dc8ca5` |
-| Stable range | `proto-001`…`proto-012`, then campaign IDs through `campaign-200` |
-| Current metadata origin | 200 `GENERATOR_ASSISTED` |
-| Board sizes | 2 × 3×3; 16 × 4×4; 76 × 5×5; 27 × 6×6; 36 × 7×7; 43 × 8×8 |
-| Exact fingerprints | 200 unique |
-| Symmetry fingerprints | 200 unique |
+| Level count | 205 |
+| SHA-256 | `6416c0a5677e66cba169cf9caaa9d7d7e6e70bc6e4e3e69b36277e3c69e78128` |
+| Stable range | `proto-001`…`proto-012`, then campaign IDs through `campaign-205` |
+| Current metadata origin | 205 `GENERATOR_ASSISTED` |
+| Board sizes | 2 × 3×3; 17 × 4×4; 76 × 5×5; 28 × 6×6; 37 × 7×7; 45 × 8×8 |
+| Exact fingerprints | 205 unique |
+| Symmetry fingerprints | 205 unique |
 
 Current packs:
 
@@ -566,16 +566,17 @@ Current packs:
 | 141–160 | `magnetic-circuit-08` |
 | 161–180 | `magnetic-circuit-09` |
 | 181–200 | `magnetic-circuit-10` |
+| 201–205 | `magnetic-circuit-11` |
 
 Metadata mechanic-tag counts:
 
-- Magnet control: 194
-- Polarity dependency: 194
-- Walls: 193
-- Occlusion: 197
-- Order dependency: 194
-- Exposure/reveal: 197
-- Cancellation: 48
+- Magnet control: 199
+- Polarity dependency: 199
+- Walls: 198
+- Occlusion: 202
+- Order dependency: 198
+- Exposure/reveal: 202
+- Cancellation: 52
 
 These are metadata claims backed by automated analysis, not proof that a player experiences the
 claimed mechanic as difficult or central.
@@ -609,9 +610,9 @@ Current disposition:
   redundancy measurements, but these remain automated evidence.
 - The 40 historical D1 ratings are fingerprint-bound to content v6 and are excluded from v7
   calibration.
-- Content-v7 human difficulty remains unmeasured until the owner plays and rates the new boards.
-- D2.1/V5 repair candidates are not part of this campaign. Failed or partially measured staging
-  boards must never be copied into this canonical file.
+- Content-v7 Levels 1–200 and content-v8 Levels 201–205 remain without owner difficulty ratings.
+- Levels 201–204 are current V5-certified. Level 205 is solver-certified and V4-complete but not
+  structurally certified; the explicit owner waiver and failed gates are preserved in the manifest.
 
 ---
 
@@ -691,44 +692,86 @@ The 40 D1 human ratings apply only to their archived content-v6 fingerprints. Th
 joined to content-v7 or staging candidates by stable ID alone because the physical boards changed.
 No automated label, V4 band, solver score, or generator profile may be written as a human rating.
 
-### 11.7 Current Expert Generator V5 blocker — 2026-08-20
+### 11.7 Expert/Master ordered-polarity topology — 2026-08-20
 
-Known reproduction seed: `11510013`; canvas: 8×8. The current focused constructor uses 10 arrows,
-3 magnets, and 51 walls, for 64 authored objects. It no longer creates `shielded-filler-*` magnets.
+Generator V5 now selects one deterministic topology family named
+`EXPERT_ORDERED_POLARITY_V1` only for the exact D2.1 Expert and Master profile IDs. It uses real
+must-before-reveal traps, polarity flips, exposure chains, a polarity-dependent corridor gate, and
+a wall-shielded competing field. Master adds a deeper must/reveal stage. Easy through Very Hard
+remain on their previous constructor paths.
 
-| Metric | Original reproduced Expert | Current focused repair | Required |
+| Metric | Previous topology | New Expert | New Master |
 |---|---:|---:|---:|
-| Interaction density | 0.0253 | 0.0288 | >= 0.04 |
-| Relevant-object ratio | 0.2656 | NOT MEASURABLE WITHIN FAST BOUND | >= 0.28 |
-| Average relevance | 0.0674 | NOT MEASURABLE WITHIN FAST BOUND | >= 0.11 |
-| Meaningful long-range relationships | 0 | 3 | >= 3 |
-| Meaningful ordering | 0.1389 | 0.0000 | >= 0.20 |
-| Connected components | 46 | 52 | diagnostic |
-| Largest connected component | 17 | 13 | diagnostic |
-| Isolated objects | 44 | 51 | diagnostic |
+| Difficulty V4 score | 5 | 59 | 66 |
+| Ordering depth | 0 | 3 | 5 |
+| Mandatory-ordering ratio | 0.0000 | 0.1944 | 0.4444 |
+| Safe-choice ratio | 0.9372 | 0.6619 | 0.5154 |
+| Wall occlusion participation | 0 | 2 | 2 |
+| Solvable and replayable | Yes | Yes | Yes |
+| V4 complete | Yes | Yes | Yes |
+| Certified | No | No | No |
 
-Additional current evidence:
+The original failure mode is therefore repaired: ordering is no longer zero, safe choices are
+materially lower, polarity changes affect later actionability, and walls participate in physical
+LOS relationships. Semantic construction edges are verified before and after seeded symmetry
+transformation.
 
-- all 8 declared semantic construction edges are physically verified before and after the seeded
-  reflection/rotation;
-- the physical analyzer observed 181 typed edges and all 3 required distance-four controllers;
-- solver/canonical replay completes and Difficulty V4 search is complete without truncation;
-- safe-choice ratio is `0.9372` against a maximum of `0.88`;
-- meaningful failure rate is `0.0628`;
-- mandatory-ordering depth is `0`;
-- certification rejects the candidate for `safe-choice-ratio-above-profile` and
-  `ordering-depth-below-profile` before expensive object relevance;
-- one repair opportunity is inspected, but no mutation is applied because the dependency-complete
-  board has no filler-safe operator;
-- a 14-arrow intermediate reached interaction density `0.0546` and 3 long-range relationships, but
-  V4 truncated on counterfactual/sequence enumeration, so it was discarded rather than certified;
-- the 10-arrow full counterfactual relevance run exceeded the 90-second focused budget and was
-  terminated. No number was invented and no broad benchmark was started.
+Certification is still blocked. Expert verifies only two of the three required long-range
+relationships and its direct diagnostics remain below later interaction/relevance targets. Master
+passes its ordering/V4 requirements but remains below object-participation, interacting-object,
+average-relevance, and participating-wall-ratio gates. An attempted third independent Expert probe
+made counterfactual sequence analysis truncate; it was removed rather than weakening V4 or hiding
+truncation. See `docs/development/MAGNETRAIL_EXPERT_MASTER_TOPOLOGY_FIX_V1.md`.
 
-Current status: **BLOCKED, staging only**. The next generator change must connect the corridor
-modules into globally mandatory causal order and give the surrounding route-guard shell physical
-participation, while retaining complete V4 search. Do not lower gates, raise bounds to hide the
-problem, alter V4, or promote this candidate.
+### 11.8 Expert/Master occupancy experiment — 2026-08-20
+
+A focused staging experiment tested the existing high-band topology at 0%, 5%, 10%, and 15%
+allowed empty space for Expert, plus 0%, 5%, 10%, 15%, and 20% for Master. Every board remained
+solvable and V4-complete, but every configuration produced the identical V4 score `5`, 7 meaningful
+decisions, dependency depth `0`, mandatory ordering `0.0`, safe-choice ratio `0.9372`, zero
+participating walls, and the same two certification failures: excessive safe choices and missing
+ordering depth.
+
+The occupancy hypothesis is therefore rejected for the current constructor. Its attempt seed only
+reflects/rotates one fixed high-band topology, and the removed walls are isolated from the reachable
+action graph. Expert and Master occupancy remain unchanged at 100%; the temporary relaxation was
+not retained. See `docs/development/MAGNETRAIL_EXPERT_MASTER_OCCUPANCY_EXPERIMENT.md`.
+
+### 11.9 Expert/Master causal-density topology V5.1 — 2026-08-20
+
+V5.1 retains `EXPERT_ORDERED_POLARITY_V1` and extends only its Expert geometry. `eastGate`, an
+opposing long-range controller, and two wall-shielded competing fields join the existing top-row
+causal corridor. The physical verifier confirms all nine declared edges and the seeded transform
+preserves them.
+
+Expert improved from V4 `59` to `61`, safe-choice ratio `0.6619` to `0.5996`, mandatory ordering
+`0.1944` to `0.2000`, long-range relationships `2` to `3`, wall occlusions `2` to `3`, interaction
+density `0.0248` to `0.0303`, relevant-object ratio `0.2031` to `0.2344`, and average relevance
+`0.0538` to `0.0604`. Ordering depth remains `3`, solver/V4 analysis remains complete, and the
+former long-range and ordering gates now pass.
+
+Master remains on its complete V5 depth-5 topology. A one-action extension improved density but
+caused `COUNTERFACTUAL_OBJECT_SEQUENCE_ENUMERATION_CAP`; a no-extra-action controller variant
+failed physical semantic verification. Both were rejected before final acceptance. Master remains
+V4 `66`, safe-choice `0.5154`, ordering depth `5`, interaction density `0.0283`, relevant-object
+ratio `0.2500`, average relevance `0.0615`, and two wall occlusions.
+
+Certification remains blocked for causal density, object participation/relevance, and wall ratio.
+See `docs/development/MAGNETRAIL_EXPERT_MASTER_TOPOLOGY_V5_1.md`.
+
+### 11.10 Content-v8 append promotion — 2026-08-20
+
+The owner explicitly directed an append of all available non-Master content, including the
+uncertified Expert. Levels 1–200 remain identical to the archived content-v7 definitions; new IDs
+`campaign-201` through `campaign-205` were appended. Levels 201–204 pass the current V5 pipeline.
+Level 205 is the current V5.1 Expert topology reconstructed from seed `11510013`; it is solver and
+replay valid, V4 complete/non-truncated, and unique, but remains structurally rejected for five
+interaction/relevance/wall-participation gates. Master is excluded. Human playtesting was not
+performed and automated human approvals are zero.
+
+The exact source snapshot, authorization, fingerprints, per-level statuses, and Expert rejection
+reasons are under `docs/content/v5_1_append/promotion/`. The recoverable content-v7 source SHA-256
+is `8552d9ef7a2eeb140c4611ff5a9e3a40a04efb35878d752acef5e222a1dc8ca5`.
 
 ---
 
@@ -849,8 +892,8 @@ Persisted local state includes:
 - interstitial counters/dates and rewarded-hint transaction/cap state.
 
 DataStore migrations are idempotent and validate/clamp corrupt values. Completing Level 150 under
-content version 5 unlocks/selects Level 151 once after migration to version 6. Completing Level 200
-does not invent Level 201.
+content version 5 unlocks/selects Level 151 once after migration to version 6. A player who already
+completed Level 200 under version 7 unlocks/selects Level 201 once after migration to version 8.
 
 There is no account, cloud sync, or backend recovery. Clearing storage/uninstalling removes local
 progress, subject to platform behavior and the app’s disabled backup policy.
@@ -1094,29 +1137,48 @@ campaign was easy, and it does not constitute human evidence for the replacement
 campaign. It also does not prove currently connected-device QA, production ads/consent/Firebase,
 signing, store declarations, closed testing, or release readiness.
 
-### 20.1 Latest focused Generator V5 verification
+### 20.1 Latest focused Generator V5.1 verification
 
-The 2026-08-20 root-cause repair deliberately did not run a full repository regression or staging
-benchmark because the known Expert seed failed its focused gates.
+The 2026-08-20 V5.1 `EXPERT_ORDERED_POLARITY_V1` run deliberately stopped after one deterministic
+candidate per high-band profile rather than running a large seed matrix.
 
 Passing focused evidence:
 
-- deterministic dependency contract reproduction;
-- canonical production-engine replay and complete solver proof;
-- successful-but-harmful-choice evidence from real Difficulty V4;
-- no filler repair operator on dependency-complete Expert construction;
-- 8/8 declared semantic edges physically verified;
-- three meaningful distance-four relationships verified;
-- campaign SHA remained unchanged;
+- deterministic Expert/Master-only selection and canonical replay;
+- complete solver and Difficulty V4 analysis without truncation;
+- Expert V4 `61`, ordering depth `3`, safe-choice ratio `0.5996`;
+- Master V4 `66`, ordering depth `5`, safe-choice ratio `0.5154`;
+- Expert has three physical long-range relationships and three wall occlusions; Master retains one
+  measured long-range relationship and two wall occlusions;
+- declared exposure, state, polarity, and long-range edges survive materialization and transform;
+- 100% occupancy remains in force; no occupancy relaxation was retained;
 - Gradle configuration-cache entries were stored/reused.
 
-Rejected/terminated evidence:
+Remaining failures:
 
-- certification rejected seed `11510013` for excessive safe choices and missing ordering depth;
-- physical interaction density remained below its gate;
-- full counterfactual relevance analysis was stopped after 90 seconds under the mandatory fast
-  stopping rule;
-- no broad Generator-V5 benchmark, campaign promotion, APK release build, or device test followed.
+- Expert now passes the three-long-range and `0.20` ordering pre-checks but remains short of
+  interaction/object-relevance/participating-wall margins;
+- Master fails object-participation, interacting-object-ratio, average-relevance, and
+  participating-wall-ratio gates;
+- no gate, V4 setting, gameplay rule, or campaign content was changed;
+- at that point no broad benchmark, campaign promotion, release build, or device test had followed;
+  the later content-v8 append is recorded in Sections 11.10 and 20.2.
+
+### 20.2 Content-v8 append verification
+
+The owner-directed append was verified with Gradle configuration cache enabled:
+
+```text
+./gradlew --configuration-cache :level-tools:test
+./gradlew --configuration-cache :app:testDebugUnitTest :level-tools:certifyCampaign
+./gradlew --configuration-cache build
+```
+
+All commands passed. The certification run verified 205 campaign levels and seven Daily fallbacks;
+it surfaced rather than hid the exact Level 205 structural waiver. The full build completed 279
+tasks (36 executed, 243 up-to-date) and produced local debug/release variants. The release remains
+structural and non-uploadable because live ads, UMP, signing, and owner production configuration
+are intentionally unavailable.
 
 ---
 
@@ -1249,6 +1311,11 @@ rewarded hints, consent, and full free access. Not implemented.
 | D2.1 latest checked-in audit | `docs/development/MAGNETRAIL_D2_1_AUDIT.md` |
 | Generator V5 repair specification | `docs/development/MAGNETRAIL_GENERATOR_V5_SPEC.md` |
 | Historical Generator V5 repair audit | `docs/development/MAGNETRAIL_GENERATOR_V5_AUDIT.md` |
+| Expert/Master topology fix v1 | `docs/development/MAGNETRAIL_EXPERT_MASTER_TOPOLOGY_FIX_V1.md` |
+| Expert/Master topology V5.1 | `docs/development/MAGNETRAIL_EXPERT_MASTER_TOPOLOGY_V5_1.md` |
+| Content-v8 append source snapshot | `docs/content/v5_1_append/promotion/SOURCE_CONTENT_V7.json` |
+| Content-v8 append manifest | `docs/content/v5_1_append/promotion/V5_1_APPEND_PROMOTION_MANIFEST.json` |
+| Content-v8 append result | `docs/content/v5_1_append/promotion/V5_1_APPEND_PROMOTION_RESULT.md` |
 | M4 privacy/ad inventory | `docs/M4_COMPLIANCE_NOTES.md` |
 | Analytics events | `docs/M4_EVENT_CATALOG.md` |
 | Release blockers | `docs/release/RELEASE_BLOCKER_LOG.md` |
@@ -1270,33 +1337,31 @@ level-tools/src/main/kotlin/com/rameshta/magnetrail/tools/
 
 ## 24. Current unresolved issues
 
-1. **Content-v7 human difficulty is uncalibrated.** Generator V5 replaced all 200 production boards,
-   but automated certification does not establish perceived difficulty.
+1. **Current human difficulty is uncalibrated.** Generator V5 replaced the first 200 production
+   boards and content v8 appended five more, but automated checks do not establish perceived difficulty.
 2. **D2 human review is incomplete.** The 40 D1 owner ratings belong to archived content-v6 board
    fingerprints. None of the 62 selected D2/content-v7 review boards has an owner rating yet.
-3. **Generator V5 Expert repair is blocked.** The current dependency-complete seed proves three
-   physical long-range relationships and complete V4 search, but it still has safe-choice ratio
-   `0.9372`, ordering `0.0`, interaction density `0.0288`, 51 isolated objects, and no completed
-   counterfactual relevance result within the fast bound. It is not certification/promotion ready.
+3. **Generator V5 Expert/Master structural certification remains blocked.**
+   Expert V5.1 now has V4 `61`, ordering depth `3`, safe-choice ratio `0.5996`, three long-range
+   relationships, and three wall occlusions;
+   Master has V4 `66`, ordering depth `5`, safe-choice ratio `0.5154`, and two wall occlusions.
+   Expert now passes its long-range and ordering pre-checks but still lacks interaction/relevance/
+   wall-participation margin; it is shipped only under the explicit Level 205 owner waiver. Master
+   remains excluded and still fails object/interacting/relevance/wall-participation gates.
 4. **Historical Generator V5 PASS evidence is superseded for quality decisions.** Its Expert/Master
    staging thresholds had been lowered. Current required Expert gates are restored and must not be
    weakened to reproduce that PASS.
-5. **Historical release artifact is stale.** The recorded M5 AAB predates the 200-level catalog and
-   cannot represent the current final game.
+5. **No uploadable current release exists.** The recorded M5 AAB is stale; the current content-v8
+   release build is deliberately structural/non-uploadable.
 6. **Production services are unconfigured.** Live AdMob, UMP console state, Firebase, privacy URL,
    audience choice, upload signing, and Play declarations remain blocked.
 7. **Representative device/accessibility/release testing is incomplete.** API 24, mid-range/API 35,
    tablet/foldable, TalkBack/Switch Access, current upgrade, and production-like consent/ad tests
    require real evidence.
-8. **Future game scope is intentionally absent.** Insulator, Levels 201–300, Infinite, Adaptive
+8. **Future game scope is intentionally absent.** Insulator, Levels 206–300, Infinite, Adaptive
    Infinite, and ads-only Phase 8 are documentation only. D2 includes 43 production 8×8 boards,
    but their representative-device usability still lacks human evidence; 9×9 remains excluded.
 
-The immediate engineering action is a second, still-bounded Generator V5 construction repair:
-make the three corridor modules causally depend on one another, ensure wrong successful ordering
-removes future capability, and replace the isolated route-guard shell with physically participating
-objects. Re-run only seed `11510013`; proceed to broader staging diagnostics only after it passes
-all unchanged Expert gates with complete V4 and relevance analysis. The current repair phase
-explicitly forbids promotion; a later promotion needs certified staging artifacts and a new explicit
-owner direction. Human review remains required to validate player experience even when automated
-certification passes.
+The immediate product action is human playtesting of Levels 201–205 with the Level 205 waiver
+visible in review records. Generator work should raise Expert relevance/participating-wall ratios
+and produce a certifiable Master without overflowing V4 counterfactual enumeration.

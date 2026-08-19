@@ -98,7 +98,9 @@ class D21ArtifactsTest {
     @Test
     fun campaignRemainsByteIdenticalToRecordedHash() {
         val audit = audit()
-        val campaignUrl = requireNotNull(javaClass.getResource("/Magnetrail_Campaign_Levels_v3.json"))
+        val campaignUrl = requireNotNull(
+            javaClass.getResource("/content/v5_1_append/promotion/SOURCE_CONTENT_V7.json"),
+        )
         val bytes = File(campaignUrl.toURI()).readBytes()
         val digest = MessageDigest.getInstance("SHA-256").digest(bytes)
             .joinToString("") { "%02x".format(it) }

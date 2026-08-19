@@ -1,0 +1,94 @@
+{
+    "schemaVersion": 1,
+    "status": "OWNER_DIRECTED_APPENDED_WITH_EXPERT_CERTIFICATION_WAIVER",
+    "authorization": "PROJECT_OWNER_DIRECTIVE_2026_08_20_APPEND_NON_MASTER_AND_UNCERTIFIED_EXPERT",
+    "sourceCampaignSha256": "8552d9ef7a2eeb140c4611ff5a9e3a40a04efb35878d752acef5e222a1dc8ca5",
+    "candidateCatalogSha256": "cb877e2f0ef42047317953d46ec09f8b16dd5e59b3bc54f35b540eeaffccbab4",
+    "promotedCampaignSha256": "6416c0a5677e66cba169cf9caaa9d7d7e6e70bc6e4e3e69b36277e3c69e78128",
+    "sourceContentVersion": 7,
+    "targetContentVersion": 8,
+    "sourceLevelCount": 200,
+    "targetLevelCount": 205,
+    "preservedExistingLevelCount": 200,
+    "appendedLevelCount": 5,
+    "excludedCandidateIds": [
+        "v5-repair-master-0001"
+    ],
+    "humanPlaytestStatus": "NOT_PERFORMED_OWNER_WAIVED_PRE_PROMOTION_PLAYTEST",
+    "automatedHumanApprovalCount": 0,
+    "rows": [
+        {
+            "stagedCandidateId": "v5-repair-easy-0001",
+            "candidateSource": "GENERATOR_V5_REPAIR_STAGING_CATALOG",
+            "productionLevelId": "campaign-201",
+            "campaignNumber": 201,
+            "generationProfile": "v5-d2.1-easy",
+            "boardFingerprint": "sha256:51f55ee70ff72e878b9c6f45da2b8714dcf6108c8fcad643989079c436d26228",
+            "solverCertified": true,
+            "v4Complete": true,
+            "structuralCertificationStatus": "CURRENT_V5_CERTIFIED",
+            "structuralRejectionReasons": []
+        },
+        {
+            "stagedCandidateId": "v5-repair-medium-0001",
+            "candidateSource": "GENERATOR_V5_REPAIR_STAGING_CATALOG",
+            "productionLevelId": "campaign-202",
+            "campaignNumber": 202,
+            "generationProfile": "v5-d2.1-medium",
+            "boardFingerprint": "sha256:5627b4551f414b8e86ceb3a8efff9b556dab50f96a6f2e0cc6ee137d3db4babc",
+            "solverCertified": true,
+            "v4Complete": true,
+            "structuralCertificationStatus": "CURRENT_V5_CERTIFIED",
+            "structuralRejectionReasons": []
+        },
+        {
+            "stagedCandidateId": "v5-repair-hard-0001",
+            "candidateSource": "GENERATOR_V5_REPAIR_STAGING_CATALOG",
+            "productionLevelId": "campaign-203",
+            "campaignNumber": 203,
+            "generationProfile": "v5-d2.1-hard",
+            "boardFingerprint": "sha256:e8a99320a5938acfef625b9a4e192cd969b2036fb0226469ba81df8de90f2643",
+            "solverCertified": true,
+            "v4Complete": true,
+            "structuralCertificationStatus": "CURRENT_V5_CERTIFIED",
+            "structuralRejectionReasons": []
+        },
+        {
+            "stagedCandidateId": "v5-repair-very-hard-0001",
+            "candidateSource": "GENERATOR_V5_REPAIR_STAGING_CATALOG",
+            "productionLevelId": "campaign-204",
+            "campaignNumber": 204,
+            "generationProfile": "v5-d2.1-very-hard",
+            "boardFingerprint": "sha256:3399c7d5950c0b17ad6fa57cc749f80230fde9c17db267e0fe7616197be74d82",
+            "solverCertified": true,
+            "v4Complete": true,
+            "structuralCertificationStatus": "CURRENT_V5_CERTIFIED",
+            "structuralRejectionReasons": []
+        },
+        {
+            "stagedCandidateId": "v5-repair-expert-0001",
+            "candidateSource": "CURRENT_V5_1_DETERMINISTIC_SEED_RECONSTRUCTION",
+            "productionLevelId": "campaign-205",
+            "campaignNumber": 205,
+            "generationProfile": "v5-d2.1-expert",
+            "boardFingerprint": "sha256:8202008ccb4f0fa3488b60883061574998f6426f3d7f5a53193145974cb3026d",
+            "solverCertified": true,
+            "v4Complete": true,
+            "structuralCertificationStatus": "OWNER_WAIVED_UNCERTIFIED_EXPERT",
+            "structuralRejectionReasons": [
+                "interaction-density-out-of-profile",
+                "object-participation-below-profile",
+                "interacting-object-ratio-below-profile",
+                "average-object-relevance-below-profile",
+                "participating-wall-ratio-below-profile"
+            ]
+        }
+    ],
+    "notes": [
+        "Levels 1-200 and their stable IDs, boards, metadata, and fingerprints are unchanged.",
+        "Levels 201-205 are new stable IDs, so no existing board record requires fingerprint migration.",
+        "The Expert exception is explicitly recorded and is not represented as automated or human certification.",
+        "The Expert board is deterministically reconstructed from its recorded seed using the current V5.1 topology; the obsolete staged Expert board was symmetry-equivalent to Very Hard and was not appended.",
+        "The Master benchmark is excluded from production."
+    ]
+}

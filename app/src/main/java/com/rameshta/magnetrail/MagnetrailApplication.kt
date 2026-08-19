@@ -24,7 +24,7 @@ import com.rameshta.magnetrail.privacy.PrivacyManager
 import com.rameshta.magnetrail.privacy.UmpPrivacyManager
 import com.rameshta.magnetrail.privacy.NoOpPrivacyManager
 import com.rameshta.magnetrail.core.economy.EconomyConfig
-import com.rameshta.magnetrail.core.generation.v5.D2_STAGING_CONTENT_VERSION
+import com.rameshta.magnetrail.core.generation.v5.CAMPAIGN_CONTENT_VERSION
 import com.rameshta.magnetrail.core.generation.v5.GENERATOR_VERSION_V5
 import com.rameshta.magnetrail.release.ProductionReleaseConfiguration
 import com.rameshta.magnetrail.release.ProductionReleaseConfigurationValidator
@@ -96,7 +96,7 @@ class MagnetrailApplication : Application() {
         }
         crashReporter.setKey(CrashKey.APP_VERSION, BuildConfig.VERSION_NAME)
         crashReporter.setKey(CrashKey.ENGINE_VERSION, "magnetrail-core-1")
-        crashReporter.setKey(CrashKey.CONTENT_VERSION, D2_STAGING_CONTENT_VERSION.toString())
+        crashReporter.setKey(CrashKey.CONTENT_VERSION, CAMPAIGN_CONTENT_VERSION.toString())
         crashReporter.setKey(CrashKey.GENERATOR_VERSION, GENERATOR_VERSION_V5.toString())
         crashReporter.setKey(CrashKey.ECONOMY_VERSION, EconomyConfig.VERSION.toString())
         m4Services = M4Services(

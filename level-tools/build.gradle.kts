@@ -931,3 +931,38 @@ tasks.register<JavaExec>("promoteD2Campaign") {
         "--authorization=project-owner-directed",
     )
 }
+
+tasks.register<JavaExec>("promoteV51Append") {
+    group = "magnetrail content"
+    description = "Append owner-directed V5 repair Levels 201-205, excluding Master and recording the Expert waiver."
+    val confirmedAuthorization = providers.gradleProperty("confirmV51Append")
+        .map { confirmation ->
+            if (confirmation == "true") {
+                "owner-directed-append-with-uncertified-expert"
+            } else {
+                "missing-confirmation"
+            }
+        }
+        .getOrElse("missing-confirmation")
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val candidates = docsDirectory.file("content/generator_v5_repair/MAGNETRAIL_GENERATOR_V5_REPAIR_CANDIDATES.json")
+    val output = docsDirectory.dir("content/v5_1_append/promotion")
+    inputs.files(campaign, candidates)
+    outputs.files(
+        campaign,
+        output.file("SOURCE_CONTENT_V7.json"),
+        output.file("V5_1_APPEND_PROMOTION_MANIFEST.json"),
+        output.file("V5_1_APPEND_PROMOTION_RESULT.md"),
+    )
+    outputs.upToDateWhen { false }
+    args(
+        "promote-v5.1-append",
+        "--campaign=${campaign.asFile}",
+        "--candidates=${candidates.asFile}",
+        "--source-snapshot=${output.file("SOURCE_CONTENT_V7.json").asFile}",
+        "--output=${output.asFile}",
+        "--authorization=$confirmedAuthorization",
+    )
+}

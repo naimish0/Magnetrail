@@ -131,7 +131,9 @@ class SolutionFirstConstructorV5(
     private val magneticDiagnostics = MagneticDiagnostics(engine, tracer)
     fun construct(request: GenerationRequestV5, seed: Long): ConstructedCandidateV5 {
         val size = chooseSize(request.profile, seed)
-        val candidate = if (size >= 8 && request.profile.maxArrows >= DEPENDENCY_COMPLETE_ARROW_COUNT) {
+        val candidate = if (isOrderedPolarityProfile(request.profile)) {
+            orderedPolarityTopology(request, seed, size)
+        } else if (size >= 8 && request.profile.maxArrows >= DEPENDENCY_COMPLETE_ARROW_COUNT) {
             dependencyCompleteScaffold(request, seed, size)
         } else if (size >= 6) {
             dependencyScaffold(request, seed, size)
@@ -150,6 +152,208 @@ class SolutionFirstConstructorV5(
             "Solution-first materialization was not completely solvable: $solved"
         }
         return candidate.copy(canonicalReplayVerified = true)
+    }
+
+    /**
+     * Expert/Master-only ordered-polarity topology. Each reveal is a valid but fatal early choice:
+     * it flips a controller so the corresponding must-first arrow collides with a permanent wall.
+     * The reveal arrows also block the next must-first route, producing a real causal chain.
+     */
+    private fun orderedPolarityTopology(
+        request: GenerationRequestV5,
+        seed: Long,
+        size: Int,
+    ): ConstructedCandidateV5 {
+        check(size == 8) { "$ORDERED_POLARITY_TOPOLOGY requires the approved 8x8 high-band canvas" }
+        val masterDepth = request.profile.id == "v5-d2.1-master"
+        val arrows = listOf(
+            Arrow("reveal0", Position(1, 2), Direction.NORTH),
+            Arrow("must0", Position(1, 3), Direction.NORTH),
+            Arrow("gateA", Position(1, 4), Direction.NORTH),
+            Arrow("long0", Position(1, 5), Direction.NORTH),
+            Arrow("mustA", Position(2, 2), Direction.NORTH),
+            Arrow("revealA", Position(2, 3), Direction.NORTH),
+            Arrow("revealB", Position(3, 2), Direction.NORTH),
+            Arrow("mustB", Position(3, 3), Direction.NORTH),
+        ) + if (!masterDepth) {
+            listOf(
+                Arrow("long1", Position(1, 6), Direction.NORTH),
+                Arrow("eastGate", Position(1, 7), Direction.NORTH),
+            )
+        } else {
+            emptyList()
+        } + if (masterDepth) {
+            listOf(
+                Arrow("mustC", Position(4, 2), Direction.NORTH),
+                Arrow("revealC", Position(4, 3), Direction.NORTH),
+            )
+        } else {
+            emptyList()
+        }
+        val magnets = listOf(
+            Magnet("controller0", Position(1, 1), Polarity.PULL),
+            Magnet("controllerA", Position(2, 4), Polarity.PULL),
+            Magnet("controllerB", Position(3, 1), Polarity.PULL),
+            Magnet("wallFieldB", Position(3, 5), Polarity.PULL),
+        ) + if (masterDepth) {
+            listOf(
+                Magnet("controllerC", Position(4, 4), Polarity.PULL),
+            )
+        } else {
+            listOf(
+                Magnet("eastController", Position(1, 8), Polarity.PULL),
+                Magnet("shieldLong1", Position(3, 6), Polarity.PULL),
+                Magnet("shieldEastGate", Position(3, 7), Polarity.PULL),
+            )
+        }
+        val occupied = arrows.mapTo(mutableSetOf()) { it.position }.apply {
+            addAll(magnets.map { it.position })
+        }
+        val base = LevelDefinition(
+            id = request.stableId,
+            number = request.sequenceNumber,
+            title = request.title,
+            width = size,
+            height = size,
+            arrows = arrows,
+            magnets = magnets,
+            walls = allCells(size).filterNot { it in occupied }.map(::Wall),
+            designedSolutions = emptyList(),
+        )
+        val canonical = buildList {
+            if (!masterDepth) add("long1")
+            add("long0")
+            if (!masterDepth) add("eastGate")
+            addAll(listOf("must0", "reveal0", "mustA", "revealA", "gateA", "mustB", "revealB"))
+            if (masterDepth) addAll(listOf("mustC", "revealC"))
+        }
+        val nodes = buildList {
+            arrows.forEach { arrow ->
+                add(
+                    SolutionContractNodeV5(
+                        id = "arrow:${arrow.id}",
+                        actionId = arrow.id,
+                        objectKey = "arrow:${arrow.id}",
+                        role = if (arrow.id.startsWith("reveal")) {
+                            SolutionObjectRoleV5.POLARITY_SWITCH
+                        } else {
+                            SolutionObjectRoleV5.TRAP
+                        },
+                    ),
+                )
+            }
+            magnets.forEach { magnet ->
+                add(
+                    SolutionContractNodeV5(
+                        id = "magnet:${magnet.id}",
+                        objectKey = "magnet:${magnet.id}",
+                        role = SolutionObjectRoleV5.CONTROLLER,
+                    ),
+                )
+            }
+        }
+        val contract = SolutionContractV5(
+            nodes = nodes,
+            edges = buildList {
+                add(
+                    edge(
+                        "arrow:reveal0", "arrow:mustA", ConstructedRelationshipV5.EXPOSURE,
+                        "reveal0 removal opens mustA's north exit",
+                    ),
+                )
+                add(
+                    edge(
+                        "arrow:revealA", "arrow:mustB", ConstructedRelationshipV5.EXPOSURE,
+                        "revealA removal opens mustB's north exit",
+                    ),
+                )
+                if (masterDepth) {
+                    add(
+                        edge(
+                            "arrow:revealB", "arrow:mustC", ConstructedRelationshipV5.EXPOSURE,
+                            "revealB removal opens mustC's north exit",
+                        ),
+                    )
+                }
+                add(
+                    edge(
+                        "arrow:revealA", "arrow:gateA", ConstructedRelationshipV5.STATE_DEPENDENCY,
+                        "revealA flips controllerA so gateA exits and opens the long-range corridor",
+                    ),
+                )
+                add(
+                    edge(
+                        "magnet:controller0", "arrow:must0", ConstructedRelationshipV5.POLARITY_DEPENDENCY,
+                        "early reveal0 flips controller0 and makes must0 hit a permanent wall",
+                    ),
+                )
+                add(
+                    edge(
+                        "magnet:controllerA", "arrow:mustA", ConstructedRelationshipV5.POLARITY_DEPENDENCY,
+                        "early revealA flips controllerA and makes mustA hit a permanent wall",
+                    ),
+                )
+                add(
+                    edge(
+                        "magnet:controllerB", "arrow:mustB", ConstructedRelationshipV5.POLARITY_DEPENDENCY,
+                        "early revealB flips controllerB and makes mustB hit a permanent wall",
+                    ),
+                )
+                if (masterDepth) {
+                    add(
+                        edge(
+                            "magnet:controllerC", "arrow:mustC", ConstructedRelationshipV5.POLARITY_DEPENDENCY,
+                            "early revealC flips controllerC and makes mustC hit a permanent wall",
+                        ),
+                    )
+                }
+                add(
+                    edge(
+                        "magnet:controller0", "arrow:long0", ConstructedRelationshipV5.LONG_RANGE_MAGNET_CONTROL,
+                        "controller0 controls long0 across four cells after the ordered corridor clears",
+                    ),
+                )
+                if (!masterDepth) {
+                    add(
+                        edge(
+                            "magnet:controller0", "arrow:long1", ConstructedRelationshipV5.LONG_RANGE_MAGNET_CONTROL,
+                            "controller0 controls long1 across five cells after the ordered corridor clears",
+                        ),
+                    )
+                    add(
+                        edge(
+                            "magnet:eastController", "arrow:must0", ConstructedRelationshipV5.LONG_RANGE_MAGNET_CONTROL,
+                            "eastController reaches must0 after the existing corridor actions clear",
+                        ),
+                    )
+                }
+            },
+            canonicalActionIds = canonical,
+            semanticWitnessActionIds = buildList {
+                add(listOf("reveal0"))
+                add(listOf("revealA"))
+                add(listOf("revealB"))
+                if (masterDepth) add(listOf("revealC"))
+                add(listOf("must0", "reveal0", "mustA", "revealA", "gateA"))
+                if (!masterDepth) {
+                    add(listOf("long0", "must0", "reveal0", "mustA", "revealA", "gateA"))
+                    add(listOf("long1", "long0", "gateA", "eastGate"))
+                }
+            },
+        )
+        check(replay(base, canonical)) {
+            "$ORDERED_POLARITY_TOPOLOGY broke its canonical replay: ${replayFailure(base, canonical)}"
+        }
+        val beforeTransform = verifyPhysicalContract(base, contract, request.profile.analysisStateCap)
+        check(beforeTransform.passed) {
+            "$ORDERED_POLARITY_TOPOLOGY semantic edges missing: ${beforeTransform.missingEdges}"
+        }
+        val transformed = transform(base, seed)
+        val afterTransform = verifyPhysicalContract(transformed, contract, request.profile.analysisStateCap)
+        check(afterTransform.passed) {
+            "$ORDERED_POLARITY_TOPOLOGY transform destroyed semantic edges: ${afterTransform.missingEdges}"
+        }
+        return ConstructedCandidateV5(transformed, contract, canonicalReplayVerified = false)
     }
 
     fun verifyPhysicalContract(
@@ -536,14 +740,18 @@ class SolutionFirstConstructorV5(
     }
 
     private fun replay(level: LevelDefinition, actionIds: List<String>): Boolean {
+        return replayFailure(level, actionIds) == null
+    }
+
+    private fun replayFailure(level: LevelDefinition, actionIds: List<String>): String? {
         var state = level.initialState()
         actionIds.forEach { id ->
-            if (state.arrow(id) == null) return false
+            if (state.arrow(id) == null) return "missing action $id"
             val resolution = engine.resolve(state, PlayerAction(id))
-            if (!resolution.success) return false
+            if (!resolution.success) return "$id failed with $resolution"
             state = resolution.resultingState
         }
-        return state.arrows.isEmpty()
+        return if (state.arrows.isEmpty()) null else "remaining arrows ${state.arrows.map { it.id }}"
     }
 
     private fun analyzeWitnessSemantics(
@@ -721,6 +929,9 @@ class SolutionFirstConstructorV5(
         return supported[random.nextInt(supported.size)]
     }
 
+    private fun isOrderedPolarityProfile(profile: GenerationProfileV5): Boolean =
+        profile.id == "v5-d2.1-expert" || profile.id == "v5-d2.1-master"
+
     private fun allCells(size: Int): List<Position> =
         (1..size).flatMap { row -> (1..size).map { column -> Position(row, column) } }
 
@@ -772,6 +983,7 @@ class SolutionFirstConstructorV5(
     ) = SolutionContractEdgeV5(from, to, relationship, evidence)
 
     private companion object {
+        const val ORDERED_POLARITY_TOPOLOGY = "EXPERT_ORDERED_POLARITY_V1"
         const val FILLER_PREFIX = "shielded-filler-"
         const val DEPENDENCY_COMPLETE_ARROW_COUNT = 10
     }

@@ -8,7 +8,7 @@ import com.rameshta.magnetrail.core.level.LevelParser
 import com.rameshta.magnetrail.core.model.DifficultyBand
 import com.rameshta.magnetrail.core.model.LevelOrigin
 import com.rameshta.magnetrail.core.solver.Solver
-import com.rameshta.magnetrail.core.generation.v5.D2_STAGING_CONTENT_VERSION
+import com.rameshta.magnetrail.core.generation.v5.CAMPAIGN_CONTENT_VERSION
 import com.rameshta.magnetrail.core.generation.v5.GENERATOR_VERSION_V5
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -22,16 +22,21 @@ class ShippedContentTest {
     @Test
     fun `all campaign content is unique certified and replayable`() {
         val campaign = load("/Magnetrail_Campaign_Levels_v3.json")
-        assertEquals(200, campaign.levels.size)
-        assertEquals(200, campaign.levels.map { it.id }.toSet().size)
-        assertEquals((1..200).toList(), campaign.levels.map { it.number })
-        assertEquals(200, campaign.levels.map(ContentFingerprint::of).toSet().size)
-        assertEquals(200, campaign.levels.map(ContentFingerprint::symmetryNormalized).toSet().size)
+        assertEquals(205, campaign.levels.size)
+        assertEquals(205, campaign.levels.map { it.id }.toSet().size)
+        assertEquals((1..205).toList(), campaign.levels.map { it.number })
+        assertEquals(205, campaign.levels.map(ContentFingerprint::of).toSet().size)
+        assertEquals(205, campaign.levels.map(ContentFingerprint::symmetryNormalized).toSet().size)
         assertEquals(0, campaign.levels.count { it.metadata?.origin == LevelOrigin.HANDCRAFTED })
-        assertEquals(200, campaign.levels.count { it.metadata?.origin == LevelOrigin.GENERATOR_ASSISTED })
-        assertEquals(D2_STAGING_CONTENT_VERSION, campaign.contentVersion)
+        assertEquals(205, campaign.levels.count { it.metadata?.origin == LevelOrigin.GENERATOR_ASSISTED })
+        assertEquals(CAMPAIGN_CONTENT_VERSION, campaign.contentVersion)
         assertEquals(GENERATOR_VERSION_V5, campaign.generatorVersion)
-        assertTrue(campaign.levels.all { it.metadata?.previousContentFingerprint != null })
+        assertTrue(campaign.levels.take(200).all { it.metadata?.previousContentFingerprint != null })
+        assertTrue(campaign.levels.drop(200).all { it.metadata?.previousContentFingerprint == null })
+        assertEquals(
+            (201..205).map { "campaign-${it.toString().padStart(3, '0')}" },
+            campaign.levels.drop(200).map { it.id },
+        )
         assertTrue(campaign.levels.all { it.width in 3..8 && it.height in 3..8 })
         assertTrue(campaign.levels.none { it.width == 9 || it.height == 9 })
         assertEquals((1..12).map { "proto-${it.toString().padStart(3, '0')}" }, campaign.levels.take(12).map { it.id })

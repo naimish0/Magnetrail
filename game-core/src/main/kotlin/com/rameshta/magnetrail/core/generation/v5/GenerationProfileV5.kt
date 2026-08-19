@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 const val GENERATOR_VERSION_V5 = 5
 const val D2_STAGING_CONTENT_VERSION = 7
+const val CAMPAIGN_CONTENT_VERSION = 8
 const val D2_SELECTION_VERSION = 1
 const val D2_SKILL_VERSION = 1
 const val D2_1_SPATIAL_CONFIGURATION_VERSION = 2
