@@ -43,6 +43,7 @@ val m52StagingDirectory = layout.buildDirectory.dir("m5_2-staging")
 val phase0StagingDirectory = layout.buildDirectory.dir("phase0-staging")
 val phase1StagingDirectory = layout.buildDirectory.dir("phase1-staging")
 val d2StagingDirectory = docsDirectory.dir("content/d2/staging")
+val d21StagingDirectory = docsDirectory.dir("content/d2_1/staging")
 
 tasks.register<JavaExec>("stagePhase1Expansion") {
     group = "magnetrail content"
@@ -789,6 +790,85 @@ registerD2AnalysisTask(
     "analyze-d2-v5",
     "Validate D2 V5 certification, structural gates, and truncation evidence.",
 )
+
+tasks.register<JavaExec>("generateD21SpatialDensityCandidates") {
+    group = "magnetrail content"
+    description = "Generate bounded, fully certified D2.1 spatial-density staging evidence; never modifies campaign content."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val development = docsDirectory.dir("development")
+    inputs.file(campaign)
+    inputs.property("d21CandidatesPerProfile", providers.gradleProperty("d21CandidatesPerProfile").getOrElse("1"))
+    inputs.property("d21Seed", providers.gradleProperty("d21Seed").getOrElse("6210001"))
+    inputs.property(
+        "d21AttemptsPerCandidate",
+        providers.gradleProperty("d21AttemptsPerCandidate").getOrElse("profile-default"),
+    )
+    inputs.property("d21SeedRetries", providers.gradleProperty("d21SeedRetries").getOrElse("1"))
+    inputs.property("d21Profiles", providers.gradleProperty("d21Profiles").getOrElse("all"))
+    outputs.files(
+        d21StagingDirectory.file("MAGNETRAIL_D2_1_SPATIAL_CANDIDATES.json"),
+        development.file("MAGNETRAIL_D2_1_AUDIT.json"),
+        development.file("MAGNETRAIL_D2_1_AUDIT.md"),
+        development.file("MAGNETRAIL_D2_1_LEVEL_DIAGNOSTICS.csv"),
+    )
+    outputs.upToDateWhen { false }
+    args(
+        "generate-d2.1-spatial-density",
+        "--campaign=${campaign.asFile}",
+        "--output=${development.asFile}",
+        "--staging-output=${d21StagingDirectory.asFile}",
+        "--candidates-per-profile=${providers.gradleProperty("d21CandidatesPerProfile").getOrElse("1")}",
+        "--seed=${providers.gradleProperty("d21Seed").getOrElse("6210001")}",
+        "--seed-retries=${providers.gradleProperty("d21SeedRetries").getOrElse("1")}",
+    )
+    providers.gradleProperty("d21AttemptsPerCandidate").orNull?.let {
+        args("--attempts-per-candidate=$it")
+    }
+    providers.gradleProperty("d21Profiles").orNull?.let { args("--profiles=$it") }
+}
+
+tasks.register<JavaExec>("analyzeD21SpatialDensity") {
+    group = "verification"
+    description = "Validate D2.1 occupancy, participation, certification, determinism, and campaign immutability evidence."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val audit = docsDirectory.file("development/MAGNETRAIL_D2_1_AUDIT.json")
+    inputs.file(audit)
+    args("validate-d2.1-spatial-density", "--audit=${audit.asFile}")
+}
+
+tasks.register<JavaExec>("benchmarkGeneratorV5Repair") {
+    group = "magnetrail content"
+    description = "Run the bounded solution-first Generator V5 staging benchmark without promotion."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val development = docsDirectory.dir("development")
+    val staging = docsDirectory.dir("content/generator_v5_repair")
+    inputs.file(campaign)
+    inputs.property("generatorV5RepairSeed", providers.gradleProperty("generatorV5RepairSeed").getOrElse("7510001"))
+    inputs.property(
+        "generatorV5RepairAttemptsPerProfile",
+        providers.gradleProperty("generatorV5RepairAttemptsPerProfile").getOrElse("1"),
+    )
+    outputs.files(
+        development.file("MAGNETRAIL_GENERATOR_V5_AUDIT.json"),
+        development.file("MAGNETRAIL_GENERATOR_V5_AUDIT.md"),
+        development.file("MAGNETRAIL_GENERATOR_V5_BENCHMARK.csv"),
+        staging.file("MAGNETRAIL_GENERATOR_V5_REPAIR_CANDIDATES.json"),
+    )
+    outputs.upToDateWhen { false }
+    args(
+        "benchmark-generator-v5-repair",
+        "--campaign=${campaign.asFile}",
+        "--output=${development.asFile}",
+        "--staging-output=${staging.asFile}",
+        "--seed=${providers.gradleProperty("generatorV5RepairSeed").getOrElse("7510001")}",
+        "--attempts-per-profile=${providers.gradleProperty("generatorV5RepairAttemptsPerProfile").getOrElse("1")}",
+    )
+}
 registerD2AnalysisTask(
     "analyzeObjectRelevanceV5",
     "analyze-d2-objects-v5",

@@ -220,14 +220,24 @@ dependencies {
     baselineProfile(project(":baseline-profile"))
 }
 
+val releaseConfigurationProblems = productionConfigurationProblems()
 val validateReleaseConfiguration by tasks.registering {
     group = "verification"
     description = "Reject unsafe production release inputs without printing any secret value."
+    inputs.property("releaseVersionCode", releaseVersionCode)
+    inputs.property("releaseVersionName", releaseVersionName)
+    inputs.property("productionReleaseRequested", productionReleaseRequested)
+    inputs.property("releaseConfigurationProblems", releaseConfigurationProblems.joinToString("\u0000"))
     doLast {
-        check(releaseVersionCode > 0) { "magnetrail.versionCode must be positive" }
-        check(releaseVersionName.isNotBlank()) { "magnetrail.versionName must not be blank" }
-        if (productionReleaseRequested) {
-            val problems = productionConfigurationProblems()
+        val configuredVersionCode = inputs.properties.getValue("releaseVersionCode").toString().toInt()
+        val configuredVersionName = inputs.properties.getValue("releaseVersionName").toString()
+        val productionRequested = inputs.properties.getValue("productionReleaseRequested").toString().toBoolean()
+        val problems = inputs.properties.getValue("releaseConfigurationProblems").toString()
+            .split('\u0000')
+            .filter(String::isNotBlank)
+        check(configuredVersionCode > 0) { "magnetrail.versionCode must be positive" }
+        check(configuredVersionName.isNotBlank()) { "magnetrail.versionName must not be blank" }
+        if (productionRequested) {
             check(problems.isEmpty()) {
                 "Production release configuration is incomplete:\n- ${problems.joinToString("\n- ")}"
             }

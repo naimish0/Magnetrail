@@ -1,0 +1,90 @@
+{
+    "schemaVersion": 1,
+    "reportVersion": "magnetrail-d2.1-spatial-density-audit-1",
+    "generatorVersion": 5,
+    "spatialConfigurationVersion": 2,
+    "sourceCampaignPath": "/Users/naimishgupta/AndroidStudioProjects/Magnetrail/docs/Magnetrail_Campaign_Levels_v3.json",
+    "sourceCampaignSha256Before": "8552d9ef7a2eeb140c4611ff5a9e3a40a04efb35878d752acef5e222a1dc8ca5",
+    "sourceCampaignSha256After": "8552d9ef7a2eeb140c4611ff5a9e3a40a04efb35878d752acef5e222a1dc8ca5",
+    "sourceCampaignLevelCount": 200,
+    "campaignByteIdentical": true,
+    "candidatesPerProfile": 1,
+    "initialSeed": 6210001,
+    "status": "BLOCKED",
+    "profileConfigurations": [
+        {
+            "profileId": "v5-d2.1-expert",
+            "difficulty": "EXPERT",
+            "structuralBand": "EXPERT",
+            "gridSizes": [
+                8
+            ],
+            "minimumOccupancy": 1.0,
+            "targetOccupancy": 1.0,
+            "maximumOccupancy": 1.0,
+            "arrowCount": {
+                "minimum": 9,
+                "maximum": 14
+            },
+            "magnetCount": {
+                "minimum": 0,
+                "maximum": 64
+            },
+            "wallCount": {
+                "minimum": 0,
+                "maximum": 64
+            },
+            "minimumInteractionDensity": 0.04,
+            "targetInteractionDensity": 0.37,
+            "maximumInteractionDensity": 0.7
+        }
+    ],
+    "profileResults": [
+        {
+            "profileId": "v5-d2.1-expert",
+            "difficulty": "EXPERT",
+            "requestedCertifiedCandidates": 1,
+            "generatedCandidateAttempts": 1,
+            "validCandidates": 0,
+            "rejectedCandidateAttempts": 1,
+            "exhaustedRequests": 1,
+            "rejectionReasons": {
+                "average-object-relevance-below-profile": 1,
+                "interaction-density-out-of-profile": 1,
+                "irrelevant-object-ratio-above-profile": 1,
+                "meaningful-long-range-magnetism-below-profile": 1,
+                "meaningful-ordering-rate-below-profile": 1,
+                "object-participation-below-profile": 1
+            },
+            "averageOccupancy": 0.0,
+            "averageObjectCount": 0.0,
+            "averageInteractionDensity": 0.0,
+            "averageObjectRelevance": 0.0,
+            "averageV4Score": 0.0,
+            "solverCompleteCandidates": 0,
+            "duplicateRate": 0.0
+        }
+    ],
+    "totalGeneratedCandidateAttempts": 1,
+    "totalValidCandidates": 0,
+    "totalRejectedCandidateAttempts": 1,
+    "totalExhaustedRequests": 1,
+    "rejectionReasons": {
+        "average-object-relevance-below-profile": 1,
+        "interaction-density-out-of-profile": 1,
+        "irrelevant-object-ratio-above-profile": 1,
+        "meaningful-long-range-magnetism-below-profile": 1,
+        "meaningful-ordering-rate-below-profile": 1,
+        "object-participation-below-profile": 1,
+        "request-exhausted-including-duplicate-retries": 1
+    },
+    "deterministicReproductionPassed": true,
+    "levels": [],
+    "limitations": [
+        "The checked-in run is a bounded certification benchmark, not the recommended 1,000-candidate-per-profile scale run.",
+        "Human play ratings are not available for D2.1 candidates; automated certification is not human approval.",
+        "9x9 remains experimental and is excluded pending separate board-usability approval.",
+        "High-tier permutation redundancy and wall relevance remain provisional; accepted staging candidates are not promotion-ready campaign content.",
+        "Difficulty V4 weights and production gameplay semantics were not changed."
+    ]
+}

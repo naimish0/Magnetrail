@@ -1,0 +1,7 @@
+difficulty,profile,attempts,constructed,solved,v4_complete,v4_truncated,ordering_pass,wall_participation_pass,object_relevance_pass,duplicate_free,certified,bounded_attempts_exhausted
+EASY,v5-d2.1-easy,1,1,1,1,0,1,1,1,1,1,false
+MEDIUM,v5-d2.1-medium,1,1,1,1,0,1,1,1,1,1,false
+HARD,v5-d2.1-hard,1,1,1,1,0,1,1,1,1,1,false
+VERY_HARD,v5-d2.1-very-hard,1,1,1,1,0,1,1,1,1,1,false
+EXPERT,v5-d2.1-expert,1,1,1,1,0,1,1,1,1,1,false
+MASTER,v5-d2.1-master,1,1,1,1,0,1,1,1,1,1,false

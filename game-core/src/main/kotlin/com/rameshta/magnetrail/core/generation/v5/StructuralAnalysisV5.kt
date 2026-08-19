@@ -96,6 +96,8 @@ data class ObjectRelevanceSummaryV5(
     val irrelevantObjectCount: Int,
     val relevantObjectRatio: Double,
     val analysisComplete: Boolean,
+    val relevantObjectCountByType: Map<String, Int> = emptyMap(),
+    val irrelevantObjectCountByType: Map<String, Int> = emptyMap(),
 )
 
 @Serializable
@@ -153,6 +155,20 @@ data class StructuralDiagnosticsV5(
     val mechanicCombinationFingerprint: String,
     val v4Score: Int?,
     val v4Confidence: Double,
+    val spatialDensity: SpatialDensityMetricsV5 = SpatialDensityMetricsV5(),
+    val uniqueMagneticRelationshipCount: Int = 0,
+    val magneticRelationshipDistances: List<Int> = emptyList(),
+    val longRangeMagneticRelationshipCount: Int = 0,
+    val meaningfulLineOfSightInteractionCount: Int = 0,
+    val meaningfulArrowBlockerRelationshipCount: Int = 0,
+    val meaningfulWallOcclusionCount: Int = 0,
+    val exposureDepth: Int = 0,
+    val persistentConsequenceCount: Int = 0,
+    val averagePersistentConsequenceBreadth: Double = 0.0,
+    val visibilityChangeCount: Int = 0,
+    val commutativeActionPairCount: Int = 0,
+    val nonCommutingActionPairCount: Int = 0,
+    val viablePairCommutationRatio: Double = 0.0,
     val analyzerVersion: String = STRUCTURAL_ANALYZER_V5_VERSION,
 )
 
@@ -164,6 +180,28 @@ data class StructuralAnalysisLimitsV5(
 )
 
 /**
+ * Cheap, engine-derived structure used by Generator V5 while materializing and repairing a
+ * solution contract. Unlike authored contract metadata, every edge in this snapshot was observed
+ * on a reachable production-engine state.
+ */
+data class PhysicalSemanticsV5(
+    val edges: Set<InteractionEdgeV5>,
+    val magneticRelationshipDistances: Map<String, Int>,
+    val complete: Boolean,
+    val truncationReasons: List<String>,
+    val interactionGraph: InteractionGraphV5? = null,
+) {
+    val longRangeRelationships: Set<String>
+        get() = magneticRelationshipDistances.filterValues { it >= 4 }.keys
+
+    val participatingWalls: Set<String>
+        get() = edges.asSequence()
+            .flatMap { sequenceOf(it.source, it.target) }
+            .filter { it.startsWith("wall:") }
+            .toSet()
+}
+
+/**
  * Offline-only structural analysis. All action outcomes come from [GameEngine]; this class does
  * not duplicate gameplay rules.
  */
@@ -172,6 +210,20 @@ class StructuralAnalyzerV5(
     private val tracer: DeterministicRouteTracer = DeterministicRouteTracer(),
     private val magneticDiagnostics: MagneticDiagnostics = MagneticDiagnostics(engine, tracer),
 ) {
+    fun analyzePhysicalSemantics(
+        level: LevelDefinition,
+        limits: StructuralAnalysisLimitsV5 = StructuralAnalysisLimitsV5(),
+    ): PhysicalSemanticsV5 {
+        val physical = snapshot(level, limits)
+        return PhysicalSemanticsV5(
+            edges = physical.edges.toSet(),
+            magneticRelationshipDistances = physical.magneticRelationshipDistances.toMap(),
+            complete = physical.complete,
+            truncationReasons = physical.truncationReasons,
+            interactionGraph = buildGraph(level, physical.edges),
+        )
+    }
+
     fun analyze(
         level: LevelDefinition,
         band: StructuralDifficultyBandV5,
@@ -197,6 +249,12 @@ class StructuralAnalyzerV5(
         val truncation = (snapshot.truncationReasons + v4.truncationReasons).distinct().sorted()
         val strategyCount = v4.metrics.strategy.meaningfulStrategyFamilyCount
             ?: v4.metrics.strategy.canonicalStrategyCount
+        val uniqueMagneticDistances = snapshot.magneticRelationshipDistances.values.sorted()
+        val meaningfulLineOfSightEdges = snapshot.edges.filter { it.type in LOS_TYPES }
+        val meaningfulArrowBlockers = snapshot.edges.filter { edge ->
+            edge.source.startsWith("arrow:") && edge.target.startsWith("arrow:") &&
+                edge.type in setOf(InteractionTypeV5.OCCLUSION, InteractionTypeV5.ROUTE_BLOCK)
+        }
         return StructuralDiagnosticsV5(
             levelId = level.id,
             difficultyBand = band,
@@ -282,6 +340,25 @@ class StructuralAnalyzerV5(
             mechanicCombinationFingerprint = fingerprint(mechanics.toList()),
             v4Score = v4.score,
             v4Confidence = v4.confidence,
+            spatialDensity = SpatialDensityAnalyzerV5.analyze(level),
+            uniqueMagneticRelationshipCount = uniqueMagneticDistances.size,
+            magneticRelationshipDistances = uniqueMagneticDistances,
+            longRangeMagneticRelationshipCount = uniqueMagneticDistances.count { it >= 4 },
+            meaningfulLineOfSightInteractionCount = meaningfulLineOfSightEdges.size,
+            meaningfulArrowBlockerRelationshipCount = meaningfulArrowBlockers.size,
+            meaningfulWallOcclusionCount = snapshot.edges.count { edge ->
+                edge.source.startsWith("wall:") && edge.type == InteractionTypeV5.OCCLUSION
+            },
+            exposureDepth = graphDepth(snapshot.edges.filter {
+                it.type == InteractionTypeV5.EXPOSURE || it.type == InteractionTypeV5.REVEAL
+            }),
+            persistentConsequenceCount = snapshot.persistentConsequenceCount,
+            averagePersistentConsequenceBreadth = if (snapshot.persistentConsequenceCount == 0) 0.0 else
+                round4(snapshot.persistentConsequenceAffectedTotal.toDouble() / snapshot.persistentConsequenceCount),
+            visibilityChangeCount = snapshot.visibilityChangeCount,
+            commutativeActionPairCount = v4.metrics.strategy.commutativeActionPairCount,
+            nonCommutingActionPairCount = v4.metrics.strategy.nonCommutingActionPairCount,
+            viablePairCommutationRatio = v4.metrics.strategy.commutationRatio,
         )
     }
 
@@ -301,6 +378,10 @@ class StructuralAnalyzerV5(
         var controllerChanges = 0
         var consequenceDepth = 0
         var consequenceBreadth = 0
+        var persistentConsequenceCount = 0
+        var persistentConsequenceAffectedTotal = 0
+        var visibilityChanges = 0
+        val magneticRelationshipDistances = linkedMapOf<String, Int>()
 
         fun enqueue(state: BoardState) {
             val key = StateKey.from(state)
@@ -327,7 +408,9 @@ class StructuralAnalyzerV5(
                 val control = tracer.explainControl(state, arrow)
                 control.controllingMagnet?.let { magnet ->
                     edges += InteractionEdgeV5("magnet:${magnet.id}", arrowKey, InteractionTypeV5.MAGNET_CONTROL)
-                    magneticDistances += distance(arrow.position, magnet.position)
+                    val magneticDistance = distance(arrow.position, magnet.position)
+                    magneticDistances += magneticDistance
+                    magneticRelationshipDistances["${magnet.id}>${arrow.id}"] = magneticDistance
                 }
                 if (control.cancelledByEqualNearestMagnets) {
                     stateCancelled = true
@@ -378,16 +461,22 @@ class StructuralAnalyzerV5(
                         edges += InteractionEdgeV5(arrowKey, "arrow:${future.id}", InteractionTypeV5.EXPOSURE)
                         edges += InteractionEdgeV5(arrowKey, "arrow:${future.id}", InteractionTypeV5.REVEAL)
                         edges += InteractionEdgeV5(arrowKey, "arrow:${future.id}", InteractionTypeV5.STATE_DEPENDENCY)
-                        if (before?.controller != after.controller) controllerChanges += 1
+                        if (before?.controller != after.controller) {
+                            controllerChanges += 1
+                            visibilityChanges += 1
+                        }
                         if (before?.cancelled != after.cancelled) {
                             cancellationTransitions += 1
                             cancellationCritical += 1
+                            visibilityChanges += 1
                         }
                     }
                 }
                 if (affected > 0) {
                     consequenceDepth = max(consequenceDepth, 1)
                     consequenceBreadth = max(consequenceBreadth, affected)
+                    persistentConsequenceCount += 1
+                    persistentConsequenceAffectedTotal += affected
                 }
                 result.polarityChange?.let { change ->
                     val unflipped = result.resultingState.copy(
@@ -466,6 +555,7 @@ class StructuralAnalyzerV5(
         return SnapshotV5(
             edges = edges.toList().sortedWith(compareBy(InteractionEdgeV5::source, InteractionEdgeV5::target, InteractionEdgeV5::type)),
             magneticDistances = magneticDistances,
+            magneticRelationshipDistances = magneticRelationshipDistances,
             cancellationPairs = cancellationPairs,
             cancellationStateCount = cancellationStates,
             cancellationTransitionCount = cancellationTransitions,
@@ -475,6 +565,9 @@ class StructuralAnalyzerV5(
             controllerChangeCount = controllerChanges,
             consequenceDepth = consequenceDepth,
             consequenceBreadth = consequenceBreadth,
+            persistentConsequenceCount = persistentConsequenceCount,
+            persistentConsequenceAffectedTotal = persistentConsequenceAffectedTotal,
+            visibilityChangeCount = visibilityChanges,
             complete = reasons.isEmpty(),
             truncationReasons = reasons.toList().sorted(),
             stateCount = nodes.size,
@@ -530,18 +623,12 @@ class StructuralAnalyzerV5(
                 baseline.edges.count { it.type == InteractionTypeV5.ORDER_DEPENDENCY },
                 variantSnapshot?.edges?.count { it.type == InteractionTypeV5.ORDER_DEPENDENCY } ?: 0,
             )
-            val losChange = normalizedDelta(
-                baseline.edges.count { it.type in LOS_TYPES && node.key !in setOf(it.source, it.target) },
-                variantSnapshot?.edges?.count { it.type in LOS_TYPES } ?: 0,
-            )
+            val losChange = edgeSetDistance(baseline, variantSnapshot, LOS_TYPES)
             val cancellationChange = normalizedDelta(
                 baseline.cancellationTransitionCount + baseline.cancellationPairs.size,
                 (variantSnapshot?.cancellationTransitionCount ?: 0) + (variantSnapshot?.cancellationPairs?.size ?: 0),
             )
-            val routeChange = normalizedDelta(
-                baseline.edges.count { it.type in ROUTE_TYPES && node.key !in setOf(it.source, it.target) },
-                variantSnapshot?.edges?.count { it.type in ROUTE_TYPES } ?: 0,
-            )
+            val routeChange = edgeSetDistance(baseline, variantSnapshot, ROUTE_TYPES)
             val interactionParticipation = (degree[node.key] ?: 0).toDouble() / maxDegree
             val score = if (solvabilityChanged) {
                 1.0
@@ -589,6 +676,14 @@ class StructuralAnalyzerV5(
             irrelevantObjectCount = objects.count { it.classification == ObjectRelevanceClassV5.IRRELEVANT },
             relevantObjectRatio = ratio(relevant, objects.size),
             analysisComplete = objects.size == graph.nodes.size && objects.all { it.analysisComplete },
+            relevantObjectCountByType = objects.filter { it.classification in setOf(
+                ObjectRelevanceClassV5.CRITICAL,
+                ObjectRelevanceClassV5.HIGH,
+                ObjectRelevanceClassV5.MEDIUM,
+            ) }.groupingBy { it.objectType.name }.eachCount().toSortedMap(),
+            irrelevantObjectCountByType = objects.filter {
+                it.classification == ObjectRelevanceClassV5.IRRELEVANT
+            }.groupingBy { it.objectType.name }.eachCount().toSortedMap(),
         )
     }
 
@@ -747,6 +842,17 @@ class StructuralAnalyzerV5(
         return if (union.isEmpty()) 0.0 else 1.0 - (first intersect second).size.toDouble() / union.size
     }
 
+    private fun edgeSetDistance(
+        baseline: SnapshotV5,
+        variant: SnapshotV5?,
+        types: Set<InteractionTypeV5>,
+    ): Double = setDistance(
+        baseline.edges.filter { edge -> edge.type in types }
+            .mapTo(mutableSetOf()) { "${it.source}>${it.target}:${it.type}" },
+        variant?.edges.orEmpty().filter { it.type in types }
+            .mapTo(mutableSetOf()) { "${it.source}>${it.target}:${it.type}" },
+    )
+
     private fun fingerprint(parts: List<String>): String = ContentFingerprint.sha256Hex(parts.sorted().joinToString("|"))
 
     private fun ratio(numerator: Int, denominator: Int): Double =
@@ -778,6 +884,7 @@ class StructuralAnalyzerV5(
     private data class SnapshotV5(
         val edges: List<InteractionEdgeV5>,
         val magneticDistances: List<Int>,
+        val magneticRelationshipDistances: Map<String, Int>,
         val cancellationPairs: Set<String>,
         val cancellationStateCount: Int,
         val cancellationTransitionCount: Int,
@@ -787,6 +894,9 @@ class StructuralAnalyzerV5(
         val controllerChangeCount: Int,
         val consequenceDepth: Int,
         val consequenceBreadth: Int,
+        val persistentConsequenceCount: Int,
+        val persistentConsequenceAffectedTotal: Int,
+        val visibilityChangeCount: Int,
         val complete: Boolean,
         val truncationReasons: List<String>,
         val stateCount: Int,

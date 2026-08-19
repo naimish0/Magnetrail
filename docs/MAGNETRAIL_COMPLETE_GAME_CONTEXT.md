@@ -1,11 +1,14 @@
 # Magnetrail — Complete Game and Development Context
 
-Last consolidated: **2026-08-19 (Asia/Kolkata)**
+Last consolidated: **2026-08-20 (Asia/Kolkata)**
 
 Repository: Android Studio project `Magnetrail`
 
 Package: `com.rameshta.magnetrail`
-Current checked-in campaign: **200 levels, content version 6, generator version 4**
+Current checked-in campaign: **200 levels, content version 7, generator version 5**
+
+Canonical campaign SHA-256:
+`8552d9ef7a2eeb140c4611ff5a9e3a40a04efb35878d752acef5e222a1dc8ca5`
 
 This is the single read-first handoff document for Magnetrail. It consolidates the product vision,
 frozen gameplay semantics, Android architecture, UI system, implemented milestones, campaign and
@@ -41,10 +44,13 @@ Important conflict resolutions:
   `CODEX_MASTER_REMAINING_DEVELOPMENT_PROMPT.md` is superseded. Do not add Google Play Billing,
   purchases, subscriptions, paid content, premium currency, or Remove Ads.
 - Automated solver or Quality approval is never human approval.
-- The latest human evidence is negative: the project owner/player reports completing all 200
-  levels and finding the difficulty very poor. Difficulty remediation was subsequently aborted,
-  so no post-feedback campaign changes were made. The campaign is technically certified but its
-  perceived difficulty is not accepted.
+- The project owner/player completed the archived content-v6 campaign and found all 200 levels
+  overwhelmingly easy. D1 diagnosed/calibrated that failure; D2 subsequently replaced all 200
+  boards under stable IDs with content-v7 Generator-V5 boards. Content-v7 is technically
+  certified, but it has not received human difficulty ratings and is not human-approved.
+- D2.1 and the later Generator-V5 root-cause repair are staging/generator work only. They have not
+  changed the canonical content-v7 campaign. The latest focused Expert repair remains blocked by
+  safe-choice, mandatory-ordering, interaction-density, and counterfactual-analysis constraints.
 - Strict phase isolation applies. Do not implement future-phase functionality while working on a
   current or reopened phase.
 
@@ -473,6 +479,58 @@ misleading reward language.
 - Content and preference migrations preserve stable IDs and earned player value.
 - No Phase 2 mechanic or later feature was implemented.
 
+### D1 — Difficulty V4 and human calibration
+
+- The full 200-level content-v6 campaign was audited after the owner completed it and reported that
+  every level was easy.
+- Difficulty V4 was implemented as a structural diagnostic emphasizing consequential decisions,
+  harmful choices, mandatory ordering, polarity consequences, recovery, commutation, persistent
+  consequences, greedy/random resistance, and confidence/truncation.
+- Forty board-fingerprint-bound owner ratings were recorded: 32 Trivial, 4 Very Easy, 2 Easy,
+  1 Moderate, and 1 Challenging. No automated process was treated as a human rating.
+- Calibration results were: V3 Pearson `0.3319`, Spearman `0.5852`, MAE `62.47`; V4 Pearson
+  `0.5939`, Spearman `0.5718`, MAE `8.68`. V4 improved absolute prediction but remains preliminary.
+- The audit found 98.61% safe successful choices, 1.39% meaningful failure, 99.10% permutation
+  redundancy, 91.25% viable-pair commutation, 183/200 stable-order greedy solves, and 92.72%
+  random-success completion in content v6.
+
+### D2 — Generator V5, deterministic selector prototype, and promotion
+
+- Generator V5 added explicit structural profiles, typed interaction graphs, object-removal
+  relevance, dependency/polarity/exposure diagnostics, staging catalogs, bounded deterministic
+  generation, and duplicate fingerprints.
+- `DifficultySelectionV1` and `PlayerSkillStateV1` exist only as offline deterministic prototypes.
+  They are not integrated into app UI, persistence, or runtime campaign routing.
+- D2 generated and certified 200 staged boards, then owner-directed guarded promotion replaced all
+  200 production boards while preserving stable IDs and archiving old fingerprint-bound records.
+- Production moved to content version 7 / generator version 5. The old content-v6 source remains
+  archived. No runtime generation was introduced.
+- D2 automated aggregate evidence improved substantially: safe-choice ratio `0.8252`, meaningful
+  failure `0.1748`, harmful-decision density `0.7325`, relevant-object ratio `0.7245`, interaction
+  density `0.3288`, mean dependency depth `4.17`, mean polarity-impact depth `3.46`, mean ordering
+  depth `2.505`, greedy solve rate `0.4283`, random-success rate `0.4742`, and permutation
+  redundancy `0.8432`.
+- The promoted distribution is 12 Tutorial, 35 Easy, 45 Medium, 55 Hard, 40 Expert, and 13 Master.
+  None of the content-v7 boards has an owner difficulty rating, so automated promotion is not human
+  approval.
+
+### D2.1 — Spatial density and current Generator V5 repair
+
+- D2.1 introduced explicit occupancy/object-count profiles, physical interaction diagnostics,
+  long-range relationship reporting, participating-wall checks, exposure depth, persistent
+  consequences, and dense-but-trivial rejection.
+- The first Expert staging attempt failed because a small 17-object puzzle was surrounded by 47
+  strategically irrelevant occupancy objects, including 41 `shielded-filler-*` magnets.
+- A later benchmark temporarily passed only after Expert/Master staging thresholds were reduced;
+  that historical result is superseded as quality evidence. The required Expert gates are restored
+  to interaction density `>= 0.04`, relevant-object ratio `>= 0.28`, average relevance `>= 0.11`,
+  at least 3 meaningful distance-four relationships, and meaningful ordering `>= 0.20`.
+- The focused dependency-complete repair now authors three real long-range controller corridors,
+  verifies declared semantic edges against reachable production-engine states, verifies those
+  edges before/after geometry transformation, and refuses filler-based repair when no
+  structure-preserving mutation exists.
+- The repaired seed `11510013` is still rejected. See Section 11.7 for the exact measurements.
+
 ---
 
 ## 10. Current campaign content
@@ -487,6 +545,7 @@ Canonical file: `docs/Magnetrail_Campaign_Levels_v3.json`.
 | Content version | 7 |
 | Generator version | 5 |
 | Level count | 200 |
+| SHA-256 | `8552d9ef7a2eeb140c4611ff5a9e3a40a04efb35878d752acef5e222a1dc8ca5` |
 | Stable range | `proto-001`…`proto-012`, then campaign IDs through `campaign-200` |
 | Current metadata origin | 200 `GENERATOR_ASSISTED` |
 | Board sizes | 2 × 3×3; 16 × 4×4; 76 × 5×5; 27 × 6×6; 36 × 7×7; 43 × 8×8 |
@@ -551,6 +610,8 @@ Current disposition:
 - The 40 historical D1 ratings are fingerprint-bound to content v6 and are excluded from v7
   calibration.
 - Content-v7 human difficulty remains unmeasured until the owner plays and rates the new boards.
+- D2.1/V5 repair candidates are not part of this campaign. Failed or partially measured staging
+  boards must never be copied into this canonical file.
 
 ---
 
@@ -619,6 +680,56 @@ Prioritize manual review using:
 
 Automated approval must never be recorded as human approval.
 
+### 11.6 Difficulty V4 authority and calibration limits
+
+Difficulty V4 is the current structural difficulty authority for generation/certification. It does
+not replace the production engine, Quality analysis, or human playtesting. Its most important
+distinction is between raw legal/solution branching and choices whose outcomes materially change
+future solvability, actionability, ordering, polarity, controller visibility, or recovery.
+
+The 40 D1 human ratings apply only to their archived content-v6 fingerprints. They must not be
+joined to content-v7 or staging candidates by stable ID alone because the physical boards changed.
+No automated label, V4 band, solver score, or generator profile may be written as a human rating.
+
+### 11.7 Current Expert Generator V5 blocker — 2026-08-20
+
+Known reproduction seed: `11510013`; canvas: 8×8. The current focused constructor uses 10 arrows,
+3 magnets, and 51 walls, for 64 authored objects. It no longer creates `shielded-filler-*` magnets.
+
+| Metric | Original reproduced Expert | Current focused repair | Required |
+|---|---:|---:|---:|
+| Interaction density | 0.0253 | 0.0288 | >= 0.04 |
+| Relevant-object ratio | 0.2656 | NOT MEASURABLE WITHIN FAST BOUND | >= 0.28 |
+| Average relevance | 0.0674 | NOT MEASURABLE WITHIN FAST BOUND | >= 0.11 |
+| Meaningful long-range relationships | 0 | 3 | >= 3 |
+| Meaningful ordering | 0.1389 | 0.0000 | >= 0.20 |
+| Connected components | 46 | 52 | diagnostic |
+| Largest connected component | 17 | 13 | diagnostic |
+| Isolated objects | 44 | 51 | diagnostic |
+
+Additional current evidence:
+
+- all 8 declared semantic construction edges are physically verified before and after the seeded
+  reflection/rotation;
+- the physical analyzer observed 181 typed edges and all 3 required distance-four controllers;
+- solver/canonical replay completes and Difficulty V4 search is complete without truncation;
+- safe-choice ratio is `0.9372` against a maximum of `0.88`;
+- meaningful failure rate is `0.0628`;
+- mandatory-ordering depth is `0`;
+- certification rejects the candidate for `safe-choice-ratio-above-profile` and
+  `ordering-depth-below-profile` before expensive object relevance;
+- one repair opportunity is inspected, but no mutation is applied because the dependency-complete
+  board has no filler-safe operator;
+- a 14-arrow intermediate reached interaction density `0.0546` and 3 long-range relationships, but
+  V4 truncated on counterfactual/sequence enumeration, so it was discarded rather than certified;
+- the 10-arrow full counterfactual relevance run exceeded the 90-second focused budget and was
+  terminated. No number was invented and no broad benchmark was started.
+
+Current status: **BLOCKED, staging only**. The next generator change must connect the corridor
+modules into globally mandatory causal order and give the surrounding route-guard shell physical
+participation, while retaining complete V4 search. Do not lower gates, raise bounds to hide the
+problem, alter V4, or promote this candidate.
+
 ---
 
 ## 12. Content generation and promotion safety
@@ -646,6 +757,13 @@ Generator contract:
 - Certification validates schema, uses the production engine/solver, replays a solution, checks
   failed-action immutability, validates profile targets, and emits fingerprints/metadata.
 - Runtime never presents uncertified generated campaign content.
+- Generator V5 construction contracts are obligations, not authority. Declared semantic edges must
+  be observed on reachable production-engine states after materialization and after any geometry
+  transformation.
+- A repair is acceptable only when replay, complete solvability, required physical semantic edges,
+  ordering/polarity/exposure evidence, long-range relationships, and participating-wall structure
+  are preserved. When no safe operator exists, repair must decline instead of mutating.
+- A solvable candidate that fails V4 or structural gates remains rejected staging content.
 
 Useful commands:
 
@@ -658,9 +776,17 @@ Useful commands:
 ./gradlew auditCampaignPacing
 ./gradlew finalizePhase0
 ./gradlew finalizePhase1
+./gradlew generateCampaignV5Candidates
+./gradlew analyzeCampaignGenerationV5
+./gradlew analyzeObjectRelevanceV5
+./gradlew analyzeInteractionGraphsV5
+./gradlew analyzeCampaignDifficultyV4
+./gradlew testAdaptiveDifficultySelection
 ```
 
 Promotion tasks require explicit confirmation properties and are not dependencies of normal builds.
+Gradle configuration cache is enabled in `gradle.properties`; focused generator work should use
+the narrowest relevant test/task before any bounded multi-profile benchmark.
 
 ---
 
@@ -963,9 +1089,34 @@ Result:
 - debug APK assembled;
 - no real ad network contacted.
 
-This does not override the later human finding that the campaign difficulty is poor. It also does
-not prove currently connected-device QA, production ads/consent/Firebase, signing, store
-declarations, closed testing, or release readiness.
+This historical regression does not override the later human finding that the archived content-v6
+campaign was easy, and it does not constitute human evidence for the replacement content-v7
+campaign. It also does not prove currently connected-device QA, production ads/consent/Firebase,
+signing, store declarations, closed testing, or release readiness.
+
+### 20.1 Latest focused Generator V5 verification
+
+The 2026-08-20 root-cause repair deliberately did not run a full repository regression or staging
+benchmark because the known Expert seed failed its focused gates.
+
+Passing focused evidence:
+
+- deterministic dependency contract reproduction;
+- canonical production-engine replay and complete solver proof;
+- successful-but-harmful-choice evidence from real Difficulty V4;
+- no filler repair operator on dependency-complete Expert construction;
+- 8/8 declared semantic edges physically verified;
+- three meaningful distance-four relationships verified;
+- campaign SHA remained unchanged;
+- Gradle configuration-cache entries were stored/reused.
+
+Rejected/terminated evidence:
+
+- certification rejected seed `11510013` for excessive safe choices and missing ordering depth;
+- physical interaction density remained below its gate;
+- full counterfactual relevance analysis was stopped after 90 seconds under the mandatory fast
+  stopping rule;
+- no broad Generator-V5 benchmark, campaign promotion, APK release build, or device test followed.
 
 ---
 
@@ -1079,6 +1230,10 @@ rewarded hints, consent, and full free access. Not implemented.
 | Daily fallbacks | `docs/Magnetrail_Daily_Fallbacks_v1.json` |
 | Current development status/evidence | `docs/development/MASTER_DEVELOPMENT_STATUS.md` |
 | Difficulty v3 specification | `docs/development/DIFFICULTY_V3_SPEC.md` |
+| Difficulty V4 specification | `docs/development/MAGNETRAIL_DIFFICULTY_V4_SPEC.md` |
+| Difficulty V4 audit | `docs/development/MAGNETRAIL_DIFFICULTY_V4_AUDIT.md` |
+| Human calibration | `docs/development/MAGNETRAIL_DIFFICULTY_V4_CALIBRATION.md` |
+| Full content-v6 difficulty diagnosis | `docs/development/MAGNETRAIL_DIFFICULTY_AUDIT.md` |
 | Phase 0 final diagnostics | `docs/development/PHASE0_FINAL_DIAGNOSTICS.json` |
 | Phase 1 final diagnostics | `docs/content/M5_3_FINAL_DIAGNOSTICS.json` |
 | Full 200-level automated report | `docs/content/M5_3_FULL_200_REPORT.md` |
@@ -1090,6 +1245,10 @@ rewarded hints, consent, and full free access. Not implemented.
 | D2 content-v6 source archive | `docs/content/d2/promotion/D2_SOURCE_CONTENT_V6.json` |
 | D2 ID/progress migration | `docs/content/d2/promotion/D2_ID_MIGRATION.json` |
 | D2 promotion result | `docs/content/d2/promotion/D2_PROMOTION_RESULT.md` |
+| D2.1 spatial-density specification | `docs/development/MAGNETRAIL_D2_1_SPATIAL_DENSITY_SPEC.md` |
+| D2.1 latest checked-in audit | `docs/development/MAGNETRAIL_D2_1_AUDIT.md` |
+| Generator V5 repair specification | `docs/development/MAGNETRAIL_GENERATOR_V5_SPEC.md` |
+| Historical Generator V5 repair audit | `docs/development/MAGNETRAIL_GENERATOR_V5_AUDIT.md` |
 | M4 privacy/ad inventory | `docs/M4_COMPLIANCE_NOTES.md` |
 | Analytics events | `docs/M4_EVENT_CATALOG.md` |
 | Release blockers | `docs/release/RELEASE_BLOCKER_LOG.md` |
@@ -1115,17 +1274,29 @@ level-tools/src/main/kotlin/com/rameshta/magnetrail/tools/
    but automated certification does not establish perceived difficulty.
 2. **D2 human review is incomplete.** The 40 D1 owner ratings belong to archived content-v6 board
    fingerprints. None of the 62 selected D2/content-v7 review boards has an owner rating yet.
-3. **Historical release artifact is stale.** The recorded M5 AAB predates the 200-level catalog and
+3. **Generator V5 Expert repair is blocked.** The current dependency-complete seed proves three
+   physical long-range relationships and complete V4 search, but it still has safe-choice ratio
+   `0.9372`, ordering `0.0`, interaction density `0.0288`, 51 isolated objects, and no completed
+   counterfactual relevance result within the fast bound. It is not certification/promotion ready.
+4. **Historical Generator V5 PASS evidence is superseded for quality decisions.** Its Expert/Master
+   staging thresholds had been lowered. Current required Expert gates are restored and must not be
+   weakened to reproduce that PASS.
+5. **Historical release artifact is stale.** The recorded M5 AAB predates the 200-level catalog and
    cannot represent the current final game.
-4. **Production services are unconfigured.** Live AdMob, UMP console state, Firebase, privacy URL,
+6. **Production services are unconfigured.** Live AdMob, UMP console state, Firebase, privacy URL,
    audience choice, upload signing, and Play declarations remain blocked.
-5. **Representative device/accessibility/release testing is incomplete.** API 24, mid-range/API 35,
+7. **Representative device/accessibility/release testing is incomplete.** API 24, mid-range/API 35,
    tablet/foldable, TalkBack/Switch Access, current upgrade, and production-like consent/ad tests
    require real evidence.
-6. **Future game scope is intentionally absent.** Insulator, Levels 201–300, Infinite, Adaptive
+8. **Future game scope is intentionally absent.** Insulator, Levels 201–300, Infinite, Adaptive
    Infinite, and ads-only Phase 8 are documentation only. D2 includes 43 production 8×8 boards,
    but their representative-device usability still lacks human evidence; 9×9 remains excluded.
 
-The next action is owner playtesting of the installed content-v7 campaign and 1–10 rating of the D2
-review sample. Progress migration is implemented and proven; human-perceived difficulty remains
-the outstanding evidence gap.
+The immediate engineering action is a second, still-bounded Generator V5 construction repair:
+make the three corridor modules causally depend on one another, ensure wrong successful ordering
+removes future capability, and replace the isolated route-guard shell with physically participating
+objects. Re-run only seed `11510013`; proceed to broader staging diagnostics only after it passes
+all unchanged Expert gates with complete V4 and relevance analysis. The current repair phase
+explicitly forbids promotion; a later promotion needs certified staging artifacts and a new explicit
+owner direction. Human review remains required to validate player experience even when automated
+certification passes.
