@@ -15,7 +15,7 @@ class D2PromotionTest {
     fun `promoted campaign has complete stable ID and fingerprint migration evidence`() {
         val source = LevelParser().parseCatalog(resource("/content/d2/promotion/D2_SOURCE_CONTENT_V6.json"))
         val staged = LevelParser().parseCatalog(resource("/content/d2/staging/D2_CAMPAIGN_V5_CANDIDATES.json"))
-        val promoted = LevelParser().parseCatalog(resource("/Magnetrail_Campaign_Levels_v3.json"))
+        val promoted = LevelParser().parseCatalog(resource("/content/v5_1_append/promotion/SOURCE_CONTENT_V7.json"))
         val migration = json.decodeFromString<D2IdMigrationReport>(
             resource("/content/d2/promotion/D2_ID_MIGRATION.json"),
         )

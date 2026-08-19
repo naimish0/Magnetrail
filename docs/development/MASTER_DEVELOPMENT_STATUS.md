@@ -1,12 +1,13 @@
 # Magnetrail remaining development status
 
-Updated: 2026-08-19 (Asia/Kolkata)
+Updated: 2026-08-20 (Asia/Kolkata)
 
 This file tracks the sequential phases in `CODEX_MASTER_REMAINING_DEVELOPMENT_PROMPT.md`.
 Phases 0 and 1 are frozen. The 40 D1 human ratings remain valid historical evidence for their
 content-v6 board fingerprints and are deliberately excluded from content-v7 calibration. D2
-Generator V5 has replaced the production 200-board campaign under the existing stable IDs after an
-owner-directed guarded promotion. No numbered Phase 2 or later implementation has started.
+Generator V5 replaced the production 200-board campaign under the existing stable IDs. A later
+owner-directed append added Levels 201–205 at content version 8; Expert is explicitly owner-waived
+and must not be described as structurally or human certified. Master remains excluded.
 
 | Phase | Scope | Status | Frozen versions / gate evidence |
 |---:|---|---|---|
@@ -14,11 +15,27 @@ owner-directed guarded promotion. No numbered Phase 2 or later implementation ha
 | 1 | Campaign Levels 151–200 | COMPLETE — HUMAN PLAYTEST PENDING | Campaign content 6/generator 4; 200 total levels. The owner-approved 50-board mapping is promoted and automated-certified; Levels 1–150 are fingerprint-stable. |
 | 2 | Insulator prototype | NOT STARTED | Strict phase isolation. |
 | 3 | 8×8 usability prototype | NOT STARTED | Strict phase isolation. |
-| 4 | Campaign Levels 201–250 | NOT STARTED | Strict phase isolation. |
+| 4 | Campaign Levels 201–250 | PARTIAL OWNER-DIRECTED APPEND | Levels 201–205 exist; 206–250 are not implemented. Level 205 has an explicit structural waiver. |
 | 5 | Campaign Levels 251–300 | NOT STARTED | Strict phase isolation. |
 | 6 | Infinite Mode | NOT STARTED | Strict phase isolation. |
 | 7 | Adaptive Infinite Mode | NOT STARTED | Strict phase isolation. |
 | 8 | Ads-only monetization expansion | NOT STARTED | Strict phase isolation. Product override recorded: no Billing, purchases, subscriptions, Remove Ads, or paid gates. No Phase 8 implementation exists. |
+
+## Content-v8 non-Master append — 2026-08-20
+
+Status: **PROMOTED WITH EXPLICIT EXPERT STRUCTURAL WAIVER; HUMAN PLAYTEST PENDING**.
+
+The guarded append preserved the exact 200 content-v7 level definitions, added new stable IDs
+`campaign-201` through `campaign-205`, and excluded Master. Easy, Medium, Hard, and Very Hard pass
+the current V5 pipeline. Expert is the current deterministic V5.1 seed `11510013`; it is solver
+complete, replay-valid, V4 complete/non-truncated, and duplicate-free, but remains rejected by five
+structural gates. The manifest records `OWNER_WAIVED_UNCERTIFIED_EXPERT`, zero automated human
+approvals, and no human playtest. DataStore content-v8 migration moves players who completed Level
+200 to Level 201 without invalidating existing progress.
+
+Evidence is under `docs/content/v5_1_append/promotion/`. Content-v7 source SHA-256 is
+`8552d9ef7a2eeb140c4611ff5a9e3a40a04efb35878d752acef5e222a1dc8ca5`; content-v8 SHA-256 is
+`6416c0a5677e66cba169cf9caaa9d7d7e6e70bc6e4e3e69b36277e3c69e78128`.
 
 ## D1 Difficulty V4 diagnostic — 2026-08-19
 

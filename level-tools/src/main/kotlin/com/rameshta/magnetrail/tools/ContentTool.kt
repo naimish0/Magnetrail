@@ -17,6 +17,7 @@ import com.rameshta.magnetrail.core.generation.v5.CertificationPipelineV5
 import com.rameshta.magnetrail.core.generation.v5.CertificationResultV5
 import com.rameshta.magnetrail.core.generation.v5.GENERATOR_VERSION_V5
 import com.rameshta.magnetrail.core.generation.v5.GenerationProfilesV5
+import com.rameshta.magnetrail.core.generation.v5.GenerationProfilesD21
 import com.rameshta.magnetrail.core.level.LevelCatalog
 import com.rameshta.magnetrail.core.level.LevelParser
 import com.rameshta.magnetrail.core.model.DifficultyBand
@@ -61,6 +62,7 @@ fun main(arguments: Array<String>) {
         "generate-d2.1-spatial-density" -> generateD21SpatialDensityAudit(options)
         "validate-d2.1-spatial-density" -> validateD21SpatialDensityAudit(options)
         "benchmark-generator-v5-repair" -> generateGeneratorV5RepairAudit(options)
+        "promote-v5.1-append" -> promoteV51Append(options)
         else -> error("Unknown command '${arguments.first()}'")
     }
 }
@@ -294,7 +296,9 @@ private fun validateCatalog(catalog: LevelCatalog, dailyFallback: Boolean = fals
         }
         check(metadata.contentFingerprint == ContentFingerprint.of(level)) { "Stale fingerprint for ${level.id}" }
         if (!dailyFallback && metadata.generatorVersion == GENERATOR_VERSION_V5) {
-            val profile = GenerationProfilesV5.productionCandidateProfiles.singleOrNull {
+            val profile = (GenerationProfilesV5.productionCandidateProfiles + GenerationProfilesD21.benchmarkProfiles)
+                .distinctBy { it.id }
+                .singleOrNull {
                 it.id == metadata.generationProfile
             } ?: error("Unknown V5 profile '${metadata.generationProfile}' for ${level.id}")
             val result = pipelineV5.certify(
@@ -305,13 +309,28 @@ private fun validateCatalog(catalog: LevelCatalog, dailyFallback: Boolean = fals
                 contentVersion = metadata.contentVersion,
                 previousContentFingerprint = metadata.previousContentFingerprint,
             )
-            val accepted = result as? CertificationResultV5.Accepted ?: error(
-                "V5 certification rejected ${level.id}: " +
-                    (result as CertificationResultV5.Rejected).reasons.joinToString(),
-            )
-            check(accepted.level.metadata == metadata) { "V5 certification metadata mismatch for ${level.id}" }
-            check(accepted.level.designedSolutions == level.designedSolutions) {
-                "V5 certified solution mismatch for ${level.id}"
+            val accepted = result as? CertificationResultV5.Accepted
+            if (accepted != null) {
+                check(accepted.level.metadata == metadata) { "V5 certification metadata mismatch for ${level.id}" }
+                check(accepted.level.designedSolutions == level.designedSolutions) {
+                    "V5 certified solution mismatch for ${level.id}"
+                }
+            } else {
+                val rejected = result as CertificationResultV5.Rejected
+                val isRecordedV51ExpertWaiver = level.id == "campaign-205" &&
+                    metadata.contentFingerprint ==
+                    "sha256:8202008ccb4f0fa3488b60883061574998f6426f3d7f5a53193145974cb3026d" &&
+                    rejected.reasons.toSet() == setOf(
+                        "interaction-density-out-of-profile",
+                        "object-participation-below-profile",
+                        "interacting-object-ratio-below-profile",
+                        "average-object-relevance-below-profile",
+                        "participating-wall-ratio-below-profile",
+                    )
+                check(isRecordedV51ExpertWaiver) {
+                    "V5 certification rejected ${level.id}: ${rejected.reasons.joinToString()}"
+                }
+                println("${level.id}: solver/V4 complete; explicit owner waiver retained for ${rejected.reasons}")
             }
         } else {
             val profile = if (dailyFallback) GenerationProfile.DAILY_CHALLENGE else profileFor(level)

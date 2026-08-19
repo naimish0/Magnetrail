@@ -389,6 +389,7 @@ class DataStoreProgressRepository private constructor(
         listOf(
             CampaignExpansionBridge(introducedContentVersion = 4, oldFinalNumber = 100, continuationNumber = 101),
             CampaignExpansionBridge(introducedContentVersion = 6, oldFinalNumber = 150, continuationNumber = 151),
+            CampaignExpansionBridge(introducedContentVersion = 8, oldFinalNumber = 200, continuationNumber = 201),
         ).forEach { bridge ->
             if (previousContentVersion >= bridge.introducedContentVersion) return@forEach
             val oldFinalIndex = catalog.levels.indexOfFirst { it.number == bridge.oldFinalNumber }

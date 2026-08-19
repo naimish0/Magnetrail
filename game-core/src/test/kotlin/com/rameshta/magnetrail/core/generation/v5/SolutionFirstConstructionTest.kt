@@ -136,6 +136,33 @@ class SolutionFirstConstructionTest {
     }
 
     @Test
+    fun masterStructuralAnalysisRemainsCompleteAfterExpertOnlyCausalExtension() {
+        val request = expertRequest().copy(
+            stableId = "v5-solution-first-master-structural",
+            seed = 11_510_014L,
+            profile = GenerationProfilesD21.MASTER,
+        )
+        val candidate = constructor.construct(request, request.seed)
+        val diagnostics = StructuralAnalyzerV5().analyze(
+            candidate.level,
+            StructuralDifficultyBandV5.MASTER,
+            StructuralAnalysisLimitsV5(150_000, 1_800_000, 160, 150_000),
+        )
+        println(
+            "SOLUTION_FIRST_MASTER_STRUCTURAL interaction=${diagnostics.interactionGraph.interactionDensity} " +
+                "relevance=${diagnostics.objectRelevance.relevantObjectRatio} " +
+                "average=${diagnostics.objectRelevance.averageScore} " +
+                "long=${diagnostics.longRangeMagneticRelationshipCount} " +
+                "ordering=${diagnostics.meaningfulOrderingRate} " +
+                "walls=${diagnostics.meaningfulWallOcclusionCount} " +
+                "commutation=${diagnostics.viablePairCommutationRatio}",
+        )
+        assertTrue(diagnostics.truncationReasons.toString(), diagnostics.searchComplete)
+        assertFalse(diagnostics.truncationReasons.toString(), diagnostics.truncated)
+        assertEquals(5, diagnostics.mandatoryOrderingDepth)
+    }
+
+    @Test
     fun physicalDependencyGraphContainsThreeVerifiedLongRangeRelationships() {
         val request = expertRequest().copy(seed = 11_510_013L)
         val candidate = constructor.construct(request, request.seed)
@@ -162,16 +189,78 @@ class SolutionFirstConstructionTest {
     }
 
     @Test
-    fun knownExpertSeedReportsItsRemainingCertificationBottleneck() {
-        val request = expertRequest().copy(seed = 11_510_013L, maxAttempts = 1)
-        val result = LevelGeneratorV5().generate(request)
-        assertTrue(result is GenerationResultV5.Exhausted)
-        result as GenerationResultV5.Exhausted
-        println("SOLUTION_FIRST_REJECTIONS ${result.rejectedReasons}")
-        assertEquals(
-            setOf("safe-choice-ratio-above-profile", "ordering-depth-below-profile"),
-            result.rejectedReasons.keys,
-        )
+    fun knownExpertAndMasterSeedsReportTheirRemainingCertificationBottleneck() {
+        listOf(GenerationProfilesD21.EXPERT, GenerationProfilesD21.MASTER).forEachIndexed { index, profile ->
+            val request = expertRequest().copy(
+                stableId = "v5-solution-first-${profile.id}",
+                seed = 11_510_013L + index,
+                profile = profile,
+                maxAttempts = 1,
+            )
+            val result = LevelGeneratorV5().generate(request)
+            assertTrue(result is GenerationResultV5.Exhausted)
+            result as GenerationResultV5.Exhausted
+            println("SOLUTION_FIRST_REJECTIONS profile=${profile.id} ${result.rejectedReasons}")
+            assertFalse(result.rejectedReasons.containsKey("safe-choice-ratio-above-profile"))
+            assertFalse(result.rejectedReasons.containsKey("ordering-depth-below-profile"))
+            if (profile == GenerationProfilesD21.EXPERT) {
+                assertFalse(result.rejectedReasons.containsKey("long-range-magnetic-relationships-below-profile"))
+                assertTrue(result.rejectedReasons.containsKey("interaction-density-out-of-profile"))
+                assertTrue(result.rejectedReasons.containsKey("object-participation-below-profile"))
+                assertTrue(result.rejectedReasons.containsKey("average-object-relevance-below-profile"))
+                assertTrue(result.rejectedReasons.containsKey("participating-wall-ratio-below-profile"))
+            } else {
+                assertTrue(result.rejectedReasons.containsKey("object-participation-below-profile"))
+                assertTrue(result.rejectedReasons.containsKey("interacting-object-ratio-below-profile"))
+                assertTrue(result.rejectedReasons.containsKey("average-object-relevance-below-profile"))
+                assertTrue(result.rejectedReasons.containsKey("participating-wall-ratio-below-profile"))
+            }
+        }
+    }
+
+    @Test
+    fun expertAndMasterOrderedPolarityTopologyIsSolvableCompleteAndConsequential() {
+        listOf(GenerationProfilesD21.EXPERT, GenerationProfilesD21.MASTER).forEachIndexed { index, profile ->
+            val request = GenerationRequestV5(
+                stableId = "ordered-polarity-$index",
+                sequenceNumber = index + 1,
+                title = profile.id,
+                seed = 11_510_013L + index,
+                profile = profile,
+                maxAttempts = 1,
+            )
+            val candidate = constructor.construct(request, request.seed)
+            val score = DifficultyV4Analyzer(
+                config = DifficultyV4Config(
+                    maxExpandedStates = 150_000,
+                    maxActionResolutions = 1_800_000,
+                    maxCounterfactualStates = 150_000,
+                    maxCounterfactualActionResolutions = 2_400_000,
+                    maxObjectCounterfactuals = 160,
+                    randomPolicySeeds = defaultDifficultyV4Seeds(32),
+                ),
+            ).analyze(candidate.level)
+            val physical = StructuralAnalyzerV5().analyzePhysicalSemantics(
+                candidate.level,
+                StructuralAnalysisLimitsV5(150_000, 1_800_000, 0, 150_000),
+            )
+            val wallOcclusions = physical.edges.count {
+                it.source.startsWith("wall:") && it.type == InteractionTypeV5.OCCLUSION
+            }
+            val physicalGraph = requireNotNull(physical.interactionGraph)
+            println(
+                "ORDERED_POLARITY profile=${profile.id} score=${score.score} safe=${score.metrics.safeChoiceRatio} " +
+                    "ordering=${score.metrics.ordering.mandatoryOrderingRatio} " +
+                    "depth=${score.metrics.ordering.mandatoryOrderingChainDepth} walls=$wallOcclusions " +
+                    "long=${physical.longRangeRelationships.size} density=${physicalGraph.interactionDensity} " +
+                    "complete=${score.searchComplete && !score.searchTruncated}",
+            )
+            assertTrue(score.truncationReasons.toString(), score.searchComplete)
+            assertFalse(score.truncationReasons.toString(), score.searchTruncated)
+            assertTrue((score.metrics.ordering.mandatoryOrderingChainDepth ?: 0) > 0)
+            assertTrue(score.metrics.safeChoiceRatio < 0.9372)
+            assertTrue(wallOcclusions > 0)
+        }
     }
 
     @Test

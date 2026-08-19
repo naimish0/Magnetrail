@@ -15,7 +15,7 @@ class D2ArtifactsTest {
 
     @Test
     fun `D2 catalog remains isolated while its boards are promoted under stable IDs`() {
-        val shipped = LevelParser().parseCatalog(resource("/Magnetrail_Campaign_Levels_v3.json"))
+        val shipped = LevelParser().parseCatalog(resource("/content/v5_1_append/promotion/SOURCE_CONTENT_V7.json"))
         val source = LevelParser().parseCatalog(resource("/content/d2/promotion/D2_SOURCE_CONTENT_V6.json"))
         val staged = LevelParser().parseCatalog(resource("/content/d2/staging/D2_CAMPAIGN_V5_CANDIDATES.json"))
         val audit = json.decodeFromString<D2CampaignGenerationAudit>(
