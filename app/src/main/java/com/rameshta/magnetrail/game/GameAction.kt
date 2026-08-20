@@ -1,6 +1,8 @@
 package com.rameshta.magnetrail.game
 
 import com.rameshta.magnetrail.data.SettingKey
+import com.rameshta.magnetrail.core.infinite.InfiniteDifficulty
+import com.rameshta.magnetrail.data.RewardedSkipResult
 
 sealed interface GameAction {
     data class LaunchArrow(val arrowId: String) : GameAction
@@ -9,8 +11,6 @@ sealed interface GameAction {
 
     data object AnimationCompleted : GameAction
 
-    data object Undo : GameAction
-
     data object Restart : GameAction
 
     data object NavigateHome : GameAction
@@ -18,6 +18,14 @@ sealed interface GameAction {
     data object Play : GameAction
 
     data object OpenDailyChallenge : GameAction
+
+    data object OpenInfiniteMode : GameAction
+
+    data object CloseInfiniteMode : GameAction
+
+    data class SelectInfiniteDifficulty(val difficulty: InfiniteDifficulty) : GameAction
+
+    data object NewInfinitePuzzle : GameAction
 
     data object OpenLevelSelection : GameAction
 
@@ -33,15 +41,13 @@ sealed interface GameAction {
 
     data object RequestHint : GameAction
 
-    data object OpenHintChoice : GameAction
-
     data object UseCoinHint : GameAction
 
     data class UseRewardedHintCredit(val transactionId: String) : GameAction
 
     data class ShowHintMessage(val message: String) : GameAction
 
-    data object CancelHintConfirmation : GameAction
+    data class ApplyRewardedSkip(val receipt: RewardedSkipResult.Applied) : GameAction
 
     data object Replay : GameAction
 

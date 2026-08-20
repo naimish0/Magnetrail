@@ -24,6 +24,14 @@ data class DailyCompletionReceipt(
     val firstCompletion: Boolean,
 )
 
+data class InfiniteCompletionReceipt(
+    val firstCompletion: Boolean,
+    val completedCount: Int,
+    val currentStreak: Int,
+    val bestStreak: Int,
+    val rewards: RewardBreakdown,
+)
+
 sealed interface HintSpendResult {
     data class Approved(val resultingBalance: Int) : HintSpendResult
     data class InsufficientBalance(val balance: Int, val required: Int) : HintSpendResult
@@ -35,6 +43,23 @@ sealed interface RewardedCreditGrantResult {
     data object InventoryFull : RewardedCreditGrantResult
     data object DailyCapReached : RewardedCreditGrantResult
     data object DateRollback : RewardedCreditGrantResult
+}
+
+sealed interface RewardedSkipTarget {
+    data class Campaign(val levelId: String) : RewardedSkipTarget
+    data class Infinite(val puzzleId: String) : RewardedSkipTarget
+}
+
+sealed interface RewardedSkipResult {
+    data class Applied(
+        val resultingBalance: Int,
+        val grantedCoins: Int,
+        val completedCount: Int,
+        val currentStreak: Int,
+        val bestStreak: Int,
+    ) : RewardedSkipResult
+
+    data object Duplicate : RewardedSkipResult
 }
 
 interface ProgressRepository {
@@ -50,6 +75,24 @@ interface ProgressRepository {
 
     suspend fun recordDailyCompletion(dailyId: String): DailyCompletionReceipt
 
+    suspend fun recordInfiniteSelection(
+        puzzleId: String,
+        contentFingerprint: String,
+        difficulty: String,
+        ordinal: Int,
+    ) = Unit
+
+    suspend fun recordInfiniteCompletion(
+        puzzleId: String,
+        attempt: AttemptSummary,
+    ): InfiniteCompletionReceipt = InfiniteCompletionReceipt(
+        firstCompletion = false,
+        completedCount = 0,
+        currentStreak = 0,
+        bestStreak = 0,
+        rewards = RewardBreakdown(resultingBalance = 0),
+    )
+
     suspend fun spendHintCoins(): HintSpendResult
 
     suspend fun cacheDailyChallenge(cache: DailyCache)
@@ -58,6 +101,11 @@ interface ProgressRepository {
         RewardedCreditGrantResult.InventoryFull
 
     suspend fun consumeRewardedHintCredit(transactionId: String): Boolean = false
+
+    suspend fun recordRewardedSkip(
+        transactionId: String,
+        target: RewardedSkipTarget,
+    ): RewardedSkipResult = RewardedSkipResult.Duplicate
 
     suspend fun recordFullScreenAdDismissal(
         localDate: LocalDate,

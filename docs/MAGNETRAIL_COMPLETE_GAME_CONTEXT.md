@@ -51,6 +51,9 @@ Important conflict resolutions:
 - D2.1 and the later Generator-V5 repair began as staging work. On 2026-08-20 the owner directed an
   append promotion: four current V5-certified boards became Levels 201–204 and the deterministic
   V5.1 Expert board became Level 205 under an explicit structural-certification waiver. Master is excluded.
+- Phase 6 is implemented with a separate 624-board offline-certified Infinite catalog. Generator
+  V5.2's purposeful-space weave now certifies 12 Expert and 12 Master entries without changing
+  V4 or any structural gate. Runtime still performs selection only, never board generation.
 - Strict phase isolation applies. Do not implement future-phase functionality while working on a
   current or reopened phase.
 
@@ -166,14 +169,17 @@ On collision or invalid Pull exit:
 - Do not remove an arrow.
 - Do not flip a magnet.
 
-### 3.6 Win, deadlock, undo, and restart
+### 3.6 Win, deadlock, and restart
 
 - Win immediately after the final arrow is removed.
 - Deadlock means arrows remain but no successful action exists.
 - The engine reports deadlock and never reshuffles.
-- Undo restores the previous successful immutable state, including all polarities.
-- Failed launches do not create undo entries.
+- Gameplay does not automatically announce deadlock or show a failure card. The board and Restart
+  stay available, but Hint is disabled because the solver has proven that no completion route
+  remains; no coins or rewarded-hint credit can be spent in that state.
 - Restart restores the authored initial state and resets the current attempt.
+- Player-facing Undo was removed on 2026-08-20. Engine states remain immutable for solver,
+  replay, animation, diagnostics, and test use, but gameplay no longer exposes rollback.
 
 ### 3.7 Resolution output
 
@@ -210,7 +216,7 @@ never influence the rules result.
 5. The app animates the exact route/result and commits state only at animation completion.
 6. A failure increments overload/action accounting but leaves the board unchanged.
 7. Continue until all arrows are removed or the board is deadlocked.
-8. Use free Undo/Restart or an optional solver-backed hint.
+8. Use Restart or an optional solver-backed hint.
 9. On completion, award stars/rewards atomically and offer Replay/Next.
 
 No player action should be gated by money, an ad, a life timer, or a network connection.
@@ -267,7 +273,7 @@ Canonical original layouts: `docs/Magnetrail_Prototype_Levels_v1.json`.
 - The production engine is the only gameplay authority.
 - Solver, generator, hints, certification, and diagnostics call the production engine.
 - Compose renders immutable state and emits intents.
-- `GameViewModel` owns committed board state, undo history, in-flight result, animation phase,
+- `GameViewModel` owns committed board state, in-flight result, animation phase,
   attempt counters, completion state, navigation, hints, and progress integration.
 - Domain state is never partially mutated during animation.
 - Ads and analytics remain entirely in the application layer.
@@ -280,11 +286,22 @@ The Compose app currently exposes:
 
 - Home;
 - Campaign level selection;
-- Campaign/Daily gameplay;
+- Campaign/Daily/Infinite gameplay;
+- Infinite difficulty selection;
 - Settings;
-- Completion and deadlock states within gameplay.
+- Completion state within gameplay; deadlock remains an internal engine/analytics fact and is not
+  presented as an automatic failure screen.
 
-`GameMode` currently supports `CAMPAIGN` and `DAILY`. Infinite Mode does not exist.
+`GameMode` supports `CAMPAIGN`, `DAILY`, and `INFINITE`. The Progressive Journey is immediately
+available when its certified catalog loads, selects only immutable pre-certified catalog boards,
+and persists its own
+selection/completion history independently of campaign and Daily progress.
+
+Campaign selection is range-based rather than one unbounded list. Ranges are computed dynamically
+in 50-level chunks, Previous/Next changes ranges, Go To validates a direct level number, and the
+initial range contains the current/next level. Only the active range is materialized for UI. A
+metadata-only logical index and deterministic reconstruction identity have tests covering 10,000
+logical entries without generating boards on the UI thread.
 
 ### 6.4 Turn transaction in the app
 
@@ -346,7 +363,7 @@ Visual hierarchy:
 1. Board state and paths.
 2. Magnet polarity.
 3. Level objective/progress.
-4. Undo, Restart, Hint, pause/settings, and optional assistance.
+4. Restart, Hint, pause/settings, and optional assistance.
 
 ### 8.2 Core palette
 
@@ -402,6 +419,15 @@ amber, outward geometry, and a `PUSH` label. Color is never the only state indic
 Reduced Motion replaces bounce, particles, curves, and rotation with short fades/direct motion and
 an instant polarity swap without removing essential feedback.
 
+Completion celebration is performance-sensitive and occurs only after the board is cleared. A
+clean three-star solve with no hint or overload receives the strongest short full-screen falling-
+confetti overlay, card emoji pair, and varied praise line. Other two/three-star clears receive a
+lighter contextual overlay and message; rough one-star clears remain intentionally calm. The
+variant is derived deterministically from the stable level identity and attempt metrics, never
+from gameplay randomness. Reduced Motion keeps a static emoji/message for strong play and removes
+both overlay and card-particle movement. Unit and Compose UI tests verify the performance tiers and
+the reduced-motion behavior.
+
 ### 8.6 Voice
 
 Preferred: `Board cleared`, `Find the sequence`, `The field flipped`, `Path blocked`,
@@ -409,6 +435,34 @@ Preferred: `Board cleared`, `Find the sequence`, `The field flipped`, `Path bloc
 
 Avoid IQ claims, urgency, guilt, jackpot/casino language, “You failed,” “Only 1% can solve,” and
 misleading reward language.
+
+### 8.7 Current Home and Game screen composition
+
+Home uses a deliberately sparse hierarchy: the compact coin balance is at top left, Settings is
+an icon-only circular action at top right, the centered brand/tagline sits immediately above one
+primary `Play · Level N` button with the actual selected difficulty, and Daily Challenge follows
+below. It does not expose separate Continue, Level Select, or Progressive Journey actions.
+
+The approved Game screen is implemented as native Compose UI rather than a bitmap mockup:
+
+- a compact top header uses circular Home and Settings icon actions around the centered level
+  context and puzzle title;
+- arrows remaining, actions, and overloads share one quiet raised HUD;
+- the current prompt and Pull/Push legend are compact semantic chips, with text/geometry retaining
+  meaning independently of color;
+- the board receives the largest flexible region and retains the production renderer, hit targets,
+  paths, animations, and tutorial focus layer unchanged;
+- Restart is secondary and Hint is the primary action inside a raised bottom dock; Hint states the
+  actual 30-coin cost or `AD`, spends directly through the existing guarded flow, and is disabled
+  when the solver reports no completable route. A full-width secondary Skip action clearly states
+  `AD` and `+10 coins` before playback and appears only for Campaign/Infinite play;
+- deadlock does not display a failure banner or force a restart, leaving the player free to inspect
+  the board or restart voluntarily;
+- the between-game completion state dynamically recognizes strong play with deterministic emoji,
+  contextual praise, and a bounded full-screen confetti overlay while keeping ordinary clears
+  restrained; and
+- large text stacks dense rows/buttons vertically, while Reduced Motion and accessibility semantics
+  remain authoritative.
 
 ---
 
@@ -427,7 +481,7 @@ misleading reward language.
 - Jetpack Compose/Canvas board.
 - Shared board geometry for draw, hit-testing, animation, and semantics.
 - Result-driven animation.
-- Undo, Restart, level navigation, completion, and deadlock.
+- Restart, level navigation, completion, and non-blocking internal deadlock detection.
 - All original 12 prototype levels reachable.
 
 ### M2 — Presentation and accessibility vertical slice
@@ -529,7 +583,9 @@ misleading reward language.
   verifies declared semantic edges against reachable production-engine states, verifies those
   edges before/after geometry transformation, and refuses filler-based repair when no
   structure-preserving mutation exists.
-- The repaired seed `11510013` is still rejected. See Section 11.7 for the exact measurements.
+- V5.2 keeps the repaired ordered-polarity weave but removes the inert wall shell. The known Expert
+  and Master seeds now pass the unchanged solver, replay, V4, structural-density, relevance, wall,
+  and Quality gates. Historical failed measurements remain documented in Sections 11.7–11.9.
 
 ---
 
@@ -773,6 +829,64 @@ The exact source snapshot, authorization, fingerprints, per-level statuses, and 
 reasons are under `docs/content/v5_1_append/promotion/`. The recoverable content-v7 source SHA-256
 is `8552d9ef7a2eeb140c4611ff5a9e3a40a04efb35878d752acef5e222a1dc8ca5`.
 
+### 11.11 Multi-topology Generator V5 architecture — 2026-08-20
+
+The offline generator no longer represents high-band generation as one constructor entry point.
+It now has versioned logical identities, a causal-graph fingerprint, a topology registry, a
+board-realizer boundary, an exact/structural duplicate-filtered candidate pool, a profile-bounded
+purposeful-empty policy, and mandatory post-materialization physical semantic verification.
+
+Four deterministic high-band families are represented:
+
+- `ORDERED_POLARITY_V1`, the retained V5.1 complete-analysis topology;
+- `CAUSAL_POLARITY_TAIL_V2`, a physically distinct causal extension that is correctly rejected
+  when V4 sequence enumeration truncates;
+- `ORDERED_POLARITY_STAIRCASE_V3`, a separate alternating must/reveal construction grammar. Its
+  focused diagnostic reached complete V4 scores `70`/`71`, ordering rate `1.0`, ordering depths
+  `10`/`12`, and relevant-object ratios `0.2812`/`0.3125`, but it remains staging-only because it
+  does not meet all unchanged long-range/density/wall-participation gates.
+- `ORDERED_LONG_RANGE_WEAVE_V4`, a bounded ten-action topology that makes selected existing
+  controllers and walls participate in verified LOS relationships without adding independent
+  actions. It reached complete V4 scores `61`/`67`, safe-choice ratios `0.5996`/`0.5154`, ordering
+  rates `0.20`/`0.4444`, and ordering depths `3`/`5` for Expert/Master. It remains staging-only:
+  Expert still fails interaction density, object participation, average relevance, and wall
+  participation; Master fails object participation and wall participation.
+
+An additional six-cell long-range corridor experiment was physically valid but caused incomplete
+V4 analysis. It was removed rather than retained as a slow failing generation path. Expert/Master
+occupancy profiles and all V4/certification thresholds remain unchanged. The result is an
+extensible, fail-closed architecture—not a claim that Expert or Master certification is complete.
+
+The V4 weave's declared physical contract is checked both before and after symmetry transform. A
+proposed Master wall-to-arrow relation was removed when the verifier disproved it. The bounded
+certification run had zero solver failures, zero V4 truncations, and zero ordering failures; it
+stopped after one candidate per profile in accordance with the no-brute-force rule.
+The family remains explicitly reproducible but is excluded from automatic bounded attempts so a
+known structural rejection does not impose repeated counterfactual-analysis cost.
+
+### 11.12 Purposeful-space Generator V5.2 certification — 2026-08-20
+
+The earlier percentage-based empty-cell experiment removed arbitrary isolated walls and therefore
+could not change topology. V5.2 instead retains the existing V4 causal weave, identifies its
+required route/LOS guards, and omits the inert shell around that component. Every omitted cell is
+deterministically declared; semantic edges are still physically verified before/after transform.
+
+| Metric | Certified Expert | Certified Master |
+|---|---:|---:|
+| Known-seed V4 score | 63 | 68 |
+| Safe-choice ratio | 0.5996 | 0.5154 |
+| Mandatory ordering depth | 5 | 5 |
+| Interaction density | 0.1552 | 0.1453 |
+| Relevant-object ratio | 0.5517 | 0.5517 |
+| Average object relevance | 0.1940 | 0.2202 |
+| Meaningful wall occlusions | 5 | 6 |
+| Solver/V4 complete; truncated | Yes; No | Yes; No |
+| Unchanged-gate certificate | Pass | Pass |
+
+Four unique variants of each band are packaged in the Infinite catalog. Difficulty V4, gameplay,
+the numbered campaign, and all non-high-band generator profiles are unchanged. This is automated
+structural certification only; human ratings remain required.
+
 ---
 
 ## 12. Content generation and promotion safety
@@ -838,8 +952,7 @@ the narrowest relevant test/task before any bounded multi-profile benchmark.
 ### 13.1 Action accounting and stars
 
 - Count each arrow tap that reaches engine resolution, including failed launches.
-- Do not count ignored taps, animation-blocked taps, controls, hints, Undo, Restart, or navigation.
-- Undo does not erase already-counted actions.
+- Do not count ignored taps, animation-blocked taps, controls, hints, Restart, or navigation.
 - Restart begins a new zeroed attempt.
 
 Current grading version: 1.
@@ -856,21 +969,23 @@ archived as legacy records.
 
 ### 13.2 Economy
 
-Economy version: 1.
+Economy version: 3.
 
 | Rule | Value |
 |---|---:|
 | Starting balance | 150 coins |
-| First campaign clear | 20 coins |
-| Each newly earned star | 5 coins |
-| First Daily clear for an identity | 50 coins |
+| First campaign clear | 10 coins |
+| Each newly earned star | 0 coins |
+| First Daily clear for an identity | 10 coins |
+| First completion or rewarded skip of each Progressive/Infinite level ordinal | 10 coins |
+| First rewarded skip of an uncleared campaign level | 10 coins |
 | Solver hint | 30 coins |
 
-- First-clear and star rewards are idempotent.
+- First-clear/skip rewards are idempotent; stars remain grading/progress evidence and grant no coins.
 - Replays do not repeat already-earned rewards.
 - Balance never becomes negative.
 - Hint spend and usable hint display are atomic; no usable hint means no coin charge.
-- Undo and Restart remain free.
+- Restart remains free.
 - Currency can assist but never gates campaign/Daily progression.
 
 The historical 100-level simulation reported minimum balances of 150/150/120 for clean,
@@ -879,7 +994,7 @@ forecast for the current 200-level economy or future rewarded coins.
 
 ### 13.3 Persistence
 
-Current preference schema: 6.
+Current preference schema: 7.
 
 Persisted local state includes:
 
@@ -890,6 +1005,7 @@ Persisted local state includes:
 - content/generator/Daily/economy versions;
 - Sound, Haptics, Reduced Motion, High-Contrast Fields, Path Preview Assistance, Diagnostics;
 - interstitial counters/dates and rewarded-hint transaction/cap state.
+- Infinite selected ID/difficulty/ordinal, completed count, streak, and bounded 100-entry history.
 
 DataStore migrations are idempotent and validate/clamp corrupt values. Completing Level 150 under
 content version 5 unlocks/selects Level 151 once after migration to version 6. A player who already
@@ -897,6 +1013,18 @@ completed Level 200 under version 7 unlocks/selects Level 201 once after migrati
 
 There is no account, cloud sync, or backend recovery. Clearing storage/uninstalling removes local
 progress, subject to platform behavior and the app’s disabled backup policy.
+
+### 13.4 Infinite Mode progress
+
+Infinite identity combines Generator V5, profile, seed, content SHA-256, catalog/selector versions,
+rules, and Difficulty V4 analyzer version. DataStore persists the selected stable ID so process
+restart resumes the same unfinished board. Since app backup is disabled, uninstall clears history;
+a clean reinstall still reproduces the same ordinal-zero board for the same chosen difficulty.
+Each Infinite journey ordinal grants 10 coins exactly once when first completed or voluntarily
+skipped after a verified rewarded ad. Replay and duplicate completion/reward callbacks for that
+ordinal grant zero; the same certified board may earn the reward again
+only when the deterministic selector assigns it to a different journey ordinal. Infinite clears do
+not modify campaign unlocks/completions/records or Daily state.
 
 ---
 
@@ -939,11 +1067,13 @@ The solver evaluates the exact current `BoardState`, including current polaritie
 - It returns/highlights one deterministic solver-valid first action.
 - It never launches the arrow automatically.
 - Optional path preview is derived from a real engine resolution.
-- A hint does not mutate board state or undo history.
-- Stale results are discarded after move, Undo, Restart, or level change.
+- A hint does not mutate board state.
+- Stale results are discarded after move, Restart, or level change.
 - The hint counter increases only when a usable hint is shown.
-- Coin hints cost 30 coins atomically.
-- Existing rewarded-hint credit is a voluntary alternative and must remain intact.
+- At balances of 30 coins or more, tapping Hint atomically spends 30 coins and shows the solver
+  hint directly; there is no intermediate choice or confirmation dialog.
+- Below 30 coins, no balance is deducted and the Hint control uses the voluntary rewarded-ad path.
+- The Hint control is disabled/debounced while a hint/ad transaction is in progress.
 
 ---
 
@@ -952,7 +1082,8 @@ The solver evaluates the exact current `BoardState`, including current polaritie
 Current implemented advertising formats:
 
 1. Rewarded ad for one solver hint credit.
-2. Interstitial at a natural campaign completion boundary.
+2. Rewarded ad to skip the current Campaign/Infinite level and grant its 10-coin progression reward.
+3. Interstitial at a natural campaign completion boundary.
 
 No banners, native ads, app-open ads, rewarded interstitials, offerwalls, splash ads, pause/failure
 ads, mediation, cross-promotion, or Billing exist.
@@ -969,7 +1100,20 @@ ads, mediation, cross-promotion, or Billing exist.
 - Credit is consumed only when a usable solver hint is shown; solver failure/staleness preserves it.
 - No ad availability failure penalizes or blocks the player.
 
-### 16.2 Interstitial policy
+### 16.2 Rewarded level skip
+
+- Explicit player opt-in: `Skip level · AD · +10 coins` communicates the exchange before playback.
+- Available only during unfinished Campaign and Infinite play; Daily Challenge cannot be skipped.
+- Progression and 10 coins are committed only after the SDK reward callback.
+- The unique reward transaction, completion/ordinal state, unlock, and balance update share one
+  atomic DataStore edit; duplicate callbacks grant nothing twice.
+- A skipped Campaign level is progression-complete but receives no fabricated star/action record.
+- A skipped Infinite ordinal advances deterministically and resets the solved-level streak; its
+  identity remains in bounded local history so restart cannot resume it.
+- Early dismissal, missing consent, unavailable ads, SDK failure, or background state grants
+  nothing and leaves the current level playable.
+
+### 16.3 Interstitial policy
 
 Interstitials may appear only after the player taps `Next level` on a rendered campaign completion
 screen and all gates pass:
@@ -985,7 +1129,7 @@ screen and all gates pass:
 - no other full-screen content.
 
 If unavailable or failed, navigation continues immediately. Never wait or show a loading spinner
-for an interstitial. Never show during gameplay, animation, failure, deadlock, Undo, Restart,
+for an interstitial. Never show during gameplay, animation, failure, deadlock, Restart,
 Daily Challenge, launch/resume, back navigation, or app exit.
 
 ### 16.3 Consent/privacy behavior
@@ -1008,7 +1152,7 @@ Analytics and Crashlytics are application-layer abstractions with no-op/fake imp
 Collection defaults off and requires the effective consent policy plus local Diagnostics opt-in.
 
 Tracked data is coarse and product-focused, including level start/complete/restart/deadlock, hint
-choice/spend/display, Daily start/complete, consent result, rewarded lifecycle, interstitial
+spend/display, Daily start/complete, consent result, rewarded lifecycle, interstitial
 eligibility/show/dismissal, and coarse ad failure categories.
 
 Never log:
@@ -1058,7 +1202,7 @@ Required future rules:
 - atomic, idempotent local transaction across duplicate callback, activity recreation, background,
   and restart;
 - no unlimited farming loop;
-- existing rewarded hint remains unchanged;
+- existing rewarded hint and rewarded level skip remain unchanged;
 - deterministic economy simulation before enablement;
 - ads never gate Campaign, Daily, or Infinite Mode;
 - tests use fake/test providers and never contact a real network.
@@ -1180,6 +1324,32 @@ tasks (36 executed, 243 up-to-date) and produced local debug/release variants. T
 structural and non-uploadable because live ads, UMP, signing, and owner production configuration
 are intentionally unavailable.
 
+### 20.3 Master implementation verification
+
+The 2026-08-20 player-flow and multi-topology update passed focused app/core/tools tests, Android
+UI-test Kotlin compilation, release Kotlin compilation, `certifyCampaignContent`, and the full
+Gradle build with configuration cache enabled. The full build completed 279 tasks (56 executed,
+223 up-to-date). Campaign certification replayed all 205 campaign levels and seven Daily fallbacks
+and explicitly reported the existing Level 205 structural waiver. The canonical content-v8 SHA-256
+remained `6416c0a5677e66cba169cf9caaa9d7d7e6e70bc6e4e3e69b36277e3c69e78128`.
+
+### 20.4 Bounded ordered-long-range weave verification
+
+`ORDERED_LONG_RANGE_WEAVE_V4` was evaluated with one deterministic Expert candidate and one
+Master candidate. Physical edge verification, canonical replay, and complete unchanged V4 analysis
+passed. Expert produced score `61`, safe-choice `0.5996`, ordering rate `0.20`, and depth `3`;
+Master produced score `67`, safe-choice `0.5154`, ordering rate `0.4444`, and depth `5`.
+
+The unchanged certifier correctly returned zero certificates. Expert failed interaction density,
+object participation, average object relevance, and wall participation. Master failed object
+participation and wall participation. No seed sweep, campaign mutation, gate relaxation, or
+automated-as-human approval followed. The canonical campaign SHA-256 remained
+`6416c0a5677e66cba169cf9caaa9d7d7e6e70bc6e4e3e69b36277e3c69e78128`.
+
+Final regression passed `:game-core:test :level-tools:test :app:testDebugUnitTest` with Gradle
+configuration cache reused, followed by `certifyCampaignContent`: 205/205 campaign levels and all
+seven Daily fallbacks were certified, with the existing Level 205 owner waiver surfaced.
+
 ---
 
 ## 21. Mandatory development safety
@@ -1258,10 +1428,25 @@ Level 300. Preserve 1–250 and stop cleanly at 300. Not implemented.
 
 ### Phase 6 — Infinite Mode
 
-Separate deterministic offline mode, never Level 301. Configurable unlock (default after Level 100),
-Relaxed/Balanced/Challenging/Expert profiles, stable puzzle identity, bounded generation,
-production certification, fallbacks, and bounded local history. Initially no repeatable coin reward.
-Not implemented.
+Implemented as a separate deterministic offline mode, never Level 206/301. The single Home `Play`
+button shows the next journey level number and actual selected difficulty, then launches or resumes
+it directly; Home does not show Continue, Level Select, or a separate
+Progressive Journey card. Daily Challenge remains on Home. The default Progressive Journey requests
+compact certified Easy boards for Infinite Levels 1–5, followed by five guided Easy practice levels.
+The ten lessons cover tap, blocking, magnetic control, polarity, ordering, scanning, visibility,
+exposure, comparing choices, and combining the rules. Levels 1–4 have two arrows; Level 5 has three;
+each of those compact boards has one valid opening and one solution family. A compatible authored
+solution is taught step by step with an animated fingertip, pulsing focus ring, printed-direction cue,
+scaled lesson diagram, and concise action prompt. Successful removals advance the finger; failed taps
+leave it on the current step. The same lessons appear when numbered campaign Levels 1–10 are opened
+directly. Tutorial animation never intercepts board input, respects Reduced Motion, and ends after
+Level 10. Medium follows for
+11–20, Hard for 21–30, then uses a deterministic shuffled rhythm spanning Easy, Medium, Hard,
+Super Hard, Expert, and Master. Fixed-band choices remain available over a 624-board pre-certified
+catalog (Easy 200, Medium 270, Hard 130, Expert 12, Master 12). Stable
+puzzle identities, nearest-certified fallback selection, recent-fingerprint avoidance, and bounded
+local history are implemented. Every Expert/Master row passed unchanged gates; there is no runtime
+board generation. Each journey ordinal awards 10 coins once on its first completion.
 
 ### Phase 7 — Adaptive Infinite
 
@@ -1313,6 +1498,11 @@ rewarded hints, consent, and full free access. Not implemented.
 | Historical Generator V5 repair audit | `docs/development/MAGNETRAIL_GENERATOR_V5_AUDIT.md` |
 | Expert/Master topology fix v1 | `docs/development/MAGNETRAIL_EXPERT_MASTER_TOPOLOGY_FIX_V1.md` |
 | Expert/Master topology V5.1 | `docs/development/MAGNETRAIL_EXPERT_MASTER_TOPOLOGY_V5_1.md` |
+| Master implementation report | `docs/development/MAGNETRAIL_MASTER_IMPLEMENTATION_REPORT.md` |
+| Infinite Mode specification | `docs/infinite/INFINITE_MODE_SPEC.md` |
+| Infinite Mode QA | `docs/infinite/INFINITE_MODE_QA.md` |
+| Infinite certified catalog | `docs/content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json` |
+| Infinite generation benchmark | `docs/infinite/INFINITE_GENERATOR_BENCHMARK.json` |
 | Content-v8 append source snapshot | `docs/content/v5_1_append/promotion/SOURCE_CONTENT_V7.json` |
 | Content-v8 append manifest | `docs/content/v5_1_append/promotion/V5_1_APPEND_PROMOTION_MANIFEST.json` |
 | Content-v8 append result | `docs/content/v5_1_append/promotion/V5_1_APPEND_PROMOTION_RESULT.md` |
@@ -1341,13 +1531,12 @@ level-tools/src/main/kotlin/com/rameshta/magnetrail/tools/
    boards and content v8 appended five more, but automated checks do not establish perceived difficulty.
 2. **D2 human review is incomplete.** The 40 D1 owner ratings belong to archived content-v6 board
    fingerprints. None of the 62 selected D2/content-v7 review boards has an owner rating yet.
-3. **Generator V5 Expert/Master structural certification remains blocked.**
-   Expert V5.1 now has V4 `61`, ordering depth `3`, safe-choice ratio `0.5996`, three long-range
-   relationships, and three wall occlusions;
-   Master has V4 `66`, ordering depth `5`, safe-choice ratio `0.5154`, and two wall occlusions.
-   Expert now passes its long-range and ordering pre-checks but still lacks interaction/relevance/
-   wall-participation margin; it is shipped only under the explicit Level 205 owner waiver. Master
-   remains excluded and still fails object/interacting/relevance/wall-participation gates.
+3. **Expert/Master automated certification now passes; human calibration is still required.**
+   Purposeful-space V5.2 produces certified Expert V4 `62–63` boards with safe-choice ratio
+   `0.5996`, ordering depth `5`, and three meaningful long-range relationships. Certified Master
+   boards score V4 `68`, with safe-choice ratio `0.5154` and ordering depth `5`. The Infinite pool
+   includes 12 unique entries in each high band. This does not retroactively certify waived campaign
+   Level 205 or count as human approval.
 4. **Historical Generator V5 PASS evidence is superseded for quality decisions.** Its Expert/Master
    staging thresholds had been lowered. Current required Expert gates are restored and must not be
    weakened to reproduce that PASS.
@@ -1358,10 +1547,11 @@ level-tools/src/main/kotlin/com/rameshta/magnetrail/tools/
 7. **Representative device/accessibility/release testing is incomplete.** API 24, mid-range/API 35,
    tablet/foldable, TalkBack/Switch Access, current upgrade, and production-like consent/ad tests
    require real evidence.
-8. **Future game scope is intentionally absent.** Insulator, Levels 206–300, Infinite, Adaptive
-   Infinite, and ads-only Phase 8 are documentation only. D2 includes 43 production 8×8 boards,
+8. **Future game scope is intentionally absent.** Insulator, Levels 206–300, Adaptive Infinite,
+   and ads-only Phase 8 are documentation only. Infinite Mode itself is implemented. D2 includes 43 production 8×8 boards,
    but their representative-device usability still lacks human evidence; 9×9 remains excluded.
 
-The immediate product action is human playtesting of Levels 201–205 with the Level 205 waiver
-visible in review records. Generator work should raise Expert relevance/participating-wall ratios
-and produce a certifiable Master without overflowing V4 counterfactual enumeration.
+The immediate product action is blind human playtesting of the four certified Expert and four
+certified Master Infinite boards, alongside Levels 201–205 with the Level 205 waiver visible. Use
+those ratings to verify that the measured consequence gap is felt by players; do not treat the
+automated certificate as human approval.

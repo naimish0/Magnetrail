@@ -1,7 +1,13 @@
 package com.rameshta.magnetrail
 
 import com.rameshta.magnetrail.core.model.BoardState
+import com.rameshta.magnetrail.core.level.LevelCatalog
+import com.rameshta.magnetrail.core.model.Arrow
+import com.rameshta.magnetrail.core.model.Direction
+import com.rameshta.magnetrail.core.model.LevelDefinition
 import com.rameshta.magnetrail.core.model.Polarity
+import com.rameshta.magnetrail.core.model.Position
+import com.rameshta.magnetrail.core.model.Wall
 import com.rameshta.magnetrail.game.GameAction
 import com.rameshta.magnetrail.game.GameViewModel
 import com.rameshta.magnetrail.game.HintOutcome
@@ -45,7 +51,6 @@ class HintCoordinatorTest {
         val after = viewModel.uiState.value
         assertEquals(before.boardState, captured.get())
         assertEquals(before.boardState, after.boardState)
-        assertEquals(before.undoHistory, after.undoHistory)
         assertEquals(before.moves, after.moves)
         assertEquals("A", after.suggestedArrowId)
         assertEquals(1, after.hintsUsed)
@@ -108,6 +113,37 @@ class HintCoordinatorTest {
         advanceUntilIdle()
         assertEquals(1, usable.uiState.value.hintsUsed)
         assertEquals("A", usable.uiState.value.suggestedArrowId)
+    }
+
+    @Test
+    fun `deadlocked state disables hint without calling provider`() = runTest(mainDispatcherRule.dispatcher) {
+        var providerCalled = false
+        val level = LevelDefinition(
+            id = "deadlocked-hint-test",
+            number = 1,
+            title = "Keep trying",
+            width = 4,
+            height = 4,
+            arrows = listOf(Arrow("A", Position(2, 2), Direction.EAST)),
+            magnets = emptyList(),
+            walls = listOf(Wall(Position(2, 3))),
+            designedSolutions = emptyList(),
+        )
+        val viewModel = GameViewModel(
+            catalog = LevelCatalog(1, "magnetrail-core-1", "deadlocked-hint-test", listOf(level)),
+            hintProvider = HintProvider {
+                providerCalled = true
+                HintOutcome.NoSolution
+            },
+        )
+
+        assertTrue(viewModel.uiState.value.isDeadlocked)
+        assertFalse(viewModel.uiState.value.canRequestHint)
+        viewModel.onAction(GameAction.RequestHint)
+        advanceUntilIdle()
+
+        assertFalse(providerCalled)
+        assertNull(viewModel.uiState.value.hintMessage)
     }
 
     @Test

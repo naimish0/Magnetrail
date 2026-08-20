@@ -68,6 +68,7 @@ fun MagnetrailBoard(
     motionPolicy: MotionPolicy,
     highContrastFields: Boolean,
     suggestedArrowId: String?,
+    tutorialArrowId: String?,
     inputEnabled: Boolean,
     onArrowTapped: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -75,6 +76,10 @@ fun MagnetrailBoard(
     val density = LocalDensity.current
     val exitGutterPx = with(density) { 12.dp.toPx() }
     val fieldPhase = rememberFieldPhase(motionPolicy.animateFieldPulse)
+    val tutorialPhase = rememberTutorialPhase(
+        active = tutorialArrowId != null,
+        reducedMotion = motionPolicy.reduced,
+    )
     var geometry by remember(boardState.width, boardState.height) {
         mutableStateOf<BoardGeometry?>(null)
     }
@@ -152,6 +157,12 @@ fun MagnetrailBoard(
                 )
             }
 
+            tutorialArrowId
+                ?.let(boardState::arrow)
+                ?.let { arrow ->
+                    drawTutorialDirectionGuide(arrow, boardGeometry, tutorialPhase)
+                }
+
             boardState.arrows
                 .filterNot { it.id == inFlightResult?.selectedArrowId }
                 .forEach { arrow ->
@@ -159,7 +170,8 @@ fun MagnetrailBoard(
                         arrow = arrow,
                         center = boardGeometry.cellCenter(arrow.position),
                         cellSize = boardGeometry.cellSize,
-                        selected = arrow.id == suggestedArrowId,
+                        selected = arrow.id == suggestedArrowId || arrow.id == tutorialArrowId,
+                        selectionPulse = if (arrow.id == tutorialArrowId) tutorialPhase else 0f,
                     )
                 }
 
@@ -174,9 +186,20 @@ fun MagnetrailBoard(
                         ),
                         cellSize = boardGeometry.cellSize,
                         selected = true,
+                        selectionPulse = 0f,
                     )
                 }
             }
+
+            tutorialArrowId
+                ?.let(boardState::arrow)
+                ?.let { arrow ->
+                    drawTutorialFinger(
+                        center = boardGeometry.cellCenter(arrow.position),
+                        cellSize = boardGeometry.cellSize,
+                        phase = tutorialPhase,
+                    )
+                }
 
             if (turnVisualState.showImpact) {
                 inFlightResult?.collisionTarget?.let { target ->
@@ -190,6 +213,7 @@ fun MagnetrailBoard(
                 val center = boardGeometry.cellCenter(arrow.position)
                 val cellDp = with(density) { boardGeometry.cellSize.toDp() }
                 val suggested = arrow.id == suggestedArrowId
+                val tutorialFocus = arrow.id == tutorialArrowId
                 Box(
                     modifier = Modifier
                         .offset {
@@ -202,7 +226,8 @@ fun MagnetrailBoard(
                         .semantics {
                             contentDescription = buildString {
                                 append("Arrow ${arrow.id}, points ${arrow.printedDirection.name.lowercase()}")
-                                if (suggested) append(", suggested hint")
+                            if (suggested) append(", suggested hint")
+                            if (tutorialFocus) append(", tutorial focus")
                             }
                             role = Role.Button
                         }
@@ -236,6 +261,109 @@ fun MagnetrailBoard(
             }
         }
     }
+}
+
+@Composable
+private fun rememberTutorialPhase(active: Boolean, reducedMotion: Boolean): Float {
+    if (!active) return 0f
+    if (reducedMotion) return 0.68f
+    val transition = rememberInfiniteTransition(label = "tutorial arrow pulse")
+    val phase by transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(900), RepeatMode.Reverse),
+        label = "tutorial arrow phase",
+    )
+    return phase
+}
+
+private fun DrawScope.drawTutorialDirectionGuide(
+    arrow: Arrow,
+    geometry: BoardGeometry,
+    phase: Float,
+) {
+    val center = geometry.cellCenter(arrow.position)
+    val direction = Offset(
+        x = arrow.printedDirection.columnDelta.toFloat(),
+        y = arrow.printedDirection.rowDelta.toFloat(),
+    )
+    val start = center + direction * (geometry.cellSize * 0.18f)
+    val end = center + direction * (geometry.cellSize * (0.45f + phase * 0.12f))
+    drawLine(
+        color = MagnetrailPull.copy(alpha = 0.28f + phase * 0.24f),
+        start = start,
+        end = end,
+        strokeWidth = geometry.cellSize * 0.075f,
+        cap = StrokeCap.Round,
+    )
+    drawCircle(
+        color = MagnetrailPull.copy(alpha = 0.52f + phase * 0.34f),
+        radius = geometry.cellSize * 0.065f,
+        center = end,
+    )
+}
+
+/**
+ * Drawn directly on the board so it cannot consume pointer input or hide the real arrow semantics.
+ * The fingertip approaches the authored tutorial move and pauses on it before retreating.
+ */
+private fun DrawScope.drawTutorialFinger(center: Offset, cellSize: Float, phase: Float) {
+    val fingertip = center + Offset(
+        x = cellSize * 0.30f * (1f - phase),
+        y = cellSize * 0.36f * (1f - phase),
+    )
+    val palm = fingertip + Offset(cellSize * 0.22f, cellSize * 0.27f)
+    val outlineWidth = cellSize * 0.19f
+    val fingerWidth = cellSize * 0.125f
+
+    drawCircle(
+        color = MagnetrailPull.copy(alpha = (1f - phase) * 0.50f),
+        radius = cellSize * (0.10f + phase * 0.18f),
+        center = center,
+        style = Stroke(width = cellSize * 0.035f),
+    )
+
+    // Dark outline keeps the hand readable over arrows, fields, and walls.
+    drawLine(
+        color = MagnetrailPrimaryStrong.copy(alpha = 0.78f),
+        start = fingertip,
+        end = palm,
+        strokeWidth = outlineWidth,
+        cap = StrokeCap.Round,
+    )
+    drawLine(
+        color = Color.White,
+        start = fingertip,
+        end = palm,
+        strokeWidth = fingerWidth,
+        cap = StrokeCap.Round,
+    )
+    drawCircle(
+        color = MagnetrailPrimaryStrong.copy(alpha = 0.78f),
+        radius = cellSize * 0.105f,
+        center = fingertip,
+    )
+    drawCircle(
+        color = Color.White,
+        radius = cellSize * 0.072f,
+        center = fingertip,
+    )
+
+    val knuckle = palm + Offset(cellSize * 0.12f, cellSize * 0.02f)
+    drawLine(
+        color = MagnetrailPrimaryStrong.copy(alpha = 0.78f),
+        start = palm,
+        end = knuckle,
+        strokeWidth = cellSize * 0.24f,
+        cap = StrokeCap.Round,
+    )
+    drawLine(
+        color = Color.White,
+        start = palm,
+        end = knuckle,
+        strokeWidth = cellSize * 0.17f,
+        cap = StrokeCap.Round,
+    )
 }
 
 @Composable
@@ -427,6 +555,7 @@ private fun DrawScope.drawRailDart(
     center: Offset,
     cellSize: Float,
     selected: Boolean,
+    selectionPulse: Float,
 ) {
     val angle = when (arrow.printedDirection) {
         Direction.EAST -> 0f
@@ -438,7 +567,7 @@ private fun DrawScope.drawRailDart(
         if (selected) {
             drawCircle(
                 color = MagnetrailPull.copy(alpha = 0.16f),
-                radius = cellSize * 0.39f,
+                radius = cellSize * (0.39f + selectionPulse * 0.08f),
                 center = center,
             )
             drawCircle(

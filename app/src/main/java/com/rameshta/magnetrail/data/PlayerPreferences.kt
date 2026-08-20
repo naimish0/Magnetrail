@@ -5,7 +5,28 @@ import com.rameshta.magnetrail.core.economy.EconomyConfig
 import com.rameshta.magnetrail.core.generation.CONTENT_VERSION
 import com.rameshta.magnetrail.core.generation.GENERATOR_VERSION
 
-const val PLAYER_PREFERENCES_SCHEMA_VERSION = 6
+const val PLAYER_PREFERENCES_SCHEMA_VERSION = 7
+
+data class InfiniteHistoryEntry(
+    val ordinal: Int,
+    val puzzleId: String,
+    val contentFingerprint: String,
+    val difficulty: String,
+    val completed: Boolean = false,
+    val actions: Int? = null,
+    val overloads: Int? = null,
+    val hintsUsed: Int? = null,
+)
+
+data class InfiniteProgress(
+    val selectedPuzzleId: String? = null,
+    val selectedDifficulty: String = "PROGRESSIVE",
+    val selectionOrdinal: Int = 0,
+    val completedCount: Int = 0,
+    val currentStreak: Int = 0,
+    val bestStreak: Int = 0,
+    val history: List<InfiniteHistoryEntry> = emptyList(),
+)
 
 data class PlayerSettings(
     val soundEnabled: Boolean = true,
@@ -46,6 +67,7 @@ data class PlayerProgress(
     val generatorVersion: Int = GENERATOR_VERSION,
     val dailyGeneratorVersion: Int = DailySeed.GENERATOR_VERSION,
     val monetization: AdMonetizationState = AdMonetizationState(),
+    val infinite: InfiniteProgress = InfiniteProgress(),
 )
 
 data class LevelRecord(

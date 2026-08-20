@@ -11,7 +11,6 @@ enum class FeedbackEvent {
     POLARITY_FLIP,
     COLLISION,
     INVALID_MOVE,
-    UNDO,
     RESTART,
     BOARD_COMPLETION,
 }
@@ -50,7 +49,7 @@ object FeedbackPolicy {
             FeedbackEvent.PUSH_EXIT -> SoundCue.PUSH_EXIT
             FeedbackEvent.POLARITY_FLIP -> SoundCue.POLARITY_FLIP
             FeedbackEvent.COLLISION, FeedbackEvent.INVALID_MOVE -> SoundCue.IMPACT
-            FeedbackEvent.UNDO, FeedbackEvent.RESTART -> SoundCue.UNDO_RESTART
+            FeedbackEvent.RESTART -> SoundCue.UNDO_RESTART
             FeedbackEvent.BOARD_COMPLETION -> SoundCue.COMPLETION
         }.takeIf { settings.soundEnabled }
         val haptic = when (event) {
@@ -59,7 +58,6 @@ object FeedbackPolicy {
             FeedbackEvent.ARROW_EXIT,
             FeedbackEvent.PULL_CAPTURE,
             FeedbackEvent.PUSH_EXIT,
-            FeedbackEvent.UNDO,
             FeedbackEvent.RESTART,
             -> HapticCue.CONFIRM
             FeedbackEvent.COLLISION, FeedbackEvent.INVALID_MOVE -> HapticCue.IMPACT

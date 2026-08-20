@@ -8,6 +8,8 @@ import com.rameshta.magnetrail.analytics.AnalyticsTracker
 import com.rameshta.magnetrail.data.PlayerProgress
 import com.rameshta.magnetrail.data.ProgressRepository
 import com.rameshta.magnetrail.data.RewardedCreditGrantResult
+import com.rameshta.magnetrail.data.RewardedSkipResult
+import com.rameshta.magnetrail.data.RewardedSkipTarget
 import com.rameshta.magnetrail.game.AppDestination
 import com.rameshta.magnetrail.game.GameMode
 import com.rameshta.magnetrail.game.GameUiState
@@ -39,6 +41,7 @@ class MonetizationController(
     private val clock: AdClock = SystemAdClock,
 ) {
     private val nextLevelInFlight = AtomicBoolean(false)
+    private val rewardedSkipInFlight = AtomicBoolean(false)
     fun rewardedOffer(progress: PlayerProgress): RewardedOffer {
         val state = progress.monetization
         if (state.pendingAdHintTransactionId != null) return RewardedOffer(
@@ -79,6 +82,35 @@ class MonetizationController(
         }
     }
 
+    fun rewardedSkipOffer(): RewardedOffer {
+        if (!privacyManager.state.value.canRequestAds) return RewardedOffer(
+            RewardedOfferStatus.UNAVAILABLE,
+            false,
+            "Skip level with an ad",
+            "No ad available right now",
+        )
+        return when (rewardedAdService.state.value) {
+            RewardedAdState.READY -> RewardedOffer(
+                RewardedOfferStatus.AVAILABLE,
+                true,
+                "Skip level with an ad",
+                "Watch an ad to skip this level and receive 10 coins.",
+            )
+            RewardedAdState.LOADING -> RewardedOffer(
+                RewardedOfferStatus.LOADING,
+                false,
+                "Skip level with an ad",
+                "Ad is loading",
+            )
+            else -> RewardedOffer(
+                RewardedOfferStatus.UNAVAILABLE,
+                false,
+                "Skip level with an ad",
+                "No ad available right now",
+            )
+        }
+    }
+
     suspend fun requestRewardedHint(
         activity: Activity,
         uiState: GameUiState,
@@ -110,6 +142,68 @@ class MonetizationController(
                 onMessage("No ad reward was earned")
             }
             is RewardedOutcome.Failed, is RewardedOutcome.Unavailable -> onMessage("No ad available right now")
+        }
+    }
+
+    suspend fun requestRewardedSkip(
+        activity: Activity,
+        uiState: GameUiState,
+        onGranted: (RewardedSkipResult.Applied) -> Unit,
+        onMessage: (String) -> Unit,
+    ) {
+        if (!rewardedSkipInFlight.compareAndSet(false, true)) return
+        try {
+            val offer = rewardedSkipOffer()
+            val mode = uiState.gameMode.name.lowercase()
+            analytics.track(AnalyticsEvent.RewardedSkip("requested_${offer.status.name.lowercase()}", mode))
+            if (!offer.enabled || !activity.isResumed() || uiState.destination != AppDestination.GAME ||
+                uiState.gameMode == GameMode.DAILY || uiState.isComplete || uiState.inFlightResult != null
+            ) {
+                analytics.track(AnalyticsEvent.RewardedSkip("denied", mode))
+                onMessage(offer.supportingText)
+                return
+            }
+            when (val outcome = rewardedAdService.showForSkip(activity)) {
+                is RewardedOutcome.Earned -> {
+                    repository.recordFullScreenAdDismissal(
+                        clock.localDate(),
+                        clock.wallTimeMillis(),
+                        interstitialShown = false,
+                    )
+                    val target = when (uiState.gameMode) {
+                        GameMode.CAMPAIGN -> RewardedSkipTarget.Campaign(uiState.currentLevel.id)
+                        GameMode.INFINITE -> RewardedSkipTarget.Infinite(
+                            requireNotNull(uiState.infinitePuzzleId) { "Infinite skip requires a puzzle ID" },
+                        )
+                        GameMode.DAILY -> error("Daily Challenge cannot be skipped")
+                    }
+                    when (val result = repository.recordRewardedSkip(outcome.transactionId, target)) {
+                        is RewardedSkipResult.Applied -> {
+                            analytics.track(AnalyticsEvent.RewardedSkip("granted", mode))
+                            onGranted(result)
+                        }
+                        RewardedSkipResult.Duplicate -> {
+                            analytics.track(AnalyticsEvent.RewardedSkip("duplicate", mode))
+                            onMessage("This skip reward was already applied")
+                        }
+                    }
+                }
+                RewardedOutcome.DismissedWithoutReward -> {
+                    repository.recordFullScreenAdDismissal(
+                        clock.localDate(),
+                        clock.wallTimeMillis(),
+                        interstitialShown = false,
+                    )
+                    analytics.track(AnalyticsEvent.RewardedSkip("dismissed", mode))
+                    onMessage("Finish the ad to skip this level")
+                }
+                is RewardedOutcome.Failed, is RewardedOutcome.Unavailable -> {
+                    analytics.track(AnalyticsEvent.RewardedSkip("unavailable", mode))
+                    onMessage("No ad available right now")
+                }
+            }
+        } finally {
+            rewardedSkipInFlight.set(false)
         }
     }
 

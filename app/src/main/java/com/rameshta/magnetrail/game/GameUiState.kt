@@ -7,15 +7,18 @@ import com.rameshta.magnetrail.data.PlayerProgress
 import com.rameshta.magnetrail.data.PlayerSettings
 import com.rameshta.magnetrail.data.CompletionReceipt
 import com.rameshta.magnetrail.daily.DailyLoadSource
+import com.rameshta.magnetrail.core.infinite.InfiniteDifficulty
 
 enum class GameMode {
     CAMPAIGN,
     DAILY,
+    INFINITE,
 }
 
 enum class AppDestination {
     HOME,
     LEVELS,
+    INFINITE,
     GAME,
     SETTINGS,
 }
@@ -45,7 +48,12 @@ data class GameUiState(
     val dailyLoadSource: DailyLoadSource? = null,
     val isDailyLoading: Boolean = false,
     val dailyError: String? = null,
-    val undoHistory: List<BoardState> = emptyList(),
+    val infinitePuzzleId: String? = null,
+    val infiniteDifficulty: InfiniteDifficulty? = null,
+    val infiniteFallbackUsed: Boolean = false,
+    val infiniteSelectionReason: String? = null,
+    val infiniteCatalogSize: Int = 0,
+    val playDifficultyLabel: String = "Easy",
     val inFlightResult: ResolutionResult? = null,
     val animationPhase: TurnAnimationPhase = TurnAnimationPhase.IDLE,
     val inputEnabled: Boolean = true,
@@ -58,19 +66,22 @@ data class GameUiState(
     val suggestedArrowId: String? = null,
     val hintMessage: String? = null,
     val hintPreviewResult: ResolutionResult? = null,
-    val hintConfirmationPending: Boolean = false,
-    val hintChoiceOpen: Boolean = false,
     val isHintPurchaseInProgress: Boolean = false,
     val completionReceipt: CompletionReceipt? = null,
     val completionWasFirstClear: Boolean = false,
 ) {
     val remainingArrowCount: Int get() = boardState.arrows.size
     val initialArrowCount: Int get() = initialState.arrows.size
-    val canUndo: Boolean get() = undoHistory.isNotEmpty() && inFlightResult == null
     val canRestart: Boolean get() = inFlightResult == null
     val canRequestHint: Boolean
-        get() = inputEnabled && !isComplete && !isHintLoading && !isHintPurchaseInProgress && suggestedArrowId == null
-    val hasNextLevel: Boolean get() = gameMode == GameMode.CAMPAIGN && currentLevelIndex < levels.lastIndex
+        get() = inputEnabled && !isComplete && !isDeadlocked && !isHintLoading &&
+            !isHintPurchaseInProgress && suggestedArrowId == null
+    val canRequestSkip: Boolean
+        get() = gameMode != GameMode.DAILY && inputEnabled && !isComplete && inFlightResult == null &&
+            !isHintPurchaseInProgress
+    val hasNextLevel: Boolean
+        get() = gameMode == GameMode.INFINITE ||
+            (gameMode == GameMode.CAMPAIGN && currentLevelIndex < levels.lastIndex)
     val hasProgress: Boolean
         get() = progress.completedLevelIds.isNotEmpty() || progress.highestUnlockedLevel > 1
 
@@ -79,4 +90,6 @@ data class GameUiState(
 
     val totalStars: Int get() = progress.recordsByLevel.values.sumOf { it.bestStars }
     val todayDailyCompleted: Boolean get() = dailyId?.let { it in progress.completedDailyIds } == true
+    val infiniteUnlocked: Boolean
+        get() = infiniteCatalogSize > 0
 }

@@ -44,6 +44,7 @@ data class GenerationRequestV5(
     val profile: GenerationProfileV5,
     val packId: String = "d2-staging",
     val maxAttempts: Int = profile.candidateAttemptCap,
+    val topologyFamily: TopologyFamilyV5? = null,
 )
 
 sealed interface GenerationResultV5 {
@@ -327,14 +328,43 @@ class LevelGeneratorV5(
         var telemetry = GenerationTelemetryV5()
         repeat(request.maxAttempts) attemptLoop@ { attempt ->
             val attemptSeed = request.seed + attempt * ATTEMPT_GAMMA
+            val attemptRequest = if (request.topologyFamily == null) {
+                request.copy(topologyFamily = HighBandTopologyRegistryV5.familyForAttempt(request.profile, attempt))
+            } else {
+                request
+            }
             telemetry = telemetry.copy(candidateAttempts = telemetry.candidateAttempts + 1)
             val constructed = if (request.profile.constructionStrategy == ConstructionStrategyV5.SOLUTION_FIRST) {
-                runCatching { solutionFirstConstructor.construct(request, attemptSeed) }.getOrElse {
+                runCatching { solutionFirstConstructor.construct(attemptRequest, attemptSeed) }.getOrElse {
                     rejected["construction-failed"] = (rejected["construction-failed"] ?: 0) + 1
                     return@attemptLoop
                 }.also { telemetry = telemetry.copy(successfulConstructions = telemetry.successfulConstructions + 1) }
             } else null
             var raw = constructed?.level ?: generatePlacementFirstRaw(request, attemptSeed)
+            if (constructed != null) {
+                val emptyPolicy = EmptyCellPolicyV5.evaluate(
+                    raw,
+                    constructed.purposefulEmptyCells,
+                    request.profile.maximumPurposefulEmptyCellRatio,
+                )
+                if (!emptyPolicy.accepted) {
+                    emptyPolicy.violations.forEach { reason ->
+                        rejected[reason] = (rejected[reason] ?: 0) + 1
+                        telemetry = telemetry.recordRejection(reason)
+                    }
+                    return@attemptLoop
+                }
+                val verification = solutionFirstConstructor.verifyPhysicalContract(
+                    raw,
+                    constructed.contract,
+                    request.profile.analysisStateCap,
+                )
+                if (!verification.passed) {
+                    rejected["physical-semantic-verification-failed"] =
+                        (rejected["physical-semantic-verification-failed"] ?: 0) + 1
+                    return@attemptLoop
+                }
+            }
             var result = certification.certify(raw, request.profile, attemptSeed, request.packId)
             if (result is CertificationResultV5.Rejected && constructed != null) {
                 var repairBase = requireNotNull(constructed)

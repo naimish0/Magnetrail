@@ -40,6 +40,8 @@ import com.rameshta.magnetrail.feedback.ViewHapticController
 import com.rameshta.magnetrail.game.GameViewModel
 import com.rameshta.magnetrail.game.GameAction
 import com.rameshta.magnetrail.game.MagnetrailApp
+import com.rameshta.magnetrail.game.GameMode
+import com.rameshta.magnetrail.infinite.InfiniteModeService
 import com.rameshta.magnetrail.privacy.ExternalUrlPolicy
 import com.rameshta.magnetrail.ui.theme.MagnetrailTheme
 
@@ -64,11 +66,11 @@ class MainActivity : ComponentActivity() {
                 val catalogResult = remember {
                     runCatching {
                         val assets = AssetLevelCatalog(applicationContext)
-                        assets.load() to assets.loadDailyFallbacks()
+                        Triple(assets.load(), assets.loadDailyFallbacks(), assets.loadInfiniteCatalog())
                     }
                 }
                 catalogResult.fold(
-                    onSuccess = { (catalog, dailyFallbacks) ->
+                    onSuccess = { (catalog, dailyFallbacks, infiniteCatalog) ->
                         val repository = remember(catalog) {
                             DataStoreProgressRepository(
                                 context = applicationContext,
@@ -80,11 +82,15 @@ class MainActivity : ComponentActivity() {
                         val dailyChallengeService = remember(catalog, dailyFallbacks) {
                             DailyChallengeService(catalog.levels, dailyFallbacks)
                         }
+                        val infiniteModeService = remember(infiniteCatalog) {
+                            InfiniteModeService(infiniteCatalog)
+                        }
                         val gameViewModel: GameViewModel = viewModel(
                             factory = GameViewModel.factory(
                                 catalog = catalog,
                                 repository = repository,
                                 dailyChallengeService = dailyChallengeService,
+                                infiniteModeService = infiniteModeService,
                                 debugUnlockAll = BuildConfig.DEBUG,
                                 analytics = services.analytics,
                                 crashReporter = services.crashReporter,
@@ -117,10 +123,10 @@ class MainActivity : ComponentActivity() {
                             services.crashReporter.setKey(CrashKey.SCREEN, uiState.destination.name.lowercase())
                             services.crashReporter.setKey(
                                 CrashKey.CONTENT_PROFILE,
-                                if (uiState.gameMode == com.rameshta.magnetrail.game.GameMode.CAMPAIGN) {
-                                    uiState.currentLevel.id
-                                } else {
-                                    "daily"
+                                when (uiState.gameMode) {
+                                    GameMode.CAMPAIGN -> uiState.currentLevel.id
+                                    GameMode.DAILY -> "daily"
+                                    GameMode.INFINITE -> "infinite"
                                 },
                             )
                             services.crashReporter.setKey(CrashKey.CONSENT_STATE, privacyState.flowResult.name.lowercase())
@@ -139,6 +145,10 @@ class MainActivity : ComponentActivity() {
                                 privacyState,
                                 rewardedAdState,
                             ) { monetizationController.rewardedOffer(uiState.progress) },
+                            rewardedSkipOffer = remember(
+                                privacyState,
+                                rewardedAdState,
+                            ) { monetizationController.rewardedSkipOffer() },
                             onRewardedHint = {
                                 lifecycleScope.launch {
                                     monetizationController.requestRewardedHint(
@@ -153,13 +163,31 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                             },
-                            onNextLevel = {
+                            onRewardedSkip = {
                                 lifecycleScope.launch {
-                                    monetizationController.nextLevel(
+                                    monetizationController.requestRewardedSkip(
                                         activity = this@MainActivity,
                                         uiState = currentUiState,
-                                        navigate = { gameViewModel.onAction(GameAction.NextLevel) },
+                                        onGranted = {
+                                            gameViewModel.onAction(GameAction.ApplyRewardedSkip(it))
+                                        },
+                                        onMessage = {
+                                            gameViewModel.onAction(GameAction.ShowHintMessage(it))
+                                        },
                                     )
+                                }
+                            },
+                            onNextLevel = {
+                                if (currentUiState.gameMode == GameMode.INFINITE) {
+                                    gameViewModel.onAction(GameAction.NextLevel)
+                                } else {
+                                    lifecycleScope.launch {
+                                        monetizationController.nextLevel(
+                                            activity = this@MainActivity,
+                                            uiState = currentUiState,
+                                            navigate = { gameViewModel.onAction(GameAction.NextLevel) },
+                                        )
+                                    }
                                 }
                             },
                             privacyOptionsRequired = privacyState.privacyOptionsRequired,

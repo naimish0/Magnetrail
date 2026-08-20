@@ -44,20 +44,8 @@ class MagnetrailUiTest {
         composeRule.onNodeWithContentDescription("Arrow A, points east")
             .assertIsDisplayed()
             .assertHasClickAction()
-        composeRule.onNodeWithContentDescription("Undo last successful move").assertIsDisplayed()
         composeRule.onNodeWithContentDescription("Restart current level").assertIsDisplayed()
-        composeRule.onNodeWithContentDescription("Request a solver hint").assertIsDisplayed()
-    }
-
-    @Test
-    fun undoEnablesAfterSuccessfulMoveCommits() {
-        openLevel(2)
-        composeRule.onNodeWithContentDescription("Undo last successful move").assertIsNotEnabled()
-
-        composeRule.onNodeWithContentDescription("Arrow B, points north").performClick()
-        waitForContentDescription("Arrows remaining: 1")
-
-        composeRule.onNodeWithContentDescription("Undo last successful move").assertIsEnabled()
+        composeRule.onNodeWithContentDescription("Request a solver hint", substring = true).assertIsDisplayed()
     }
 
     @Test
@@ -87,7 +75,7 @@ class MagnetrailUiTest {
             .assertIsDisplayed()
             .assertHasClickAction()
         composeRule.onNodeWithTag("level_12").performScrollTo().assertHasClickAction()
-        composeRule.onNode(hasScrollAction()).performScrollToIndex(105)
+        composeRule.onNodeWithText("Next").performClick()
         composeRule.onNodeWithTag("level_100").assertIsDisplayed().assertHasClickAction()
     }
 
@@ -96,8 +84,7 @@ class MagnetrailUiTest {
         openLevel(6)
         composeRule.onNodeWithContentDescription("Arrows remaining: 2").assertIsDisplayed()
 
-        composeRule.onNodeWithContentDescription("Request a solver hint").performClick()
-        composeRule.onNodeWithText("Use 30 coins").performClick()
+        composeRule.onNodeWithContentDescription("Request a solver hint", substring = true).performClick()
         waitForContentDescription("Hint: Try arrow B")
 
         composeRule.onNodeWithContentDescription("Arrow B, points south, suggested hint")

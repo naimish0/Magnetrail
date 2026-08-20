@@ -25,6 +25,7 @@ interface RewardedAdService {
     val state: StateFlow<RewardedAdState>
     fun preloadIfAllowed()
     suspend fun showForHint(activity: Activity): RewardedOutcome
+    suspend fun showForSkip(activity: Activity): RewardedOutcome = showForHint(activity)
     fun clear()
 }
 

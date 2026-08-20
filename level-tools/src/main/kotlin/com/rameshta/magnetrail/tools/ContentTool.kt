@@ -63,6 +63,7 @@ fun main(arguments: Array<String>) {
         "validate-d2.1-spatial-density" -> validateD21SpatialDensityAudit(options)
         "benchmark-generator-v5-repair" -> generateGeneratorV5RepairAudit(options)
         "promote-v5.1-append" -> promoteV51Append(options)
+        "generate-infinite-catalog" -> generateInfiniteCatalog(options)
         else -> error("Unknown command '${arguments.first()}'")
     }
 }

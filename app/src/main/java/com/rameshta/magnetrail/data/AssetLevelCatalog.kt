@@ -14,6 +14,8 @@ class AssetLevelCatalog(
 
     fun loadDailyFallbacks(): LevelCatalog = load(DAILY_FALLBACK_ASSET_PATH)
 
+    fun loadInfiniteCatalog(): LevelCatalog = load(INFINITE_ASSET_PATH)
+
     private fun load(path: String): LevelCatalog = try {
         val source = assets.open(path).bufferedReader().use { it.readText() }
         parser.parseCatalog(source)
@@ -27,5 +29,6 @@ class AssetLevelCatalog(
     companion object {
         const val CAMPAIGN_ASSET_PATH = "levels/magnetrail_campaign_levels_v3.json"
         const val DAILY_FALLBACK_ASSET_PATH = "levels/magnetrail_daily_fallbacks_v1.json"
+        const val INFINITE_ASSET_PATH = "levels/magnetrail_infinite_catalog_v1.json"
     }
 }
