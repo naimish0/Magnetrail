@@ -208,6 +208,72 @@ class DataStoreProgressRepository private constructor(
         return receipt
     }
 
+    override suspend fun recordInfiniteSelection(
+        puzzleId: String,
+        contentFingerprint: String,
+        difficulty: String,
+        ordinal: Int,
+    ) {
+        require(puzzleId.startsWith("infinite-v") && isSha256(contentFingerprint))
+        require(difficulty in INFINITE_DIFFICULTIES && ordinal >= 0)
+        dataStore.edit { stored ->
+            migrateStored(stored)
+            val history = decodeInfiniteHistory(stored[Keys.infiniteHistory]).toMutableList()
+            if (history.none { it.ordinal == ordinal }) {
+                history += InfiniteHistoryEntry(ordinal, puzzleId, contentFingerprint, difficulty)
+            }
+            stored[Keys.infiniteSelectedPuzzleId] = puzzleId
+            stored[Keys.infiniteSelectedDifficulty] = difficulty
+            stored[Keys.infiniteSelectionOrdinal] = ordinal
+            stored[Keys.infiniteHistory] = encodeInfiniteHistory(history)
+        }
+    }
+
+    override suspend fun recordInfiniteCompletion(
+        puzzleId: String,
+        attempt: AttemptSummary,
+    ): InfiniteCompletionReceipt {
+        require(attempt.actions > 0 && attempt.overloads >= 0 && attempt.hintsUsed >= 0)
+        lateinit var receipt: InfiniteCompletionReceipt
+        dataStore.edit { stored ->
+            migrateStored(stored)
+            val history = decodeInfiniteHistory(stored[Keys.infiniteHistory]).toMutableList()
+            val selectedOrdinal = (stored[Keys.infiniteSelectionOrdinal] ?: 0).coerceAtLeast(0)
+            val index = history.indexOfLast { it.puzzleId == puzzleId && it.ordinal == selectedOrdinal }
+            require(index >= 0) { "Unknown Infinite puzzle '$puzzleId'" }
+            val previous = history[index]
+            val firstCompletion = !previous.completed
+            val rewards = RewardPolicy.infiniteCompletion(
+                previousBalance = stored.coinBalance(),
+                wasRewarded = !firstCompletion,
+            )
+            history[index] = previous.copy(
+                completed = true,
+                actions = minPositive(previous.actions, attempt.actions),
+                overloads = minNonNegative(previous.overloads, attempt.overloads),
+                hintsUsed = minNonNegative(previous.hintsUsed, attempt.hintsUsed),
+            )
+            val completedCount = (stored[Keys.infiniteCompletedCount] ?: 0).coerceAtLeast(0) +
+                if (firstCompletion) 1 else 0
+            val previousStreak = (stored[Keys.infiniteCurrentStreak] ?: 0).coerceAtLeast(0)
+            val currentStreak = if (firstCompletion) previousStreak + 1 else previousStreak
+            val bestStreak = maxOf((stored[Keys.infiniteBestStreak] ?: 0).coerceAtLeast(0), currentStreak)
+            stored[Keys.infiniteHistory] = encodeInfiniteHistory(history)
+            stored[Keys.infiniteCompletedCount] = completedCount
+            stored[Keys.infiniteCurrentStreak] = currentStreak
+            stored[Keys.infiniteBestStreak] = bestStreak
+            stored[Keys.coinBalance] = rewards.resultingBalance
+            receipt = InfiniteCompletionReceipt(
+                firstCompletion = firstCompletion,
+                completedCount = completedCount,
+                currentStreak = currentStreak,
+                bestStreak = bestStreak,
+                rewards = rewards,
+            )
+        }
+        return receipt
+    }
+
     override suspend fun spendHintCoins(): HintSpendResult {
         lateinit var result: HintSpendResult
         dataStore.edit { stored ->
@@ -286,6 +352,82 @@ class DataStoreProgressRepository private constructor(
         return consumed
     }
 
+    override suspend fun recordRewardedSkip(
+        transactionId: String,
+        target: RewardedSkipTarget,
+    ): RewardedSkipResult {
+        require(transactionId.isNotBlank() && transactionId.length <= 100) { "Invalid rewarded transaction ID" }
+        val campaignIndex = (target as? RewardedSkipTarget.Campaign)?.let { campaign ->
+            catalog.levels.indexOfFirst { it.id == campaign.levelId }
+                .also { require(it >= 0) { "Unknown campaign level '${campaign.levelId}'" } }
+        }
+        lateinit var result: RewardedSkipResult
+        dataStore.edit { stored ->
+            migrateStored(stored)
+            val processed = stored[Keys.processedRewardTransactionIds].orEmpty()
+            if (transactionId in processed) {
+                result = RewardedSkipResult.Duplicate
+                return@edit
+            }
+
+            var newlyProgressed = false
+            when (target) {
+                is RewardedSkipTarget.Campaign -> {
+                    val index = requireNotNull(campaignIndex)
+                    val currentHighest = stored.highestUnlocked()
+                    require(index < currentHighest) { "Level '${target.levelId}' is locked" }
+                    val completed = stored[Keys.completedLevelIds].orEmpty().validLevelIds().toMutableSet()
+                    newlyProgressed = completed.add(target.levelId)
+                    val rewarded = stored[Keys.firstClearRewardedIds].orEmpty().validLevelIds().toMutableSet()
+                    val firstReward = rewarded.add(target.levelId)
+                    stored[Keys.completedLevelIds] = completed
+                    stored[Keys.firstClearRewardedIds] = rewarded
+                    stored[Keys.highestUnlockedLevel] = maxOf(
+                        currentHighest,
+                        (index + 2).coerceAtMost(catalog.levels.size),
+                    )
+                    if (!firstReward) newlyProgressed = false
+                }
+
+                is RewardedSkipTarget.Infinite -> {
+                    val history = decodeInfiniteHistory(stored[Keys.infiniteHistory]).toMutableList()
+                    val selectedOrdinal = (stored[Keys.infiniteSelectionOrdinal] ?: 0).coerceAtLeast(0)
+                    val index = history.indexOfLast {
+                        it.puzzleId == target.puzzleId && it.ordinal == selectedOrdinal
+                    }
+                    require(index >= 0) { "Unknown Infinite puzzle '${target.puzzleId}'" }
+                    newlyProgressed = !history[index].completed
+                    if (newlyProgressed) {
+                        history[index] = history[index].copy(completed = true)
+                        stored[Keys.infiniteHistory] = encodeInfiniteHistory(history)
+                        stored[Keys.infiniteCompletedCount] =
+                            (stored[Keys.infiniteCompletedCount] ?: 0).coerceAtLeast(0) + 1
+                        // A skip advances the journey but is not a solved-level streak.
+                        stored[Keys.infiniteCurrentStreak] = 0
+                    }
+                }
+            }
+
+            val grantedCoins = if (newlyProgressed) EconomyConfig.LEVEL_COMPLETION_REWARD else 0
+            val resultingBalance = stored.coinBalance() + grantedCoins
+            stored[Keys.coinBalance] = resultingBalance
+            stored[Keys.processedRewardTransactionIds] = (processed + transactionId).toList()
+                .takeLast(MAX_REWARD_TRANSACTION_HISTORY)
+                .toSet()
+            result = RewardedSkipResult.Applied(
+                resultingBalance = resultingBalance,
+                grantedCoins = grantedCoins,
+                completedCount = (stored[Keys.infiniteCompletedCount] ?: 0).coerceAtLeast(0),
+                currentStreak = (stored[Keys.infiniteCurrentStreak] ?: 0).coerceAtLeast(0),
+                bestStreak = maxOf(
+                    (stored[Keys.infiniteBestStreak] ?: 0).coerceAtLeast(0),
+                    (stored[Keys.infiniteCurrentStreak] ?: 0).coerceAtLeast(0),
+                ),
+            )
+        }
+        return result
+    }
+
     override suspend fun recordFullScreenAdDismissal(
         localDate: LocalDate,
         wallTimeMillis: Long,
@@ -329,6 +471,7 @@ class DataStoreProgressRepository private constructor(
                 M3_SCHEMA_VERSION,
                 M4_SCHEMA_VERSION,
                 M5_SCHEMA_VERSION,
+                M6_SCHEMA_VERSION,
                 PLAYER_PREFERENCES_SCHEMA_VERSION,
             )
         ) {
@@ -361,6 +504,14 @@ class DataStoreProgressRepository private constructor(
             (stored[Keys.interstitialsShownOnDate] ?: 0).coerceIn(0, MAX_INTERSTITIALS_PER_DAY)
         stored[Keys.rewardedGrantsOnDate] =
             (stored[Keys.rewardedGrantsOnDate] ?: 0).coerceIn(0, MAX_REWARDED_GRANTS_PER_DAY)
+        stored[Keys.infiniteSelectionOrdinal] = (stored[Keys.infiniteSelectionOrdinal] ?: 0).coerceAtLeast(0)
+        stored[Keys.infiniteCompletedCount] = (stored[Keys.infiniteCompletedCount] ?: 0).coerceAtLeast(0)
+        stored[Keys.infiniteCurrentStreak] = (stored[Keys.infiniteCurrentStreak] ?: 0).coerceAtLeast(0)
+        stored[Keys.infiniteBestStreak] = maxOf(
+            (stored[Keys.infiniteBestStreak] ?: 0).coerceAtLeast(0),
+            stored[Keys.infiniteCurrentStreak] ?: 0,
+        )
+        stored[Keys.infiniteHistory] = encodeInfiniteHistory(decodeInfiniteHistory(stored[Keys.infiniteHistory]))
         stored[Keys.pendingAdHintTransactionId]?.takeIf { it.isBlank() || it.length > 100 }?.let {
             stored.remove(Keys.pendingAdHintTransactionId)
         }
@@ -530,6 +681,20 @@ class DataStoreProgressRepository private constructor(
                     pendingAdHintTransactionId = stored[Keys.pendingAdHintTransactionId],
                     processedRewardTransactionIds = stored[Keys.processedRewardTransactionIds].orEmpty(),
                 ),
+                infinite = InfiniteProgress(
+                    selectedPuzzleId = stored[Keys.infiniteSelectedPuzzleId]?.takeIf { it.startsWith("infinite-v") },
+                    selectedDifficulty = stored[Keys.infiniteSelectedDifficulty]
+                        ?.takeIf { it in INFINITE_DIFFICULTIES }
+                        ?: "PROGRESSIVE",
+                    selectionOrdinal = (stored[Keys.infiniteSelectionOrdinal] ?: 0).coerceAtLeast(0),
+                    completedCount = (stored[Keys.infiniteCompletedCount] ?: 0).coerceAtLeast(0),
+                    currentStreak = (stored[Keys.infiniteCurrentStreak] ?: 0).coerceAtLeast(0),
+                    bestStreak = maxOf(
+                        (stored[Keys.infiniteBestStreak] ?: 0).coerceAtLeast(0),
+                        (stored[Keys.infiniteCurrentStreak] ?: 0).coerceAtLeast(0),
+                    ),
+                    history = decodeInfiniteHistory(stored[Keys.infiniteHistory]),
+                ),
             ),
         )
     }
@@ -676,6 +841,48 @@ class DataStoreProgressRepository private constructor(
             }
         }
 
+    private fun decodeInfiniteHistory(values: Set<String>?): List<InfiniteHistoryEntry> = values.orEmpty()
+        .mapNotNull { encoded ->
+            val parts = encoded.split('|')
+            if (parts.size != 8) return@mapNotNull null
+            val ordinal = parts[0].toIntOrNull()?.takeIf { it >= 0 } ?: return@mapNotNull null
+            val puzzleId = parts[1].takeIf { it.startsWith("infinite-v") } ?: return@mapNotNull null
+            val fingerprint = parts[2].takeIf(::isSha256) ?: return@mapNotNull null
+            val difficulty = parts[3].takeIf {
+                it in INFINITE_DIFFICULTIES
+            } ?: return@mapNotNull null
+            InfiniteHistoryEntry(
+                ordinal = ordinal,
+                puzzleId = puzzleId,
+                contentFingerprint = fingerprint,
+                difficulty = difficulty,
+                completed = parts[4] == "1",
+                actions = parts[5].nullableInt()?.takeIf { it > 0 },
+                overloads = parts[6].nullableInt(),
+                hintsUsed = parts[7].nullableInt(),
+            )
+        }
+        .distinctBy(InfiniteHistoryEntry::ordinal)
+        .sortedBy(InfiniteHistoryEntry::ordinal)
+        .takeLast(MAX_INFINITE_HISTORY)
+
+    private fun encodeInfiniteHistory(values: List<InfiniteHistoryEntry>): Set<String> = values
+        .distinctBy(InfiniteHistoryEntry::ordinal)
+        .sortedBy(InfiniteHistoryEntry::ordinal)
+        .takeLast(MAX_INFINITE_HISTORY)
+        .mapTo(linkedSetOf()) { entry ->
+            listOf(
+                entry.ordinal,
+                entry.puzzleId,
+                entry.contentFingerprint,
+                entry.difficulty,
+                if (entry.completed) 1 else 0,
+                entry.actions ?: -1,
+                entry.overloads ?: -1,
+                entry.hintsUsed ?: -1,
+            ).joinToString("|")
+        }
+
     private fun writeVersionedRecords(
         stored: MutablePreferences,
         records: Map<String, LevelRecord>,
@@ -770,6 +977,13 @@ class DataStoreProgressRepository private constructor(
         val rewardedGrantsOnDate = intPreferencesKey("rewarded_grants_on_date")
         val pendingAdHintTransactionId = stringPreferencesKey("pending_ad_hint_transaction_id")
         val processedRewardTransactionIds = stringSetPreferencesKey("processed_reward_transaction_ids")
+        val infiniteSelectedPuzzleId = stringPreferencesKey("infinite_selected_puzzle_id_v1")
+        val infiniteSelectedDifficulty = stringPreferencesKey("infinite_selected_difficulty_v1")
+        val infiniteSelectionOrdinal = intPreferencesKey("infinite_selection_ordinal_v1")
+        val infiniteCompletedCount = intPreferencesKey("infinite_completed_count_v1")
+        val infiniteCurrentStreak = intPreferencesKey("infinite_current_streak_v1")
+        val infiniteBestStreak = intPreferencesKey("infinite_best_streak_v1")
+        val infiniteHistory = stringSetPreferencesKey("infinite_history_v1")
     }
 
     companion object {
@@ -777,10 +991,14 @@ class DataStoreProgressRepository private constructor(
         private const val M3_SCHEMA_VERSION = 3
         private const val M4_SCHEMA_VERSION = 4
         private const val M5_SCHEMA_VERSION = 5
+        private const val M6_SCHEMA_VERSION = 6
         private const val MAX_DAILY_HISTORY = 512
         private const val MAX_REWARDED_GRANTS_PER_DAY = 5
         private const val MAX_INTERSTITIALS_PER_DAY = 4
         private const val MAX_REWARD_TRANSACTION_HISTORY = 16
         private const val MAX_LEGACY_BOARD_RECORDS_PER_LEVEL = 4
+        private const val MAX_INFINITE_HISTORY = 100
+        private val INFINITE_DIFFICULTIES =
+            setOf("PROGRESSIVE", "RELAXED", "BALANCED", "CHALLENGING", "VERY_HARD", "EXPERT", "MASTER")
     }
 }

@@ -91,21 +91,54 @@ class M3ProgressRepositoryTest {
     }
 
     @Test
+    fun `infinite selection and completion persist separately and are idempotent`() = runTest {
+        val repository = repository(dataStore(this))
+        val puzzleId = "infinite-v5-v5-d2-1-hard-6600001-${"a".repeat(64)}"
+        val fingerprint = "sha256:${"a".repeat(64)}"
+
+        repository.recordInfiniteSelection(puzzleId, fingerprint, "MASTER", 7)
+        val first = repository.recordInfiniteCompletion(puzzleId, AttemptSummary(9, 2, 1))
+        val replay = repository.recordInfiniteCompletion(puzzleId, AttemptSummary(12, 4, 2))
+        repository.recordInfiniteSelection(puzzleId, fingerprint, "MASTER", 8)
+        val nextOrdinal = repository.recordInfiniteCompletion(puzzleId, AttemptSummary(10, 1, 0))
+        val progress = repository.preferences.first().progress
+
+        assertTrue(first.firstCompletion)
+        assertEquals(10, first.rewards.levelCompletionReward)
+        assertEquals(160, first.rewards.resultingBalance)
+        assertFalse(replay.firstCompletion)
+        assertEquals(0, replay.rewards.total)
+        assertEquals(160, replay.rewards.resultingBalance)
+        assertEquals(1, replay.completedCount)
+        assertTrue(nextOrdinal.firstCompletion)
+        assertEquals(10, nextOrdinal.rewards.total)
+        assertEquals(2, progress.infinite.completedCount)
+        assertEquals(2, progress.infinite.currentStreak)
+        assertEquals(puzzleId, progress.infinite.selectedPuzzleId)
+        assertEquals("MASTER", progress.infinite.selectedDifficulty)
+        assertEquals(8, progress.infinite.selectionOrdinal)
+        assertEquals(listOf(9, 10), progress.infinite.history.sortedBy { it.ordinal }.map { it.actions })
+        assertEquals(EconomyConfig.STARTING_BALANCE + 2 * EconomyConfig.LEVEL_COMPLETION_REWARD, progress.coinBalance)
+        assertTrue(progress.completedLevelIds.isEmpty())
+        assertEquals(1, progress.highestUnlockedLevel)
+    }
+
+    @Test
     fun `incremental campaign rewards and best records are idempotent`() = runTest {
         val repository = repository(dataStore(this))
         val first = repository.recordCampaignCompletion("proto-001", AttemptSummary(2, 1, 0))
         assertEquals(2, first.grade.stars)
-        assertEquals(30, first.rewards.total)
-        assertEquals(180, first.rewards.resultingBalance)
+        assertEquals(10, first.rewards.total)
+        assertEquals(160, first.rewards.resultingBalance)
 
         val improved = repository.recordCampaignCompletion("proto-001", AttemptSummary(1, 0, 0))
         assertEquals(3, improved.grade.stars)
-        assertEquals(5, improved.rewards.total)
-        assertEquals(185, improved.rewards.resultingBalance)
+        assertEquals(0, improved.rewards.total)
+        assertEquals(160, improved.rewards.resultingBalance)
 
         val replay = repository.recordCampaignCompletion("proto-001", AttemptSummary(3, 2, 1))
         assertEquals(0, replay.rewards.total)
-        assertEquals(185, replay.rewards.resultingBalance)
+        assertEquals(160, replay.rewards.resultingBalance)
         assertEquals(3, replay.bestRecord.bestStars)
         assertEquals(1, replay.bestRecord.lowestActions)
         assertEquals(0, replay.bestRecord.lowestOverloads)
@@ -120,8 +153,8 @@ class M3ProgressRepositoryTest {
             async { repository.recordCampaignCompletion("proto-001", AttemptSummary(1, 0, 0)) },
         ).awaitAll()
 
-        assertEquals(35, receipts.sumOf { it.rewards.total })
-        assertEquals(185, repository.preferences.first().progress.coinBalance)
+        assertEquals(10, receipts.sumOf { it.rewards.total })
+        assertEquals(160, repository.preferences.first().progress.coinBalance)
     }
 
     @Test
@@ -138,10 +171,42 @@ class M3ProgressRepositoryTest {
     }
 
     @Test
+    fun `hint affordability boundaries spend exactly thirty and persist`() = runTest {
+        suspend fun resultFor(balance: Int): Pair<HintSpendResult, Int> {
+            val store = dataStore(this)
+            store.edit { it[intPreferencesKey("coin_balance")] = balance }
+            val repository = repository(store)
+            val result = repository.spendHintCoins()
+            return result to repository.preferences.first().progress.coinBalance
+        }
+
+        assertTrue(resultFor(0).first is HintSpendResult.InsufficientBalance)
+        assertEquals(29, resultFor(29).second)
+        assertEquals(0, resultFor(30).second)
+        assertEquals(30, resultFor(60).second)
+    }
+
+    @Test
+    fun `rapid hint requests can deduct one exact balance only once`() = runTest {
+        val store = dataStore(this)
+        store.edit { it[intPreferencesKey("coin_balance")] = 30 }
+        val repository = repository(store)
+
+        val results = listOf(
+            async { repository.spendHintCoins() },
+            async { repository.spendHintCoins() },
+        ).awaitAll()
+
+        assertEquals(1, results.count { it is HintSpendResult.Approved })
+        assertEquals(1, results.count { it is HintSpendResult.InsufficientBalance })
+        assertEquals(0, repository.preferences.first().progress.coinBalance)
+    }
+
+    @Test
     fun `daily rewards and streak handle replay next gap and backward clock`() = runTest {
         val repository = repository(dataStore(this))
         val first = repository.recordDailyCompletion("2026-08-19-v1")
-        assertEquals(50, first.rewards.dailyReward)
+        assertEquals(10, first.rewards.dailyReward)
         assertEquals(1, first.currentStreak)
         val replay = repository.recordDailyCompletion("2026-08-19-v1")
         assertEquals(0, replay.rewards.dailyReward)
@@ -154,7 +219,7 @@ class M3ProgressRepositoryTest {
         val gap = repository.recordDailyCompletion("2026-08-23-v1")
         assertEquals(1, gap.currentStreak)
         assertEquals(2, gap.bestStreak)
-        assertEquals(300, gap.rewards.resultingBalance)
+        assertEquals(180, gap.rewards.resultingBalance)
     }
 
     @Test

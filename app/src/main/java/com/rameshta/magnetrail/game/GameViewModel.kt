@@ -8,6 +8,8 @@ import com.rameshta.magnetrail.core.engine.GameEngine
 import com.rameshta.magnetrail.core.engine.PlayerAction
 import com.rameshta.magnetrail.core.engine.TerminalEvent
 import com.rameshta.magnetrail.core.level.LevelCatalog
+import com.rameshta.magnetrail.core.infinite.InfiniteDifficulty
+import com.rameshta.magnetrail.core.infinite.InfiniteSelectionDecision
 import com.rameshta.magnetrail.data.PlayerPreferences
 import com.rameshta.magnetrail.data.PlayerProgress
 import com.rameshta.magnetrail.data.ProgressRepository
@@ -33,6 +35,7 @@ import com.rameshta.magnetrail.analytics.NoOpAnalyticsTracker
 import com.rameshta.magnetrail.crash.CrashReporter
 import com.rameshta.magnetrail.crash.NoOpCrashReporter
 import com.rameshta.magnetrail.daily.DailyLoadSource
+import com.rameshta.magnetrail.infinite.InfiniteModeService
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -50,6 +53,7 @@ class GameViewModel(
     private val progressRepository: ProgressRepository? = null,
     private val hintProvider: HintProvider = SolverHintProvider(),
     private val dailyChallengeService: DailyChallengeService? = null,
+    private val infiniteModeService: InfiniteModeService? = null,
     private val dateProvider: DateProvider = SystemDateProvider(),
     val debugUnlockAll: Boolean = false,
     private val analytics: AnalyticsTracker = NoOpAnalyticsTracker,
@@ -79,11 +83,14 @@ class GameViewModel(
             is GameAction.LaunchArrow -> launchArrow(action.arrowId)
             is GameAction.AnimationPhaseChanged -> updateAnimationPhase(action.phase)
             GameAction.AnimationCompleted -> completeAnimation()
-            GameAction.Undo -> undo()
             GameAction.Restart, GameAction.Replay -> restart()
             GameAction.NavigateHome -> navigateHome()
             GameAction.Play -> play()
             GameAction.OpenDailyChallenge -> openDailyChallenge()
+            GameAction.OpenInfiniteMode -> openInfiniteMode()
+            GameAction.CloseInfiniteMode -> closeOverlay(AppDestination.INFINITE)
+            is GameAction.SelectInfiniteDifficulty -> selectInfiniteDifficulty(action.difficulty)
+            GameAction.NewInfinitePuzzle -> newInfinitePuzzle()
             GameAction.OpenLevelSelection -> openLevelSelection()
             GameAction.CloseLevelSelection -> closeOverlay(AppDestination.LEVELS)
             GameAction.OpenSettings -> openSettings()
@@ -91,11 +98,10 @@ class GameViewModel(
             is GameAction.SelectLevel -> selectLevel(action.index)
             is GameAction.UpdateSetting -> updateSetting(action.key, action.enabled)
             GameAction.RequestHint -> requestHint()
-            GameAction.OpenHintChoice -> openHintChoice()
             GameAction.UseCoinHint -> requestHint(HintPayment.Coins)
             is GameAction.UseRewardedHintCredit -> requestHint(HintPayment.Rewarded(action.transactionId))
             is GameAction.ShowHintMessage -> showHintMessage(action.message)
-            GameAction.CancelHintConfirmation -> closeHintChoice()
+            is GameAction.ApplyRewardedSkip -> applyRewardedSkip(action.receipt)
             GameAction.NextLevel -> nextLevel()
         }
     }
@@ -131,7 +137,6 @@ class GameViewModel(
     private fun completeAnimation() {
         val state = _uiState.value
         val result = state.inFlightResult ?: return
-        val history = if (result.success) state.undoHistory + result.originalState else state.undoHistory
         val nextActions = state.moves + 1
         val nextOverloads = state.overloads + if (result.success) 0 else 1
         val campaignWin = result.isWin && state.gameMode == GameMode.CAMPAIGN
@@ -173,7 +178,6 @@ class GameViewModel(
 
         _uiState.value = state.copy(
             boardState = result.resultingState,
-            undoHistory = history,
             inFlightResult = null,
             animationPhase = TurnAnimationPhase.IDLE,
             inputEnabled = !result.isWin,
@@ -196,8 +200,8 @@ class GameViewModel(
             emit(FeedbackEvent.BOARD_COMPLETION)
             persistCompletion(state, nextActions, nextOverloads)
             val grade = requireNotNull(immediateReceipt).grade
-            if (state.gameMode == GameMode.CAMPAIGN) {
-                analytics.track(
+            when (state.gameMode) {
+                GameMode.CAMPAIGN -> analytics.track(
                     AnalyticsEvent.LevelComplete(
                         levelId = state.currentLevel.id,
                         stars = grade.stars,
@@ -207,12 +211,19 @@ class GameViewModel(
                         durationBucket = AnalyticsBuckets.duration((elapsedMillis() - attemptStartedMillis) / 1_000L),
                     ),
                 )
-            } else {
-                analytics.track(
+                GameMode.DAILY -> analytics.track(
                     AnalyticsEvent.DailyComplete(
                         difficulty = state.currentLevel.metadata?.difficultyBand?.name?.lowercase() ?: "unknown",
                         stars = grade.stars,
                         streakBucket = AnalyticsBuckets.count(state.progress.currentStreak),
+                    ),
+                )
+                GameMode.INFINITE -> analytics.track(
+                    AnalyticsEvent.InfiniteComplete(
+                        difficulty = state.infiniteDifficulty?.name?.lowercase() ?: "unknown",
+                        actionsBucket = AnalyticsBuckets.count(nextActions),
+                        overloadsBucket = AnalyticsBuckets.count(nextOverloads),
+                        hintsBucket = AnalyticsBuckets.count(state.hintsUsed),
                     ),
                 )
             }
@@ -246,6 +257,7 @@ class GameViewModel(
         val levelId = state.currentLevel.id
         val mode = state.gameMode
         val dailyId = state.dailyId
+        val infinitePuzzleId = state.infinitePuzzleId
         viewModelScope.launch {
             if (mode == GameMode.CAMPAIGN) {
                 val receipt = repository.recordCampaignCompletion(
@@ -263,7 +275,7 @@ class GameViewModel(
                         ),
                     )
                 }
-            } else if (dailyId != null) {
+            } else if (mode == GameMode.DAILY && dailyId != null) {
                 val dailyReceipt = repository.recordDailyCompletion(dailyId)
                 val current = _uiState.value
                 if (current.isComplete && current.gameMode == mode && current.dailyId == dailyId) {
@@ -283,24 +295,40 @@ class GameViewModel(
                         ),
                     )
                 }
+            } else if (mode == GameMode.INFINITE && infinitePuzzleId != null) {
+                val receipt = repository.recordInfiniteCompletion(
+                    infinitePuzzleId,
+                    AttemptSummary(actions, overloads, state.hintsUsed),
+                )
+                val current = _uiState.value
+                if (current.isComplete && current.gameMode == mode && current.infinitePuzzleId == infinitePuzzleId) {
+                    val localGrade = requireNotNull(current.completionReceipt)
+                    _uiState.value = current.copy(
+                        completionReceipt = localGrade.copy(rewards = receipt.rewards),
+                        progress = current.progress.copy(
+                            coinBalance = receipt.rewards.resultingBalance,
+                            infinite = current.progress.infinite.copy(
+                                completedCount = receipt.completedCount,
+                                currentStreak = receipt.currentStreak,
+                                bestStreak = receipt.bestStreak,
+                                history = current.progress.infinite.history.map { entry ->
+                                    if (entry.puzzleId == infinitePuzzleId) {
+                                        entry.copy(
+                                            completed = true,
+                                            actions = actions,
+                                            overloads = overloads,
+                                            hintsUsed = state.hintsUsed,
+                                        )
+                                    } else {
+                                        entry
+                                    }
+                                },
+                            ),
+                        ),
+                    )
+                }
             }
         }
-    }
-
-    private fun undo() {
-        val current = _uiState.value
-        if (!current.canUndo) return
-        cancelHint(current)
-        val state = _uiState.value
-        val restoredState = state.undoHistory.last()
-        _uiState.value = state.copy(
-            boardState = restoredState,
-            undoHistory = state.undoHistory.dropLast(1),
-            isComplete = false,
-            isDeadlocked = engine.isDeadlocked(restoredState),
-            inputEnabled = true,
-        )
-        emit(FeedbackEvent.UNDO)
     }
 
     private fun restart() {
@@ -310,7 +338,6 @@ class GameViewModel(
         val state = _uiState.value
         _uiState.value = state.copy(
             boardState = state.initialState,
-            undoHistory = emptyList(),
             inFlightResult = null,
             animationPhase = TurnAnimationPhase.IDLE,
             inputEnabled = true,
@@ -332,7 +359,7 @@ class GameViewModel(
         if (state.inFlightResult != null || state.isHintPurchaseInProgress) return
         cancelHint(state)
         val current = _uiState.value
-        if (current.gameMode == GameMode.DAILY) {
+        if (current.gameMode != GameMode.CAMPAIGN) {
             val selected = catalog.levels.indexOfFirst { it.id == current.progress.lastSelectedLevelId }
                 .coerceAtLeast(0)
             _uiState.value = createLevelState(selected, current, AppDestination.HOME)
@@ -360,6 +387,12 @@ class GameViewModel(
     private fun play() {
         val state = _uiState.value
         if (state.inFlightResult != null) return
+        infiniteModeService?.let { service ->
+            cancelHint(state)
+            val decision = service.resumeOrSelect(InfiniteDifficulty.PROGRESSIVE, state.progress.infinite)
+            openInfiniteDecision(decision, _uiState.value)
+            return
+        }
         _uiState.value = state.copy(destination = AppDestination.GAME)
         attemptStartedMillis = elapsedMillis()
         trackLevelStart(state, "home")
@@ -405,6 +438,74 @@ class GameViewModel(
                         dailyError = error.message ?: "Daily Challenge could not be prepared.",
                     )
                 }
+        }
+    }
+
+    private fun openInfiniteMode() {
+        val state = _uiState.value
+        if (state.inFlightResult != null || state.isHintPurchaseInProgress) return
+        if (!debugUnlockAll && !state.infiniteUnlocked) return
+        cancelHint(state)
+        _uiState.value = _uiState.value.copy(
+            destination = AppDestination.INFINITE,
+            returnDestination = AppDestination.HOME,
+        )
+    }
+
+    private fun selectInfiniteDifficulty(difficulty: InfiniteDifficulty) {
+        val state = _uiState.value
+        val service = infiniteModeService ?: return
+        if (state.destination != AppDestination.INFINITE || (!debugUnlockAll && !state.infiniteUnlocked)) return
+        val decision = service.resumeOrSelect(difficulty, state.progress.infinite)
+        openInfiniteDecision(decision, state)
+    }
+
+    private fun newInfinitePuzzle() {
+        val state = _uiState.value
+        val service = infiniteModeService ?: return
+        val difficulty = state.infiniteDifficulty ?: return
+        if (state.gameMode != GameMode.INFINITE || !state.isComplete) return
+        openInfiniteDecision(service.selectNew(difficulty, state.progress.infinite), state)
+    }
+
+    private fun openInfiniteDecision(decision: InfiniteSelectionDecision, previous: GameUiState) {
+        val identity = decision.identity
+        val existingHistory = previous.progress.infinite.history
+        val history = if (existingHistory.none { it.ordinal == decision.selectionOrdinal }) {
+            (existingHistory + com.rameshta.magnetrail.data.InfiniteHistoryEntry(
+                ordinal = decision.selectionOrdinal,
+                puzzleId = identity.puzzleId,
+                contentFingerprint = identity.contentHash,
+                difficulty = decision.requestedDifficulty.name,
+            )).takeLast(com.rameshta.magnetrail.core.infinite.INFINITE_HISTORY_LIMIT)
+        } else {
+            existingHistory
+        }
+        val progress = previous.progress.copy(
+            infinite = previous.progress.infinite.copy(
+                selectedPuzzleId = identity.puzzleId,
+                selectedDifficulty = decision.requestedDifficulty.name,
+                selectionOrdinal = decision.selectionOrdinal,
+                history = history,
+            ),
+        )
+        _uiState.value = createInfiniteState(decision, previous.copy(progress = progress))
+        attemptStartedMillis = elapsedMillis()
+        analytics.track(
+            AnalyticsEvent.InfiniteStart(
+                difficulty = decision.requestedDifficulty.name.lowercase(),
+                fallback = decision.fallbackUsed,
+            ),
+        )
+        progressRepository?.let { repository ->
+            viewModelScope.launch {
+                repository.recordInfiniteSelection(
+                    puzzleId = identity.puzzleId,
+                    contentFingerprint = identity.contentHash,
+                    difficulty = decision.requestedDifficulty.name,
+                    ordinal = decision.selectionOrdinal,
+                )
+            }
         }
     }
 
@@ -456,6 +557,8 @@ class GameViewModel(
         if (state.inFlightResult != null || !state.isComplete) return
         if (state.gameMode == GameMode.DAILY) {
             navigateHome()
+        } else if (state.gameMode == GameMode.INFINITE) {
+            newInfinitePuzzle()
         } else if (state.hasNextLevel) {
             selectLevel(state.currentLevelIndex + 1)
         } else {
@@ -463,6 +566,60 @@ class GameViewModel(
                 destination = AppDestination.LEVELS,
                 returnDestination = AppDestination.HOME,
             )
+        }
+    }
+
+    private fun applyRewardedSkip(receipt: com.rameshta.magnetrail.data.RewardedSkipResult.Applied) {
+        val state = _uiState.value
+        if (!state.canRequestSkip) return
+        cancelHint(state)
+        when (state.gameMode) {
+            GameMode.DAILY -> return
+            GameMode.CAMPAIGN -> {
+                val nextProgress = state.progress.copy(
+                    highestUnlockedLevel = maxOf(
+                        state.progress.highestUnlockedLevel,
+                        (state.currentLevelIndex + 2).coerceAtMost(state.levels.size),
+                    ),
+                    completedLevelIds = state.progress.completedLevelIds + state.currentLevel.id,
+                    firstClearRewardedLevelIds = state.progress.firstClearRewardedLevelIds + state.currentLevel.id,
+                    coinBalance = receipt.resultingBalance,
+                )
+                val updated = state.copy(progress = nextProgress, hintMessage = null)
+                if (state.hasNextLevel) {
+                    val nextIndex = state.currentLevelIndex + 1
+                    _uiState.value = createLevelState(nextIndex, updated, AppDestination.GAME)
+                    progressRepository?.let { repository ->
+                        viewModelScope.launch { repository.selectLevel(catalog.levels[nextIndex].id) }
+                    }
+                    attemptStartedMillis = elapsedMillis()
+                } else {
+                    _uiState.value = updated.copy(
+                        destination = AppDestination.LEVELS,
+                        returnDestination = AppDestination.HOME,
+                    )
+                }
+            }
+            GameMode.INFINITE -> {
+                val puzzleId = state.infinitePuzzleId ?: return
+                val progress = state.progress.copy(
+                    coinBalance = receipt.resultingBalance,
+                    infinite = state.progress.infinite.copy(
+                        completedCount = receipt.completedCount,
+                        currentStreak = receipt.currentStreak,
+                        bestStreak = receipt.bestStreak,
+                        history = state.progress.infinite.history.map { entry ->
+                            if (entry.puzzleId == puzzleId &&
+                                entry.ordinal == state.progress.infinite.selectionOrdinal
+                            ) entry.copy(completed = true) else entry
+                        },
+                    ),
+                )
+                val service = infiniteModeService ?: return
+                val difficulty = state.infiniteDifficulty ?: return
+                val decision = service.selectNew(difficulty, progress.infinite, advance = true)
+                openInfiniteDecision(decision, state.copy(progress = progress, hintMessage = null))
+            }
         }
     }
 
@@ -477,20 +634,8 @@ class GameViewModel(
         }
     }
 
-    private fun openHintChoice() {
-        val state = _uiState.value
-        if (!state.canRequestHint) return
-        _uiState.value = state.copy(hintChoiceOpen = true, hintMessage = null)
-        analytics.track(AnalyticsEvent.HintChoiceOpen(state.currentLevel.id))
-    }
-
-    private fun closeHintChoice() {
-        val state = _uiState.value
-        _uiState.value = state.copy(hintChoiceOpen = false, hintConfirmationPending = false)
-    }
-
     private fun showHintMessage(message: String) {
-        _uiState.value = _uiState.value.copy(hintChoiceOpen = false, hintMessage = message.take(100))
+        _uiState.value = _uiState.value.copy(hintMessage = message.take(100))
     }
 
     private fun requestHint(payment: HintPayment = HintPayment.Coins) {
@@ -502,17 +647,10 @@ class GameViewModel(
             )
             return
         }
-        if (state.isDeadlocked) {
-            _uiState.value = state.copy(
-                hintConfirmationPending = false,
-                hintMessage = "No clean route remains. Undo or restart.",
-            )
-            return
-        }
         val requestedBoard = state.boardState
         val requestedLevelId = state.currentLevel.id
         val generation = ++hintGeneration
-        _uiState.value = state.copy(hintConfirmationPending = false, hintChoiceOpen = false, hintMessage = null)
+        _uiState.value = state.copy(hintMessage = null)
         hintJob = viewModelScope.launch {
             val loadingJob = launch {
                 delay(HINT_LOADING_DELAY_MILLIS)
@@ -620,8 +758,7 @@ class GameViewModel(
         _uiState.value = state.copy(
             isHintLoading = false,
             isHintPurchaseInProgress = false,
-            hintConfirmationPending = false,
-            hintMessage = "No hint is available. Undo or restart to keep exploring.",
+            hintMessage = "No hint is available. Restart to keep exploring.",
         )
     }
 
@@ -632,8 +769,6 @@ class GameViewModel(
         if (state.isHintLoading || state.suggestedArrowId != null || state.hintMessage != null) {
             _uiState.value = state.copy(
                 isHintLoading = false,
-                hintConfirmationPending = false,
-                hintChoiceOpen = false,
                 suggestedArrowId = null,
                 hintMessage = null,
                 hintPreviewResult = null,
@@ -648,7 +783,7 @@ class GameViewModel(
         }.coerceAtLeast(0)
         val canRestoreSelection = state.destination == AppDestination.HOME &&
             state.gameMode == GameMode.CAMPAIGN &&
-            state.inFlightResult == null && state.undoHistory.isEmpty() && state.moves == 0 &&
+            state.inFlightResult == null && state.moves == 0 &&
             state.boardState == state.initialState
         _uiState.value = if (canRestoreSelection && selectedIndex != state.currentLevelIndex) {
             createLevelState(
@@ -665,6 +800,7 @@ class GameViewModel(
                 settings = preferences.settings,
                 progress = preferences.progress,
                 preferencesLoaded = true,
+                playDifficultyLabel = progressivePlayDifficulty(preferences.progress),
             )
         }
     }
@@ -730,6 +866,8 @@ class GameViewModel(
             preferencesLoaded = previous?.preferencesLoaded ?: false,
             dailyId = todayIdentity.dailyId,
             dailyDateLabel = today.toString(),
+            infiniteCatalogSize = infiniteModeService?.catalogSize ?: 0,
+            playDifficultyLabel = progressivePlayDifficulty(existingProgress),
             isDeadlocked = engine.isDeadlocked(initialState),
         )
     }
@@ -751,8 +889,54 @@ class GameViewModel(
             progress = previous.progress,
             preferencesLoaded = previous.preferencesLoaded,
             gameMode = GameMode.DAILY,
+            infiniteCatalogSize = previous.infiniteCatalogSize,
+            playDifficultyLabel = previous.playDifficultyLabel,
             isDeadlocked = engine.isDeadlocked(initialState),
         )
+    }
+
+    private fun createInfiniteState(
+        decision: InfiniteSelectionDecision,
+        previous: GameUiState,
+    ): GameUiState {
+        val level = decision.level
+        val initialState = level.initialState()
+        return GameUiState(
+            levels = catalog.levels.toList(),
+            currentLevelIndex = -1,
+            currentLevel = level,
+            initialState = initialState,
+            boardState = initialState,
+            destination = AppDestination.GAME,
+            returnDestination = AppDestination.INFINITE,
+            settings = previous.settings,
+            progress = previous.progress,
+            preferencesLoaded = previous.preferencesLoaded,
+            gameMode = GameMode.INFINITE,
+            dailyId = null,
+            dailyDateLabel = previous.dailyDateLabel,
+            infinitePuzzleId = decision.identity.puzzleId,
+            infiniteDifficulty = decision.requestedDifficulty,
+            infiniteFallbackUsed = decision.fallbackUsed,
+            infiniteSelectionReason = decision.reason,
+            infiniteCatalogSize = previous.infiniteCatalogSize,
+            playDifficultyLabel = decision.selectedProfile.toPlayerDifficultyName(),
+            isDeadlocked = engine.isDeadlocked(initialState),
+        )
+    }
+
+    private fun progressivePlayDifficulty(progress: PlayerProgress): String = infiniteModeService
+        ?.previewProgressiveDifficulty(progress.infinite)
+        ?: "Easy"
+
+    private fun String.toPlayerDifficultyName(): String = when {
+        endsWith("-very-hard") -> InfiniteDifficulty.VERY_HARD.displayName
+        endsWith("-master") -> InfiniteDifficulty.MASTER.displayName
+        endsWith("-expert") -> InfiniteDifficulty.EXPERT.displayName
+        endsWith("-hard") -> InfiniteDifficulty.CHALLENGING.displayName
+        endsWith("-medium") -> InfiniteDifficulty.BALANCED.displayName
+        endsWith("-easy") -> InfiniteDifficulty.RELAXED.displayName
+        else -> "Certified"
     }
 
     companion object {
@@ -763,6 +947,7 @@ class GameViewModel(
             catalog: LevelCatalog,
             repository: ProgressRepository,
             dailyChallengeService: DailyChallengeService,
+            infiniteModeService: InfiniteModeService,
             debugUnlockAll: Boolean,
             analytics: AnalyticsTracker = NoOpAnalyticsTracker,
             crashReporter: CrashReporter = NoOpCrashReporter,
@@ -776,6 +961,7 @@ class GameViewModel(
                     catalog = catalog,
                     progressRepository = repository,
                     dailyChallengeService = dailyChallengeService,
+                    infiniteModeService = infiniteModeService,
                     debugUnlockAll = debugUnlockAll,
                     analytics = analytics,
                     crashReporter = crashReporter,

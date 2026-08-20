@@ -11,6 +11,10 @@ import com.rameshta.magnetrail.core.model.Wall
 import com.rameshta.magnetrail.game.GameAction
 import com.rameshta.magnetrail.game.GameUiState
 import com.rameshta.magnetrail.game.GameViewModel
+import com.rameshta.magnetrail.game.GameMode
+import com.rameshta.magnetrail.game.AppDestination
+import com.rameshta.magnetrail.core.infinite.InfiniteDifficulty
+import com.rameshta.magnetrail.infinite.InfiniteModeService
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -69,12 +73,11 @@ class GameViewModelTest {
 
         val state = viewModel.uiState.value
         assertEquals(result.resultingState, state.boardState)
-        assertEquals(listOf(result.originalState), state.undoHistory)
         assertNull(state.inFlightResult)
     }
 
     @Test
-    fun `failed action preserves original state and does not add undo history`() {
+    fun `failed action preserves original state`() {
         val viewModel = viewModel()
         viewModel.onAction(GameAction.SelectLevel(index = 1))
         val original = viewModel.uiState.value.boardState
@@ -85,7 +88,6 @@ class GameViewModelTest {
 
         val state = viewModel.uiState.value
         assertSame(original, state.boardState)
-        assertTrue(state.undoHistory.isEmpty())
         assertTrue(state.inputEnabled)
         assertEquals(1, state.moves)
         assertEquals(1, state.overloads)
@@ -105,60 +107,27 @@ class GameViewModelTest {
     }
 
     @Test
-    fun `undo restores an arrow and magnet polarity together`() {
-        val viewModel = viewModel()
-        viewModel.onAction(GameAction.SelectLevel(index = 5))
-        viewModel.onAction(GameAction.LaunchArrow("B"))
-        viewModel.onAction(GameAction.AnimationCompleted)
-        assertNull(viewModel.uiState.value.boardState.arrow("B"))
-        assertEquals(Polarity.PUSH, viewModel.uiState.value.boardState.magnet("M1")?.polarity)
-
-        viewModel.onAction(GameAction.Undo)
-
-        assertNotNull(viewModel.uiState.value.boardState.arrow("B"))
-        assertEquals(Polarity.PULL, viewModel.uiState.value.boardState.magnet("M1")?.polarity)
-        assertTrue(viewModel.uiState.value.undoHistory.isEmpty())
-    }
-
-    @Test
-    fun `restart restores exact initial state and clears history`() {
+    fun `restart restores exact initial state`() {
         val viewModel = viewModel()
         viewModel.onAction(GameAction.SelectLevel(index = 4))
         val initial = viewModel.uiState.value.initialState
         viewModel.onAction(GameAction.LaunchArrow("A"))
         viewModel.onAction(GameAction.AnimationCompleted)
-        assertTrue(viewModel.uiState.value.undoHistory.isNotEmpty())
 
         viewModel.onAction(GameAction.Restart)
 
         val state = viewModel.uiState.value
         assertSame(initial, state.boardState)
-        assertTrue(state.undoHistory.isEmpty())
         assertFalse(state.isComplete)
         assertEquals(0, state.moves)
         assertEquals(0, state.overloads)
     }
 
     @Test
-    fun `undo preserves accepted action accounting`() {
-        val viewModel = viewModel()
-        viewModel.onAction(GameAction.SelectLevel(index = 1))
-        viewModel.onAction(GameAction.LaunchArrow("A"))
-        viewModel.onAction(GameAction.AnimationCompleted)
-        viewModel.onAction(GameAction.LaunchArrow("B"))
-        viewModel.onAction(GameAction.AnimationCompleted)
-        viewModel.onAction(GameAction.Undo)
-
-        assertEquals(2, viewModel.uiState.value.moves)
-        assertEquals(1, viewModel.uiState.value.overloads)
-    }
-
-    @Test
-    fun `level change resets committed state and history`() {
+    fun `level change resets committed state`() {
         val viewModel = viewModel()
         viewModel.onAction(GameAction.LaunchArrow("A"))
         viewModel.onAction(GameAction.AnimationCompleted)
-        assertTrue(viewModel.uiState.value.undoHistory.isNotEmpty())
 
         viewModel.onAction(GameAction.SelectLevel(index = 11))
 
@@ -166,7 +135,6 @@ class GameViewModelTest {
         assertEquals("proto-012", state.currentLevel.id)
         assertEquals(state.initialState, state.boardState)
         assertEquals(4, state.boardState.arrows.size)
-        assertTrue(state.undoHistory.isEmpty())
         assertFalse(state.isComplete)
     }
 
@@ -202,6 +170,9 @@ class GameViewModelTest {
 
         assertTrue(viewModel.uiState.value.isDeadlocked)
         assertSame(original, viewModel.uiState.value.boardState)
+        assertTrue(viewModel.uiState.value.inputEnabled)
+        assertFalse(viewModel.uiState.value.canRequestHint)
+        assertNull(viewModel.uiState.value.hintMessage)
     }
 
     @Test
@@ -249,6 +220,52 @@ class GameViewModelTest {
         assertEquals("campaign-201", levels[200].id)
         assertFalse(state(204).hasNextLevel)
         assertEquals("campaign-205", levels.last().id)
+    }
+
+    @Test
+    fun `Infinite selection is deterministic and does not replace campaign state`() {
+        val infinite = LevelParser().parseCatalog(
+            checkNotNull(javaClass.getResource("/content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")).readText(),
+        )
+        fun infiniteViewModel() = GameViewModel(
+            catalog = prototypeCatalog(),
+            infiniteModeService = InfiniteModeService(infinite),
+            debugUnlockAll = true,
+        )
+        val first = infiniteViewModel()
+        val second = infiniteViewModel()
+
+        listOf(first, second).forEach { viewModel ->
+            viewModel.onAction(GameAction.OpenInfiniteMode)
+            assertEquals(AppDestination.INFINITE, viewModel.uiState.value.destination)
+            viewModel.onAction(GameAction.SelectInfiniteDifficulty(InfiniteDifficulty.BALANCED))
+        }
+
+        assertEquals(GameMode.INFINITE, first.uiState.value.gameMode)
+        assertTrue(first.uiState.value.currentLevel.id.startsWith("infinite-v1-"))
+        assertEquals(first.uiState.value.infinitePuzzleId, second.uiState.value.infinitePuzzleId)
+        assertTrue(first.uiState.value.progress.completedLevelIds.isEmpty())
+        assertEquals(1, first.uiState.value.progress.highestUnlockedLevel)
+    }
+
+    @Test
+    fun `home Play immediately launches the progressive certified catalog`() {
+        val infinite = LevelParser().parseCatalog(
+            checkNotNull(javaClass.getResource("/content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")).readText(),
+        )
+        val viewModel = GameViewModel(
+            catalog = prototypeCatalog(),
+            infiniteModeService = InfiniteModeService(infinite),
+            debugUnlockAll = false,
+        )
+
+        assertTrue(viewModel.uiState.value.infiniteUnlocked)
+        assertEquals(624, viewModel.uiState.value.infiniteCatalogSize)
+        assertEquals("Easy", viewModel.uiState.value.playDifficultyLabel)
+        viewModel.onAction(GameAction.Play)
+        assertEquals(AppDestination.GAME, viewModel.uiState.value.destination)
+        assertEquals(GameMode.INFINITE, viewModel.uiState.value.gameMode)
+        assertEquals(InfiniteDifficulty.PROGRESSIVE, viewModel.uiState.value.infiniteDifficulty)
     }
 
     private fun viewModel(): GameViewModel = GameViewModel(

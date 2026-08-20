@@ -28,11 +28,11 @@ class RetentionPolicyTest {
     @Test
     fun `campaign rewards are incremental and replay safe`() {
         val first = RewardPolicy.campaignCompletion(150, false, 0, 2)
-        assertEquals(180, first.resultingBalance)
+        assertEquals(160, first.resultingBalance)
         val improved = RewardPolicy.campaignCompletion(first.resultingBalance, true, 2, 3)
-        assertEquals(185, improved.resultingBalance)
+        assertEquals(160, improved.resultingBalance)
         val replay = RewardPolicy.campaignCompletion(improved.resultingBalance, true, 3, 3)
-        assertEquals(185, replay.resultingBalance)
+        assertEquals(160, replay.resultingBalance)
         assertEquals(0, replay.total)
     }
 
@@ -68,7 +68,9 @@ class RetentionPolicyTest {
         val results = EconomySimulation.representativeCampaign()
         assertEquals(3, results.size)
         assertTrue(results.all { it.minimumBalance >= 0 })
-        assertTrue(results.all { it.unaffordableHintRequests == 0 })
-        assertTrue(results.all { it.finalBalance >= EconomyConfig.STARTING_BALANCE })
+        assertEquals(0, results.single { it.scenario == "clean-no-hints" }.unaffordableHintRequests)
+        assertEquals(0, results.single { it.scenario == "periodic-assistance" }.unaffordableHintRequests)
+        assertTrue(results.single { it.scenario == "hint-every-level" }.unaffordableHintRequests > 0)
+        assertTrue(results.all { it.finalBalance >= 0 })
     }
 }

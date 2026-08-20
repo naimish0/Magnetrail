@@ -153,7 +153,10 @@ class D21SpatialDensityTest {
         assertEquals(listOf(8), GenerationProfilesD21.MASTER.gridSizes)
         assertTrue(GenerationProfilesD21.MASTER_9X9_EXPERIMENTAL.experimental)
         assertTrue(GenerationProfilesD21.MEDIUM.spatialDensityProfile!!.minimumOccupancyRatio >= 0.36)
-        assertTrue(GenerationProfilesD21.MASTER.spatialDensityProfile!!.minimumOccupancyRatio >= 0.58)
+        assertEquals(0.40, GenerationProfilesD21.EXPERT.spatialDensityProfile!!.minimumOccupancyRatio, 0.0001)
+        assertEquals(0.45, GenerationProfilesD21.MASTER.spatialDensityProfile!!.minimumOccupancyRatio, 0.0001)
+        assertTrue(GenerationProfilesD21.EXPERT.maximumPurposefulEmptyCellRatio > 0.0)
+        assertTrue(GenerationProfilesD21.MASTER.maximumPurposefulEmptyCellRatio > 0.0)
     }
 
     @Test

@@ -11,6 +11,8 @@ import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.rameshta.magnetrail.data.DataStoreProgressRepository
 import com.rameshta.magnetrail.data.PLAYER_PREFERENCES_SCHEMA_VERSION
 import com.rameshta.magnetrail.data.RewardedCreditGrantResult
+import com.rameshta.magnetrail.data.RewardedSkipResult
+import com.rameshta.magnetrail.data.RewardedSkipTarget
 import com.rameshta.magnetrail.ads.RewardedCallbackLedger
 import com.rameshta.magnetrail.ads.RewardedOutcome
 import com.rameshta.magnetrail.game.GameAction
@@ -107,6 +109,91 @@ class M4RewardedAndMigrationTest {
             RewardedCreditGrantResult.DateRollback,
             repository.grantRewardedHintCredit("rollback", date.minusDays(1)),
         )
+    }
+
+    @Test
+    fun `rewarded campaign skip atomically advances and grants ten coins once`() = runTest {
+        val store = dataStore(this)
+        val repository = repository(store)
+        val before = repository.preferences.first().progress.coinBalance
+
+        val applied = repository.recordRewardedSkip(
+            "skip-campaign-1",
+            RewardedSkipTarget.Campaign("proto-001"),
+        ) as RewardedSkipResult.Applied
+
+        assertEquals(10, applied.grantedCoins)
+        assertEquals(before + 10, applied.resultingBalance)
+        var progress = repository.preferences.first().progress
+        assertTrue("proto-001" in progress.completedLevelIds)
+        assertTrue("proto-001" in progress.firstClearRewardedLevelIds)
+        assertEquals(2, progress.highestUnlockedLevel)
+        assertEquals(before + 10, progress.coinBalance)
+
+        assertEquals(
+            RewardedSkipResult.Duplicate,
+            repository.recordRewardedSkip(
+                "skip-campaign-1",
+                RewardedSkipTarget.Campaign("proto-001"),
+            ),
+        )
+        progress = repository.preferences.first().progress
+        assertEquals(before + 10, progress.coinBalance)
+    }
+
+    @Test
+    fun `verified campaign skip receipt opens the next level`() = runTest(mainDispatcherRule.dispatcher) {
+        val repository = repository(dataStore(this))
+        val viewModel = GameViewModel(
+            catalog = prototypeCatalog(),
+            progressRepository = repository,
+        )
+        advanceUntilIdle()
+        val receipt = repository.recordRewardedSkip(
+            "skip-campaign-navigation",
+            RewardedSkipTarget.Campaign("proto-001"),
+        ) as RewardedSkipResult.Applied
+
+        viewModel.onAction(GameAction.ApplyRewardedSkip(receipt))
+        advanceUntilIdle()
+
+        assertEquals(1, viewModel.uiState.value.currentLevelIndex)
+        assertEquals("proto-002", viewModel.uiState.value.currentLevel.id)
+        assertEquals(receipt.resultingBalance, viewModel.uiState.value.progress.coinBalance)
+    }
+
+    @Test
+    fun `rewarded infinite skip closes current identity and grants ten coins once`() = runTest {
+        val store = dataStore(this)
+        val repository = repository(store)
+        val before = repository.preferences.first().progress.coinBalance
+        val puzzleId = "infinite-v5-skip-test"
+        repository.recordInfiniteSelection(
+            puzzleId = puzzleId,
+            contentFingerprint = "sha256:" + "0".repeat(64),
+            difficulty = "PROGRESSIVE",
+            ordinal = 0,
+        )
+
+        val applied = repository.recordRewardedSkip(
+            "skip-infinite-1",
+            RewardedSkipTarget.Infinite(puzzleId),
+        ) as RewardedSkipResult.Applied
+
+        assertEquals(10, applied.grantedCoins)
+        assertEquals(1, applied.completedCount)
+        assertEquals(0, applied.currentStreak)
+        val progress = repository.preferences.first().progress
+        assertEquals(before + 10, progress.coinBalance)
+        assertTrue(progress.infinite.history.single().completed)
+        assertEquals(
+            RewardedSkipResult.Duplicate,
+            repository.recordRewardedSkip(
+                "skip-infinite-1",
+                RewardedSkipTarget.Infinite(puzzleId),
+            ),
+        )
+        assertEquals(before + 10, repository.preferences.first().progress.coinBalance)
     }
 
     @Test

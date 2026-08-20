@@ -143,6 +143,7 @@ data class GenerationProfileV5(
     val constructionStrategy: ConstructionStrategyV5 = ConstructionStrategyV5.PLACEMENT_FIRST,
     val repairAttemptCap: Int = 0,
     val experimental: Boolean = false,
+    val maximumPurposefulEmptyCellRatio: Double = 0.0,
 ) {
     init {
         require(id.isNotBlank())
@@ -160,6 +161,7 @@ data class GenerationProfileV5(
         require(maxPermutationRedundancy in 0.0..1.0)
         require(solverStateCap > 0 && analysisStateCap > 0 && counterfactualCap > 0 && candidateAttemptCap > 0)
         require(repairAttemptCap >= 0)
+        require(maximumPurposefulEmptyCellRatio in 0.0..0.60)
     }
 }
 
@@ -378,12 +380,12 @@ object GenerationProfilesD21 {
         gridSizes = listOf(8),
         minArrows = 9, maxArrows = 14,
         minWalls = 0, maxWalls = 64, minMagnets = 0, maxMagnets = 64,
-        objectDensityRange = MetricRangeV5(1.0, 1.0),
+        objectDensityRange = MetricRangeV5(0.40, 0.85),
         interactionDensityRange = MetricRangeV5(0.04, 0.70),
         minRelevantObjectRatio = 0.28,
         maxPermutationRedundancy = 1.0,
         spatialDensityProfile = spatial(
-            minimum = 1.0, target = 1.0, maximum = 1.0,
+            minimum = 0.40, target = 0.55, maximum = 0.85,
             arrows = 9..14, magnets = 0..64, walls = 0..64,
             shares = Triple(0.23, 0.24, 0.53),
             longDistance = 4, longRelationships = 3, los = 6, arrowBlockers = 2,
@@ -394,6 +396,7 @@ object GenerationProfilesD21 {
         ),
         constructionStrategy = ConstructionStrategyV5.SOLUTION_FIRST,
         repairAttemptCap = 1,
+        maximumPurposefulEmptyCellRatio = 0.60,
     )
 
     val MASTER = GenerationProfilesV5.MASTER.copy(
@@ -401,12 +404,12 @@ object GenerationProfilesD21 {
         gridSizes = listOf(8),
         minArrows = 9, maxArrows = 15,
         minWalls = 0, maxWalls = 64, minMagnets = 0, maxMagnets = 64,
-        objectDensityRange = MetricRangeV5(1.0, 1.0),
+        objectDensityRange = MetricRangeV5(0.45, 0.90),
         interactionDensityRange = MetricRangeV5(0.025, 0.74),
         minRelevantObjectRatio = 0.26,
         maxPermutationRedundancy = 1.0,
         spatialDensityProfile = spatial(
-            minimum = 1.0, target = 1.0, maximum = 1.0,
+            minimum = 0.45, target = 0.60, maximum = 0.90,
             arrows = 9..15, magnets = 0..64, walls = 0..64,
             shares = Triple(0.22, 0.22, 0.56),
             longDistance = 4, longRelationships = 0, los = 8, arrowBlockers = 3,
@@ -417,6 +420,7 @@ object GenerationProfilesD21 {
         ),
         constructionStrategy = ConstructionStrategyV5.SOLUTION_FIRST,
         repairAttemptCap = 1,
+        maximumPurposefulEmptyCellRatio = 0.55,
     )
 
     /** 9x9 remains diagnostics-only until board usability is separately approved. */

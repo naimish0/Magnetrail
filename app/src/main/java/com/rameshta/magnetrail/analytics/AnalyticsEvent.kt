@@ -43,11 +43,6 @@ sealed interface AnalyticsEvent {
         override val parameters = mapOf("level_id" to levelId, "actions_bucket" to actionsBucket)
     }
 
-    data class HintChoiceOpen(val levelId: String) : AnalyticsEvent {
-        override val name = "hint_choice_open"
-        override val parameters = mapOf("level_id" to levelId)
-    }
-
     data class HintCoinSpend(val balanceBucket: String) : AnalyticsEvent {
         override val name = "hint_coin_spend"
         override val parameters = mapOf("balance_bucket" to balanceBucket)
@@ -66,6 +61,26 @@ sealed interface AnalyticsEvent {
     data class DailyComplete(val difficulty: String, val stars: Int, val streakBucket: String) : AnalyticsEvent {
         override val name = "daily_complete"
         override val parameters = mapOf("difficulty" to difficulty, "stars" to stars, "streak_bucket" to streakBucket)
+    }
+
+    data class InfiniteStart(val difficulty: String, val fallback: Boolean) : AnalyticsEvent {
+        override val name = "infinite_start"
+        override val parameters = mapOf("difficulty" to difficulty, "fallback" to fallback)
+    }
+
+    data class InfiniteComplete(
+        val difficulty: String,
+        val actionsBucket: String,
+        val overloadsBucket: String,
+        val hintsBucket: String,
+    ) : AnalyticsEvent {
+        override val name = "infinite_complete"
+        override val parameters = mapOf(
+            "difficulty" to difficulty,
+            "actions_bucket" to actionsBucket,
+            "overloads_bucket" to overloadsBucket,
+            "hints_bucket" to hintsBucket,
+        )
     }
 
     data class RewardedOffer(val outcome: String) : AnalyticsEvent {
@@ -91,6 +106,11 @@ sealed interface AnalyticsEvent {
     data class RewardedDismiss(val earned: Boolean) : AnalyticsEvent {
         override val name = "rewarded_dismiss"
         override val parameters = mapOf("earned" to earned)
+    }
+
+    data class RewardedSkip(val outcome: String, val mode: String) : AnalyticsEvent {
+        override val name = "rewarded_skip"
+        override val parameters = mapOf("outcome" to outcome, "mode" to mode)
     }
 
     data class InterstitialEligible(val reason: String, val outcome: String) : AnalyticsEvent {

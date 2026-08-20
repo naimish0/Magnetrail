@@ -9,6 +9,38 @@ Generator V5 replaced the production 200-board campaign under the existing stabl
 owner-directed append added Levels 201–205 at content version 8; Expert is explicitly owner-waived
 and must not be described as structurally or human certified. Master remains excluded.
 
+## Master implementation hardening — 2026-08-20
+
+Status: **PASS WITH LIMITATIONS — PLAYER FLOW AND EXPERT/MASTER AUTOMATED CERTIFICATION COMPLETE**.
+
+- Player-facing Undo and its app state/actions/analytics were removed.
+- Economy version 3 grants 10 coins exactly once per campaign level, Daily identity, or Progressive
+  journey ordinal first completion, grants no star coins, and preserves the 30-coin atomic hint boundary.
+- Hint now spends/shows directly at balances `>= 30`; below 30 it deducts nothing and routes to
+  the existing voluntary rewarded-hint flow. Duplicate taps are guarded by one in-flight job.
+- Campaign and Infinite game screens now expose a voluntary `Skip level · AD · +10 coins` action.
+  The existing rewarded service is reused; progression and the 10-coin first-clear/ordinal reward
+  are committed atomically only after the SDK-earned callback. Transaction replay grants neither
+  coins nor progression twice. Daily Challenge intentionally has no Skip action.
+- Between puzzles, completion feedback now adapts to actual play quality. Clean three-star,
+  zero-hint/zero-overload solves receive the strongest short card praise plus a full-screen falling
+  confetti overlay; solid two/three-star finishes receive a lighter contextual variant; rough
+  one-star clears retain the calm completion treatment. Variants are deterministic by level and
+  attempt metrics. Reduced Motion renders the recognition statically without particle animation,
+  and focused unit/Compose tests cover both animated and reduced-motion outcomes.
+- Level Select uses dynamic 50-level ranges, Previous/Next, Go To, and active-range-only rendering.
+  The logical metadata index is tested at 10,000 levels without runtime board generation.
+- Generator V5 now exposes versioned logical identities, causal-graph fingerprints, four distinct
+  high-band topology families, exact/structural duplicate filtering, a board-realizer boundary,
+  purposeful-empty validation, and mandatory physical semantic verification.
+- `ORDERED_POLARITY_STAIRCASE_V3` materially improves ordering and relevance, but neither it nor
+  the retained V5.1 family passes every unchanged Expert/Master gate. A causal-corridor attempt
+  triggered incomplete V4 analysis and was removed. No threshold, V4 bound, gameplay rule, or
+  production campaign board was changed to manufacture a certificate.
+- V5.2 retains `ORDERED_LONG_RANGE_WEAVE_V4`, removes only the inert surrounding wall shell, and
+  declares the resulting deterministic space explicitly. Expert and Master now pass every
+  unchanged solver, replay, V4, structural, relevance, wall-participation, and Quality gate.
+
 | Phase | Scope | Status | Frozen versions / gate evidence |
 |---:|---|---|---|
 | 0 | Difficulty v3 and Levels 1–150 remediation | COMPLETE — HUMAN PLAYTEST PENDING | Campaign content 5/generator 3; search `magnetrail-search-v3.0`; Difficulty `magnetrail-difficulty-v3.0`; Quality `magnetrail-puzzle-quality-v2.0`; preference schema 6. Owner-approved 150-board mapping promoted and automated-certified. |
@@ -17,9 +49,57 @@ and must not be described as structurally or human certified. Master remains exc
 | 3 | 8×8 usability prototype | NOT STARTED | Strict phase isolation. |
 | 4 | Campaign Levels 201–250 | PARTIAL OWNER-DIRECTED APPEND | Levels 201–205 exist; 206–250 are not implemented. Level 205 has an explicit structural waiver. |
 | 5 | Campaign Levels 251–300 | NOT STARTED | Strict phase isolation. |
-| 6 | Infinite Mode | NOT STARTED | Strict phase isolation. |
+| 6 | Infinite Mode | COMPLETE — CERTIFIED PROGRESSIVE JOURNEY | Separate 624-board catalog; 12 Expert and 12 Master entries; Easy/Medium/Hard onboarding followed by deterministic all-band variety; Super Hard safely falls upward to certified Expert; first completion of each journey ordinal grants 10 coins. |
 | 7 | Adaptive Infinite Mode | NOT STARTED | Strict phase isolation. |
 | 8 | Ads-only monetization expansion | NOT STARTED | Strict phase isolation. Product override recorded: no Billing, purchases, subscriptions, Remove Ads, or paid gates. No Phase 8 implementation exists. |
+
+## Phase 6 Infinite Mode — 2026-08-20
+
+Status: **COMPLETE — CERTIFIED OFFLINE POOL**.
+
+- Explicit owner authorization replaced the riskier runtime-generation interpretation with an
+  immutable pre-certified offline pool.
+- The separate catalog has 624 accepted Generator-V5 boards: Easy 200, Medium 270, Hard 130,
+  Expert 12, and Master 12.
+- Every packaged board passed the production engine/solver replay, complete non-truncated
+  Difficulty V4 analysis, Quality/structural gates, and exact/symmetry duplicate checks.
+- Expert and Master are first-class runtime choices. Their entries passed the same unchanged
+  certification pipeline; nearest-band fallback remains available if a future catalog lacks a band.
+- `InfiniteCatalogSelector` selection v3 provides stable identities, ten guided Easy tutorial levels
+  (the first five use compact certified boards) with animated lesson diagrams, a step-by-step on-board
+  fingertip and direction cue, a default
+  30-level Easy/Medium/Hard curriculum,
+  deterministic all-band variety afterward, recent fingerprint
+  avoidance, and bounded nearest-band fallback without generating a board.
+- Preference schema 7 persists selected IDs, difficulty, ordinal, independent completions/streak,
+  and a bounded 100-entry history. Duplicate completion is idempotent.
+- Infinite completion grants 10 coins once per journey ordinal, grants no campaign unlock/record,
+  and does not mutate Daily state.
+- Normal app builds package the checked-in catalog but never invoke the offline generator.
+- The Journey is immediately available through the Home content stack: app name/tagline,
+  `Play · Level N` with actual selected difficulty, then Daily Challenge. Coins use a compact top-left chip and Settings an icon-only
+  top-right action. Home intentionally
+  omits Continue, Level Select, and a separately branded Progressive Journey card; Daily Challenge
+  remains present.
+- The approved Game screen redesign is implemented in native Compose: compact circular Home and
+  Settings actions frame a centered level/title header; a raised three-value HUD reports arrows,
+  actions, and overloads; status and polarity use compact semantic chips; the board owns the main
+  visual area; and Restart, the single direct Hint action, and the clearly labeled voluntary
+  rewarded Skip action sit in a raised bottom control dock.
+  Hint displays its actual 30-coin cost (or `AD` when the rewarded route is required), remains
+  disabled when no solver-completable route exists, and no deadlock/failure banner interrupts
+  experimentation. The existing Levels 1–10 animated fingertip tutorial remains layered over the
+  unchanged board renderer.
+- Phase 7 player-adaptive difficulty remains unimplemented.
+
+Evidence:
+
+- `docs/infinite/INFINITE_MODE_SPEC.md`
+- `docs/infinite/INFINITE_MODE_QA.md`
+- `docs/content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json`
+- `docs/infinite/INFINITE_GENERATOR_BENCHMARK.json`
+- `docs/infinite/INFINITE_GENERATOR_BENCHMARK.csv`
+- `docs/infinite/INFINITE_FALLBACK_BANK_REPORT.md`
 
 ## Content-v8 non-Master append — 2026-08-20
 

@@ -109,6 +109,8 @@ data class ConstructedCandidateV5(
     val level: LevelDefinition,
     val contract: SolutionContractV5,
     val canonicalReplayVerified: Boolean,
+    val topologyFamily: TopologyFamilyV5 = TopologyFamilyV5.ORDERED_POLARITY_V1,
+    val purposefulEmptyCells: List<PurposefulEmptyCellV5> = emptyList(),
 )
 
 data class RepairOutcomeV5(
@@ -117,6 +119,18 @@ data class RepairOutcomeV5(
     val rolledBack: Boolean,
     val operator: String,
 )
+
+private data class AuxiliaryCausalTopologyV5(
+    val arrows: List<Arrow> = emptyList(),
+    val magnets: List<Magnet> = emptyList(),
+    val wallNodes: List<SolutionContractNodeV5> = emptyList(),
+    val edges: List<SolutionContractEdgeV5> = emptyList(),
+    val canonicalActionIds: List<String> = emptyList(),
+    val semanticWitnessActionIds: List<List<String>> = emptyList(),
+    val purposefulEmptyCells: List<PurposefulEmptyCellV5> = emptyList(),
+) {
+    val purposefulEmptyPositions: Set<Position> get() = purposefulEmptyCells.mapTo(mutableSetOf()) { it.position }
+}
 
 /**
  * Deterministic dependency-first construction. Medium+ starts from a connected cancellation,
@@ -132,7 +146,12 @@ class SolutionFirstConstructorV5(
     fun construct(request: GenerationRequestV5, seed: Long): ConstructedCandidateV5 {
         val size = chooseSize(request.profile, seed)
         val candidate = if (isOrderedPolarityProfile(request.profile)) {
-            orderedPolarityTopology(request, seed, size)
+            val family = request.topologyFamily ?: HighBandTopologyRegistryV5.defaultFamily(request.profile)
+            if (family == TopologyFamilyV5.ORDERED_POLARITY_STAIRCASE_V3) {
+                orderedPolarityStaircase(request, seed, size, family)
+            } else {
+                orderedPolarityTopology(request, seed, size, family)
+            }
         } else if (size >= 8 && request.profile.maxArrows >= DEPENDENCY_COMPLETE_ARROW_COUNT) {
             dependencyCompleteScaffold(request, seed, size)
         } else if (size >= 6) {
@@ -163,10 +182,11 @@ class SolutionFirstConstructorV5(
         request: GenerationRequestV5,
         seed: Long,
         size: Int,
+        topologyFamily: TopologyFamilyV5,
     ): ConstructedCandidateV5 {
         check(size == 8) { "$ORDERED_POLARITY_TOPOLOGY requires the approved 8x8 high-band canvas" }
         val masterDepth = request.profile.id == "v5-d2.1-master"
-        val arrows = listOf(
+        val authoredCoreArrows = listOf(
             Arrow("reveal0", Position(1, 2), Direction.NORTH),
             Arrow("must0", Position(1, 3), Direction.NORTH),
             Arrow("gateA", Position(1, 4), Direction.NORTH),
@@ -190,7 +210,18 @@ class SolutionFirstConstructorV5(
         } else {
             emptyList()
         }
-        val magnets = listOf(
+        val coreArrows = if (topologyFamily == TopologyFamilyV5.ORDERED_LONG_RANGE_WEAVE_V4) {
+            authoredCoreArrows.map { arrow ->
+                if (arrow.id.startsWith("reveal") || arrow.id == "eastGate") {
+                    arrow.copy(printedDirection = Direction.SOUTH)
+                } else {
+                    arrow
+                }
+            }
+        } else {
+            authoredCoreArrows
+        }
+        val authoredCoreMagnets = listOf(
             Magnet("controller0", Position(1, 1), Polarity.PULL),
             Magnet("controllerA", Position(2, 4), Polarity.PULL),
             Magnet("controllerB", Position(3, 1), Polarity.PULL),
@@ -206,9 +237,23 @@ class SolutionFirstConstructorV5(
                 Magnet("shieldEastGate", Position(3, 7), Polarity.PULL),
             )
         }
+        val coreMagnets = authoredCoreMagnets
+        val ladder = when (topologyFamily) {
+            TopologyFamilyV5.CAUSAL_POLARITY_TAIL_V2 -> causalPolarityTail(masterDepth)
+            TopologyFamilyV5.ORDERED_LONG_RANGE_WEAVE_V4 -> orderedLongRangeWeave(masterDepth)
+            else -> AuxiliaryCausalTopologyV5()
+        }
+        val arrows = coreArrows + ladder.arrows
+        val magnets = coreMagnets + ladder.magnets
         val occupied = arrows.mapTo(mutableSetOf()) { it.position }.apply {
             addAll(magnets.map { it.position })
         }
+        val purposefulEmptyCells = if (topologyFamily == TopologyFamilyV5.ORDERED_LONG_RANGE_WEAVE_V4) {
+            orderedPolarityPurposefulEmptyCells(size, occupied, ladder, masterDepth, seed)
+        } else {
+            ladder.purposefulEmptyCells
+        }
+        val purposefulEmptyPositions = purposefulEmptyCells.mapTo(mutableSetOf()) { it.position }
         val base = LevelDefinition(
             id = request.stableId,
             number = request.sequenceNumber,
@@ -217,7 +262,7 @@ class SolutionFirstConstructorV5(
             height = size,
             arrows = arrows,
             magnets = magnets,
-            walls = allCells(size).filterNot { it in occupied }.map(::Wall),
+            walls = allCells(size).filterNot { it in occupied || it in purposefulEmptyPositions }.map(::Wall),
             designedSolutions = emptyList(),
         )
         val canonical = buildList {
@@ -226,6 +271,7 @@ class SolutionFirstConstructorV5(
             if (!masterDepth) add("eastGate")
             addAll(listOf("must0", "reveal0", "mustA", "revealA", "gateA", "mustB", "revealB"))
             if (masterDepth) addAll(listOf("mustC", "revealC"))
+            addAll(ladder.canonicalActionIds)
         }
         val nodes = buildList {
             arrows.forEach { arrow ->
@@ -251,6 +297,7 @@ class SolutionFirstConstructorV5(
                     ),
                 )
             }
+            ladder.wallNodes.forEach(::add)
         }
         val contract = SolutionContractV5(
             nodes = nodes,
@@ -327,6 +374,7 @@ class SolutionFirstConstructorV5(
                         ),
                     )
                 }
+                addAll(ladder.edges)
             },
             canonicalActionIds = canonical,
             semanticWitnessActionIds = buildList {
@@ -339,6 +387,7 @@ class SolutionFirstConstructorV5(
                     add(listOf("long0", "must0", "reveal0", "mustA", "revealA", "gateA"))
                     add(listOf("long1", "long0", "gateA", "eastGate"))
                 }
+                addAll(ladder.semanticWitnessActionIds)
             },
         )
         check(replay(base, canonical)) {
@@ -349,11 +398,381 @@ class SolutionFirstConstructorV5(
             "$ORDERED_POLARITY_TOPOLOGY semantic edges missing: ${beforeTransform.missingEdges}"
         }
         val transformed = transform(base, seed)
-        val afterTransform = verifyPhysicalContract(transformed, contract, request.profile.analysisStateCap)
+        val transformedContract = transformContractWallKeys(contract, base, seed)
+        val afterTransform = verifyPhysicalContract(transformed, transformedContract, request.profile.analysisStateCap)
         check(afterTransform.passed) {
             "$ORDERED_POLARITY_TOPOLOGY transform destroyed semantic edges: ${afterTransform.missingEdges}"
         }
-        return ConstructedCandidateV5(transformed, contract, canonicalReplayVerified = false)
+        return ConstructedCandidateV5(
+            level = transformed,
+            contract = transformedContract,
+            canonicalReplayVerified = false,
+            topologyFamily = topologyFamily,
+            purposefulEmptyCells = purposefulEmptyCells.map { empty ->
+                empty.copy(position = transformPosition(base, empty.position, seed))
+            },
+        )
+    }
+
+    /**
+     * V5.2 high-band space policy. The ordered-polarity weave is authored in rows 1-5; the old
+     * full shell added dozens of strategically inert walls below and around that causal graph.
+     * Keep only the route/LOS guards required by the physical contract and make every other shell
+     * cell explicit space. This changes no rule or difficulty gate: solver, physical semantics,
+     * V4 and the relevance analyzer still decide whether the resulting board certifies.
+     */
+    private fun orderedPolarityPurposefulEmptyCells(
+        size: Int,
+        occupied: Set<Position>,
+        ladder: AuxiliaryCausalTopologyV5,
+        masterDepth: Boolean,
+        seed: Long,
+    ): List<PurposefulEmptyCellV5> {
+        val requiredGuards = if (masterDepth) {
+            setOf(
+                Position(1, 6), Position(1, 8),
+                Position(2, 1), Position(2, 5),
+                Position(3, 4), Position(3, 6),
+                Position(4, 1),
+                Position(5, 2), Position(5, 3),
+            )
+        } else {
+            setOf(
+                Position(2, 1), Position(2, 5), Position(2, 6), Position(2, 7),
+                Position(3, 4), Position(3, 8),
+                Position(4, 2), Position(4, 3),
+            )
+        }
+        // A bounded deterministic set of outer separators creates catalog diversity without
+        // changing the causal grammar. Certification must still accept each realized variant.
+        val optionalSeparators = if (masterDepth) {
+            listOf(Position(5, 6), Position(5, 7), Position(6, 7), Position(7, 7))
+        } else {
+            listOf(Position(4, 5), Position(4, 6), Position(5, 5), Position(5, 6))
+        }
+        val variant = ((seed xor (seed ushr 32)) and 0x0f).toInt()
+        val retainedGuards = requiredGuards + optionalSeparators.filterIndexed { index, _ ->
+            variant and (1 shl index) != 0
+        }
+        val alreadyPurposeful = ladder.purposefulEmptyPositions
+        return allCells(size)
+            .filterNot { it in occupied || it in retainedGuards }
+            .map { position ->
+                PurposefulEmptyCellV5(
+                    position = position,
+                    purpose = EmptyCellPurposeTypeV5.CONTROLLER_SEPARATION,
+                    causalEdge = if (masterDepth) {
+                        "ordered-master-causal-component"
+                    } else {
+                        "ordered-expert-causal-component"
+                    },
+                )
+            }
+            .plus(ladder.purposefulEmptyCells.filter { it.position in alreadyPurposeful })
+            .distinctBy { it.position }
+    }
+
+    /**
+     * A compact polarity lock tied to the existing ordered-polarity component. The switch must
+     * flip its PUSH controller before its target can be removed. It uses no filler or empty-cell
+     * relaxation, which keeps exhaustive V4 analysis inside its unchanged certification bounds.
+     */
+    private fun causalPolarityTail(masterDepth: Boolean): AuxiliaryCausalTopologyV5 {
+        val switchPosition = if (masterDepth) Position(5, 3) else Position(4, 2)
+        val controllerPosition = if (masterDepth) Position(6, 3) else Position(5, 2)
+        val targetPosition = if (masterDepth) Position(7, 3) else Position(6, 2)
+        val guardPosition = if (masterDepth) Position(8, 3) else Position(7, 2)
+        val sourceAction = if (masterDepth) "revealC" else "revealB"
+        val arrows = listOf(
+            Arrow("tailSwitch", switchPosition, Direction.NORTH),
+            Arrow("tailTarget", targetPosition, Direction.SOUTH),
+        )
+        val magnets = listOf(Magnet("tailController", controllerPosition, Polarity.PUSH))
+        val wallNode = SolutionContractNodeV5(
+            id = "tailGuard",
+            objectKey = "wall:${guardPosition.row},${guardPosition.column}",
+            role = SolutionObjectRoleV5.ROUTE_GUARD,
+        )
+        return AuxiliaryCausalTopologyV5(
+            arrows = arrows,
+            magnets = magnets,
+            wallNodes = listOf(wallNode),
+            edges = listOf(
+                edge(
+                    "magnet:tailController", "arrow:tailSwitch",
+                    ConstructedRelationshipV5.MAGNET_CONTROLS_ARROW,
+                    "the completed core corridor exposes a PUSH exit",
+                ),
+                edge(
+                    "magnet:tailController", "arrow:tailTarget",
+                    ConstructedRelationshipV5.POLARITY_DEPENDENCY,
+                    "the switch changes the target from a guarded PUSH to a PULL capture",
+                ),
+                edge(
+                    "arrow:tailSwitch", "arrow:tailTarget",
+                    ConstructedRelationshipV5.STATE_DEPENDENCY,
+                    "the switch flips the shared controller",
+                ),
+                edge(
+                    "tailGuard", "arrow:tailTarget",
+                    ConstructedRelationshipV5.WALL_BLOCKS_ROUTE,
+                    "the route guard makes an early target action fail",
+                ),
+                edge(
+                    "arrow:$sourceAction", "arrow:tailSwitch",
+                    ConstructedRelationshipV5.EXPOSURE,
+                    "the last core blocker opens the causal tail",
+                ),
+            ),
+            canonicalActionIds = listOf("tailSwitch", "tailTarget"),
+        )
+    }
+
+    /**
+     * Keeps V5.1's bounded ten-action solution space and replaces selected inert shell cells with
+     * deliberately shielded magnetic endpoints. Each endpoint makes an existing permanent wall
+     * causally relevant to a core arrow through LOS occlusion. No action is added, so object
+     * counterfactuals remain inside the unchanged V4 sequence-enumeration bounds.
+     */
+    private fun orderedLongRangeWeave(masterDepth: Boolean): AuxiliaryCausalTopologyV5 {
+        val endpointPositions = buildList {
+            if (masterDepth) {
+                addAll(
+                    listOf(
+                        Position(1, 7),
+                        Position(2, 6),
+                        Position(4, 5),
+                        Position(6, 2),
+                        Position(6, 3),
+                    ),
+                )
+            } else {
+                addAll(
+                    listOf(
+                        Position(2, 8),
+                        Position(4, 4),
+                        Position(5, 2),
+                        Position(5, 3),
+                    ),
+                )
+            }
+        }
+        val wallDependencies = if (masterDepth) {
+            listOf(
+                Triple(Position(1, 6), "long0", "the endpoint makes this wall the long0 LOS guard"),
+                Triple(Position(5, 2), "mustC", "the endpoint makes this wall the mustC LOS guard"),
+                Triple(Position(5, 3), "mustB", "the endpoint makes this wall the mustB LOS guard"),
+            )
+        } else {
+            listOf(
+                Triple(Position(4, 2), "mustA", "the endpoint makes this wall the mustA LOS guard"),
+                Triple(Position(4, 3), "mustB", "the endpoint makes this wall the mustB LOS guard"),
+            )
+        }
+        val controllerOcclusions = if (masterDepth) {
+            listOf(
+                "controllerA" to "mustA",
+                "controllerA" to "revealA",
+                "controllerC" to "mustC",
+                "controllerC" to "revealC",
+            )
+        } else {
+            listOf(
+                "controllerA" to "mustA",
+                "controllerA" to "revealA",
+                "controllerA" to "gateA",
+            )
+        }
+        return AuxiliaryCausalTopologyV5(
+            magnets = endpointPositions.mapIndexed { index, position ->
+                Magnet("weaveEndpoint$index", position, Polarity.PULL)
+            },
+            wallNodes = wallDependencies.map { (position, _, _) -> position }.distinct().map { position ->
+                SolutionContractNodeV5(
+                    id = "wall:weave-${position.row}-${position.column}",
+                    objectKey = "wall:${position.row},${position.column}",
+                    role = SolutionObjectRoleV5.ROUTE_GUARD,
+                )
+            },
+            edges = buildList {
+                wallDependencies.forEach { (position, arrowId, evidence) ->
+                    add(
+                        edge(
+                            "wall:weave-${position.row}-${position.column}",
+                            "arrow:$arrowId",
+                            ConstructedRelationshipV5.WALL_BLOCKS_ROUTE,
+                            evidence,
+                        ),
+                    )
+                }
+                controllerOcclusions.forEach { (controllerId, arrowId) ->
+                    add(
+                        edge(
+                            "magnet:$controllerId",
+                            "arrow:$arrowId",
+                            ConstructedRelationshipV5.ARROW_OCCLUDES_MAGNET,
+                            "the causal-shell endpoint makes the existing controller a meaningful LOS occluder",
+                        ),
+                    )
+                }
+            },
+        )
+    }
+
+    /**
+     * A second high-band construction grammar rather than an extension of V1. Each stage is a
+     * real polarity lock: the must-first arrow has to leave before its adjacent reveal arrow
+     * flips the controller to PUSH. The reveal also opens the next row, producing a single
+     * staircase-shaped dependency component instead of independent action pairs.
+     */
+    private fun orderedPolarityStaircase(
+        request: GenerationRequestV5,
+        seed: Long,
+        size: Int,
+        topologyFamily: TopologyFamilyV5,
+    ): ConstructedCandidateV5 {
+        check(size == 8) { "Ordered-polarity staircase requires the approved 8x8 canvas" }
+        val masterDepth = request.profile.id == "v5-d2.1-master"
+        val stageCount = if (masterDepth) 6 else 5
+        data class Stage(
+            val index: Int,
+            val must: Arrow,
+            val reveal: Arrow,
+            val controller: Magnet,
+            val guard: Position,
+        )
+        val stages = (0 until stageCount).map { index ->
+            val row = index + 1
+            val pointsRight = index % 2 == 0
+            val mustColumn = if (pointsRight) 2 else 3
+            val revealColumn = if (pointsRight) 3 else 2
+            val controllerColumn = if (pointsRight) 4 else 1
+            val guardColumn = if (pointsRight) 1 else 4
+            Stage(
+                index = index,
+                must = Arrow("stairMust$index", Position(row, mustColumn), Direction.NORTH),
+                reveal = Arrow("stairReveal$index", Position(row, revealColumn), Direction.NORTH),
+                controller = Magnet("stairController$index", Position(row, controllerColumn), Polarity.PULL),
+                guard = Position(row, guardColumn),
+            )
+        }
+        val branches = AuxiliaryCausalTopologyV5()
+        val arrows = stages.flatMap { listOf(it.must, it.reveal) } + branches.arrows
+        val magnets = stages.map { it.controller } + branches.magnets
+        val occupied = arrows.mapTo(mutableSetOf()) { it.position }.apply {
+            addAll(magnets.map { it.position })
+        }
+        val level = LevelDefinition(
+            id = request.stableId,
+            number = request.sequenceNumber,
+            title = request.title,
+            width = size,
+            height = size,
+            arrows = arrows,
+            magnets = magnets,
+            walls = allCells(size).filterNot(occupied::contains).map(::Wall),
+            designedSolutions = emptyList(),
+        )
+        val nodes = buildList {
+            stages.forEach { stage ->
+                add(
+                    SolutionContractNodeV5(
+                        id = "arrow:${stage.must.id}",
+                        actionId = stage.must.id,
+                        objectKey = "arrow:${stage.must.id}",
+                        role = SolutionObjectRoleV5.TRAP,
+                    ),
+                )
+                add(
+                    SolutionContractNodeV5(
+                        id = "arrow:${stage.reveal.id}",
+                        actionId = stage.reveal.id,
+                        objectKey = "arrow:${stage.reveal.id}",
+                        role = SolutionObjectRoleV5.POLARITY_SWITCH,
+                    ),
+                )
+                add(
+                    SolutionContractNodeV5(
+                        id = "magnet:${stage.controller.id}",
+                        objectKey = "magnet:${stage.controller.id}",
+                        role = SolutionObjectRoleV5.CONTROLLER,
+                    ),
+                )
+                add(
+                    SolutionContractNodeV5(
+                        id = "wall:stairGuard${stage.index}",
+                        objectKey = "wall:${stage.guard.row},${stage.guard.column}",
+                        role = SolutionObjectRoleV5.ROUTE_GUARD,
+                    ),
+                )
+            }
+            branches.wallNodes.forEach(::add)
+        }
+        val canonical = stages.flatMap { listOf(it.must.id, it.reveal.id) } + branches.canonicalActionIds
+        val contract = SolutionContractV5(
+            nodes = nodes,
+            edges = buildList {
+                stages.forEach { stage ->
+                    add(
+                        edge(
+                            "magnet:${stage.controller.id}",
+                            "arrow:${stage.reveal.id}",
+                            ConstructedRelationshipV5.MAGNET_CONTROLS_ARROW,
+                            "the adjacent PULL controller removes and flips the stage reveal",
+                        ),
+                    )
+                    add(
+                        edge(
+                            "magnet:${stage.controller.id}",
+                            "arrow:${stage.must.id}",
+                            ConstructedRelationshipV5.POLARITY_DEPENDENCY,
+                            "an early reveal flips the controller and makes the must-first arrow hit its guard",
+                        ),
+                    )
+                    add(
+                        edge(
+                            "wall:stairGuard${stage.index}",
+                            "arrow:${stage.must.id}",
+                            ConstructedRelationshipV5.WALL_BLOCKS_ROUTE,
+                            "the route guard makes the post-flip PUSH action fail",
+                        ),
+                    )
+                    if (stage.index > 0) {
+                        val previous = stages[stage.index - 1]
+                        add(
+                            edge(
+                                "arrow:${previous.reveal.id}",
+                                "arrow:${stage.must.id}",
+                                ConstructedRelationshipV5.EXPOSURE,
+                                "the previous reveal is the final blocker on the next northbound route",
+                            ),
+                        )
+                    }
+                }
+                addAll(branches.edges)
+            },
+            canonicalActionIds = canonical,
+            semanticWitnessActionIds = stages.map { listOf(it.reveal.id) } + branches.semanticWitnessActionIds,
+        )
+        check(replay(level, canonical)) {
+            "Ordered-polarity staircase broke canonical replay: ${replayFailure(level, canonical)}"
+        }
+        val beforeTransform = verifyPhysicalContract(level, contract, request.profile.analysisStateCap)
+        check(beforeTransform.passed) {
+            "Ordered-polarity staircase semantic edges missing: ${beforeTransform.missingEdges}"
+        }
+        val transformed = transform(level, seed)
+        val transformedContract = transformContractWallKeys(contract, level, seed)
+        val afterTransform = verifyPhysicalContract(transformed, transformedContract, request.profile.analysisStateCap)
+        check(afterTransform.passed) {
+            "Ordered-polarity staircase transform destroyed semantic edges: ${afterTransform.missingEdges}"
+        }
+        return ConstructedCandidateV5(
+            level = transformed,
+            contract = transformedContract,
+            canonicalReplayVerified = false,
+            topologyFamily = topologyFamily,
+        )
     }
 
     fun verifyPhysicalContract(
@@ -939,17 +1358,6 @@ class SolutionFirstConstructorV5(
         val variant = Math.floorMod(seed, 8L).toInt()
         val reflected = variant >= 4
         val rotations = variant % 4
-        fun transformPosition(original: Position): Position {
-            var position = if (reflected) {
-                Position(original.row, level.width + 1 - original.column)
-            } else {
-                original
-            }
-            repeat(rotations) {
-                position = Position(position.column, level.width + 1 - position.row)
-            }
-            return position
-        }
         fun transformDirection(original: Direction): Direction {
             var direction = if (reflected) when (original) {
                 Direction.EAST -> Direction.WEST
@@ -968,12 +1376,41 @@ class SolutionFirstConstructorV5(
         }
         return level.copy(
             arrows = level.arrows.map { arrow ->
-                arrow.copy(position = transformPosition(arrow.position), printedDirection = transformDirection(arrow.printedDirection))
+                arrow.copy(
+                    position = transformPosition(level, arrow.position, seed),
+                    printedDirection = transformDirection(arrow.printedDirection),
+                )
             },
-            magnets = level.magnets.map { it.copy(position = transformPosition(it.position)) },
-            walls = level.walls.map { Wall(transformPosition(it.position)) },
+            magnets = level.magnets.map { it.copy(position = transformPosition(level, it.position, seed)) },
+            walls = level.walls.map { Wall(transformPosition(level, it.position, seed)) },
         )
     }
+
+    private fun transformPosition(level: LevelDefinition, original: Position, seed: Long): Position {
+        val variant = Math.floorMod(seed, 8L).toInt()
+        var position = if (variant >= 4) {
+            Position(original.row, level.width + 1 - original.column)
+        } else {
+            original
+        }
+        repeat(variant % 4) {
+            position = Position(position.column, level.width + 1 - position.row)
+        }
+        return position
+    }
+
+    private fun transformContractWallKeys(
+        contract: SolutionContractV5,
+        level: LevelDefinition,
+        seed: Long,
+    ): SolutionContractV5 = contract.copy(
+        nodes = contract.nodes.map { node ->
+            if (!node.objectKey.startsWith("wall:")) return@map node
+            val coordinates = node.objectKey.substringAfter(':').split(',').map(String::toInt)
+            val transformed = transformPosition(level, Position(coordinates[0], coordinates[1]), seed)
+            node.copy(objectKey = "wall:${transformed.row},${transformed.column}")
+        },
+    )
 
     private fun edge(
         from: String,

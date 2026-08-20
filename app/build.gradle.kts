@@ -74,9 +74,11 @@ val releaseVersionName = providers.gradleProperty("magnetrail.versionName").get(
 val syncM3Levels by tasks.registering(Sync::class) {
     from(rootProject.layout.projectDirectory.file("docs/Magnetrail_Campaign_Levels_v3.json"))
     from(rootProject.layout.projectDirectory.file("docs/Magnetrail_Daily_Fallbacks_v1.json"))
+    from(rootProject.layout.projectDirectory.file("docs/content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json"))
     into(layout.buildDirectory.dir("generated/magnetrailAssets/levels"))
     rename("Magnetrail_Campaign_Levels_v3.json", "magnetrail_campaign_levels_v3.json")
     rename("Magnetrail_Daily_Fallbacks_v1.json", "magnetrail_daily_fallbacks_v1.json")
+    rename("INFINITE_CERTIFIED_CATALOG_V1.json", "magnetrail_infinite_catalog_v1.json")
 }
 
 android {

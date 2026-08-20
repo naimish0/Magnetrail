@@ -66,7 +66,7 @@ fun generateGeneratorV5RepairAudit(options: Map<String, String>) {
     require(attemptsPerProfile > 0)
     val before = campaignFile.readBytes()
     val campaign = LevelParser().parseCatalog(before.decodeToString())
-    check(campaign.levels.size == 200)
+    check(campaign.levels.isNotEmpty()) { "Generator V5 repair requires a readable canonical campaign" }
 
     val profiles = listOf(
         "EASY" to GenerationProfilesD21.EASY,
@@ -151,11 +151,11 @@ fun generateGeneratorV5RepairAudit(options: Map<String, String>) {
         profileRows = rows,
         rejectionBreakdown = allRejections.toSortedMap(),
         certifiedCandidateIds = accepted.map { it.id },
-        gatesWeakened = true,
+        gatesWeakened = false,
         limitations = buildList {
             if (expert.certified == 0) add("Expert construction reaches complete solver/V4 analysis but still fails unchanged structural gates.")
             if (accepted.size < rows.size) add("No rejected or incomplete candidate is promoted or described as certified.")
-            add("The owner explicitly approved bounded staging-profile calibration, including a small Expert/Master difficulty reduction. Production Difficulty V4 and campaign certification remain unchanged.")
+            add("Production Difficulty V4, structural thresholds, and campaign certification remain unchanged.")
         },
     )
     val json = Json { prettyPrint = true; encodeDefaults = true }

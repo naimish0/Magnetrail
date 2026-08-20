@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +22,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
@@ -34,6 +40,8 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.unit.dp
 import com.rameshta.magnetrail.core.model.LevelDefinition
 import com.rameshta.magnetrail.data.LevelRecord
@@ -54,8 +62,17 @@ fun LevelSelectionScreen(
     onLevelSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
     recordsByLevel: Map<String, LevelRecord> = emptyMap(),
+    infiniteLevelCount: Int = 0,
+    onOpenInfinite: () -> Unit = {},
 ) {
     val spacing = LocalMagnetrailSpacing.current
+    val initialLevelNumber = maxOf(currentLevelIndex + 1, highestUnlockedLevel).coerceAtMost(levels.size.coerceAtLeast(1))
+    var pageIndex by rememberSaveable(levels.size, currentLevelIndex) {
+        mutableStateOf(LevelRangeNavigator.pageForLevel(initialLevelNumber, levels.size))
+    }
+    var goToText by rememberSaveable { mutableStateOf("") }
+    val range = LevelRangeNavigator.window(pageIndex, levels.size)
+    val visibleLevels = levels.subList(range.startIndex, range.endIndexExclusive)
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
             Box(
@@ -80,6 +97,78 @@ fun LevelSelectionScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MagnetrailMuted,
             )
+            if (infiniteLevelCount > 0) {
+                Card(
+                    onClick = onOpenInfinite,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = spacing.screenHorizontal, vertical = spacing.sm)
+                        .testTag("open_progressive_journey")
+                        .semantics {
+                            contentDescription =
+                                "Open Progressive Journey with $infiniteLevelCount certified puzzles"
+                        },
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(containerColor = MagnetrailPullSoft),
+                ) {
+                    Column(modifier = Modifier.padding(spacing.md)) {
+                        Text(
+                            "Progressive Journey · $infiniteLevelCount puzzles",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MagnetrailPull,
+                        )
+                        Text(
+                            "Easy and Medium first, then a changing mix through Master.",
+                            modifier = Modifier.padding(top = spacing.xxs),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MagnetrailMuted,
+                        )
+                    }
+                }
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = spacing.screenHorizontal, vertical = spacing.xs),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                TextButton(
+                    onClick = { pageIndex = (pageIndex - 1).coerceAtLeast(0) },
+                    enabled = range.hasPrevious,
+                ) { Text("Previous") }
+                Text(
+                    text = if (levels.isEmpty()) "No levels" else "Levels ${range.startLevelNumber}–${range.endLevelNumber}",
+                    modifier = Modifier.semantics { contentDescription = "Visible level range" },
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                )
+                TextButton(
+                    onClick = { pageIndex = (pageIndex + 1).coerceAtMost((range.pageCount - 1).coerceAtLeast(0)) },
+                    enabled = range.hasNext,
+                ) { Text("Next") }
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = spacing.screenHorizontal),
+                horizontalArrangement = Arrangement.spacedBy(spacing.sm),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                OutlinedTextField(
+                    value = goToText,
+                    onValueChange = { value -> goToText = value.filter(Char::isDigit).take(6) },
+                    modifier = Modifier.weight(1f).testTag("go_to_level_input"),
+                    label = { Text("Go to level") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
+                TextButton(
+                    onClick = {
+                        goToText.toIntOrNull()?.takeIf { it in 1..levels.size }?.let { levelNumber ->
+                            pageIndex = LevelRangeNavigator.pageForLevel(levelNumber, levels.size)
+                        }
+                    },
+                    modifier = Modifier.width(64.dp).testTag("go_to_level_action"),
+                ) { Text("Go") }
+            }
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
                 modifier = Modifier.fillMaxSize(),
@@ -87,10 +176,11 @@ fun LevelSelectionScreen(
                 horizontalArrangement = Arrangement.spacedBy(spacing.sm),
                 verticalArrangement = Arrangement.spacedBy(spacing.sm),
             ) {
-                levels.forEachIndexed { index, level ->
+                visibleLevels.forEachIndexed { visibleIndex, level ->
+                    val index = range.startIndex + visibleIndex
                     val packId = level.metadata?.packId ?: "field-basics"
                     val previousPack = levels.getOrNull(index - 1)?.metadata?.packId ?: "field-basics"
-                    if (index == 0 || packId != previousPack) {
+                    if (visibleIndex == 0 || packId != previousPack) {
                         val packDifficultyBands = levels.asSequence()
                             .filter { it.metadata?.packId == packId }
                             .mapNotNull { it.metadata?.difficultyBand?.name }

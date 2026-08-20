@@ -44,6 +44,42 @@ val phase0StagingDirectory = layout.buildDirectory.dir("phase0-staging")
 val phase1StagingDirectory = layout.buildDirectory.dir("phase1-staging")
 val d2StagingDirectory = docsDirectory.dir("content/d2/staging")
 val d21StagingDirectory = docsDirectory.dir("content/d2_1/staging")
+val infiniteDirectory = docsDirectory.dir("infinite")
+val infiniteContentDirectory = docsDirectory.dir("content/infinite")
+
+tasks.register<JavaExec>("generateInfiniteCertifiedCatalog") {
+    group = "magnetrail content"
+    description = "Generate a separate immutable Infinite catalog containing only fully certified boards in every band."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    inputs.file(campaign)
+    inputs.property("infiniteCandidateCount", providers.gradleProperty("infiniteCandidateCount").getOrElse("600"))
+    inputs.property("infiniteExpertCount", providers.gradleProperty("infiniteExpertCount").getOrElse("12"))
+    inputs.property("infiniteMasterCount", providers.gradleProperty("infiniteMasterCount").getOrElse("12"))
+    inputs.property("infiniteSeed", providers.gradleProperty("infiniteSeed").getOrElse("6600001"))
+    outputs.files(
+        infiniteContentDirectory.file("INFINITE_CERTIFIED_CATALOG_V1.json"),
+        infiniteDirectory.file("INFINITE_GENERATOR_BENCHMARK.json"),
+        infiniteDirectory.file("INFINITE_GENERATOR_BENCHMARK.csv"),
+        infiniteDirectory.file("INFINITE_FALLBACK_BANK_REPORT.md"),
+    )
+    outputs.upToDateWhen { false }
+    args(
+        "generate-infinite-catalog",
+        "--campaign=${campaign.asFile}",
+        "--catalog-output=${infiniteContentDirectory.file("INFINITE_CERTIFIED_CATALOG_V1.json").asFile}",
+        "--report-output=${infiniteDirectory.asFile}",
+        "--count=${providers.gradleProperty("infiniteCandidateCount").getOrElse("600")}",
+        "--expert-count=${providers.gradleProperty("infiniteExpertCount").getOrElse("12")}",
+        "--master-count=${providers.gradleProperty("infiniteMasterCount").getOrElse("12")}",
+        "--seed=${providers.gradleProperty("infiniteSeed").getOrElse("6600001")}",
+        "--retries-per-slot=${providers.gradleProperty("infiniteRetriesPerSlot").getOrElse("24")}",
+    )
+    providers.gradleProperty("infiniteAttemptsPerCandidate").orNull?.let {
+        args("--attempts-per-candidate=$it")
+    }
+}
 
 tasks.register<JavaExec>("stagePhase1Expansion") {
     group = "magnetrail content"

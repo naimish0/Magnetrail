@@ -32,10 +32,9 @@ class SolutionFirstConstructionTest {
             val candidate = constructor.construct(request, request.seed)
             assertTrue(candidate.level.width in profile.gridSizes)
             assertTrue(candidate.level.arrows.size in profile.minArrows..profile.maxArrows)
-            assertEquals(
-                candidate.level.width * candidate.level.height,
-                candidate.level.arrows.size + candidate.level.magnets.size + candidate.level.walls.size,
-            )
+            val density = SpatialDensityAnalyzerV5.analyze(candidate.level).occupancyRatio
+            val spatial = requireNotNull(profile.spatialDensityProfile)
+            assertTrue(density in spatial.minimumOccupancyRatio..spatial.maximumOccupancyRatio)
         }
     }
 
@@ -48,8 +47,9 @@ class SolutionFirstConstructionTest {
         assertEquals(first.level, second.level)
         assertEquals(first.contract, second.contract)
         assertTrue(first.canonicalReplayVerified)
-        assertEquals(64, first.level.arrows.size + first.level.magnets.size + first.level.walls.size)
-        assertEquals(64, SpatialDensityAnalyzerV5.analyze(first.level).occupiedCells)
+        val spatial = SpatialDensityAnalyzerV5.analyze(first.level)
+        assertTrue(spatial.occupiedCells in 29..33)
+        assertEquals(64 - spatial.occupiedCells, first.purposefulEmptyCells.size)
         assertFalse(first.level.magnets.any { it.id.startsWith("shielded-filler-") })
         assertTrue(first.contract.edges.any { it.relationship == ConstructedRelationshipV5.EXPOSURE })
         assertEquals(
@@ -189,7 +189,7 @@ class SolutionFirstConstructionTest {
     }
 
     @Test
-    fun knownExpertAndMasterSeedsReportTheirRemainingCertificationBottleneck() {
+    fun knownExpertAndMasterSeedsCertifyWithPurposefulSpace() {
         listOf(GenerationProfilesD21.EXPERT, GenerationProfilesD21.MASTER).forEachIndexed { index, profile ->
             val request = expertRequest().copy(
                 stableId = "v5-solution-first-${profile.id}",
@@ -198,23 +198,12 @@ class SolutionFirstConstructionTest {
                 maxAttempts = 1,
             )
             val result = LevelGeneratorV5().generate(request)
-            assertTrue(result is GenerationResultV5.Exhausted)
-            result as GenerationResultV5.Exhausted
-            println("SOLUTION_FIRST_REJECTIONS profile=${profile.id} ${result.rejectedReasons}")
-            assertFalse(result.rejectedReasons.containsKey("safe-choice-ratio-above-profile"))
-            assertFalse(result.rejectedReasons.containsKey("ordering-depth-below-profile"))
-            if (profile == GenerationProfilesD21.EXPERT) {
-                assertFalse(result.rejectedReasons.containsKey("long-range-magnetic-relationships-below-profile"))
-                assertTrue(result.rejectedReasons.containsKey("interaction-density-out-of-profile"))
-                assertTrue(result.rejectedReasons.containsKey("object-participation-below-profile"))
-                assertTrue(result.rejectedReasons.containsKey("average-object-relevance-below-profile"))
-                assertTrue(result.rejectedReasons.containsKey("participating-wall-ratio-below-profile"))
-            } else {
-                assertTrue(result.rejectedReasons.containsKey("object-participation-below-profile"))
-                assertTrue(result.rejectedReasons.containsKey("interacting-object-ratio-below-profile"))
-                assertTrue(result.rejectedReasons.containsKey("average-object-relevance-below-profile"))
-                assertTrue(result.rejectedReasons.containsKey("participating-wall-ratio-below-profile"))
-            }
+            assertTrue(result.toString(), result is GenerationResultV5.Generated)
+            result as GenerationResultV5.Generated
+            println("SOLUTION_FIRST_CERTIFIED profile=${profile.id} diagnostics=${result.diagnostics}")
+            assertTrue(result.diagnostics.searchComplete)
+            assertFalse(result.diagnostics.truncated)
+            assertTrue(result.diagnostics.spatialDensity.emptyCells > 0)
         }
     }
 
