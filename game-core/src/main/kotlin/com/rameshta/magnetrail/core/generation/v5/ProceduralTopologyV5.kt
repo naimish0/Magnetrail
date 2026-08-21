@@ -229,12 +229,17 @@ object HighBandTopologyRegistryV5 {
 
     fun defaultFamily(profile: GenerationProfileV5): TopologyFamilyV5 = when (profile.id) {
         "v5-d2.1-expert", "v5-d2.1-master" -> TopologyFamilyV5.ORDERED_LONG_RANGE_WEAVE_V4
+        "v5-campaign-v9-super-hard", "v5-campaign-v9-expert", "v5-campaign-v9-master" ->
+            TopologyFamilyV5.ORDERED_LONG_RANGE_WEAVE_V4
         else -> TopologyFamilyV5.ORDERING_CHAIN
     }
 
     fun familyForAttempt(profile: GenerationProfileV5, attempt: Int): TopologyFamilyV5 {
         require(attempt >= 0)
-        return if (profile.id == "v5-d2.1-expert" || profile.id == "v5-d2.1-master") {
+        return if (
+            profile.id == "v5-d2.1-expert" || profile.id == "v5-d2.1-master" ||
+            profile.id.startsWith("v5-campaign-v9-")
+        ) {
             // V5.2's purposeful-space weave is the only high-band family currently proven to
             // preserve replay/V4 completeness and pass every unchanged structural gate.
             automaticFamilies[attempt % automaticFamilies.size]

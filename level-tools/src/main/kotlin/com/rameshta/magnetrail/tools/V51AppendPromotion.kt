@@ -6,7 +6,6 @@ import com.rameshta.magnetrail.core.difficulty.v4.DifficultyV4Config
 import com.rameshta.magnetrail.core.difficulty.v4.defaultDifficultyV4Seeds
 import com.rameshta.magnetrail.core.engine.DefaultGameEngine
 import com.rameshta.magnetrail.core.engine.PlayerAction
-import com.rameshta.magnetrail.core.generation.v5.CAMPAIGN_CONTENT_VERSION
 import com.rameshta.magnetrail.core.generation.v5.CertificationPipelineV5
 import com.rameshta.magnetrail.core.generation.v5.CertificationResultV5
 import com.rameshta.magnetrail.core.generation.v5.GENERATOR_VERSION_V5
@@ -36,6 +35,7 @@ private const val V51_APPEND_SOURCE_SHA256 =
     "8552d9ef7a2eeb140c4611ff5a9e3a40a04efb35878d752acef5e222a1dc8ca5"
 private const val V51_APPEND_CANDIDATE_SHA256 =
     "cb877e2f0ef42047317953d46ec09f8b16dd5e59b3bc54f35b540eeaffccbab4"
+private const val V51_APPEND_CONTENT_VERSION = 8
 
 private val V51_APPEND_IDS = listOf(
     "v5-repair-easy-0001",
@@ -151,7 +151,7 @@ internal fun buildV51AppendPromotionPlan(
             profile = profile,
             seed = requireNotNull(metadata.generatorSeed),
             packId = "magnetic-circuit-11",
-            contentVersion = CAMPAIGN_CONTENT_VERSION,
+            contentVersion = V51_APPEND_CONTENT_VERSION,
         )
         val accepted = currentCertification as? CertificationResultV5.Accepted
         val rejectionReasons = (currentCertification as? CertificationResultV5.Rejected)?.reasons.orEmpty()
@@ -219,7 +219,7 @@ internal fun buildV51AppendPromotionPlan(
     }
     val catalog = source.copy(
         levels = levels,
-        contentVersion = CAMPAIGN_CONTENT_VERSION,
+        contentVersion = V51_APPEND_CONTENT_VERSION,
         generatorVersion = GENERATOR_VERSION_V5,
     )
     val promotedBytes = parser.encodeCatalog(catalog).toByteArray(StandardCharsets.UTF_8)
@@ -316,7 +316,7 @@ private fun solverCertifiedExpert(
     )
     return raw.copy(
         metadata = LevelMetadata(
-            contentVersion = CAMPAIGN_CONTENT_VERSION,
+            contentVersion = V51_APPEND_CONTENT_VERSION,
             origin = LevelOrigin.GENERATOR_ASSISTED,
             generatorVersion = GENERATOR_VERSION_V5,
             generatorSeed = seed,

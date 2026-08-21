@@ -23,9 +23,9 @@ class LevelRangeNavigationTest {
 
     @Test
     fun `last partial range is bounded`() {
-        val window = LevelRangeNavigator.window(99, 205)
-        assertEquals(201, window.startLevelNumber)
-        assertEquals(205, window.endLevelNumber)
+        val window = LevelRangeNavigator.window(99, 2_205)
+        assertEquals(2_201, window.startLevelNumber)
+        assertEquals(2_205, window.endLevelNumber)
         assertTrue(window.hasPrevious)
         assertFalse(window.hasNext)
     }

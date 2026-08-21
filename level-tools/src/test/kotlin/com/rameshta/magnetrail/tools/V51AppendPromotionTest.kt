@@ -14,7 +14,7 @@ class V51AppendPromotionTest {
     @Test
     fun `content v8 appends five unique non-Master levels and preserves content v7`() {
         val source = LevelParser().parseCatalog(resource("/content/v5_1_append/promotion/SOURCE_CONTENT_V7.json"))
-        val promoted = LevelParser().parseCatalog(resource("/Magnetrail_Campaign_Levels_v3.json"))
+        val promoted = LevelParser().parseCatalog(resource("/content/v9_expansion/SOURCE_CONTENT_V8.json"))
         val report = json.decodeFromString<V51AppendPromotionReport>(
             resource("/content/v5_1_append/promotion/V5_1_APPEND_PROMOTION_MANIFEST.json"),
         )

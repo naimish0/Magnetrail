@@ -43,6 +43,7 @@ data class GenerationRequestV5(
     val seed: Long,
     val profile: GenerationProfileV5,
     val packId: String = "d2-staging",
+    val contentVersion: Int = D2_STAGING_CONTENT_VERSION,
     val maxAttempts: Int = profile.candidateAttemptCap,
     val topologyFamily: TopologyFamilyV5? = null,
 )
@@ -365,7 +366,13 @@ class LevelGeneratorV5(
                     return@attemptLoop
                 }
             }
-            var result = certification.certify(raw, request.profile, attemptSeed, request.packId)
+            var result = certification.certify(
+                raw,
+                request.profile,
+                attemptSeed,
+                request.packId,
+                request.contentVersion,
+            )
             if (result is CertificationResultV5.Rejected && constructed != null) {
                 var repairBase = requireNotNull(constructed)
                 for (repairIndex in 0 until request.profile.repairAttemptCap) {
@@ -384,7 +391,13 @@ class LevelGeneratorV5(
                     if (!repair.applied) break
                     raw = repair.level
                     repairBase = repairBase.copy(level = raw)
-                    result = certification.certify(raw, request.profile, attemptSeed, request.packId)
+                    result = certification.certify(
+                        raw,
+                        request.profile,
+                        attemptSeed,
+                        request.packId,
+                        request.contentVersion,
+                    )
                     if (result is CertificationResultV5.Accepted) break
                 }
             }

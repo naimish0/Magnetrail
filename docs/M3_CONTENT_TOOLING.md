@@ -54,6 +54,26 @@ Certify every shipped campaign and fallback board without rewriting assets:
 ./gradlew certifyCampaignContent
 ```
 
+Generate the frozen Campaign V9 expansion (Levels 206–2,205) into resumable staging:
+
+```bash
+./gradlew :level-tools:generateCampaignV9Expansion
+```
+
+The task restores per-level certified checkpoints from
+`level-tools/build/campaign-v9-checkpoints/`, then enforces exact and rotation/reflection
+uniqueness against both the campaign and the separate Infinite catalog. It does not modify the
+canonical campaign. Promotion is a separate owner-authorized operation:
+
+```bash
+./gradlew :level-tools:promoteCampaignV9Expansion \
+  -PconfirmCampaignV9Promotion=true
+```
+
+Promotion preserves Levels 1–205 definition-for-definition, archives the content-v8 source, and publishes the
+generation audit under `docs/content/v9_expansion/`. Normal application builds do not invoke either
+generation or promotion task.
+
 Benchmark 31 fixed Daily dates on the host JVM:
 
 ```bash

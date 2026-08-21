@@ -1,14 +1,14 @@
 # Magnetrail — Complete Game and Development Context
 
-Last consolidated: **2026-08-20 (Asia/Kolkata)**
+Last consolidated: **2026-08-21 (Asia/Kolkata)**
 
 Repository: Android Studio project `Magnetrail`
 
 Package: `com.rameshta.magnetrail`
-Current checked-in campaign: **205 levels, content version 8, generator version 5**
+Current checked-in campaign: **2,205 levels, content version 9, generator version 5**
 
 Canonical campaign SHA-256:
-`6416c0a5677e66cba169cf9caaa9d7d7e6e70bc6e4e3e69b36277e3c69e78128`
+`3f8415f30b721dd97c21becca130b84839810b03d2eeba3f9a26a7d054452f3a`
 
 This is the single read-first handoff document for Magnetrail. It consolidates the product vision,
 frozen gameplay semantics, Android architecture, UI system, implemented milestones, campaign and
@@ -16,7 +16,7 @@ economy state, advertising/privacy behavior, build/release posture, known defect
 and future roadmap.
 
 It is intentionally self-contained at the system level. Canonical JSON remains the authority for
-the exact cell-by-cell contents of every level; duplicating 205 complete boards inside Markdown
+the exact cell-by-cell contents of every level; duplicating 2,205 complete boards inside Markdown
 would create a second content source that could drift.
 
 ---
@@ -38,7 +38,7 @@ Use this order when sources disagree:
 Important conflict resolutions:
 
 - The immutable existing rules remain `magnetrail-core-1`.
-- The current campaign contains 205 levels, not the 100 or 200 levels still mentioned by some historical
+- The current campaign contains 2,205 levels, not the smaller totals still mentioned by historical
   M3/M5 documents.
 - The latest monetization directive is **ads only**. The Billing/Remove Ads section in
   `CODEX_MASTER_REMAINING_DEVELOPMENT_PROMPT.md` is superseded. Do not add Google Play Billing,
@@ -51,6 +51,8 @@ Important conflict resolutions:
 - D2.1 and the later Generator-V5 repair began as staging work. On 2026-08-20 the owner directed an
   append promotion: four current V5-certified boards became Levels 201–204 and the deterministic
   V5.1 Expert board became Level 205 under an explicit structural-certification waiver. Master is excluded.
+- On 2026-08-21 the owner directed Campaign V9: 2,000 production-certified, layout-unique boards
+  were appended as Levels 206–2,205, with all six requested tiers interleaved and balanced.
 - Phase 6 is implemented with a separate 624-board offline-certified Infinite catalog. Generator
   V5.2's purposeful-space weave now certifies 12 Expert and 12 Master entries without changing
   V4 or any structural gate. Runtime still performs selection only, never board generation.
@@ -597,42 +599,33 @@ Canonical file: `docs/Magnetrail_Campaign_Levels_v3.json`.
 |---|---|
 | Catalog schema | 2 |
 | Rule version | `magnetrail-core-1` |
-| Catalog ID | `magnetrail-campaign-v4` |
-| Content version | 8 |
+| Catalog ID | `magnetrail-campaign-v3` |
+| Content version | 9 |
 | Generator version | 5 |
-| Level count | 205 |
-| SHA-256 | `6416c0a5677e66cba169cf9caaa9d7d7e6e70bc6e4e3e69b36277e3c69e78128` |
-| Stable range | `proto-001`…`proto-012`, then campaign IDs through `campaign-205` |
-| Current metadata origin | 205 `GENERATOR_ASSISTED` |
-| Board sizes | 2 × 3×3; 17 × 4×4; 76 × 5×5; 28 × 6×6; 37 × 7×7; 45 × 8×8 |
-| Exact fingerprints | 205 unique |
-| Symmetry fingerprints | 205 unique |
+| Level count | 2,205 |
+| SHA-256 | `3f8415f30b721dd97c21becca130b84839810b03d2eeba3f9a26a7d054452f3a` |
+| Stable range | `proto-001`…`proto-012`, then campaign IDs through `campaign-2205` |
+| Current metadata origin | 2,205 `GENERATOR_ASSISTED` |
+| Board sizes | 2 × 3×3; 109 × 4×4; 611 × 5×5; 226 × 6×6; 82 × 7×7; 1,175 × 8×8 |
+| Exact fingerprints | 2,205 unique |
+| Symmetry fingerprints | 2,205 unique |
 
 Current packs:
 
 | Range | Pack |
 |---|---|
-| 1–20 | `magnetic-circuit-01` |
-| 21–40 | `magnetic-circuit-02` |
-| 41–60 | `magnetic-circuit-03` |
-| 61–80 | `magnetic-circuit-04` |
-| 81–100 | `magnetic-circuit-05` |
-| 101–120 | `magnetic-circuit-06` |
-| 121–140 | `magnetic-circuit-07` |
-| 141–160 | `magnetic-circuit-08` |
-| 161–180 | `magnetic-circuit-09` |
-| 181–200 | `magnetic-circuit-10` |
-| 201–205 | `magnetic-circuit-11` |
+| 1–2,200 | `magnetic-circuit-01` through `magnetic-circuit-110`, 20 levels each |
+| 2,201–2,205 | `magnetic-circuit-111` |
 
 Metadata mechanic-tag counts:
 
-- Magnet control: 199
-- Polarity dependency: 199
-- Walls: 198
-- Occlusion: 202
-- Order dependency: 198
-- Exposure/reveal: 202
-- Cancellation: 52
+- Magnet control: 2,199
+- Polarity dependency: 2,194
+- Walls: 2,132
+- Occlusion: 2,202
+- Order dependency: 2,198
+- Exposure/reveal: 2,202
+- Cancellation: 158
 
 These are metadata claims backed by automated analysis, not proof that a player experiences the
 claimed mechanic as difficult or central.
@@ -666,7 +659,8 @@ Current disposition:
   redundancy measurements, but these remain automated evidence.
 - The 40 historical D1 ratings are fingerprint-bound to content v6 and are excluded from v7
   calibration.
-- Content-v7 Levels 1–200 and content-v8 Levels 201–205 remain without owner difficulty ratings.
+- Content-v7 Levels 1–200, content-v8 Levels 201–205, and content-v9 Levels 206–2,205 remain without
+  owner difficulty ratings.
 - Levels 201–204 are current V5-certified. Level 205 is solver-certified and V4-complete but not
   structurally certified; the explicit owner waiver and failed gates are preserved in the manifest.
 
@@ -886,6 +880,26 @@ deterministically declared; semantic edges are still physically verified before/
 Four unique variants of each band are packaged in the Infinite catalog. Difficulty V4, gameplay,
 the numbered campaign, and all non-high-band generator profiles are unchanged. This is automated
 structural certification only; human ratings remain required.
+
+### 11.13 Campaign V9 expansion — 2026-08-21
+
+The owner directed a 2,000-level numbered-campaign expansion. Levels 1–205 are preserved
+definition-for-definition, and new stable IDs `campaign-206` through `campaign-2205` are appended.
+The new sequence interleaves Easy, Medium, Hard, Super Hard, Expert, and Master. Its frozen
+allocation is Easy 334, Medium 334, and 333 each for Hard, Super Hard, Expert, and Master.
+
+Every appended board passed the production engine, complete solver and replay, Difficulty V4,
+Quality V2, structural and relevance gates. Across the final campaign, exact fingerprints are
+2,205/2,205 unique and rotation/reflection-normalized fingerprints are 2,205/2,205 unique. New
+boards have zero exact or symmetry collisions with the separate 624-board Infinite catalog.
+Content-v9 progress migration moves a player who completed Level 205 to Level 206 without changing
+their prior completion or reward records. Automated tier labels and certificates are not human
+difficulty ratings or human playtest approval.
+
+The source snapshot, full per-level generation audit, report, and promotion result are under
+`docs/content/v9_expansion/`. The content-v8 source SHA-256 is
+`6416c0a5677e66cba169cf9caaa9d7d7e6e70bc6e4e3e69b36277e3c69e78128`; the promoted content-v9
+SHA-256 is `3f8415f30b721dd97c21becca130b84839810b03d2eeba3f9a26a7d054452f3a`.
 
 ---
 
@@ -1417,14 +1431,14 @@ clipping, performance, and memory. Decide approved-for-phone, large-screen-only,
 
 ### Phase 4 — Levels 201–250
 
-Only after Insulator and board-size gates: introduce Insulator gradually, preserve 1–200, support
-200→201 and stop at 250, and publish full candidate/duplicate/pacing/migration/manual-review
-evidence. Not implemented.
+The original 250-level plan is superseded. Content-v8 added Levels 201–205, and the owner-directed
+Campaign V9 expansion subsequently added certified Levels 206–2,205 while preserving Levels 1–205.
+No Insulator mechanic was introduced.
 
 ### Phase 5 — Levels 251–300
 
-Complete and freeze the numbered campaign with varied mastery, recovery, and a memorable fair
-Level 300. Preserve 1–250 and stop cleanly at 300. Not implemented.
+The original stop-at-300 plan is superseded by Campaign V9. Levels 251–2,205 are now implemented as
+part of the balanced six-tier expansion. Human playtesting and difficulty calibration remain open.
 
 ### Phase 6 — Infinite Mode
 
@@ -1506,6 +1520,9 @@ rewarded hints, consent, and full free access. Not implemented.
 | Content-v8 append source snapshot | `docs/content/v5_1_append/promotion/SOURCE_CONTENT_V7.json` |
 | Content-v8 append manifest | `docs/content/v5_1_append/promotion/V5_1_APPEND_PROMOTION_MANIFEST.json` |
 | Content-v8 append result | `docs/content/v5_1_append/promotion/V5_1_APPEND_PROMOTION_RESULT.md` |
+| Content-v9 source snapshot | `docs/content/v9_expansion/SOURCE_CONTENT_V8.json` |
+| Content-v9 generation audit | `docs/content/v9_expansion/CAMPAIGN_V9_GENERATION_AUDIT.json` |
+| Content-v9 promotion result | `docs/content/v9_expansion/CAMPAIGN_V9_PROMOTION_RESULT.md` |
 | M4 privacy/ad inventory | `docs/M4_COMPLIANCE_NOTES.md` |
 | Analytics events | `docs/M4_EVENT_CATALOG.md` |
 | Release blockers | `docs/release/RELEASE_BLOCKER_LOG.md` |
@@ -1528,7 +1545,8 @@ level-tools/src/main/kotlin/com/rameshta/magnetrail/tools/
 ## 24. Current unresolved issues
 
 1. **Current human difficulty is uncalibrated.** Generator V5 replaced the first 200 production
-   boards and content v8 appended five more, but automated checks do not establish perceived difficulty.
+   boards, content v8 appended five, and content v9 appended 2,000 more; automated checks do not
+   establish perceived difficulty.
 2. **D2 human review is incomplete.** The 40 D1 owner ratings belong to archived content-v6 board
    fingerprints. None of the 62 selected D2/content-v7 review boards has an owner rating yet.
 3. **Expert/Master automated certification now passes; human calibration is still required.**
@@ -1540,18 +1558,19 @@ level-tools/src/main/kotlin/com/rameshta/magnetrail/tools/
 4. **Historical Generator V5 PASS evidence is superseded for quality decisions.** Its Expert/Master
    staging thresholds had been lowered. Current required Expert gates are restored and must not be
    weakened to reproduce that PASS.
-5. **No uploadable current release exists.** The recorded M5 AAB is stale; the current content-v8
-   release build is deliberately structural/non-uploadable.
+5. **No uploadable current release exists.** The recorded M5 AAB is stale; local release builds are
+   deliberately structural/non-uploadable without owner production configuration.
 6. **Production services are unconfigured.** Live AdMob, UMP console state, Firebase, privacy URL,
    audience choice, upload signing, and Play declarations remain blocked.
 7. **Representative device/accessibility/release testing is incomplete.** API 24, mid-range/API 35,
    tablet/foldable, TalkBack/Switch Access, current upgrade, and production-like consent/ad tests
    require real evidence.
-8. **Future game scope is intentionally absent.** Insulator, Levels 206–300, Adaptive Infinite,
-   and ads-only Phase 8 are documentation only. Infinite Mode itself is implemented. D2 includes 43 production 8×8 boards,
-   but their representative-device usability still lacks human evidence; 9×9 remains excluded.
+8. **Future game scope is intentionally absent.** Insulator, Adaptive Infinite, and ads-only Phase
+   8 are documentation only. Campaign Levels 206–2,205 and Infinite Mode are implemented. The large
+   8×8 campaign population still lacks representative-device human usability evidence; 9×9 remains
+   excluded.
 
-The immediate product action is blind human playtesting of the four certified Expert and four
-certified Master Infinite boards, alongside Levels 201–205 with the Level 205 waiver visible. Use
-those ratings to verify that the measured consequence gap is felt by players; do not treat the
-automated certificate as human approval.
+The immediate content action is blind human playtesting across representative samples of the
+content-v9 six-tier campaign, while retaining the Level 205 waiver in review data. Use those ratings
+to verify that the measured tier gaps are felt by players; do not treat automated certificates as
+human approval.
