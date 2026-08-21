@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 const val GENERATOR_VERSION_V5 = 5
 const val D2_STAGING_CONTENT_VERSION = 7
-const val CAMPAIGN_CONTENT_VERSION = 8
+const val CAMPAIGN_CONTENT_VERSION = 9
 const val D2_SELECTION_VERSION = 1
 const val D2_SKILL_VERSION = 1
 const val D2_1_SPATIAL_CONFIGURATION_VERSION = 2
@@ -481,4 +481,17 @@ object GenerationProfilesD21 {
         minimumMeaningfulOrderingRate = meaningfulOrdering,
         rejectDenseButTrivial = minimum >= 0.36,
     )
+}
+
+/**
+ * Campaign V9 high-band profiles keep the accepted D2.1 gates while using a separately versioned
+ * topology-variation space. The separate IDs preserve deterministic reconstruction of every
+ * previously shipped D2.1 and Infinite board.
+ */
+object GenerationProfilesCampaignV9 {
+    val SUPER_HARD = GenerationProfilesD21.EXPERT.copy(id = "v5-campaign-v9-super-hard")
+    val EXPERT = GenerationProfilesD21.EXPERT.copy(id = "v5-campaign-v9-expert")
+    val MASTER = GenerationProfilesD21.MASTER.copy(id = "v5-campaign-v9-master")
+
+    val highBands: List<GenerationProfileV5> = listOf(SUPER_HARD, EXPERT, MASTER)
 }

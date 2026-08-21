@@ -18,6 +18,7 @@ import com.rameshta.magnetrail.core.generation.v5.CertificationResultV5
 import com.rameshta.magnetrail.core.generation.v5.GENERATOR_VERSION_V5
 import com.rameshta.magnetrail.core.generation.v5.GenerationProfilesV5
 import com.rameshta.magnetrail.core.generation.v5.GenerationProfilesD21
+import com.rameshta.magnetrail.core.generation.v5.GenerationProfilesCampaignV9
 import com.rameshta.magnetrail.core.level.LevelCatalog
 import com.rameshta.magnetrail.core.level.LevelParser
 import com.rameshta.magnetrail.core.model.DifficultyBand
@@ -64,6 +65,8 @@ fun main(arguments: Array<String>) {
         "benchmark-generator-v5-repair" -> generateGeneratorV5RepairAudit(options)
         "promote-v5.1-append" -> promoteV51Append(options)
         "generate-infinite-catalog" -> generateInfiniteCatalog(options)
+        "generate-campaign-v9-expansion" -> generateCampaignV9Expansion(options)
+        "promote-campaign-v9-expansion" -> promoteCampaignV9Expansion(options)
         else -> error("Unknown command '${arguments.first()}'")
     }
 }
@@ -297,7 +300,11 @@ private fun validateCatalog(catalog: LevelCatalog, dailyFallback: Boolean = fals
         }
         check(metadata.contentFingerprint == ContentFingerprint.of(level)) { "Stale fingerprint for ${level.id}" }
         if (!dailyFallback && metadata.generatorVersion == GENERATOR_VERSION_V5) {
-            val profile = (GenerationProfilesV5.productionCandidateProfiles + GenerationProfilesD21.benchmarkProfiles)
+            val profile = (
+                GenerationProfilesV5.productionCandidateProfiles +
+                    GenerationProfilesD21.benchmarkProfiles +
+                    GenerationProfilesCampaignV9.highBands
+                )
                 .distinctBy { it.id }
                 .singleOrNull {
                 it.id == metadata.generationProfile

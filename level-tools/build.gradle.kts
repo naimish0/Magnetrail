@@ -46,6 +46,87 @@ val d2StagingDirectory = docsDirectory.dir("content/d2/staging")
 val d21StagingDirectory = docsDirectory.dir("content/d2_1/staging")
 val infiniteDirectory = docsDirectory.dir("infinite")
 val infiniteContentDirectory = docsDirectory.dir("content/infinite")
+val campaignV9StagingDirectory = layout.buildDirectory.dir("campaign-v9-staging")
+val campaignV9CheckpointDirectory = layout.buildDirectory.dir("campaign-v9-checkpoints")
+
+tasks.register<JavaExec>("generateCampaignV9Expansion") {
+    group = "magnetrail content"
+    description = "Generate 2,000 mixed, certified, campaign/Infinite-unique Levels 206-2205 with resumable checkpoints."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("content/v9_expansion/SOURCE_CONTENT_V8.json")
+    val infinite = docsDirectory.file("content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")
+    inputs.files(campaign, infinite)
+    inputs.property("campaignV9Count", "2000")
+    inputs.property("campaignV9Seed", providers.gradleProperty("campaignV9Seed").getOrElse("9200001"))
+    inputs.property("campaignV9Workers", providers.gradleProperty("campaignV9Workers").getOrElse("6"))
+    inputs.property("campaignV9RetriesPerSlot", providers.gradleProperty("campaignV9RetriesPerSlot").getOrElse("128"))
+    inputs.property("campaignV9AttemptsPerSeed", providers.gradleProperty("campaignV9AttemptsPerSeed").getOrElse("8"))
+    outputs.files(
+        campaignV9StagingDirectory.map { it.file("Magnetrail_Campaign_Levels_v9.json") },
+        campaignV9StagingDirectory.map { it.file("CAMPAIGN_V9_GENERATION_AUDIT.json") },
+        campaignV9StagingDirectory.map { it.file("CAMPAIGN_V9_GENERATION_REPORT.md") },
+    )
+    outputs.upToDateWhen { false }
+    args(
+        "generate-campaign-v9-expansion",
+        "--campaign=${campaign.asFile}",
+        "--infinite=${infinite.asFile}",
+        "--output=${campaignV9StagingDirectory.get().asFile}",
+        "--checkpoint=${campaignV9CheckpointDirectory.get().asFile}",
+        "--count=2000",
+        "--seed=${providers.gradleProperty("campaignV9Seed").getOrElse("9200001")}",
+        "--workers=${providers.gradleProperty("campaignV9Workers").getOrElse("6")}",
+        "--retries-per-slot=${providers.gradleProperty("campaignV9RetriesPerSlot").getOrElse("128")}",
+        "--attempts-per-seed=${providers.gradleProperty("campaignV9AttemptsPerSeed").getOrElse("8")}",
+    )
+}
+
+tasks.register<JavaExec>("promoteCampaignV9Expansion") {
+    group = "magnetrail content"
+    description = "Promote the owner-directed 2,000-level Campaign V9 expansion after all automated gates pass."
+    dependsOn("generateCampaignV9Expansion")
+    val promotionConfirmed = providers.gradleProperty("confirmCampaignV9Promotion")
+    inputs.property("campaignV9PromotionConfirmed", promotionConfirmed.orElse("false"))
+    doFirst {
+        check(promotionConfirmed.orNull == "true") {
+            "Refusing Campaign V9 promotion without -PconfirmCampaignV9Promotion=true"
+        }
+    }
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val infinite = docsDirectory.file("content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")
+    val promotion = docsDirectory.dir("content/v9_expansion")
+    inputs.files(
+        campaign,
+        infinite,
+        campaignV9StagingDirectory.map { it.file("Magnetrail_Campaign_Levels_v9.json") },
+        campaignV9StagingDirectory.map { it.file("CAMPAIGN_V9_GENERATION_AUDIT.json") },
+        campaignV9StagingDirectory.map { it.file("CAMPAIGN_V9_GENERATION_REPORT.md") },
+    )
+    outputs.files(
+        campaign,
+        promotion.file("SOURCE_CONTENT_V8.json"),
+        promotion.file("CAMPAIGN_V9_GENERATION_AUDIT.json"),
+        promotion.file("CAMPAIGN_V9_GENERATION_REPORT.md"),
+        promotion.file("CAMPAIGN_V9_PROMOTION_RESULT.md"),
+    )
+    outputs.upToDateWhen { false }
+    args(
+        "promote-campaign-v9-expansion",
+        "--campaign=${campaign.asFile}",
+        "--staged-campaign=${campaignV9StagingDirectory.get().file("Magnetrail_Campaign_Levels_v9.json").asFile}",
+        "--staged-audit=${campaignV9StagingDirectory.get().file("CAMPAIGN_V9_GENERATION_AUDIT.json").asFile}",
+        "--staged-report=${campaignV9StagingDirectory.get().file("CAMPAIGN_V9_GENERATION_REPORT.md").asFile}",
+        "--infinite=${infinite.asFile}",
+        "--source-snapshot=${promotion.file("SOURCE_CONTENT_V8.json").asFile}",
+        "--published-audit=${promotion.file("CAMPAIGN_V9_GENERATION_AUDIT.json").asFile}",
+        "--published-report=${promotion.file("CAMPAIGN_V9_GENERATION_REPORT.md").asFile}",
+        "--result=${promotion.file("CAMPAIGN_V9_PROMOTION_RESULT.md").asFile}",
+        "--authorization=project-owner-directed-2000-level-expansion",
+    )
+}
 
 tasks.register<JavaExec>("generateInfiniteCertifiedCatalog") {
     group = "magnetrail content"

@@ -22,21 +22,40 @@ class ShippedContentTest {
     @Test
     fun `all campaign content is unique certified and replayable`() {
         val campaign = load("/Magnetrail_Campaign_Levels_v3.json")
-        assertEquals(205, campaign.levels.size)
-        assertEquals(205, campaign.levels.map { it.id }.toSet().size)
-        assertEquals((1..205).toList(), campaign.levels.map { it.number })
-        assertEquals(205, campaign.levels.map(ContentFingerprint::of).toSet().size)
-        assertEquals(205, campaign.levels.map(ContentFingerprint::symmetryNormalized).toSet().size)
+        assertEquals(2_205, campaign.levels.size)
+        assertEquals(2_205, campaign.levels.map { it.id }.toSet().size)
+        assertEquals((1..2_205).toList(), campaign.levels.map { it.number })
+        assertEquals(2_205, campaign.levels.map(ContentFingerprint::of).toSet().size)
+        assertEquals(2_205, campaign.levels.map(ContentFingerprint::symmetryNormalized).toSet().size)
         assertEquals(0, campaign.levels.count { it.metadata?.origin == LevelOrigin.HANDCRAFTED })
-        assertEquals(205, campaign.levels.count { it.metadata?.origin == LevelOrigin.GENERATOR_ASSISTED })
+        assertEquals(2_205, campaign.levels.count { it.metadata?.origin == LevelOrigin.GENERATOR_ASSISTED })
         assertEquals(CAMPAIGN_CONTENT_VERSION, campaign.contentVersion)
         assertEquals(GENERATOR_VERSION_V5, campaign.generatorVersion)
         assertTrue(campaign.levels.take(200).all { it.metadata?.previousContentFingerprint != null })
         assertTrue(campaign.levels.drop(200).all { it.metadata?.previousContentFingerprint == null })
         assertEquals(
-            (201..205).map { "campaign-${it.toString().padStart(3, '0')}" },
+            (201..2_205).map { "campaign-${it.toString().padStart(3, '0')}" },
             campaign.levels.drop(200).map { it.id },
         )
+        assertEquals(
+            mapOf(
+                "v5-easy" to 334,
+                "v5-medium" to 334,
+                "v5-hard" to 333,
+                "v5-campaign-v9-super-hard" to 333,
+                "v5-campaign-v9-expert" to 333,
+                "v5-campaign-v9-master" to 333,
+            ),
+            campaign.levels.drop(205).groupingBy { it.metadata?.generationProfile }.eachCount(),
+        )
+        val infinite = load("/content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")
+        val infiniteExact = infinite.levels.mapTo(hashSetOf(), ContentFingerprint::exact)
+        val infiniteSymmetry = infinite.levels.mapTo(hashSetOf(), ContentFingerprint::symmetryNormalized)
+        assertTrue(campaign.levels.drop(205).none { ContentFingerprint.exact(it) in infiniteExact })
+        assertTrue(campaign.levels.drop(205).none { ContentFingerprint.symmetryNormalized(it) in infiniteSymmetry })
+        val contentV8Source = load("/content/v9_expansion/SOURCE_CONTENT_V8.json")
+        assertEquals(205, contentV8Source.levels.size)
+        assertEquals(contentV8Source.levels, campaign.levels.take(205))
         assertTrue(campaign.levels.all { it.width in 3..8 && it.height in 3..8 })
         assertTrue(campaign.levels.none { it.width == 9 || it.height == 9 })
         assertEquals((1..12).map { "proto-${it.toString().padStart(3, '0')}" }, campaign.levels.take(12).map { it.id })

@@ -40,6 +40,32 @@ class ProceduralTopologyV5Test {
     }
 
     @Test
+    fun `campaign V9 high bands have deterministic symmetry-distinct variation`() {
+        GenerationProfilesCampaignV9.highBands.forEachIndexed { profileIndex, profile ->
+            val fingerprints = (0 until 12).map { variant ->
+                val seed = 920_000_001L + profileIndex * 100_000_007L + variant * 1_000_003L
+                val request = GenerationRequestV5(
+                    stableId = "campaign-v9-variation-$profileIndex-$variant",
+                    sequenceNumber = variant + 1,
+                    title = profile.id,
+                    seed = seed,
+                    profile = profile,
+                    maxAttempts = 1,
+                    topologyFamily = TopologyFamilyV5.ORDERED_LONG_RANGE_WEAVE_V4,
+                )
+                val first = SolutionFirstConstructorV5().construct(request, seed).level
+                val second = SolutionFirstConstructorV5().construct(request, seed).level
+                assertEquals(first, second)
+                com.rameshta.magnetrail.core.content.ContentFingerprint.symmetryNormalized(first)
+            }
+            assertTrue(
+                "${profile.id} did not provide enough variation: ${fingerprints.toSet().size}/12",
+                fingerprints.toSet().size >= 10,
+            )
+        }
+    }
+
+    @Test
     fun `ordered long range weave stays inside unchanged V4 bounds`() {
         listOf(GenerationProfilesD21.EXPERT, GenerationProfilesD21.MASTER).forEachIndexed { index, profile ->
             val request = GenerationRequestV5(

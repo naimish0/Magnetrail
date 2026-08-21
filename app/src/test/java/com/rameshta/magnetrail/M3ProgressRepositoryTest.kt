@@ -363,7 +363,7 @@ class M3ProgressRepositoryTest {
     @Test
     fun `Phase 1 completed level 150 unlocks 151 exactly once and preserves player state`() = runTest {
         val catalog = campaignCatalog()
-        assertEquals(205, catalog.levels.size)
+        assertEquals(2_205, catalog.levels.size)
         val level150 = catalog.levels.single { it.number == 150 }
         val store = dataStore(this)
         store.edit { stored ->
@@ -382,7 +382,7 @@ class M3ProgressRepositoryTest {
         val first = repository.preferences.first().progress
         val second = repository.preferences.first().progress
 
-        assertEquals(8, first.contentVersion)
+        assertEquals(9, first.contentVersion)
         assertEquals(5, first.generatorVersion)
         assertEquals(151, first.highestUnlockedLevel)
         assertEquals("campaign-151", first.lastSelectedLevelId)
@@ -458,12 +458,35 @@ class M3ProgressRepositoryTest {
 
         val first = repository(store, catalog).preferences.first().progress
 
-        assertEquals(8, first.contentVersion)
+        assertEquals(9, first.contentVersion)
         assertEquals(201, first.highestUnlockedLevel)
         assertEquals("campaign-201", first.lastSelectedLevelId)
         assertEquals(setOf("campaign-200"), first.completedLevelIds)
         assertEquals(setOf("campaign-200"), first.firstClearRewardedLevelIds)
         assertEquals(913, first.coinBalance)
+    }
+
+    @Test
+    fun `content v9 migration moves a completed level 205 player to 206`() = runTest {
+        val catalog = campaignCatalog()
+        val store = dataStore(this)
+        store.edit { stored ->
+            stored[intPreferencesKey("schema_version")] = PLAYER_PREFERENCES_SCHEMA_VERSION
+            stored[intPreferencesKey("content_version")] = 8
+            stored[intPreferencesKey("generator_version")] = 5
+            stored[intPreferencesKey("highest_unlocked_level")] = 205
+            stored[stringSetPreferencesKey("completed_level_ids")] = setOf("campaign-205")
+            stored[stringSetPreferencesKey("first_clear_rewarded_ids")] = setOf("campaign-205")
+            stored[stringPreferencesKey("last_selected_level_id")] = "campaign-205"
+        }
+
+        val progress = repository(store, catalog).preferences.first().progress
+
+        assertEquals(9, progress.contentVersion)
+        assertEquals(206, progress.highestUnlockedLevel)
+        assertEquals("campaign-206", progress.lastSelectedLevelId)
+        assertEquals(setOf("campaign-205"), progress.completedLevelIds)
+        assertEquals(setOf("campaign-205"), progress.firstClearRewardedLevelIds)
     }
 
     @Test
@@ -583,7 +606,7 @@ class M3ProgressRepositoryTest {
         val second = repository.preferences.first()
         val progress = first.progress
 
-        assertEquals(8, progress.contentVersion)
+        assertEquals(9, progress.contentVersion)
         assertEquals(5, progress.generatorVersion)
         assertEquals(201, progress.highestUnlockedLevel)
         assertEquals("campaign-201", progress.lastSelectedLevelId)

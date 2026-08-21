@@ -198,7 +198,7 @@ class GameViewModelTest {
     }
 
     @Test
-    fun `content v8 campaign crosses 200 to 201 and stops at 205`() {
+    fun `content v9 campaign crosses expansion boundaries and stops at 2205`() {
         val levels = LevelParser().parseCatalog(
             checkNotNull(javaClass.getResource("/Magnetrail_Campaign_Levels_v3.json")).readText(),
         ).levels
@@ -213,13 +213,15 @@ class GameViewModelTest {
             )
         }
 
-        assertEquals(205, levels.size)
+        assertEquals(2_205, levels.size)
         assertTrue(state(149).hasNextLevel)
         assertEquals("campaign-151", levels[150].id)
         assertTrue(state(199).hasNextLevel)
         assertEquals("campaign-201", levels[200].id)
-        assertFalse(state(204).hasNextLevel)
-        assertEquals("campaign-205", levels.last().id)
+        assertTrue(state(204).hasNextLevel)
+        assertEquals("campaign-206", levels[205].id)
+        assertFalse(state(2_204).hasNextLevel)
+        assertEquals("campaign-2205", levels.last().id)
     }
 
     @Test

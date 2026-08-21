@@ -185,7 +185,8 @@ class SolutionFirstConstructorV5(
         topologyFamily: TopologyFamilyV5,
     ): ConstructedCandidateV5 {
         check(size == 8) { "$ORDERED_POLARITY_TOPOLOGY requires the approved 8x8 high-band canvas" }
-        val masterDepth = request.profile.id == "v5-d2.1-master"
+        val masterDepth = request.profile.id == "v5-d2.1-master" ||
+            request.profile.id == "v5-campaign-v9-master"
         val authoredCoreArrows = listOf(
             Arrow("reveal0", Position(1, 2), Direction.NORTH),
             Arrow("must0", Position(1, 3), Direction.NORTH),
@@ -249,7 +250,14 @@ class SolutionFirstConstructorV5(
             addAll(magnets.map { it.position })
         }
         val purposefulEmptyCells = if (topologyFamily == TopologyFamilyV5.ORDERED_LONG_RANGE_WEAVE_V4) {
-            orderedPolarityPurposefulEmptyCells(size, occupied, ladder, masterDepth, seed)
+            orderedPolarityPurposefulEmptyCells(
+                size,
+                occupied,
+                ladder,
+                masterDepth,
+                seed,
+                expandedCampaignVariation = request.profile.id.startsWith("v5-campaign-v9-"),
+            )
         } else {
             ladder.purposefulEmptyCells
         }
@@ -427,6 +435,7 @@ class SolutionFirstConstructorV5(
         ladder: AuxiliaryCausalTopologyV5,
         masterDepth: Boolean,
         seed: Long,
+        expandedCampaignVariation: Boolean,
     ): List<PurposefulEmptyCellV5> {
         val requiredGuards = if (masterDepth) {
             setOf(
@@ -445,15 +454,36 @@ class SolutionFirstConstructorV5(
         }
         // A bounded deterministic set of outer separators creates catalog diversity without
         // changing the causal grammar. Certification must still accept each realized variant.
-        val optionalSeparators = if (masterDepth) {
+        val provenOptionalSeparators = if (masterDepth) {
             listOf(Position(5, 6), Position(5, 7), Position(6, 7), Position(7, 7))
         } else {
             listOf(Position(4, 5), Position(4, 6), Position(5, 5), Position(5, 6))
         }
-        val variant = ((seed xor (seed ushr 32)) and 0x0f).toInt()
-        val retainedGuards = requiredGuards + optionalSeparators.filterIndexed { index, _ ->
-            variant and (1 shl index) != 0
+        val optionalSeparators = if (expandedCampaignVariation) {
+            val outerRows = if (masterDepth) 5..size else 4..size
+            val expanded = outerRows.flatMap { row -> (1..size).map { column -> Position(row, column) } }
+                .filterNot { it in occupied || it in requiredGuards }
+            (provenOptionalSeparators + expanded).distinct()
+        } else {
+            provenOptionalSeparators
         }
+        val selectedSeparators = if (expandedCampaignVariation) {
+            val random = SeededRandom(seed xor -3335678366873096957L)
+            val shuffled = optionalSeparators.toMutableList()
+            for (index in shuffled.lastIndex downTo 1) {
+                val swap = random.nextInt(index + 1)
+                val value = shuffled[index]
+                shuffled[index] = shuffled[swap]
+                shuffled[swap] = value
+            }
+            // Keep object relevance in the already-certified 3-4 separator envelope while the
+            // much larger position pool provides thousands of symmetry-distinct combinations.
+            shuffled.take(3 + random.nextInt(2))
+        } else {
+            val variant = ((seed xor (seed ushr 32)) and 0x0f).toInt()
+            optionalSeparators.filterIndexed { index, _ -> variant and (1 shl index) != 0 }
+        }
+        val retainedGuards = requiredGuards + selectedSeparators
         val alreadyPurposeful = ladder.purposefulEmptyPositions
         return allCells(size)
             .filterNot { it in occupied || it in retainedGuards }
@@ -632,7 +662,8 @@ class SolutionFirstConstructorV5(
         topologyFamily: TopologyFamilyV5,
     ): ConstructedCandidateV5 {
         check(size == 8) { "Ordered-polarity staircase requires the approved 8x8 canvas" }
-        val masterDepth = request.profile.id == "v5-d2.1-master"
+        val masterDepth = request.profile.id == "v5-d2.1-master" ||
+            request.profile.id == "v5-campaign-v9-master"
         val stageCount = if (masterDepth) 6 else 5
         data class Stage(
             val index: Int,
@@ -1349,7 +1380,8 @@ class SolutionFirstConstructorV5(
     }
 
     private fun isOrderedPolarityProfile(profile: GenerationProfileV5): Boolean =
-        profile.id == "v5-d2.1-expert" || profile.id == "v5-d2.1-master"
+        profile.id == "v5-d2.1-expert" || profile.id == "v5-d2.1-master" ||
+            profile.id.startsWith("v5-campaign-v9-")
 
     private fun allCells(size: Int): List<Position> =
         (1..size).flatMap { row -> (1..size).map { column -> Position(row, column) } }

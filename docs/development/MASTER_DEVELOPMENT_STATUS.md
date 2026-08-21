@@ -1,13 +1,14 @@
 # Magnetrail remaining development status
 
-Updated: 2026-08-20 (Asia/Kolkata)
+Updated: 2026-08-21 (Asia/Kolkata)
 
 This file tracks the sequential phases in `CODEX_MASTER_REMAINING_DEVELOPMENT_PROMPT.md`.
 Phases 0 and 1 are frozen. The 40 D1 human ratings remain valid historical evidence for their
 content-v6 board fingerprints and are deliberately excluded from content-v7 calibration. D2
 Generator V5 replaced the production 200-board campaign under the existing stable IDs. A later
-owner-directed append added Levels 201–205 at content version 8; Expert is explicitly owner-waived
-and must not be described as structurally or human certified. Master remains excluded.
+owner-directed append added Levels 201–205 at content version 8; its Expert is explicitly
+owner-waived. Campaign V9 then appended 2,000 fully automated-certified boards as Levels 206–2,205,
+including balanced Super Hard, Expert, and Master allocations. No campaign tier is human-certified.
 
 ## Master implementation hardening — 2026-08-20
 
@@ -47,8 +48,8 @@ Status: **PASS WITH LIMITATIONS — PLAYER FLOW AND EXPERT/MASTER AUTOMATED CERT
 | 1 | Campaign Levels 151–200 | COMPLETE — HUMAN PLAYTEST PENDING | Campaign content 6/generator 4; 200 total levels. The owner-approved 50-board mapping is promoted and automated-certified; Levels 1–150 are fingerprint-stable. |
 | 2 | Insulator prototype | NOT STARTED | Strict phase isolation. |
 | 3 | 8×8 usability prototype | NOT STARTED | Strict phase isolation. |
-| 4 | Campaign Levels 201–250 | PARTIAL OWNER-DIRECTED APPEND | Levels 201–205 exist; 206–250 are not implemented. Level 205 has an explicit structural waiver. |
-| 5 | Campaign Levels 251–300 | NOT STARTED | Strict phase isolation. |
+| 4 | Campaign Levels 201–250 | SUPERSEDED — IMPLEMENTED THROUGH V9 | Levels 201–205 retain their content-v8 history and waiver; Levels 206–250 are certified content-v9 boards. |
+| 5 | Campaign Levels 251–300 | SUPERSEDED — IMPLEMENTED THROUGH V9 | The owner-directed balanced campaign now continues through Level 2,205. |
 | 6 | Infinite Mode | COMPLETE — CERTIFIED PROGRESSIVE JOURNEY | Separate 624-board catalog; 12 Expert and 12 Master entries; Easy/Medium/Hard onboarding followed by deterministic all-band variety; Super Hard safely falls upward to certified Expert; first completion of each journey ordinal grants 10 coins. |
 | 7 | Adaptive Infinite Mode | NOT STARTED | Strict phase isolation. |
 | 8 | Ads-only monetization expansion | NOT STARTED | Strict phase isolation. Product override recorded: no Billing, purchases, subscriptions, Remove Ads, or paid gates. No Phase 8 implementation exists. |
@@ -100,6 +101,26 @@ Evidence:
 - `docs/infinite/INFINITE_GENERATOR_BENCHMARK.json`
 - `docs/infinite/INFINITE_GENERATOR_BENCHMARK.csv`
 - `docs/infinite/INFINITE_FALLBACK_BANK_REPORT.md`
+
+## Campaign V9 2,000-level expansion — 2026-08-21
+
+Status: **PROMOTED — AUTOMATED CERTIFICATION COMPLETE; HUMAN PLAYTEST PENDING**.
+
+- The canonical campaign contains 2,205 levels at content version 9 and generator version 5.
+- Levels 1–205 are preserved definition-for-definition; Levels 206–2,205 are new stable campaign IDs.
+- The appended allocation is Easy 334, Medium 334, Hard 333, Super Hard 333, Expert 333, and Master 333.
+- The six tiers are interleaved. Every appended board passed the production engine, complete solver
+  and replay, Difficulty V4, Quality V2, structural, relevance, and bounded-generation gates.
+- All 2,205 exact fingerprints and all 2,205 rotation/reflection-normalized fingerprints are unique.
+  New campaign boards have zero exact or normalized collisions with the 624-board Infinite catalog.
+- DataStore content-v9 migration advances a player who completed Level 205 to Level 206 while
+  preserving their existing completion, record, reward, currency, settings, ads, and Daily state.
+- Level Select retains 50-level pagination and ends with the bounded Levels 2,201–2,205 page.
+- The canonical SHA-256 is
+  `3f8415f30b721dd97c21becca130b84839810b03d2eeba3f9a26a7d054452f3a`.
+
+Evidence is under `docs/content/v9_expansion/`. These are automated tier assignments and
+certificates, not human difficulty ratings or human approval.
 
 ## Content-v8 non-Master append — 2026-08-20
 

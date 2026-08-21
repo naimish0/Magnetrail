@@ -13,7 +13,8 @@ This folder is the source of truth for the Android implementation of Magnetrail.
 
 ## M3 shipped content
 
-- `Magnetrail_Campaign_Levels_v3.json` — canonical 100-level campaign asset.
+- `Magnetrail_Campaign_Levels_v3.json` — canonical 2,205-level campaign asset.
+- `content/v9_expansion/` — Campaign V9 source snapshot, 2,000-level audit, and promotion evidence.
 - `Magnetrail_Daily_Fallbacks_v1.json` — seven certified deterministic fallbacks.
 - `M3_CONTENT_REPORT.csv` / `.md` — reproducible certification and distribution report.
 - `M3_CONTENT_TOOLING.md` — bounded generation, staging, promotion, and certification commands.
