@@ -14,8 +14,9 @@ import org.junit.Test
 
 class M4InterstitialPolicyTest {
     @Test
-    fun `non campaign non auto and replay are excluded`() {
+    fun `campaign normal Infinite and Auto Journey are eligible modes while other modes and replays are excluded`() {
         assertReason(base().copy(campaign = false), InterstitialReason.NOT_CAMPAIGN)
+        assertTrue(InterstitialPolicy.evaluate(base().copy(campaign = false, infinite = true)).eligible)
         assertTrue(InterstitialPolicy.evaluate(base().copy(campaign = false, autoJourney = true)).eligible)
         assertReason(base().copy(forwardProgression = false), InterstitialReason.NOT_FORWARD_PROGRESS)
     }
@@ -27,26 +28,24 @@ class M4InterstitialPolicyTest {
     }
 
     @Test
-    fun `cooldown and recent rewarded use exact 120 second edge`() {
+    fun `rewarded ad blocks interstitial for exactly sixty seconds`() {
         assertReason(
-            base().copy(lastFullScreenElapsedMillis = 1_000L, nowElapsedMillis = 120_999L),
-            InterstitialReason.COOLDOWN,
+            base().copy(nowElapsedMillis = 60_999L, lastRewardedElapsedMillis = 1_000L),
+            InterstitialReason.RECENT_REWARDED,
         )
         assertTrue(
             InterstitialPolicy.evaluate(
-                base().copy(lastFullScreenElapsedMillis = 1_000L, nowElapsedMillis = 121_000L),
+                base().copy(nowElapsedMillis = 61_000L, lastRewardedElapsedMillis = 1_000L),
             ).eligible,
         )
         assertReason(
-            base().copy(lastRewardedElapsedMillis = 1_001L, nowElapsedMillis = 121_000L),
+            base().copy(nowElapsedMillis = 999L, lastRewardedElapsedMillis = 1_000L),
             InterstitialReason.RECENT_REWARDED,
         )
     }
 
     @Test
-    fun `daily cap rollback consent load lifecycle and overlap fail closed`() {
-        assertReason(base().copy(interstitialsShownOnStoredDate = 4), InterstitialReason.DAILY_CAP)
-        assertReason(base().copy(nowDate = LocalDate.of(2026, 8, 18)), InterstitialReason.DATE_ROLLBACK)
+    fun `consent load lifecycle and overlap fail closed`() {
         assertReason(base().copy(consentAllowsAds = false), InterstitialReason.CONSENT_BLOCKED)
         assertReason(base().copy(loaded = false), InterstitialReason.NOT_LOADED)
         assertReason(base().copy(foreground = false), InterstitialReason.BACKGROUND)
@@ -55,24 +54,16 @@ class M4InterstitialPolicyTest {
     }
 
     @Test
-    fun `wall clock rollback cannot bypass persisted cooldown`() {
-        assertReason(
-            base().copy(
-                lastFullScreenElapsedMillis = null,
-                nowWallMillis = 900_000L,
-                lastFullScreenWallMillis = 1_000_000L,
-            ),
-            InterstitialReason.COOLDOWN,
-        )
-    }
-
-    @Test
-    fun `one process wide full screen owner at a time`() {
+    fun `only a completed rewarded ad starts the rewarded guard`() {
         val clock = FakeClock()
         val coordinator = FullScreenAdCoordinator(clock)
         assertTrue(coordinator.tryAcquire(FullScreenOwner.REWARDED))
         assertFalse(coordinator.tryAcquire(FullScreenOwner.INTERSTITIAL))
-        coordinator.release(FullScreenOwner.REWARDED, shown = true)
+        coordinator.release(FullScreenOwner.REWARDED, completed = false)
+        assertEquals(null, coordinator.lastRewardedElapsedMillis)
+
+        assertTrue(coordinator.tryAcquire(FullScreenOwner.REWARDED))
+        coordinator.release(FullScreenOwner.REWARDED, completed = true)
         assertTrue(coordinator.tryAcquire(FullScreenOwner.INTERSTITIAL))
         assertEquals(clock.elapsed, coordinator.lastRewardedElapsedMillis)
     }
@@ -91,16 +82,9 @@ class M4InterstitialPolicyTest {
 
     private fun base() = InterstitialPolicyInput(
         campaign = true,
-        lifetimeCampaignCompletions = 10,
         forwardProgression = true,
         eligibleCompletionsSinceLastAd = 5,
-        nowDate = LocalDate.of(2026, 8, 19),
-        storedDailyDate = LocalDate.of(2026, 8, 19),
-        interstitialsShownOnStoredDate = 0,
-        nowWallMillis = 2_000_000L,
-        lastFullScreenWallMillis = null,
-        nowElapsedMillis = 500_000L,
-        lastFullScreenElapsedMillis = null,
+        nowElapsedMillis = 100_000L,
         lastRewardedElapsedMillis = null,
         consentAllowsAds = true,
         loaded = true,

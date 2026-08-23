@@ -12,7 +12,7 @@ MAGNETRAIL_ENABLE_LIVE_ADS=false
 
 # M5 currently permits live ads only after the owner confirms a general-audience launch.
 MAGNETRAIL_TARGET_AUDIENCE=general
-MAGNETRAIL_PRIVACY_POLICY_URL=https://REPLACE_WITH_PUBLIC_POLICY_URL
+MAGNETRAIL_PRIVACY_POLICY_URL=https://naimish0.github.io/Magnetrail/
 
 # Owner-authorized upload key. The keystore and passwords must stay outside Git.
 MAGNETRAIL_UPLOAD_STORE_FILE=/absolute/path/to/upload-key.jks

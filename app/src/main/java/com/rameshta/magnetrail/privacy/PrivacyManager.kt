@@ -159,7 +159,7 @@ private class UmpConsentGateway(
         val couldShow = consentInformation.consentStatus == ConsentInformation.ConsentStatus.REQUIRED
         if (couldShow && !fullScreenCoordinator.tryAcquire(FullScreenOwner.CONSENT)) return onComplete(true)
         UserMessagingPlatform.loadAndShowConsentFormIfRequired(host) { error ->
-            if (couldShow) fullScreenCoordinator.release(FullScreenOwner.CONSENT, shown = false)
+            if (couldShow) fullScreenCoordinator.release(FullScreenOwner.CONSENT, completed = false)
             onComplete(error != null)
         }
     }
@@ -168,7 +168,7 @@ private class UmpConsentGateway(
         val host = activity.get() ?: return onComplete(true)
         if (!fullScreenCoordinator.tryAcquire(FullScreenOwner.CONSENT)) return onComplete(true)
         UserMessagingPlatform.showPrivacyOptionsForm(host) { error ->
-            fullScreenCoordinator.release(FullScreenOwner.CONSENT, shown = false)
+            fullScreenCoordinator.release(FullScreenOwner.CONSENT, completed = false)
             onComplete(error != null)
         }
     }

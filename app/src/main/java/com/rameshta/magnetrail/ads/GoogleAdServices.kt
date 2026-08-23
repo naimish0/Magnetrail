@@ -115,9 +115,9 @@ class GoogleRewardedAdService(
             val transactionId = UUID.randomUUID().toString()
             val rewardLedger = RewardedCallbackLedger(transactionId)
             val completed = AtomicBoolean(false)
-            fun finish(outcome: RewardedOutcome, shown: Boolean) {
+            fun finish(outcome: RewardedOutcome, rewardedCompleted: Boolean) {
                 if (!completed.compareAndSet(false, true)) return
-                coordinator.release(FullScreenOwner.REWARDED, shown)
+                coordinator.release(FullScreenOwner.REWARDED, rewardedCompleted)
                 mutableState.value = RewardedAdState.UNAVAILABLE
                 if (continuation.isActive) continuation.resume(outcome)
                 preloadIfAllowed()
@@ -130,20 +130,20 @@ class GoogleRewardedAdService(
                 override fun onAdDismissedFullScreenContent() {
                     val outcome = rewardLedger.dismiss()
                     analytics.track(AnalyticsEvent.RewardedDismiss(outcome is RewardedOutcome.Earned))
-                    finish(outcome, shown = true)
+                    finish(outcome, rewardedCompleted = outcome is RewardedOutcome.Earned)
                 }
 
                 override fun onAdFailedToShowFullScreenContent(error: AdError) {
                     val category = error.coarseCategory()
                     analytics.track(AnalyticsEvent.AdShowFailure("rewarded", category))
-                    finish(RewardedOutcome.Failed(category), shown = false)
+                    finish(RewardedOutcome.Failed(category), rewardedCompleted = false)
                 }
             }
             runCatching {
                 ad.show(activity) {
                     if (rewardLedger.rewardCallback()) analytics.track(AnalyticsEvent.RewardedEarned)
                 }
-            }.onFailure { finish(RewardedOutcome.Failed("sdk_exception"), shown = false) }
+            }.onFailure { finish(RewardedOutcome.Failed("sdk_exception"), rewardedCompleted = false) }
         }
     }
 
@@ -220,9 +220,9 @@ class GoogleInterstitialAdService(
                 loadedAd = null
                 mutableState.value = InterstitialAdState.SHOWING
                 val completed = AtomicBoolean(false)
-                fun finish(outcome: InterstitialOutcome, shown: Boolean) {
+                fun finish(outcome: InterstitialOutcome, completedSuccessfully: Boolean) {
                     if (!completed.compareAndSet(false, true)) return
-                    coordinator.release(FullScreenOwner.INTERSTITIAL, shown)
+                    coordinator.release(FullScreenOwner.INTERSTITIAL, completedSuccessfully)
                     mutableState.value = InterstitialAdState.UNAVAILABLE
                     if (continuation.isActive) continuation.resume(outcome)
                     preloadIfAllowed()
@@ -234,17 +234,19 @@ class GoogleInterstitialAdService(
 
                     override fun onAdDismissedFullScreenContent() {
                         analytics.track(AnalyticsEvent.InterstitialDismiss)
-                        finish(InterstitialOutcome.Dismissed, shown = true)
+                        finish(InterstitialOutcome.Dismissed, completedSuccessfully = true)
                     }
 
                     override fun onAdFailedToShowFullScreenContent(error: AdError) {
                         val category = error.coarseCategory()
                         analytics.track(AnalyticsEvent.AdShowFailure("interstitial", category))
-                        finish(InterstitialOutcome.Failed(category), shown = false)
+                        finish(InterstitialOutcome.Failed(category), completedSuccessfully = false)
                     }
                 }
                 runCatching { ad.show(activity) }
-                    .onFailure { finish(InterstitialOutcome.Failed("sdk_exception"), shown = false) }
+                    .onFailure {
+                        finish(InterstitialOutcome.Failed("sdk_exception"), completedSuccessfully = false)
+                    }
             }
         }
 

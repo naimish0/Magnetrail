@@ -210,8 +210,15 @@ class GameViewModel(
             if (state.gameMode == GameMode.PLAYTEST && result.success && result.isDeadlocked) 1 else 0
         val campaignWin = result.isWin && state.gameMode == GameMode.CAMPAIGN
         val autoJourneyWin = result.isWin && state.isAutoJourney && state.autoJourneyInternalId != null
-        val wasFirstClear = campaignWin && state.currentLevel.id !in state.progress.firstClearRewardedLevelIds ||
-            autoJourneyWin && state.autoJourneyInternalId !in state.progress.completedAutoJourneyIds
+        val normalInfiniteWin = result.isWin && state.gameMode == GameMode.INFINITE &&
+            !state.isAutoJourney && state.infinitePuzzleId != null
+        val normalInfiniteFirstClear = normalInfiniteWin && state.progress.infinite.history.lastOrNull { entry ->
+            entry.puzzleId == state.infinitePuzzleId && entry.ordinal == state.progress.infinite.selectionOrdinal
+        }?.completed == false
+        val wasFirstClear =
+            campaignWin && state.currentLevel.id !in state.progress.firstClearRewardedLevelIds ||
+                autoJourneyWin && state.autoJourneyInternalId !in state.progress.completedAutoJourneyIds ||
+                normalInfiniteFirstClear
         val completedIds = if (campaignWin) {
             state.progress.completedLevelIds + state.currentLevel.id
         } else {
@@ -417,6 +424,7 @@ class GameViewModel(
                     val localGrade = requireNotNull(current.completionReceipt)
                     _uiState.value = current.copy(
                         completionReceipt = localGrade.copy(rewards = receipt.rewards),
+                        completionWasFirstClear = receipt.firstCompletion,
                         progress = current.progress.copy(
                             coinBalance = receipt.rewards.resultingBalance,
                             infinite = current.progress.infinite.copy(

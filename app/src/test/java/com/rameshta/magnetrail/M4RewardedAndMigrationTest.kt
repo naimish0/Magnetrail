@@ -81,7 +81,7 @@ class M4RewardedAndMigrationTest {
     }
 
     @Test
-    fun `reward transactions are durable idempotent capped and one-credit only`() = runTest {
+    fun `reward transactions are durable idempotent unlimited and one-credit-at-a-time`() = runTest {
         val store = dataStore(this)
         var repository = repository(store)
         val date = LocalDate.of(2026, 8, 19)
@@ -94,7 +94,7 @@ class M4RewardedAndMigrationTest {
         assertTrue(repository.consumeRewardedHintCredit("txn-1"))
         assertFalse(repository.consumeRewardedHintCredit("txn-1"))
 
-        for (index in 2..5) {
+        for (index in 2..12) {
             assertEquals(
                 RewardedCreditGrantResult.Granted,
                 repository.grantRewardedHintCredit("txn-$index", date),
@@ -102,11 +102,7 @@ class M4RewardedAndMigrationTest {
             assertTrue(repository.consumeRewardedHintCredit("txn-$index"))
         }
         assertEquals(
-            RewardedCreditGrantResult.DailyCapReached,
-            repository.grantRewardedHintCredit("txn-6", date),
-        )
-        assertEquals(
-            RewardedCreditGrantResult.DateRollback,
+            RewardedCreditGrantResult.Granted,
             repository.grantRewardedHintCredit("rollback", date.minusDays(1)),
         )
     }
@@ -253,14 +249,14 @@ class M4RewardedAndMigrationTest {
             values[stringPreferencesKey("last_full_screen_ad_date")] = "corrupt"
         }
         restored = repository(store).preferences.first()
-        assertEquals(5, restored.progress.monetization.rewardedGrantsOnDate)
-        assertEquals(4, restored.progress.monetization.interstitialsShownOnDate)
+        assertEquals(99, restored.progress.monetization.rewardedGrantsOnDate)
+        assertEquals(99, restored.progress.monetization.interstitialsShownOnDate)
         assertNull(restored.progress.monetization.pendingAdHintTransactionId)
         assertEquals(LocalDate.MAX.toString(), restored.progress.monetization.rewardedGrantDate)
         assertEquals(LocalDate.MAX.toString(), restored.progress.monetization.lastFullScreenAdDate)
         assertEquals(
-            RewardedCreditGrantResult.DateRollback,
-            repository(store).grantRewardedHintCredit("blocked", LocalDate.of(2026, 8, 19)),
+            RewardedCreditGrantResult.Granted,
+            repository(store).grantRewardedHintCredit("allowed", LocalDate.of(2026, 8, 19)),
         )
     }
 

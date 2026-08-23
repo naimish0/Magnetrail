@@ -184,6 +184,24 @@ class MainActivity : ComponentActivity() {
                         LaunchedEffect(uiState.settings.diagnosticsEnabled, privacyState) {
                             services.observability.apply(uiState.settings.diagnosticsEnabled, privacyState)
                         }
+                        LaunchedEffect(
+                            uiState.isComplete,
+                            uiState.completionPersisted,
+                            uiState.gameMode,
+                            uiState.currentLevel.id,
+                            uiState.infinitePuzzleId,
+                            uiState.autoJourneyInternalId,
+                        ) {
+                            if (uiState.isComplete &&
+                                uiState.completionPersisted &&
+                                uiState.gameMode in setOf(GameMode.CAMPAIGN, GameMode.INFINITE)
+                            ) {
+                                monetizationController.showInterstitialForCompletion(
+                                    activity = this@MainActivity,
+                                    uiState = uiState,
+                                )
+                            }
+                        }
                         LaunchedEffect(uiState.destination, uiState.currentLevel.id, privacyState.flowResult) {
                             services.crashReporter.setKey(CrashKey.SCREEN, uiState.destination.name.lowercase())
                             services.crashReporter.setKey(
@@ -250,19 +268,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             },
                             onNextLevel = {
-                                if (currentUiState.gameMode == GameMode.INFINITE && !currentUiState.isAutoJourney ||
-                                    currentUiState.gameMode == GameMode.PLAYTEST
-                                ) {
-                                    gameViewModel.onAction(GameAction.NextLevel)
-                                } else {
-                                    lifecycleScope.launch {
-                                        monetizationController.nextLevel(
-                                            activity = this@MainActivity,
-                                            uiState = currentUiState,
-                                            navigate = { gameViewModel.onAction(GameAction.NextLevel) },
-                                        )
-                                    }
-                                }
+                                gameViewModel.onAction(GameAction.NextLevel)
                             },
                             onShareCelebration = ::shareCelebration,
                             privacyOptionsRequired = privacyState.privacyOptionsRequired,

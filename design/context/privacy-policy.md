@@ -1,8 +1,8 @@
 # Magnetrail Privacy Policy
 
-Last updated: 22 August 2026
+Last updated: 23 August 2026
 
-Status: deployable policy text, but not yet a publishable production policy. The repository does not contain a verified developer/publisher legal identity, privacy contact, postal address, or active public HTTPS policy URL. Those values are marked below and must be supplied and legally reviewed before publication.
+Status: deployable policy text with a configured public HTTPS URL. The publisher must still verify that the hosted page matches the exact release binary and complete the applicable legal and Google Play review before publication.
 
 ## Overview
 
@@ -35,7 +35,11 @@ Depending on region, consent, device settings, and Google configuration, Google 
 
 This processing may be used to deliver, limit, personalize where permitted, measure, and protect advertising. Non-personalized ads may still use identifiers or local storage for frequency capping and aggregated reporting. Google acts under its own terms and retention practices. See [Google's privacy policy](https://policies.google.com/privacy), [Google Mobile Ads data disclosures](https://developers.google.com/admob/android/privacy/play-data-disclosure), and [Google's ad-serving modes](https://developers.google.com/admob/android/privacy/ad-serving-modes).
 
-Interstitial opportunities are counted locally after each five eligible first-time level completions. Tutorial completions, replays, failed attempts, hints, and rewarded-ad skips do not count. Missing consent or an unavailable ad never blocks progression and does not create delayed “ad debt.”
+Rewarded ads are optional and may grant one safe-move hint or an eligible Campaign or Infinite level skip only after Google's SDK confirms that the rewarded ad was completed. Magnetrail applies no daily limit to rewarded-ad use, although an earned hint must be used before another hint credit can be held.
+
+Campaign Levels 1–10 are excluded from interstitial counting. Completing Campaign Level 11 creates the first Campaign interstitial opportunity. After that boundary, each five eligible first-time completions across Campaign, normal Infinite, and Auto Journey create another opportunity. Daily Challenges, human playtests, replays, failed attempts, hints, and rewarded-ad skips do not count.
+
+An eligible interstitial is evaluated immediately after the solved board is safely recorded and may appear over the Celebration screen; it is not triggered by the Next button. Magnetrail applies no daily interstitial limit or general interstitial cooldown. An interstitial is suppressed for 60 seconds after—and only after—a rewarded ad is completed and its reward is earned. Missing consent, an unavailable ad, or another failed eligibility check never blocks gameplay, and a skipped opportunity creates no delayed “ad debt.”
 
 ## Optional usage and crash diagnostics
 
@@ -49,6 +53,10 @@ When enabled, Firebase Analytics may process coarse app-use events and associate
 
 Optional diagnostics can be disabled in Settings. The app asks Crashlytics to delete unsent reports when collection is disabled. Data already received by Google is subject to Google's retention and deletion controls.
 
+## User-initiated sharing
+
+The Celebration screen includes a Share button. When selected, Magnetrail captures the visible game screen as a PNG in temporary app cache and opens the Android Sharesheet with that screenshot and the Magnetrail Google Play URL. Magnetrail does not select a recipient or upload the screenshot itself. The app or service selected by the player receives the shared content and handles it under its own privacy policy. The cached screenshot may remain until it is replaced, app cache is cleared, or the app is uninstalled.
+
 ## Sharing and purposes
 
 Magnetrail does not sell an account profile because it does not operate an account system. Data may be shared with or processed by Google and its advertising partners through Mobile Ads and UMP for ad delivery, measurement, consent management, security, and fraud prevention. If optional diagnostics are configured and enabled, Google may process Analytics and Crashlytics data to understand app use and diagnose reliability problems.
@@ -57,7 +65,7 @@ No other application network client, backend API, social login, payment SDK, or 
 
 ## Security
 
-The app disables cleartext network traffic, stores progress in private app storage, excludes app data from Android backup and device transfer, limits diagnostic event fields, and requires release builds to fail closed when production advertising, signing, audience, Firebase, or privacy-URL configuration is incomplete. No security measure eliminates every risk.
+The app disables cleartext network traffic, stores progress in private app storage, excludes app data from Android backup and device transfer, limits diagnostic event fields, and requires release builds to fail closed when production advertising, signing, audience, Firebase, or privacy-URL configuration is incomplete. Celebration screenshots are shared through a read-only, temporary content URI rather than broad storage access. No security measure eliminates every risk.
 
 ## Children and target audience
 
@@ -67,6 +75,7 @@ The source requires an owner-reviewed `general` target-audience configuration be
 
 - Use **Privacy options** in Settings when UMP indicates that the entry point is required.
 - Disable **Usage & crash diagnostics** in Settings.
+- Choose whether and where to share a Celebration screenshot.
 - Clear app storage or uninstall Magnetrail to remove locally stored progress and Auto Journey history.
 - Use Google's own privacy and ad controls for data processed by Google.
 - Contact the publisher for a privacy request after the verified contact below is configured.
@@ -77,11 +86,11 @@ Because Magnetrail has no account, the publisher may not be able to associate a 
 
 Local data remains until it is replaced by normal gameplay, cleared through app storage, or removed by uninstalling. Magnetrail does not currently synchronize it to a developer backend. Google and advertising partners determine retention for data they process; consult their linked policies and the production console configuration.
 
-## Publisher and contact — required before publication
+## Publisher and contact
 
-- Legal developer/publisher identity: `[OWNER MUST CONFIGURE]`
-- Privacy contact email or other verified contact method: `[OWNER MUST CONFIGURE]`
-- Postal address, if legally required: `[OWNER/LEGAL MUST CONFIGURE]`
-- Public, non-editable HTTPS URL for this policy: `[OWNER MUST HOST AND CONFIGURE]`
+- Developer/publisher: Naimish Gupta
+- Privacy contact: [naimish.app@gmail.com](mailto:naimish.app@gmail.com)
+- Postal address: Sandi, Hardoi, 241403, Uttar Pradesh
+- Public HTTPS URL for this policy: [https://naimish0.github.io/Magnetrail/](https://naimish0.github.io/Magnetrail/)
 
-This checked-in file and its HTML companion are not themselves a Google Play privacy-policy URL. The final policy must be hosted publicly, reviewed against the exact release binary and Play declarations, and configured through `MAGNETRAIL_PRIVACY_POLICY_URL`.
+Before publication, verify that the hosted page matches this reviewed policy and reconcile it with the exact release binary and Play declarations.
