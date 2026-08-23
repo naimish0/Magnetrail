@@ -10,6 +10,18 @@ plugins {
     alias(libs.plugins.kotlin.serialization) apply false
 }
 
+val syncDocsTestResources by tasks.registering(Sync::class) {
+    description = "Copy stable documentation fixtures to a generated test-resource directory."
+    from(layout.projectDirectory.dir("docs"))
+    from(layout.projectDirectory.dir("design/context"))
+    into(layout.buildDirectory.dir("generated/magnetrailTestResources"))
+    exclude(
+        "content/combined_v10_v11/staging/**",
+        "content/generator_v6_1/staging/**",
+        "content/generator_v6_1/benchmark/**",
+    )
+}
+
 tasks.register("certifyCampaignContent") {
     group = "verification"
     description = "Certify the checked-in Magnetrail M3 campaign and daily fallback bank."

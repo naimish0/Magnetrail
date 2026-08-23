@@ -77,9 +77,9 @@ require(humanPlaytestCatalog in setOf("v6", "v10")) {
 }
 
 val syncM3Levels by tasks.registering(Sync::class) {
-    from(rootProject.layout.projectDirectory.file("docs/Magnetrail_Campaign_Levels_v3.json"))
-    from(rootProject.layout.projectDirectory.file("docs/Magnetrail_Daily_Fallbacks_v1.json"))
-    from(rootProject.layout.projectDirectory.file("docs/content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json"))
+    from(rootProject.layout.projectDirectory.file("design/context/Magnetrail_Campaign_Levels_v3.json"))
+    from(rootProject.layout.projectDirectory.file("design/context/Magnetrail_Daily_Fallbacks_v1.json"))
+    from(rootProject.layout.projectDirectory.file("design/context/content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json"))
     into(layout.buildDirectory.dir("generated/magnetrailAssets/levels"))
     rename("Magnetrail_Campaign_Levels_v3.json", "magnetrail_campaign_levels_v3.json")
     rename("Magnetrail_Daily_Fallbacks_v1.json", "magnetrail_daily_fallbacks_v1.json")
@@ -94,9 +94,9 @@ val syncV6Pilot by tasks.registering(Sync::class) {
     from(
         rootProject.layout.projectDirectory.file(
             if (playtestCatalog == "calibration") {
-                "docs/content/generator_v6/staging/calibration/GENERATOR_V6_CALIBRATION_CATALOG.json"
+                "design/context/content/generator_v6/staging/calibration/GENERATOR_V6_CALIBRATION_CATALOG.json"
             } else {
-                "docs/content/generator_v6/staging/sealed-validation/GENERATOR_V6_SEALED_VALIDATION_CATALOG.json"
+                "design/context/content/generator_v6/staging/sealed-validation/GENERATOR_V6_SEALED_VALIDATION_CATALOG.json"
             },
         ),
     )
@@ -203,13 +203,9 @@ android {
             )
         }
         named("test") {
-            resources.directories.add(rootProject.file("docs").absolutePath)
-            // V6.1 checkpoints and benchmark reports are mutable staging evidence, not app test
-            // fixtures. Excluding them keeps a passed source-bound preflight reusable on resume.
-            (resources as org.gradle.api.tasks.util.PatternFilterable).exclude(
-                "content/combined_v10_v11/staging/**",
-                "content/generator_v6_1/staging/**",
-                "content/generator_v6_1/benchmark/**",
+            resources.directories.add(
+                rootProject.layout.buildDirectory.dir("generated/magnetrailTestResources")
+                    .get().asFile.absolutePath,
             )
         }
         named("debug") {
@@ -226,6 +222,9 @@ tasks.named("preBuild") {
 
 tasks.configureEach {
     if (name == "preDebugBuild") dependsOn(syncV6Pilot)
+    if (name.endsWith("UnitTestJavaRes")) {
+        dependsOn(rootProject.tasks.named("syncDocsTestResources"))
+    }
 }
 
 val verifyGeneratorV6ReleaseExclusion by tasks.registering {
@@ -245,9 +244,9 @@ val verifyGeneratorV6ReleaseExclusion by tasks.registering {
 val verifyPrivacyPolicyArtifacts by tasks.registering {
     group = "verification"
     description = "Verify the in-app and deployable privacy-policy artifacts remain truthful and explicitly blocked on owner values."
-    val markdown = rootProject.layout.projectDirectory.file("docs/privacy-policy.md")
-    val html = rootProject.layout.projectDirectory.file("docs/privacy-policy.html")
-    val dataSafety = rootProject.layout.projectDirectory.file("docs/DATA_SAFETY_MAPPING.md")
+    val markdown = rootProject.layout.projectDirectory.file("design/context/privacy-policy.md")
+    val html = rootProject.layout.projectDirectory.file("docs/index.html")
+    val dataSafety = rootProject.layout.projectDirectory.file("design/context/DATA_SAFETY_MAPPING.md")
     inputs.files(markdown, html, dataSafety)
     doLast {
         val markdownText = markdown.asFile.readText()
