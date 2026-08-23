@@ -16,6 +16,24 @@ class AssetLevelCatalog(
 
     fun loadInfiniteCatalog(): LevelCatalog = load(INFINITE_ASSET_PATH)
 
+    fun loadHumanPlaytestCatalog(selection: String): LevelCatalog = when (selection) {
+        "v10" -> load(CAMPAIGN_ASSET_PATH).also { catalog ->
+            require(
+                catalog.generatorVersion == 5 &&
+                    catalog.contentVersion == 10 &&
+                    catalog.levels.size == V10_CAMPAIGN_SIZE,
+            ) { "The V10 human-playtest source is not the expected promoted 2,205-board campaign." }
+        }
+        "v6" -> load(V6_HUMAN_PLAYTEST_ASSET_PATH).also { catalog ->
+            require(
+                catalog.generatorVersion == 6 &&
+                    catalog.contentVersion == 12 &&
+                    catalog.levels.size == V6_PILOT_SIZE,
+            ) { "The V6 human-playtest catalog is not the expected sealed 30-board study." }
+        }
+        else -> error("Unsupported human-playtest catalog '$selection'")
+    }
+
     private fun load(path: String): LevelCatalog = try {
         val source = assets.open(path).bufferedReader().use { it.readText() }
         parser.parseCatalog(source)
@@ -30,5 +48,8 @@ class AssetLevelCatalog(
         const val CAMPAIGN_ASSET_PATH = "levels/magnetrail_campaign_levels_v3.json"
         const val DAILY_FALLBACK_ASSET_PATH = "levels/magnetrail_daily_fallbacks_v1.json"
         const val INFINITE_ASSET_PATH = "levels/magnetrail_infinite_catalog_v1.json"
+        const val V6_HUMAN_PLAYTEST_ASSET_PATH = "levels/magnetrail_v6_calibration.json"
+        const val V10_CAMPAIGN_SIZE = 2_205
+        const val V6_PILOT_SIZE = 30
     }
 }

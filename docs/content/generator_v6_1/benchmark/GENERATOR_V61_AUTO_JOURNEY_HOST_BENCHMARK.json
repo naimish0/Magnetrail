@@ -1,0 +1,62 @@
+{
+    "schemaVersion": 1,
+    "generatorIdentity": "Generator V6.1 — Semantic Novelty plus Cued Multi-Phase Adversarial Difficulty",
+    "environment": "host JVM; not an Android device",
+    "generationTimestamp": "2026-08-22T10:31:40.679430Z",
+    "attemptsPerBand": 2,
+    "runsOffAndroidMainThreadByContract": true,
+    "thermalMeasurementAvailable": false,
+    "uiResponsivenessMeasured": false,
+    "rows": [
+        {
+            "band": "Easy",
+            "boardSize": "4x4",
+            "wallMillis": 133,
+            "threadCpuMillis": 130,
+            "heapDeltaBytes": 8273480,
+            "status": "CERTIFIED",
+            "attempts": 1,
+            "decisionStates": 6
+        },
+        {
+            "band": "Medium",
+            "boardSize": "5x5",
+            "wallMillis": 4111,
+            "threadCpuMillis": 4063,
+            "heapDeltaBytes": 173296488,
+            "status": "CERTIFIED",
+            "attempts": 1,
+            "decisionStates": 48
+        },
+        {
+            "band": "Hard",
+            "boardSize": "6x6",
+            "wallMillis": 84,
+            "threadCpuMillis": 82,
+            "heapDeltaBytes": 4139232,
+            "status": "CERTIFIED",
+            "attempts": 1,
+            "decisionStates": 249
+        },
+        {
+            "band": "Super Hard",
+            "boardSize": "7x7",
+            "wallMillis": 565,
+            "threadCpuMillis": 553,
+            "heapDeltaBytes": 116814464,
+            "status": "CERTIFIED",
+            "attempts": 1,
+            "decisionStates": 890
+        },
+        {
+            "band": "Expert",
+            "boardSize": "8x8",
+            "wallMillis": 2314,
+            "threadCpuMillis": 2259,
+            "heapDeltaBytes": 96742136,
+            "status": "CERTIFIED",
+            "attempts": 1,
+            "decisionStates": 4554
+        }
+    ]
+}

@@ -63,6 +63,32 @@ class ContentFingerprintSymmetryTest {
         assertEquals(ContentFingerprint.symmetryNormalized(source), ContentFingerprint.symmetryNormalized(reflected))
     }
 
+    @Test
+    fun `component fingerprints expose wall only and direction only variation`() {
+        val source = board()
+        val wallVariant = source.copy(walls = source.walls + Wall(Position(1, 1)))
+        val directionVariant = source.copy(
+            arrows = source.arrows.map { it.copy(printedDirection = Direction.EAST) },
+        )
+
+        assertEquals(
+            ContentFingerprint.arrowLayoutSymmetryNormalized(source),
+            ContentFingerprint.arrowLayoutSymmetryNormalized(wallVariant),
+        )
+        assertEquals(
+            ContentFingerprint.interactiveLayoutSymmetryNormalized(source),
+            ContentFingerprint.interactiveLayoutSymmetryNormalized(wallVariant),
+        )
+        assertEquals(
+            ContentFingerprint.arrowLayoutSymmetryNormalized(source),
+            ContentFingerprint.arrowLayoutSymmetryNormalized(directionVariant),
+        )
+        assertNotEquals(
+            ContentFingerprint.interactiveLayoutSymmetryNormalized(source),
+            ContentFingerprint.interactiveLayoutSymmetryNormalized(directionVariant),
+        )
+    }
+
     private fun board() = LevelDefinition(
         id = "source",
         number = 1,

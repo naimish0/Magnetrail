@@ -5,6 +5,8 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +32,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -70,6 +73,10 @@ import com.rameshta.magnetrail.ui.theme.MagnetrailPush
 import com.rameshta.magnetrail.ui.theme.MagnetrailSuccess
 import com.rameshta.magnetrail.ads.RewardedOffer
 import com.rameshta.magnetrail.ads.RewardedOfferStatus
+import com.rameshta.magnetrail.playtest.HumanPlaytestDifficulty
+import com.rameshta.magnetrail.playtest.HUMAN_PLAYTEST_FAIRNESS_ANCHORS
+import com.rameshta.magnetrail.playtest.HumanPlaytestGuessResponse
+import com.rameshta.magnetrail.playtest.HumanPlaytestOutcome
 import kotlin.math.PI
 import kotlin.math.sin
 
@@ -109,7 +116,9 @@ fun GameScreen(
     val journeyNumber = uiState.progress.infinite.selectionOrdinal + 1
     val headerEyebrow = when (uiState.gameMode) {
         GameMode.DAILY -> "Daily Challenge"
-        GameMode.INFINITE -> if (
+        GameMode.INFINITE -> if (uiState.isAutoJourney) {
+            "Level ${uiState.currentLevel.number}"
+        } else if (
             uiState.infiniteDifficulty == com.rameshta.magnetrail.core.infinite.InfiniteDifficulty.PROGRESSIVE
         ) {
             "Level $journeyNumber · Progressive"
@@ -117,13 +126,16 @@ fun GameScreen(
             "Infinite Puzzle"
         }
         GameMode.CAMPAIGN -> "Level ${uiState.currentLevel.number.toString().padStart(2, '0')}"
+        GameMode.PLAYTEST -> uiState.humanPlaytestAssignment?.blindId ?: "Blind Board"
     }
     val headerTitle = when (uiState.gameMode) {
         GameMode.DAILY -> uiState.dailyDateLabel ?: uiState.currentLevel.title
-        GameMode.INFINITE -> uiState.currentLevel.title.removePrefix("Infinite ")
+        GameMode.INFINITE -> if (uiState.isAutoJourney) "Auto Journey · ${uiState.playDifficultyLabel}" else
+            uiState.currentLevel.title.removePrefix("Infinite ")
         GameMode.CAMPAIGN -> uiState.currentLevel.title
+        GameMode.PLAYTEST -> "Difficulty hidden"
     }
-    val completionCelebration = if (uiState.isComplete) {
+    val completionCelebration = if (uiState.isComplete && uiState.gameMode != GameMode.PLAYTEST) {
         completionCelebrationStyle(
             levelIdentity = uiState.infinitePuzzleId ?: uiState.dailyId ?: uiState.currentLevel.id,
             stars = uiState.completionReceipt?.grade?.stars ?: 1,
@@ -159,47 +171,54 @@ fun GameScreen(
                     color = MagnetrailMuted,
                 )
             }
-            GameplayMetrics(uiState)
-            GameStatusRow(uiState)
+            if (uiState.humanPlaytestOutcome == null) {
+                GameplayMetrics(uiState)
+                GameStatusRow(uiState)
 
-            tutorialLesson?.let { lesson ->
-                TutorialCoachCard(
-                    lesson = lesson,
-                    reducedMotion = motionPolicy.reduced,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = spacing.screenHorizontal, vertical = spacing.xs),
-                )
-            }
+                tutorialLesson?.let { lesson ->
+                    TutorialCoachCard(
+                        lesson = lesson,
+                        reducedMotion = motionPolicy.reduced,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = spacing.screenHorizontal, vertical = spacing.xs),
+                    )
+                }
 
-            Box(
-                modifier = Modifier.fillMaxWidth().weight(1f),
-                contentAlignment = Alignment.Center,
-            ) {
-                MagnetrailBoard(
-                    boardState = uiState.boardState,
-                    inFlightResult = uiState.inFlightResult,
-                    hintPreviewResult = uiState.hintPreviewResult,
-                    turnVisualState = turnVisualState,
-                    motionPolicy = motionPolicy,
-                    highContrastFields = uiState.settings.highContrastFields,
-                    suggestedArrowId = uiState.suggestedArrowId,
-                    tutorialArrowId = tutorialLesson?.focusArrowId,
-                    inputEnabled = uiState.inputEnabled,
-                    onArrowTapped = { onAction(GameAction.LaunchArrow(it)) },
-                    modifier = Modifier
-                        .widthIn(max = if (uiState.isComplete) 220.dp else dimensions.boardMaxSize)
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                        .shadow(
-                            elevation = dimensions.boardElevation,
-                            shape = RoundedCornerShape(30.dp),
-                            clip = false,
-                        ),
-                )
+                Box(
+                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    MagnetrailBoard(
+                        boardState = uiState.boardState,
+                        inFlightResult = uiState.inFlightResult,
+                        hintPreviewResult = uiState.hintPreviewResult,
+                        turnVisualState = turnVisualState,
+                        motionPolicy = motionPolicy,
+                        highContrastFields = uiState.settings.highContrastFields,
+                        suggestedArrowId = uiState.suggestedArrowId,
+                        tutorialArrowId = tutorialLesson?.focusArrowId,
+                        inputEnabled = uiState.inputEnabled,
+                        onArrowTapped = { onAction(GameAction.LaunchArrow(it)) },
+                        modifier = Modifier
+                            .widthIn(max = if (uiState.isComplete) 220.dp else dimensions.boardMaxSize)
+                            .fillMaxWidth()
+                            .aspectRatio(1f)
+                            .shadow(
+                                elevation = dimensions.boardElevation,
+                                shape = RoundedCornerShape(30.dp),
+                                clip = false,
+                            ),
+                    )
+                }
             }
 
                 when {
+                    uiState.humanPlaytestOutcome != null -> HumanPlaytestRatingCard(
+                        uiState = uiState,
+                        onAction = onAction,
+                        modifier = Modifier.weight(1f),
+                    )
                     uiState.isComplete -> CompletionCard(
                         uiState,
                         motionPolicy,
@@ -209,7 +228,7 @@ fun GameScreen(
                     )
                 }
 
-                if (!uiState.isComplete) {
+                if (!uiState.isComplete && uiState.humanPlaytestOutcome == null) {
                     GameControls(
                         uiState = uiState,
                         rewardedOffer = rewardedOffer,
@@ -457,6 +476,7 @@ private fun GameControls(
         )
         ActionButton(
             text = when {
+                uiState.gameMode == GameMode.PLAYTEST -> "Hint · recorded"
                 uiState.isHintLoading || uiState.isHintPurchaseInProgress -> "Finding…"
                 uiState.progress.coinBalance >= EconomyConfig.HINT_COST ->
                     "Hint · ${EconomyConfig.HINT_COST} coins"
@@ -464,15 +484,19 @@ private fun GameControls(
             },
             icon = R.drawable.ic_hint,
             description = when {
+                uiState.gameMode == GameMode.PLAYTEST -> "Request a free hint; use is recorded for the playtest"
                 uiState.isHintLoading || uiState.isHintPurchaseInProgress -> "Hint loading"
                 uiState.progress.coinBalance >= EconomyConfig.HINT_COST ->
                     "Request a solver hint for ${EconomyConfig.HINT_COST} coins; balance ${uiState.progress.coinBalance}"
                 else -> rewardedOffer.supportingText
             },
             enabled = uiState.canRequestHint &&
-                (uiState.progress.coinBalance >= EconomyConfig.HINT_COST || rewardedOffer.enabled),
+                (uiState.gameMode == GameMode.PLAYTEST ||
+                    uiState.progress.coinBalance >= EconomyConfig.HINT_COST || rewardedOffer.enabled),
             onClick = {
-                if (uiState.progress.coinBalance >= EconomyConfig.HINT_COST) {
+                if (uiState.gameMode == GameMode.PLAYTEST) {
+                    onAction(GameAction.RequestHint)
+                } else if (uiState.progress.coinBalance >= EconomyConfig.HINT_COST) {
                     onAction(GameAction.UseCoinHint)
                 } else {
                     onRewardedHint()
@@ -505,7 +529,17 @@ private fun GameControls(
                     controls(Modifier.weight(0.92f), Modifier.weight(1.08f))
                 }
             }
-            if (uiState.gameMode != GameMode.DAILY) {
+            if (uiState.gameMode == GameMode.PLAYTEST) {
+                ActionButton(
+                    text = "Could not complete",
+                    icon = R.drawable.ic_skip,
+                    description = "Stop this board and record it as not completed",
+                    enabled = uiState.inputEnabled && uiState.inFlightResult == null && !uiState.isHintLoading,
+                    onClick = { onAction(GameAction.AbandonHumanPlaytestBoard) },
+                    modifier = Modifier.fillMaxWidth(),
+                    primary = false,
+                )
+            } else if (uiState.gameMode != GameMode.DAILY) {
                 ActionButton(
                     text = "Skip level · AD · +${EconomyConfig.LEVEL_COMPLETION_REWARD} coins",
                     icon = R.drawable.ic_skip,
@@ -555,6 +589,222 @@ private fun ActionButton(
             shape = MaterialTheme.shapes.small,
             contentPadding = PaddingValues(horizontal = 12.dp),
         ) { content() }
+    }
+}
+
+@Composable
+private fun HumanPlaytestRatingCard(
+    uiState: GameUiState,
+    onAction: (GameAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val spacing = LocalMagnetrailSpacing.current
+    val outcome = requireNotNull(uiState.humanPlaytestOutcome)
+    val feedback = uiState.humanPlaytestFeedback
+    Card(
+        modifier = modifier.fillMaxWidth().padding(horizontal = spacing.screenHorizontal),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .testTag("human_playtest_feedback_scroll")
+                .verticalScroll(rememberScrollState())
+                .padding(spacing.md),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                if (outcome.outcome == HumanPlaytestOutcome.COMPLETED) "Board cleared" else "Board stopped",
+                modifier = Modifier.semantics { heading() },
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                color = if (outcome.outcome == HumanPlaytestOutcome.COMPLETED) {
+                    MagnetrailSuccess
+                } else {
+                    MaterialTheme.colorScheme.error
+                },
+            )
+            Text(
+                "How difficult did this board feel?",
+                modifier = Modifier.padding(top = spacing.xs),
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            )
+            Text(
+                "Rate your experience before seeing its assigned difficulty.",
+                modifier = Modifier.padding(top = spacing.xxs),
+                style = MaterialTheme.typography.bodySmall,
+                color = MagnetrailMuted,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            )
+            val maximumStudyRating = uiState.humanPlaytest.session?.assignments
+                ?.maxOfOrNull { it.expectedDifficulty.rating } ?: HumanPlaytestDifficulty.MASTER.rating
+            HumanPlaytestDifficulty.entries.filter { it.rating <= maximumStudyRating }.chunked(3).forEach { row ->
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(top = spacing.sm),
+                    horizontalArrangement = Arrangement.spacedBy(spacing.xs),
+                ) {
+                    row.forEach { difficulty ->
+                        OutlinedButton(
+                            onClick = { onAction(GameAction.RateHumanPlaytestBoard(difficulty.rating)) },
+                            enabled = !uiState.humanPlaytest.loading,
+                            modifier = Modifier.weight(1f).height(52.dp).semantics {
+                                contentDescription =
+                                    "Rate ${difficulty.rating}, ${difficulty.displayName}"
+                            },
+                            contentPadding = PaddingValues(horizontal = 4.dp),
+                        ) {
+                            Text(
+                                "${if (feedback.perceivedRating == difficulty.rating) "✓ " else ""}${difficulty.rating} · ${difficulty.displayName}",
+                                style = MaterialTheme.typography.labelSmall,
+                                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                                maxLines = 2,
+                            )
+                        }
+                    }
+                }
+            }
+            Text(
+                "How fair and predictable was the board?",
+                modifier = Modifier.padding(top = spacing.sm),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(top = spacing.xs),
+                verticalArrangement = Arrangement.spacedBy(spacing.xs),
+            ) {
+                HUMAN_PLAYTEST_FAIRNESS_ANCHORS.forEach { (rating, anchor) ->
+                    OutlinedButton(
+                        onClick = { onAction(GameAction.RateHumanPlaytestFairness(rating)) },
+                        modifier = Modifier.fillMaxWidth().semantics {
+                            contentDescription = "Fairness rating $rating of 5: $anchor"
+                        },
+                    ) {
+                        Text(
+                            "${if (feedback.fairnessRating == rating) "✓ " else ""}$rating. $anchor",
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Start,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    }
+                }
+            }
+            Text(
+                "A failed exploratory tap leaves the board unchanged. This question is about choosing " +
+                    "between successful moves when visible information and the known rules did not reveal a safer choice.",
+                modifier = Modifier.padding(top = spacing.sm),
+                style = MaterialTheme.typography.bodySmall,
+                color = MagnetrailMuted,
+            )
+            GuessPlaytestQuestion(
+                value = feedback.guessResponse,
+                onValue = { onAction(GameAction.SetHumanPlaytestGuessResponse(it)) },
+            )
+            BinaryPlaytestQuestion(
+                label = "Did this repeat a strategy seen earlier?",
+                value = feedback.repeatedStrategy,
+                onValue = { onAction(GameAction.SetHumanPlaytestRepeatedStrategy(it)) },
+            )
+            OutlinedTextField(
+                value = feedback.comment,
+                onValueChange = { onAction(GameAction.UpdateHumanPlaytestComment(it)) },
+                modifier = Modifier.fillMaxWidth().padding(top = spacing.xs),
+                label = { Text("Optional comment") },
+                maxLines = 2,
+            )
+            val answeredRequiredQuestions = listOf(
+                feedback.perceivedRating,
+                feedback.fairnessRating,
+                feedback.guessResponse,
+                feedback.repeatedStrategy,
+            ).count { it != null }
+            Text(
+                if (feedback.complete) {
+                    "All required questions answered. Save to continue."
+                } else {
+                    "$answeredRequiredQuestions of 4 required questions answered"
+                },
+                modifier = Modifier.padding(top = spacing.sm),
+                style = MaterialTheme.typography.bodySmall,
+                color = if (feedback.complete) MagnetrailSuccess else MagnetrailMuted,
+            )
+            Button(
+                onClick = { onAction(GameAction.SubmitHumanPlaytestFeedback) },
+                enabled = feedback.complete && !uiState.humanPlaytest.loading,
+                modifier = Modifier.fillMaxWidth().padding(top = spacing.sm),
+            ) {
+                Text(if (uiState.humanPlaytest.loading) "Saving…" else "Save response and continue")
+            }
+            uiState.humanPlaytest.message?.let { message ->
+                Text(
+                    message,
+                    modifier = Modifier.padding(top = spacing.xs),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+            Text(
+                "${outcome.totalActions} total actions · ${outcome.restarts} restarts · ${outcome.hintsUsed} hints",
+                modifier = Modifier.padding(top = spacing.sm),
+                style = MaterialTheme.typography.bodySmall,
+                color = MagnetrailMuted,
+            )
+        }
+    }
+}
+
+@Composable
+private fun GuessPlaytestQuestion(
+    value: HumanPlaytestGuessResponse?,
+    onValue: (HumanPlaytestGuessResponse) -> Unit,
+) {
+    val spacing = LocalMagnetrailSpacing.current
+    Column(modifier = Modifier.fillMaxWidth().padding(top = spacing.xs)) {
+        Text(
+            "Did this board require you to guess because visible information and the known rules could not distinguish a safer move?",
+            style = MaterialTheme.typography.bodySmall,
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = spacing.xs),
+            horizontalArrangement = Arrangement.spacedBy(spacing.xs),
+        ) {
+            HumanPlaytestGuessResponse.entries.forEach { response ->
+                OutlinedButton(
+                    onClick = { onValue(response) },
+                    modifier = Modifier.weight(1f).semantics {
+                        contentDescription = "Required guessing: ${response.displayName}"
+                    },
+                ) {
+                    Text(if (value == response) "✓ ${response.displayName}" else response.displayName)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun BinaryPlaytestQuestion(
+    label: String,
+    value: Boolean?,
+    onValue: (Boolean) -> Unit,
+) {
+    val spacing = LocalMagnetrailSpacing.current
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(top = spacing.xs),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(spacing.xs),
+    ) {
+        Text(label, modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodySmall)
+        listOf(false to "No", true to "Yes").forEach { (choice, labelText) ->
+            OutlinedButton(
+                onClick = { onValue(choice) },
+                modifier = Modifier.semantics {
+                    contentDescription = "Repeated strategy: $labelText"
+                },
+            ) {
+                Text(if (value == choice) "✓ $labelText" else labelText)
+            }
+        }
     }
 }
 
@@ -678,7 +928,7 @@ private fun CompletionCard(
                             color = MagnetrailMuted,
                         )
                     }
-                    if (uiState.gameMode == GameMode.INFINITE) {
+                    if (uiState.gameMode == GameMode.INFINITE && !uiState.isAutoJourney) {
                         Text(
                             "Infinite streak ${uiState.progress.infinite.currentStreak} · Best ${uiState.progress.infinite.bestStreak}",
                             style = MaterialTheme.typography.bodySmall,
@@ -698,16 +948,30 @@ private fun CompletionCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 TextButton(onClick = { onAction(GameAction.Replay) }) { Text("Replay") }
-                Button(onClick = onNextLevel) {
+                Button(
+                    onClick = onNextLevel,
+                    enabled = uiState.completionPersisted && !uiState.isAutoJourneyLoading,
+                ) {
                     Text(
                         when {
+                            !uiState.completionPersisted -> "Saving…"
+                            uiState.isAutoJourneyLoading -> "Preparing…"
                             uiState.gameMode == GameMode.DAILY -> "Home"
+                            uiState.gameMode == GameMode.INFINITE && uiState.isAutoJourney -> "Next level"
                             uiState.gameMode == GameMode.INFINITE -> "Next puzzle"
                             uiState.hasNextLevel -> "Next level"
                             else -> "Level selection"
                         },
                     )
                 }
+            }
+            uiState.autoJourneyPreparationMessage?.let { message ->
+                Text(
+                    message,
+                    modifier = Modifier.padding(top = spacing.sm),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MagnetrailMuted,
+                )
             }
         }
     }

@@ -1,0 +1,21 @@
+{
+    "schemaVersion": 1,
+    "validationPlan": "PHASED_V61_1325_868_FINAL_2205",
+    "phase": "phase-1",
+    "generatorIdentity": "Generator V6.1 — Semantic Novelty plus Cued Multi-Phase Adversarial Difficulty",
+    "contentVersion": 12,
+    "generatorVersion": 6,
+    "frozenCoreVersion": "magnetrail-core-1",
+    "sourceCampaignSha256": "8ad274b5dcf39f69db006c87bc0861e9b7037516755f79d8560206b4f2577de9",
+    "candidateCampaignSha256": "71c61fdd705a94bc91c5ebd4bb2bbfe9f4132a8a424b8e7628ef7e8d26b65232",
+    "requestedNonTutorialLevels": 1325,
+    "generatedNonTutorialLevels": 1325,
+    "candidateCatalogSha256": "71c61fdd705a94bc91c5ebd4bb2bbfe9f4132a8a424b8e7628ef7e8d26b65232",
+    "candidateAuditSha256": "a939e3c93e713f566456c5444ff48bfa3ae17b37eb02fef5baa999c25d4f52b7",
+    "maximumAttemptsPerLevel": 4096,
+    "workers": 11,
+    "analysisCacheHits": 0,
+    "analysisCacheMisses": 0,
+    "analysisCacheHitRate": 0.0,
+    "mandatoryAutomatedTestsPassed": true
+}

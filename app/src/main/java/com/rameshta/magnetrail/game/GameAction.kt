@@ -3,6 +3,7 @@ package com.rameshta.magnetrail.game
 import com.rameshta.magnetrail.data.SettingKey
 import com.rameshta.magnetrail.core.infinite.InfiniteDifficulty
 import com.rameshta.magnetrail.data.RewardedSkipResult
+import com.rameshta.magnetrail.playtest.HumanPlaytestGuessResponse
 
 sealed interface GameAction {
     data class LaunchArrow(val arrowId: String) : GameAction
@@ -34,6 +35,42 @@ sealed interface GameAction {
     data object OpenSettings : GameAction
 
     data object CloseSettings : GameAction
+
+    data object OpenPrivacyPolicy : GameAction
+
+    data object ClosePrivacyPolicy : GameAction
+
+    data object OpenHumanPlaytest : GameAction
+
+    data object CloseHumanPlaytest : GameAction
+
+    data class UpdateHumanPlaytestParticipant(val value: String) : GameAction
+
+    data object StartHumanPlaytest : GameAction
+
+    data object ResumeHumanPlaytest : GameAction
+
+    data object AbandonHumanPlaytestBoard : GameAction
+
+    data class RateHumanPlaytestBoard(val rating: Int) : GameAction
+
+    data class RateHumanPlaytestFairness(val rating: Int) : GameAction
+
+    data class SetHumanPlaytestGuessRequired(val required: Boolean) : GameAction
+
+    data class SetHumanPlaytestGuessResponse(val response: HumanPlaytestGuessResponse) : GameAction
+
+    data class SetHumanPlaytestRepeatedStrategy(val repeated: Boolean) : GameAction
+
+    data class UpdateHumanPlaytestComment(val value: String) : GameAction
+
+    data object SubmitHumanPlaytestFeedback : GameAction
+
+    data object ExportHumanPlaytest : GameAction
+
+    data class HumanPlaytestExportFinished(val message: String) : GameAction
+
+    data object ClearHumanPlaytest : GameAction
 
     data class SelectLevel(val index: Int) : GameAction
 

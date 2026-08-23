@@ -65,6 +65,25 @@ class SolverTest {
     }
 
     @Test
+    fun `first solution finder returns a production replay without counting every strategy`() {
+        val level = prototypeCatalog().level("proto-012")
+        val result = FirstSolutionFinder(engine).find(level.initialState(), maxExploredStates = 10_000)
+
+        assertFalse(result.searchCapReached)
+        assertNotNull(result.solution)
+        replay(level.initialState(), requireNotNull(result.solution))
+    }
+
+    @Test
+    fun `first solution finder reports its search cap`() {
+        val level = prototypeCatalog().level("proto-012")
+        val result = FirstSolutionFinder(engine).find(level.initialState(), maxExploredStates = 1)
+
+        assertTrue(result.searchCapReached)
+        assertEquals(null, result.solution)
+    }
+
+    @Test
     fun `state key includes magnet polarity`() {
         val initial = prototypeCatalog().level("proto-003").initialState()
         val flipped = initial.copy(

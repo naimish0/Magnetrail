@@ -156,7 +156,7 @@ class DataStoreProgressRepository private constructor(
             )
             writeVersionedRecords(stored, records)
             stored[Keys.coinBalance] = rewards.resultingBalance
-            if (isFirstClear) {
+            if (isFirstClear && level.number > 12) {
                 stored[Keys.interstitialEligibleCompletions] =
                     (stored[Keys.interstitialEligibleCompletions] ?: 0).coerceAtLeast(0) + 1
             }
@@ -272,6 +272,35 @@ class DataStoreProgressRepository private constructor(
             )
         }
         return receipt
+    }
+
+    override suspend fun recordAutoJourneyCompletion(internalId: String): Boolean {
+        require(internalId.matches(Regex("auto-journey-v1-[1-9][0-9]*"))) { "Invalid Auto Journey ID" }
+        var firstCompletion = false
+        dataStore.edit { stored ->
+            migrateStored(stored)
+            val completed = stored[Keys.completedAutoJourneyIds].orEmpty().validAutoJourneyIds().toMutableSet()
+            firstCompletion = completed.add(internalId)
+            stored[Keys.completedAutoJourneyIds] = completed
+            if (firstCompletion) {
+                stored[Keys.interstitialEligibleCompletions] =
+                    (stored[Keys.interstitialEligibleCompletions] ?: 0).coerceAtLeast(0) + 1
+            }
+        }
+        return firstCompletion
+    }
+
+    override suspend fun claimInterstitialOpportunity(): Boolean {
+        var claimed = false
+        dataStore.edit { stored ->
+            migrateStored(stored)
+            val count = (stored[Keys.interstitialEligibleCompletions] ?: 0).coerceAtLeast(0)
+            if (count >= 5) {
+                claimed = true
+                stored[Keys.interstitialEligibleCompletions] = 0
+            }
+        }
+        return claimed
     }
 
     override suspend fun spendHintCoins(): HintSpendResult {
@@ -452,7 +481,6 @@ class DataStoreProgressRepository private constructor(
             stored[Keys.lastFullScreenAdDate] = localDate.toString()
             if (interstitialShown) {
                 stored[Keys.interstitialsShownOnDate] = (shown + 1).coerceAtMost(MAX_INTERSTITIALS_PER_DAY)
-                stored[Keys.interstitialEligibleCompletions] = 0
             } else if (storedDate != localDate) {
                 stored[Keys.interstitialsShownOnDate] = 0
             }
@@ -472,6 +500,7 @@ class DataStoreProgressRepository private constructor(
                 M4_SCHEMA_VERSION,
                 M5_SCHEMA_VERSION,
                 M6_SCHEMA_VERSION,
+                M7_SCHEMA_VERSION,
                 PLAYER_PREFERENCES_SCHEMA_VERSION,
             )
         ) {
@@ -512,6 +541,7 @@ class DataStoreProgressRepository private constructor(
             stored[Keys.infiniteCurrentStreak] ?: 0,
         )
         stored[Keys.infiniteHistory] = encodeInfiniteHistory(decodeInfiniteHistory(stored[Keys.infiniteHistory]))
+        stored[Keys.completedAutoJourneyIds] = stored[Keys.completedAutoJourneyIds].orEmpty().validAutoJourneyIds()
         stored[Keys.pendingAdHintTransactionId]?.takeIf { it.isBlank() || it.length > 100 }?.let {
             stored.remove(Keys.pendingAdHintTransactionId)
         }
@@ -696,6 +726,7 @@ class DataStoreProgressRepository private constructor(
                     ),
                     history = decodeInfiniteHistory(stored[Keys.infiniteHistory]),
                 ),
+                completedAutoJourneyIds = stored[Keys.completedAutoJourneyIds].orEmpty().validAutoJourneyIds(),
             ),
         )
     }
@@ -729,6 +760,10 @@ class DataStoreProgressRepository private constructor(
     private fun Set<String>.validDailyIds(): Set<String> = filterTo(linkedSetOf()) {
         parseDailyDateOrNull(it) != null
     }.boundedHistory()
+
+    private fun Set<String>.validAutoJourneyIds(): Set<String> = filterTo(linkedSetOf()) {
+        it.matches(Regex("auto-journey-v1-[1-9][0-9]*"))
+    }
 
     private val SettingKey.preferenceKey: Preferences.Key<Boolean>
         get() = when (this) {
@@ -985,6 +1020,7 @@ class DataStoreProgressRepository private constructor(
         val infiniteCurrentStreak = intPreferencesKey("infinite_current_streak_v1")
         val infiniteBestStreak = intPreferencesKey("infinite_best_streak_v1")
         val infiniteHistory = stringSetPreferencesKey("infinite_history_v1")
+        val completedAutoJourneyIds = stringSetPreferencesKey("completed_auto_journey_ids_v1")
     }
 
     companion object {
@@ -993,6 +1029,7 @@ class DataStoreProgressRepository private constructor(
         private const val M4_SCHEMA_VERSION = 4
         private const val M5_SCHEMA_VERSION = 5
         private const val M6_SCHEMA_VERSION = 6
+        private const val M7_SCHEMA_VERSION = 7
         private const val MAX_DAILY_HISTORY = 512
         private const val MAX_REWARDED_GRANTS_PER_DAY = 5
         private const val MAX_INTERSTITIALS_PER_DAY = 4

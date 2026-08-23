@@ -1,0 +1,3799 @@
+{
+    "schemaVersion": 2,
+    "ruleVersion": "magnetrail-core-1",
+    "catalogId": "magnetrail-v6.1-super-hard-capacity",
+    "levels": [
+        {
+            "id": "v61-super-hard-capacity-001",
+            "number": 20001,
+            "title": "Super Hard Journey 20001",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-02",
+                    "row": 6,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-03",
+                    "row": 6,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-05",
+                    "v61-a-01",
+                    "v61-a-03",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-11",
+                    "v61-a-12",
+                    "v61-a-10",
+                    "v61-a-13",
+                    "v61-a-14",
+                    "v61-a-16",
+                    "v61-a-09",
+                    "v61-a-15"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-002",
+            "number": 20002,
+            "title": "Super Hard Journey 20002",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-03",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-13",
+                    "v61-a-01",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-12",
+                    "v61-a-05",
+                    "v61-a-10",
+                    "v61-a-14",
+                    "v61-a-09",
+                    "v61-a-15",
+                    "v61-a-16"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-003",
+            "number": 20003,
+            "title": "Super Hard Journey 20003",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-03",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-13",
+                    "v61-a-01",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-12",
+                    "v61-a-05",
+                    "v61-a-10",
+                    "v61-a-14",
+                    "v61-a-15",
+                    "v61-a-16",
+                    "v61-a-09"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-004",
+            "number": 20004,
+            "title": "Super Hard Journey 20004",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 4,
+                    "column": 5,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-03",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-13",
+                    "v61-a-01",
+                    "v61-a-12",
+                    "v61-a-05",
+                    "v61-a-10",
+                    "v61-a-14",
+                    "v61-a-09",
+                    "v61-a-16",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-15"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-005",
+            "number": 20005,
+            "title": "Super Hard Journey 20005",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 4,
+                    "column": 5,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-03",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-13",
+                    "v61-a-01",
+                    "v61-a-12",
+                    "v61-a-05",
+                    "v61-a-10",
+                    "v61-a-14",
+                    "v61-a-09",
+                    "v61-a-15",
+                    "v61-a-16",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-006",
+            "number": 20006,
+            "title": "Super Hard Journey 20006",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 5,
+                    "column": 5,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 1,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-02",
+                    "row": 6,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-03",
+                    "row": 6,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-02",
+                    "v61-a-05",
+                    "v61-a-08",
+                    "v61-a-14",
+                    "v61-a-15",
+                    "v61-a-04",
+                    "v61-a-11",
+                    "v61-a-12",
+                    "v61-a-01",
+                    "v61-a-03",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-10",
+                    "v61-a-13",
+                    "v61-a-09",
+                    "v61-a-16"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-007",
+            "number": 20007,
+            "title": "Super Hard Journey 20007",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 5,
+                    "column": 5,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-03",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-13",
+                    "v61-a-01",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-12",
+                    "v61-a-05",
+                    "v61-a-10",
+                    "v61-a-15",
+                    "v61-a-16",
+                    "v61-a-14",
+                    "v61-a-09"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-008",
+            "number": 20008,
+            "title": "Super Hard Journey 20008",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 5,
+                    "column": 4,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-02",
+                    "row": 6,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-03",
+                    "row": 6,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-05",
+                    "v61-a-01",
+                    "v61-a-03",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-10",
+                    "v61-a-12",
+                    "v61-a-11",
+                    "v61-a-13",
+                    "v61-a-09",
+                    "v61-a-14",
+                    "v61-a-15"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-009",
+            "number": 20009,
+            "title": "Super Hard Journey 20009",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 5,
+                    "column": 4,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-03",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-13",
+                    "v61-a-01",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-12",
+                    "v61-a-05",
+                    "v61-a-10",
+                    "v61-a-15",
+                    "v61-a-16",
+                    "v61-a-14",
+                    "v61-a-09"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-010",
+            "number": 20010,
+            "title": "Super Hard Journey 20010",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 1,
+                    "column": 5,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-02",
+                    "row": 6,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-03",
+                    "row": 6,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-02",
+                    "v61-a-05",
+                    "v61-a-08",
+                    "v61-a-14",
+                    "v61-a-15",
+                    "v61-a-04",
+                    "v61-a-10",
+                    "v61-a-12",
+                    "v61-a-01",
+                    "v61-a-03",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-11",
+                    "v61-a-13",
+                    "v61-a-09"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-011",
+            "number": 20011,
+            "title": "Super Hard Journey 20011",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 5,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 1,
+                    "column": 5,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-02",
+                    "row": 6,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-03",
+                    "row": 6,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-05",
+                    "v61-a-14",
+                    "v61-a-11",
+                    "v61-a-16",
+                    "v61-a-10",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-12",
+                    "v61-a-01",
+                    "v61-a-03",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-13",
+                    "v61-a-09",
+                    "v61-a-15"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-012",
+            "number": 20012,
+            "title": "Super Hard Journey 20012",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-02",
+                    "row": 6,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-03",
+                    "row": 6,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-04",
+                    "v61-a-05",
+                    "v61-a-08",
+                    "v61-a-10",
+                    "v61-a-14",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-12",
+                    "v61-a-13",
+                    "v61-a-15",
+                    "v61-a-01",
+                    "v61-a-03",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-09"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-013",
+            "number": 20013,
+            "title": "Super Hard Journey 20013",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 6,
+                    "column": 5,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-03",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-13",
+                    "v61-a-01",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-12",
+                    "v61-a-05",
+                    "v61-a-10",
+                    "v61-a-14",
+                    "v61-a-09",
+                    "v61-a-16",
+                    "v61-a-15"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-014",
+            "number": 20014,
+            "title": "Super Hard Journey 20014",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-02",
+                    "row": 6,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-03",
+                    "row": 6,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-05",
+                    "v61-a-01",
+                    "v61-a-03",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-10",
+                    "v61-a-12",
+                    "v61-a-13",
+                    "v61-a-09",
+                    "v61-a-15",
+                    "v61-a-14"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-015",
+            "number": 20015,
+            "title": "Super Hard Journey 20015",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 6,
+                    "column": 1,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-03",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-15",
+                    "v61-a-16",
+                    "v61-a-13",
+                    "v61-a-01",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-12",
+                    "v61-a-05",
+                    "v61-a-10",
+                    "v61-a-14",
+                    "v61-a-09"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-016",
+            "number": 20016,
+            "title": "Super Hard Journey 20016",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 1,
+                    "column": 5,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-02",
+                    "row": 6,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-03",
+                    "row": 6,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-05",
+                    "v61-a-11",
+                    "v61-a-14",
+                    "v61-a-16",
+                    "v61-a-10",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-12",
+                    "v61-a-01",
+                    "v61-a-03",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-13",
+                    "v61-a-09",
+                    "v61-a-15"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-017",
+            "number": 20017,
+            "title": "Super Hard Journey 20017",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 1,
+                    "column": 5,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-02",
+                    "row": 6,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-03",
+                    "row": 6,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-05",
+                    "v61-a-10",
+                    "v61-a-14",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-12",
+                    "v61-a-01",
+                    "v61-a-03",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-13",
+                    "v61-a-15",
+                    "v61-a-09"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-018",
+            "number": 20018,
+            "title": "Super Hard Journey 20018",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-03",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-13",
+                    "v61-a-01",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-12",
+                    "v61-a-05",
+                    "v61-a-10",
+                    "v61-a-14",
+                    "v61-a-15",
+                    "v61-a-16",
+                    "v61-a-09"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-019",
+            "number": 20019,
+            "title": "Super Hard Journey 20019",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-03",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-13",
+                    "v61-a-01",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-15",
+                    "v61-a-16",
+                    "v61-a-12",
+                    "v61-a-05",
+                    "v61-a-10",
+                    "v61-a-14",
+                    "v61-a-09"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-020",
+            "number": 20020,
+            "title": "Super Hard Journey 20020",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-03",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-13",
+                    "v61-a-01",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-15",
+                    "v61-a-16",
+                    "v61-a-12",
+                    "v61-a-05",
+                    "v61-a-10",
+                    "v61-a-14",
+                    "v61-a-09"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-021",
+            "number": 20021,
+            "title": "Super Hard Journey 20021",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 6,
+                    "column": 1,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-03",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-15",
+                    "v61-a-16",
+                    "v61-a-13",
+                    "v61-a-01",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-12",
+                    "v61-a-05",
+                    "v61-a-10",
+                    "v61-a-14",
+                    "v61-a-09"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-022",
+            "number": 20022,
+            "title": "Super Hard Journey 20022",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 4,
+                    "column": 5,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-02",
+                    "row": 6,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-03",
+                    "row": 6,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-02",
+                    "v61-a-04",
+                    "v61-a-05",
+                    "v61-a-08",
+                    "v61-a-14",
+                    "v61-a-11",
+                    "v61-a-12",
+                    "v61-a-01",
+                    "v61-a-03",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-10",
+                    "v61-a-13",
+                    "v61-a-16",
+                    "v61-a-09",
+                    "v61-a-15"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-023",
+            "number": 20023,
+            "title": "Super Hard Journey 20023",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 6,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 6,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 6,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 1,
+                    "column": 5,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-02",
+                    "row": 6,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-03",
+                    "row": 6,
+                    "column": 5,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-05",
+                    "v61-a-14",
+                    "v61-a-15",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-12",
+                    "v61-a-01",
+                    "v61-a-03",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-10",
+                    "v61-a-13",
+                    "v61-a-09"
+                ]
+            ]
+        },
+        {
+            "id": "v61-super-hard-capacity-024",
+            "number": 20024,
+            "title": "Super Hard Journey 20024",
+            "width": 5,
+            "height": 6,
+            "arrows": [
+                {
+                    "id": "v61-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v61-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-09",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v61-a-10",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-11",
+                    "row": 3,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-12",
+                    "row": 5,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-13",
+                    "row": 5,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v61-a-14",
+                    "row": 5,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-15",
+                    "row": 2,
+                    "column": 5,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v61-a-16",
+                    "row": 6,
+                    "column": 5,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v61-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v61-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 5
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v61-a-03",
+                    "v61-a-11",
+                    "v61-a-02",
+                    "v61-a-08",
+                    "v61-a-04",
+                    "v61-a-13",
+                    "v61-a-01",
+                    "v61-a-06",
+                    "v61-a-07",
+                    "v61-a-00",
+                    "v61-a-12",
+                    "v61-a-05",
+                    "v61-a-10",
+                    "v61-a-14",
+                    "v61-a-09",
+                    "v61-a-15",
+                    "v61-a-16"
+                ]
+            ]
+        }
+    ],
+    "contentVersion": 12,
+    "generatorVersion": 6
+}

@@ -1,0 +1,164 @@
+{
+    "schemaVersion": 1,
+    "status": "V61_HARD_NEGATIVE_REGRESSION_PASS",
+    "observationCount": 30,
+    "formerHighBoardCount": 12,
+    "formerHighAssignmentsRetained": 0,
+    "guessRequiredCount": 23,
+    "guessRowsEscapingRejectionOrCap": 0,
+    "exactUnique": true,
+    "d4Unique": true,
+    "semanticUniqueness": {
+        "causal": true,
+        "decisionDag": true,
+        "solutionPolicy": true
+    },
+    "anchors": [
+        {
+            "levelId": "campaign-508",
+            "solutionActions": 10,
+            "maximumEligibleBand": "Medium",
+            "bestCheapPolicySolveRate": 0.5
+        },
+        {
+            "levelId": "campaign-1828",
+            "solutionActions": 10,
+            "maximumEligibleBand": "Easy",
+            "bestCheapPolicySolveRate": 1.0
+        }
+    ],
+    "hardNegatives": [
+        {
+            "levelId": "v6-calibration-021",
+            "formerAssignedRating": 4,
+            "perceivedRating": 1,
+            "guessRequired": true,
+            "v61MaximumEligibleBand": "Easy",
+            "accepted": false,
+            "rejections": [
+                "REJECT_GUESS_REPORTED_REGRESSION"
+            ]
+        },
+        {
+            "levelId": "v6-calibration-029",
+            "formerAssignedRating": 5,
+            "perceivedRating": 2,
+            "guessRequired": true,
+            "v61MaximumEligibleBand": "Medium",
+            "accepted": false,
+            "rejections": [
+                "REJECT_GUESS_REPORTED_REGRESSION"
+            ]
+        },
+        {
+            "levelId": "v6-calibration-030",
+            "formerAssignedRating": 5,
+            "perceivedRating": 3,
+            "guessRequired": true,
+            "v61MaximumEligibleBand": "Medium",
+            "accepted": false,
+            "rejections": [
+                "REJECT_GUESS_REPORTED_REGRESSION"
+            ]
+        },
+        {
+            "levelId": "v6-calibration-023",
+            "formerAssignedRating": 4,
+            "perceivedRating": 2,
+            "guessRequired": true,
+            "v61MaximumEligibleBand": "Easy",
+            "accepted": false,
+            "rejections": [
+                "REJECT_GUESS_REPORTED_REGRESSION"
+            ]
+        },
+        {
+            "levelId": "v6-calibration-020",
+            "formerAssignedRating": 4,
+            "perceivedRating": 2,
+            "guessRequired": true,
+            "v61MaximumEligibleBand": "Medium",
+            "accepted": false,
+            "rejections": [
+                "REJECT_GUESS_REPORTED_REGRESSION"
+            ]
+        },
+        {
+            "levelId": "v6-calibration-026",
+            "formerAssignedRating": 5,
+            "perceivedRating": 2,
+            "guessRequired": true,
+            "v61MaximumEligibleBand": "Medium",
+            "accepted": false,
+            "rejections": [
+                "REJECT_GUESS_REPORTED_REGRESSION"
+            ]
+        },
+        {
+            "levelId": "v6-calibration-025",
+            "formerAssignedRating": 5,
+            "perceivedRating": 2,
+            "guessRequired": true,
+            "v61MaximumEligibleBand": "Medium",
+            "accepted": false,
+            "rejections": [
+                "REJECT_GUESS_REPORTED_REGRESSION"
+            ]
+        },
+        {
+            "levelId": "v6-calibration-019",
+            "formerAssignedRating": 4,
+            "perceivedRating": 1,
+            "guessRequired": true,
+            "v61MaximumEligibleBand": "Easy",
+            "accepted": false,
+            "rejections": [
+                "REJECT_GUESS_REPORTED_REGRESSION"
+            ]
+        },
+        {
+            "levelId": "v6-calibration-028",
+            "formerAssignedRating": 5,
+            "perceivedRating": 1,
+            "guessRequired": true,
+            "v61MaximumEligibleBand": "Medium",
+            "accepted": false,
+            "rejections": [
+                "REJECT_GUESS_REPORTED_REGRESSION"
+            ]
+        },
+        {
+            "levelId": "v6-calibration-022",
+            "formerAssignedRating": 4,
+            "perceivedRating": 2,
+            "guessRequired": true,
+            "v61MaximumEligibleBand": "Easy",
+            "accepted": false,
+            "rejections": [
+                "REJECT_GUESS_REPORTED_REGRESSION"
+            ]
+        },
+        {
+            "levelId": "v6-calibration-027",
+            "formerAssignedRating": 5,
+            "perceivedRating": 2,
+            "guessRequired": true,
+            "v61MaximumEligibleBand": "Medium",
+            "accepted": false,
+            "rejections": [
+                "REJECT_GUESS_REPORTED_REGRESSION"
+            ]
+        },
+        {
+            "levelId": "v6-calibration-024",
+            "formerAssignedRating": 4,
+            "perceivedRating": 1,
+            "guessRequired": false,
+            "v61MaximumEligibleBand": "Easy",
+            "accepted": true,
+            "rejections": []
+        }
+    ],
+    "failures": [],
+    "frozenEvidence": "30/30 completed without hints; ratings 17 Easy, 11 Medium, 2 Hard; Spearman 0.498; within-one-band 50%; guessing 23/30; repeated strategy 1/30; 11/12 former high boards were Easy/Medium."
+}

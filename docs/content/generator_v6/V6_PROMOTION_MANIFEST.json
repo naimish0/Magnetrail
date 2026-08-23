@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 2,
+  "status": "AWAITING_HUMAN_CALIBRATION",
+  "difficultyBandCount": 5,
+  "masterIncluded": false,
+  "promotionPermitted": false,
+  "currentProductionContentVersion": 10,
+  "expectedNextContentVersion": 12,
+  "currentProductionSha256": "8ad274b5dcf39f69db006c87bc0861e9b7037516755f79d8560206b4f2577de9",
+  "calibrationCatalogSha256": "acc1742e921d73a7661756259239757052b95499161b3927ce8f9e9236f2cd17",
+  "sealedValidationCatalogSha256": "ab0058258d84480e1185f3d01f91a7c1f0a95cf44a942cb160eb45e2629489df",
+  "productionCandidateSha256": null,
+  "technicalCertificateSha256": null,
+  "humanModelCertificateSha256": null,
+  "productionSampleCertificateSha256": null,
+  "reason": "Both five-band pilots are technically certified, but real V6 calibration and sealed-validation observations are absent.",
+  "requiredNextAction": "Collect the blinded calibration CSV under the frozen calibration hash, fit and freeze HumanLikeDifficultyV1, then collect and validate the sealed CSV without retuning."
+}

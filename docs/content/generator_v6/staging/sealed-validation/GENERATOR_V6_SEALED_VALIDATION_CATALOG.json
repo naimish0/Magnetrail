@@ -1,0 +1,2852 @@
+{
+    "schemaVersion": 2,
+    "ruleVersion": "magnetrail-core-1",
+    "catalogId": "magnetrail-v6-sealed-validation-five-band-v2",
+    "levels": [
+        {
+            "id": "v6-validation-001",
+            "number": 1,
+            "title": "Blind board 001",
+            "width": 3,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 3,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-00"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6221000004,
+                "generationProfile": "v6-bucket-1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 1,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 1,
+                "exploredStateCount": 6,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "FLIPS_REQUIRED_POLARITY",
+                    "V6_CAUSAL_sha256:a23756c744faf47d68d0f4478ebab9f7e7e96bfc2887e18292013409db9f601a",
+                    "V6_DAG_sha256:b685170a3425915fc5188ec396c2a50610f930b2e4d8712b84ef0348bf610762",
+                    "V6_FAMILY_POLARITY_LOCK_RELEASE",
+                    "V6_POLICY_sha256:1f72bd21e20ab6a52bd6e1653d6de7caa7f7ae985f0778a9d0abfd133772662f"
+                ],
+                "contentFingerprint": "sha256:86a7800410d94950c6134c97f787f635e77453858ce1001d804029a5346cb5a0"
+            }
+        },
+        {
+            "id": "v6-validation-002",
+            "number": 2,
+            "title": "Blind board 002",
+            "width": 3,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-01",
+                    "v6-a-00",
+                    "v6-a-02"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6221097007,
+                "generationProfile": "v6-bucket-1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 3,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 6,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "REVEALS_CONTROLLER",
+                    "V6_CAUSAL_sha256:b27211758d13cb93308fdb1c2a9e2502d60f9c63dd7a71c41a8342eac0fbdb89",
+                    "V6_DAG_sha256:24ebbc5ed8c5c97995a58219fc4aeab4af08f27ae890183be21543b785dd1251",
+                    "V6_FAMILY_OCCLUSION_REVEAL_CHAIN",
+                    "V6_POLICY_sha256:6749399c316ef395c2a26afae7f6b1a672374305648c79e55ad07f21a0a1c4bc"
+                ],
+                "contentFingerprint": "sha256:b82a77f5d9dff0b3e7c5bd2c90dfb42c68944f1f87d61a7026332e64170873ab"
+            }
+        },
+        {
+            "id": "v6-validation-003",
+            "number": 3,
+            "title": "Blind board 003",
+            "width": 3,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 3,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [],
+            "designedSolutions": [
+                [
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-00"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6221194010,
+                "generationProfile": "v6-bucket-1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 3,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 8,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "CREATES_CANCELLATION",
+                    "V6_CAUSAL_sha256:f2a89914450cb94c309dc829da1044f4178c40cf50115f892eda35eb9d65bb5f",
+                    "V6_DAG_sha256:59b3002a18673e0b5d2ba6e4adfce582444e435edca6f4d1de0f1511fb83829c",
+                    "V6_FAMILY_CANCELLATION_RELEASE",
+                    "V6_POLICY_sha256:54be9fb9adc79b76f0cc1f2ccb5d0d3b4de3b98a21b1359332ac3c69a4ce7d09"
+                ],
+                "contentFingerprint": "sha256:e34f77b95929225a464300b96f6399a09faf4b937c6d36b08c10ba6a712be474"
+            }
+        },
+        {
+            "id": "v6-validation-004",
+            "number": 4,
+            "title": "Blind board 004",
+            "width": 3,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-03"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6221291013,
+                "generationProfile": "v6-bucket-1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 4,
+                "solutionCount": 12,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 3,
+                "exploredStateCount": 16,
+                "parActions": 4,
+                "twoStarMaxActions": 6,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "CHANGES_CONTROLLER",
+                    "V6_CAUSAL_sha256:20875db8fbfa4f9259bd85838944a057f7187a1d778598fd3305d1a6440e6c07",
+                    "V6_DAG_sha256:b756f124407aa1f2c75fc259fe3e269262e43b776bf880b839d84d7dcdb25135",
+                    "V6_FAMILY_COMPETING_CONTROLLER_HANDOFF",
+                    "V6_POLICY_sha256:0ae21b7075e70cb27acd4ca986225a25a2364fe2abd1520c2a442a6eea46911b"
+                ],
+                "contentFingerprint": "sha256:0e857c9beff86aff92b32ac493b735a2b9b70fa71ca8d0ee7c9c06fcb1ea27fa"
+            }
+        },
+        {
+            "id": "v6-validation-005",
+            "number": 5,
+            "title": "Blind board 005",
+            "width": 3,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 2,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-00"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6221388016,
+                "generationProfile": "v6-bucket-1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 3,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 6,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "FORK_JOIN_DEPENDENCY",
+                    "V6_CAUSAL_sha256:437570ba83cf2dbf1ce0e57083734ac830d025781e669c0be7d4478aba7b4c70",
+                    "V6_DAG_sha256:23df04d66634cf1c42d8cd21cc17486f5a6308df5357fd689cc71767d3230172",
+                    "V6_FAMILY_FORK_JOIN_COUPLED",
+                    "V6_POLICY_sha256:77be1a93036bbcc61ed5b1930a357fb63e9a478805c643d6e883b8d5c79e133b"
+                ],
+                "contentFingerprint": "sha256:1284ca6b9b459496457fbcb41cbfed23052148d5ca3fc5965675da916e0212f8"
+            }
+        },
+        {
+            "id": "v6-validation-006",
+            "number": 6,
+            "title": "Blind board 006",
+            "width": 3,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 2,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-00"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6221485019,
+                "generationProfile": "v6-bucket-1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 1,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 1,
+                "exploredStateCount": 6,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:53fef17765bf45f6d21b54b1ce97d46553a5adb5a94bbb9a5dcdc099a734b3e0",
+                    "V6_DAG_sha256:839b933acbfe710427187249c2556ac53059fe7576aa7f2e44221cc07179b18d",
+                    "V6_FAMILY_INTERACTING_CHAINS_DELAYED_TRAPS",
+                    "V6_POLICY_sha256:1eb927ee3d4bf4c3e9ebd3fe7627e5ada8aa29a49d843d8e701ec907d77aa46a"
+                ],
+                "contentFingerprint": "sha256:0c123dd52c5cdfdd1abf696bcd1db44dffd4707c698051c278cd44c8a14c0c01"
+            }
+        },
+        {
+            "id": "v6-validation-007",
+            "number": 7,
+            "title": "Blind board 007",
+            "width": 4,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 3,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-03",
+                    "v6-a-00",
+                    "v6-a-02",
+                    "v6-a-01"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6222000007,
+                "generationProfile": "v6-bucket-2",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 4,
+                "solutionCount": 2,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 1,
+                "exploredStateCount": 10,
+                "parActions": 4,
+                "twoStarMaxActions": 6,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "OCCLUDES_CONTROLLER",
+                    "V6_CAUSAL_sha256:59d85ec98ff49f507e019ef5049f7ce1dacba2f4ef5bb72ca553b2656f305aa2",
+                    "V6_DAG_sha256:9cabec1b8089b0b1b7b940a5202667f8588726fe4534d8cc22bd4444b253b68a",
+                    "V6_FAMILY_OCCLUSION_REVEAL_CHAIN",
+                    "V6_POLICY_sha256:91d0ac253dc1fcd694681e0784acf0971de02ddb6355ef7f42dce09f1339854e"
+                ],
+                "contentFingerprint": "sha256:05ea2b8cacbfd88aa6e9be6550a383558c2a8c9b7beacc0ca85e42c61f6716c5"
+            }
+        },
+        {
+            "id": "v6-validation-008",
+            "number": 8,
+            "title": "Blind board 008",
+            "width": 4,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 3,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-03",
+                    "v6-a-01",
+                    "v6-a-00"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6222097010,
+                "generationProfile": "v6-bucket-2",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 4,
+                "solutionCount": 2,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 12,
+                "parActions": 4,
+                "twoStarMaxActions": 6,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "CREATES_CANCELLATION",
+                    "V6_CAUSAL_sha256:bb2fb3a8e9affdb87fceb2d8754ca97f3bb0b2077e68ea1463781cce55d03f85",
+                    "V6_DAG_sha256:41e3a9742382ff8a69587d145598a4c9801efc4a0fb0d3eeaf0232ad8939f4e7",
+                    "V6_FAMILY_CANCELLATION_RELEASE",
+                    "V6_POLICY_sha256:cfd7cfa2075955e9d372ac43fc7f13f5e40d4c3a41ec4f9d3063b217c8b201a3"
+                ],
+                "contentFingerprint": "sha256:88dab88e8ec624625b5d5a92f44a372a46b12400a77d949177c07072bf331fd8"
+            }
+        },
+        {
+            "id": "v6-validation-009",
+            "number": 9,
+            "title": "Blind board 009",
+            "width": 4,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-02",
+                    "row": 3,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-02",
+                    "v6-a-01",
+                    "v6-a-03"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6222194013,
+                "generationProfile": "v6-bucket-2",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 4,
+                "solutionCount": 12,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 3,
+                "exploredStateCount": 20,
+                "parActions": 4,
+                "twoStarMaxActions": 6,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "CHANGES_CONTROLLER",
+                    "V6_CAUSAL_sha256:7bbe0e34be694154b02a0b169a7cd0e4ba2cd999b785cab28eca18431ac21364",
+                    "V6_DAG_sha256:2661ad03091c6c5d70077b0622e6d7486ce46dd491047851192b57a20eaecb97",
+                    "V6_FAMILY_COMPETING_CONTROLLER_HANDOFF",
+                    "V6_POLICY_sha256:6d5e7433b7bb7eb98ca44f5967cc6a25198e4f3b4fae8a259425c5c4f426ec91"
+                ],
+                "contentFingerprint": "sha256:11e5db111616720693ead8dfa5d38a9d22bd52e68a3008e752217d0cd88cbbf3"
+            }
+        },
+        {
+            "id": "v6-validation-010",
+            "number": 10,
+            "title": "Blind board 010",
+            "width": 4,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 4,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 2,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-01",
+                    "v6-a-00",
+                    "v6-a-03"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6222291016,
+                "generationProfile": "v6-bucket-2",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 4,
+                "solutionCount": 4,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 12,
+                "parActions": 4,
+                "twoStarMaxActions": 6,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "FORK_JOIN_DEPENDENCY",
+                    "V6_CAUSAL_sha256:2a8d95dd273bbe6bd88be279ab3f4e726aa23fc94f44b11ff4edffac137e3f0e",
+                    "V6_DAG_sha256:4661a02e436dbe272af2bd3b1d375fa3dce99e86f502c343afe45e85cce16cf0",
+                    "V6_FAMILY_FORK_JOIN_COUPLED",
+                    "V6_POLICY_sha256:8f80a6731b0af8b9eaef4a16aaea8190555d0207b2aba7e6c5e5206411222d5a"
+                ],
+                "contentFingerprint": "sha256:c34be6da49714600337d69243f810c00d50ca62c48ae2e52ff0dbce6d1dd594d"
+            }
+        },
+        {
+            "id": "v6-validation-011",
+            "number": 11,
+            "title": "Blind board 011",
+            "width": 4,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-01",
+                    "v6-a-00",
+                    "v6-a-02",
+                    "v6-a-03"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6222388019,
+                "generationProfile": "v6-bucket-2",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 4,
+                "solutionCount": 8,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 3,
+                "exploredStateCount": 14,
+                "parActions": 4,
+                "twoStarMaxActions": 6,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:4a6d57200e2b92173ade082b2f84fbaf3c8c63ee637ec5978011f507eb3c469f",
+                    "V6_DAG_sha256:df19bfe6665fb6087cac7d7af77945e36da0c2efc9cce7e6bfe8ca2805a3b9c9",
+                    "V6_FAMILY_INTERACTING_CHAINS_DELAYED_TRAPS",
+                    "V6_POLICY_sha256:34b73c39827cef0639f18c95102ed697ae039eefe09d93aae8627e614dc97775"
+                ],
+                "contentFingerprint": "sha256:74ae449d5161034b4b359e4c74a8c16094344ad3dcb9eeb9d197b5cb66c5956f"
+            }
+        },
+        {
+            "id": "v6-validation-012",
+            "number": 12,
+            "title": "Blind board 012",
+            "width": 4,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 2,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-00",
+                    "v6-a-01",
+                    "v6-a-03"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6222485022,
+                "generationProfile": "v6-bucket-2",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 4,
+                "solutionCount": 3,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 14,
+                "parActions": 4,
+                "twoStarMaxActions": 6,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "FLIPS_REQUIRED_POLARITY",
+                    "V6_CAUSAL_sha256:e26e94537825f6a2f913df613de609ed0bf55236a3af3fc40f05f0f865de55f8",
+                    "V6_DAG_sha256:8263b4b781f33c387a951bf645da759068812a5fc74c248143d34e6053a8bb16",
+                    "V6_FAMILY_POLARITY_LOCK_RELEASE",
+                    "V6_POLICY_sha256:fcfc811a5c9a6f6beaa9f1cc0a75089554b4dd092029f07506f7997f9abc37c1"
+                ],
+                "contentFingerprint": "sha256:a1d8a666b2fc1ea5f499a4bbc96b825731d06c031438870314a5d2f297c38402"
+            }
+        },
+        {
+            "id": "v6-validation-013",
+            "number": 13,
+            "title": "Blind board 013",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 3,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 3
+                },
+                {
+                    "row": 1,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-03",
+                    "v6-a-04",
+                    "v6-a-00",
+                    "v6-a-01",
+                    "v6-a-02"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6223000010,
+                "generationProfile": "v6-bucket-3",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 5,
+                "solutionCount": 9,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 24,
+                "parActions": 5,
+                "twoStarMaxActions": 7,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "CREATES_CANCELLATION",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:17fefe1ded1d336631b19af38f9156aa45c6d05c9d2c9dc5d7971d5637284e55",
+                    "V6_DAG_sha256:a87ccb97d3354207813f0c8a2e7c17a87aa45e97fa69eb19e57492ee6a037f24",
+                    "V6_FAMILY_CANCELLATION_RELEASE",
+                    "V6_POLICY_sha256:91aa80cf5bda5c61ea2e8203504103d0da801ab2bdb69fd22b7b45c610f371cf"
+                ],
+                "contentFingerprint": "sha256:bf40a40eb1fb1a112c0ce38c9d3e491b38580f7d479ac6eb300d9f17c52031d8"
+            }
+        },
+        {
+            "id": "v6-validation-014",
+            "number": 14,
+            "title": "Blind board 014",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 4
+                },
+                {
+                    "row": 2,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-03",
+                    "v6-a-00",
+                    "v6-a-01",
+                    "v6-a-04"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6223097013,
+                "generationProfile": "v6-bucket-3",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 5,
+                "solutionCount": 10,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 24,
+                "parActions": 5,
+                "twoStarMaxActions": 7,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "CHANGES_CONTROLLER",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:5b47928d534f53984f3433238e8748c7bea2d5c8cb3c158394935be236352bb3",
+                    "V6_DAG_sha256:696a740fc5ebdbad5a4a8e74ef6ab4374b8351de0f9352a22de6b61203c00047",
+                    "V6_FAMILY_COMPETING_CONTROLLER_HANDOFF",
+                    "V6_POLICY_sha256:c4896bf24088047c178f52e1a6df217ea817e9810810004ddaaedb16ffb91604"
+                ],
+                "contentFingerprint": "sha256:ad42db7084d2059d9f3ee27d4f9de8d66efa2ee7f53f580f4f236b08dff01dcd"
+            }
+        },
+        {
+            "id": "v6-validation-015",
+            "number": 15,
+            "title": "Blind board 015",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 2,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 4
+                },
+                {
+                    "row": 1,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-01",
+                    "v6-a-03",
+                    "v6-a-04",
+                    "v6-a-02"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6223194016,
+                "generationProfile": "v6-bucket-3",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 5,
+                "solutionCount": 20,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 18,
+                "parActions": 5,
+                "twoStarMaxActions": 7,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "FORK_JOIN_DEPENDENCY",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:9c206c99c25e945f52f7d4a73ebeddabdc80bf23bc79f1d93525f76f6bafba83",
+                    "V6_DAG_sha256:744daa7e904602f56c3d83f1e5d8b18857839cad871bdf357e1fc1376424cb96",
+                    "V6_FAMILY_FORK_JOIN_COUPLED",
+                    "V6_POLICY_sha256:86fb3a2ed2cc651959fdd5c8bd8e6215c72d4b78cf153bfbb7a3faa8a8d966bc"
+                ],
+                "contentFingerprint": "sha256:53ed3445f1a03eaa627bb93e0505ffcff34900e4b3b1a1639a98e1e50d9cf4e8"
+            }
+        },
+        {
+            "id": "v6-validation-016",
+            "number": 16,
+            "title": "Blind board 016",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 4
+                },
+                {
+                    "row": 2,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-00",
+                    "v6-a-03",
+                    "v6-a-04"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6223291019,
+                "generationProfile": "v6-bucket-3",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 5,
+                "solutionCount": 9,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 21,
+                "parActions": 5,
+                "twoStarMaxActions": 7,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:6299baf7a499035f5b894413433b89859f5050fa38f2d482ed9e2dd7833c9b25",
+                    "V6_DAG_sha256:d7ce71265e78baee3a8c152a77bdadf000d70a4061067d4d7b2afe66526d93ed",
+                    "V6_FAMILY_INTERACTING_CHAINS_DELAYED_TRAPS",
+                    "V6_POLICY_sha256:480f8da41317d763d4355307ccb6384f0c8e5f954d50e347ec6ebc12e62d9baa"
+                ],
+                "contentFingerprint": "sha256:4402226b97685138787bd17cfa9ddcdca15a3baa95ef906b9437db5f2dac267e"
+            }
+        },
+        {
+            "id": "v6-validation-017",
+            "number": 17,
+            "title": "Blind board 017",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 2,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 4
+                },
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-00",
+                    "v6-a-03",
+                    "v6-a-01",
+                    "v6-a-04"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6223388022,
+                "generationProfile": "v6-bucket-3",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 5,
+                "solutionCount": 30,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 3,
+                "exploredStateCount": 32,
+                "parActions": 5,
+                "twoStarMaxActions": 7,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "FLIPS_REQUIRED_POLARITY",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:04d117d5603dd5a6f62b15a85f4f5b99d03e70bb7a38cd751eabb1f2a2a33056",
+                    "V6_DAG_sha256:9f19ffdee0e11fbd00233f08478a6d3beb54ba1eacbb9f2086d9e0d34230e25f",
+                    "V6_FAMILY_POLARITY_LOCK_RELEASE",
+                    "V6_POLICY_sha256:a4ab656e77352be60be1e65ad030bb4ea29c714709593f4bfbb451b02212c80b"
+                ],
+                "contentFingerprint": "sha256:de4aad186dbb2406dabb29d524b8262a10a39654520c58adffaf8b74fab1ad07"
+            }
+        },
+        {
+            "id": "v6-validation-018",
+            "number": 18,
+            "title": "Blind board 018",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 2
+                },
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-02",
+                    "v6-a-04",
+                    "v6-a-01",
+                    "v6-a-03"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6223485025,
+                "generationProfile": "v6-bucket-3",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 5,
+                "solutionCount": 10,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 20,
+                "parActions": 5,
+                "twoStarMaxActions": 7,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "REVEALS_CONTROLLER",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:948d1acb0bc69750cba087a2e0102fd1f73bd2064ace0390c1a7586f88b0840a",
+                    "V6_DAG_sha256:1f7e4bfeab9bbd6f5fcb6e1885a6120527cc141be76ffe1e58ad348c6fabb412",
+                    "V6_FAMILY_OCCLUSION_REVEAL_CHAIN",
+                    "V6_POLICY_sha256:f043ff4cf2bcb2edd4b4449333abbb6a83815920bd2d26872b88b44c157e10e5"
+                ],
+                "contentFingerprint": "sha256:70cee67db316f68c2195d02b88ce36d88ed817015bb26078442e3dadee2a5c68"
+            }
+        },
+        {
+            "id": "v6-validation-019",
+            "number": 19,
+            "title": "Blind board 019",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 4
+                },
+                {
+                    "row": 3,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-02",
+                    "v6-a-01",
+                    "v6-a-03",
+                    "v6-a-04",
+                    "v6-a-05"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6224000013,
+                "generationProfile": "v6-bucket-4",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 6,
+                "solutionCount": 60,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 3,
+                "exploredStateCount": 46,
+                "parActions": 6,
+                "twoStarMaxActions": 8,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "CHANGES_CONTROLLER",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:bd46ae52ed373356443892d4ee7df925876f9b082e5e85826a7b139b0af498c0",
+                    "V6_DAG_sha256:08b24925eed2e4afa095372160a3879cfa04e908e177c40ede60d5b5a406fe32",
+                    "V6_FAMILY_COMPETING_CONTROLLER_HANDOFF",
+                    "V6_POLICY_sha256:c5357117dc59f9b583aaef6939afb5a07049dd436ae3a6b6231d47b40a6af757"
+                ],
+                "contentFingerprint": "sha256:be6ae802c58c295276c0904a07c09a8689d1640770eb61710d9b6614004fadd5"
+            }
+        },
+        {
+            "id": "v6-validation-020",
+            "number": 20,
+            "title": "Blind board 020",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 1
+                },
+                {
+                    "row": 3,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-00",
+                    "v6-a-04",
+                    "v6-a-01",
+                    "v6-a-03",
+                    "v6-a-05"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6224097016,
+                "generationProfile": "v6-bucket-4",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 6,
+                "solutionCount": 12,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 28,
+                "parActions": 6,
+                "twoStarMaxActions": 8,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "FORK_JOIN_DEPENDENCY",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:d1ce39ee5e4420caf0ccfad9cbd2de40262bf61f4c572be5f4b0c37485aae533",
+                    "V6_DAG_sha256:818014789fac02bd0a807d572c43d67f47efb0cc5b0b69136b970a4205b8968f",
+                    "V6_FAMILY_FORK_JOIN_COUPLED",
+                    "V6_POLICY_sha256:cfad2c7694816a9cac831f449e84179b5726946f55393d4632b909ff29a4879b"
+                ],
+                "contentFingerprint": "sha256:f2ec82f0b8d98f8c46380660537d5855e081fdeabcfac3824a490a0c100acd98"
+            }
+        },
+        {
+            "id": "v6-validation-021",
+            "number": 21,
+            "title": "Blind board 021",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 1
+                },
+                {
+                    "row": 4,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-05",
+                    "v6-a-01",
+                    "v6-a-04",
+                    "v6-a-02",
+                    "v6-a-03",
+                    "v6-a-00"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6224194019,
+                "generationProfile": "v6-bucket-4",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 6,
+                "solutionCount": 4,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 1,
+                "exploredStateCount": 18,
+                "parActions": 6,
+                "twoStarMaxActions": 8,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:5dd5a0d25b6a3d6350408acfb1a671531cdff0e488f153482b163bda15415a67",
+                    "V6_DAG_sha256:2396251bfb37a0a5512e1486a2ef470f3eca483512d639f2c5fad44bf91b3fe8",
+                    "V6_FAMILY_INTERACTING_CHAINS_DELAYED_TRAPS",
+                    "V6_POLICY_sha256:0df0e0e095d0ac7394ad8a2289811edef22ef6a7bedee930e50e76781c304c82"
+                ],
+                "contentFingerprint": "sha256:d2d49a70e83cdcba46ca6ae68624fa859e39aa702a22bb4b63fd33ec3068db93"
+            }
+        },
+        {
+            "id": "v6-validation-022",
+            "number": 22,
+            "title": "Blind board 022",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 4
+                },
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-03",
+                    "v6-a-04",
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-05"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6224291022,
+                "generationProfile": "v6-bucket-4",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 6,
+                "solutionCount": 40,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 3,
+                "exploredStateCount": 35,
+                "parActions": 6,
+                "twoStarMaxActions": 8,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "FLIPS_REQUIRED_POLARITY",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:96e17aa3c5a8917de5fa35aeb91a23fc49a7d6dd49b7286af11eed972e9e2540",
+                    "V6_DAG_sha256:6d0adfe25defb095eddce43065aa612adb55be9f0d246967affaa760b70206ff",
+                    "V6_FAMILY_POLARITY_LOCK_RELEASE",
+                    "V6_POLICY_sha256:878f5cc6ff830c76c98e765f7a88d7b40a28f06c41a6ac6c03face31bb8b6729"
+                ],
+                "contentFingerprint": "sha256:56c0433b417177614ada054cfbe672dfa28a96b979a300c62458a527ae147069"
+            }
+        },
+        {
+            "id": "v6-validation-023",
+            "number": 23,
+            "title": "Blind board 023",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 4,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 2,
+                    "column": 3,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 3,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-03",
+                    "v6-a-05",
+                    "v6-a-00",
+                    "v6-a-01",
+                    "v6-a-04"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6224388025,
+                "generationProfile": "v6-bucket-4",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 6,
+                "solutionCount": 7,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 1,
+                "exploredStateCount": 18,
+                "parActions": 6,
+                "twoStarMaxActions": 8,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "NON_COMMUTING_CHOICE",
+                    "REVEALS_CONTROLLER",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:7bc79c105ab878dcf3a66cacf524db8e0e98cbbdfa4190933f21a925ccc0ccf1",
+                    "V6_DAG_sha256:83bf353b6f44859f401e136cd8c72e38236e07340568657fd1760475c299c1c3",
+                    "V6_FAMILY_OCCLUSION_REVEAL_CHAIN",
+                    "V6_POLICY_sha256:5514ef7573ccb8a550d42e8c3360df211b66ef1c4df4a0ef7dcd93ead0906b20"
+                ],
+                "contentFingerprint": "sha256:5d4eac7eb602a7ac0bf8f00f4242d0b5f64f553f651b78e5896fce4c41f7c246"
+            }
+        },
+        {
+            "id": "v6-validation-024",
+            "number": 24,
+            "title": "Blind board 024",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 1,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 4
+                },
+                {
+                    "row": 3,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-05",
+                    "v6-a-03",
+                    "v6-a-02",
+                    "v6-a-01",
+                    "v6-a-04"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6224485028,
+                "generationProfile": "v6-bucket-4",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 6,
+                "solutionCount": 5,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 30,
+                "parActions": 6,
+                "twoStarMaxActions": 8,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "CREATES_CANCELLATION",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:76efba884ff0534458192211980a3ca848f6201b722611c78be7692dfca08569",
+                    "V6_DAG_sha256:10f9c77d051987b21bf8ea8a54a514f48d5e081ede39c908e9eb2645f9a45f4c",
+                    "V6_FAMILY_CANCELLATION_RELEASE",
+                    "V6_POLICY_sha256:b2c45acde9668f911981aeb01e976eac8c9951f56c3fdb04eb674c9f619cd17f"
+                ],
+                "contentFingerprint": "sha256:62fde3b5b2b6dd2d4473c8749394a2696297b94140d938d19e20fb9418fca79d"
+            }
+        },
+        {
+            "id": "v6-validation-025",
+            "number": 25,
+            "title": "Blind board 025",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-06",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-00",
+                    "v6-a-03",
+                    "v6-a-01",
+                    "v6-a-06",
+                    "v6-a-05",
+                    "v6-a-04"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6225000016,
+                "generationProfile": "v6-bucket-5",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 7,
+                "solutionCount": 10,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 28,
+                "parActions": 7,
+                "twoStarMaxActions": 9,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "FORK_JOIN_DEPENDENCY",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:0d4afa68b3541341c7d7ef62f59fd1dd59fd1eae59655157f58f2972a6e5acb4",
+                    "V6_DAG_sha256:c60c874376132ef351784207bb6b3bc13d18a120070e5948ebcfe1e414810903",
+                    "V6_FAMILY_FORK_JOIN_COUPLED",
+                    "V6_POLICY_sha256:287ab70f2836b15aa9a85275c63d89deeff124196a92181db07f30a2620098a7"
+                ],
+                "contentFingerprint": "sha256:a1f91959dd88d958211ef2f40a55bfe19b566916b7abe287fb6a2923c6c1d317"
+            }
+        },
+        {
+            "id": "v6-validation-026",
+            "number": 26,
+            "title": "Blind board 026",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-06",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-00",
+                    "v6-a-04",
+                    "v6-a-01",
+                    "v6-a-06",
+                    "v6-a-05",
+                    "v6-a-03"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6225097019,
+                "generationProfile": "v6-bucket-5",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 7,
+                "solutionCount": 10,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 39,
+                "parActions": 7,
+                "twoStarMaxActions": 9,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:20c359962db4b05c4c281fb6d55224db6e1fd678946103f076a34c353ac60f4d",
+                    "V6_DAG_sha256:2ad5cc551b988b5bae96f441050093d0c7449b24b73b8439e13e6cc2fbe644db",
+                    "V6_FAMILY_INTERACTING_CHAINS_DELAYED_TRAPS",
+                    "V6_POLICY_sha256:06dfe6d8410694f04bd1fc56924b094c5f4f203e9f817377671d1ac58c79bca3"
+                ],
+                "contentFingerprint": "sha256:bdf673aa3a2004513616df628b3b0f20b8a3ecdfa18573352a4df9a49543f683"
+            }
+        },
+        {
+            "id": "v6-validation-027",
+            "number": 27,
+            "title": "Blind board 027",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-06",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 2,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-00",
+                    "v6-a-04",
+                    "v6-a-06",
+                    "v6-a-03",
+                    "v6-a-05",
+                    "v6-a-01"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6225194022,
+                "generationProfile": "v6-bucket-5",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 7,
+                "solutionCount": 6,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 24,
+                "parActions": 7,
+                "twoStarMaxActions": 9,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "FLIPS_REQUIRED_POLARITY",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:05097055cf463e21451c9003717df9c4f4503da58aabcfdd727345cbaa82b680",
+                    "V6_DAG_sha256:6f642b77171532444f4d12827bbcda155d4499fb518409adf5c14d2144026e85",
+                    "V6_FAMILY_POLARITY_LOCK_RELEASE",
+                    "V6_POLICY_sha256:34d4ed9b65a797bc6a5769f73bea443910c307e9186b0484808b2f524ad31e22"
+                ],
+                "contentFingerprint": "sha256:2ce84a58e1bd90f091087ce7c11336ee2fb6d608eed1df814701cc1714e5b42a"
+            }
+        },
+        {
+            "id": "v6-validation-028",
+            "number": 28,
+            "title": "Blind board 028",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-06",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 2
+                },
+                {
+                    "row": 2,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-00",
+                    "v6-a-04",
+                    "v6-a-01",
+                    "v6-a-06",
+                    "v6-a-05",
+                    "v6-a-03"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6225291025,
+                "generationProfile": "v6-bucket-5",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 7,
+                "solutionCount": 10,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 34,
+                "parActions": 7,
+                "twoStarMaxActions": 9,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "NON_COMMUTING_CHOICE",
+                    "REVEALS_CONTROLLER",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:62bf3569a3d0abcdcaa2b26ecd389e9075a13c3f5807ceda0878edea97039bdf",
+                    "V6_DAG_sha256:dbb1729c1e0375e8ee31bddd4caf552f902cbc86da57ae806572c28668958f40",
+                    "V6_FAMILY_OCCLUSION_REVEAL_CHAIN",
+                    "V6_POLICY_sha256:7fdcbbf2a6423f0e64a42b613dbee1b719ba63b207fba8d2061ffa5d81aa4c8d"
+                ],
+                "contentFingerprint": "sha256:655846da148d0e91223f016c5799fbd1f7a880a59a6033773b7c3bc30268b3d9"
+            }
+        },
+        {
+            "id": "v6-validation-029",
+            "number": 29,
+            "title": "Blind board 029",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 1
+                },
+                {
+                    "row": 4,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-03",
+                    "v6-a-02",
+                    "v6-a-01",
+                    "v6-a-00",
+                    "v6-a-04",
+                    "v6-a-05",
+                    "v6-a-06"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6225388028,
+                "generationProfile": "v6-bucket-5",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 7,
+                "solutionCount": 84,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 56,
+                "parActions": 7,
+                "twoStarMaxActions": 9,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "CREATES_CANCELLATION",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:2dbca93a8ba66b66a1f409e3a6a2137006320f1e72ba5761523e6dab2172b3ce",
+                    "V6_DAG_sha256:273740e799cab8b3258ee33988f8ed38fce80b14725cb5453f53b5088c5fa05c",
+                    "V6_FAMILY_CANCELLATION_RELEASE",
+                    "V6_POLICY_sha256:2b5c70db88f050ca9f0d6c77bff6dc9f520e483d15256e72c108a3225fc94764"
+                ],
+                "contentFingerprint": "sha256:71c6d369ba3ed527485cde7bc7984b7131b077f94141cfd21ee343fc0716d2be"
+            }
+        },
+        {
+            "id": "v6-validation-030",
+            "number": 30,
+            "title": "Blind board 030",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-05",
+                    "v6-a-08",
+                    "v6-a-04",
+                    "v6-a-01",
+                    "v6-a-03",
+                    "v6-a-06",
+                    "v6-a-07",
+                    "v6-a-00"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6225485031,
+                "generationProfile": "v6-bucket-5",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 9,
+                "solutionCount": 3,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 43,
+                "parActions": 9,
+                "twoStarMaxActions": 12,
+                "packId": "v6-sealed-validation",
+                "mechanicTags": [
+                    "CHANGES_CONTROLLER",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:02afdbd56f1bfe15f6edd4038aed6cfbc32a6877cd849182624d3adb6e543122",
+                    "V6_DAG_sha256:cb452b7d65947f7e3e666bd843d814c1db79d0b00c7202752e0722b99334b431",
+                    "V6_FAMILY_COMPETING_CONTROLLER_HANDOFF",
+                    "V6_POLICY_sha256:2883b075a61e07cdd3b36ef169d992b0f4ebe53ad256c026957bcba0e8c2543c"
+                ],
+                "contentFingerprint": "sha256:e5b00c21b26727d19573b7a9cb7f42e2d76e26393a79b1195c29ee3ee235d4d2"
+            }
+        }
+    ],
+    "contentVersion": 12,
+    "generatorVersion": 6
+}

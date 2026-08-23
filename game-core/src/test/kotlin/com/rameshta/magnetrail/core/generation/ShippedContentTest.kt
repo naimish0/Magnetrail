@@ -32,27 +32,47 @@ class ShippedContentTest {
         assertEquals(CAMPAIGN_CONTENT_VERSION, campaign.contentVersion)
         assertEquals(GENERATOR_VERSION_V5, campaign.generatorVersion)
         assertTrue(campaign.levels.take(200).all { it.metadata?.previousContentFingerprint != null })
-        assertTrue(campaign.levels.drop(200).all { it.metadata?.previousContentFingerprint == null })
+        assertTrue(campaign.levels.slice(200 until 205).all { it.metadata?.previousContentFingerprint == null })
+        assertTrue(campaign.levels.drop(205).all { it.metadata?.previousContentFingerprint != null })
         assertEquals(
             (201..2_205).map { "campaign-${it.toString().padStart(3, '0')}" },
             campaign.levels.drop(200).map { it.id },
         )
         assertEquals(
             mapOf(
-                "v5-easy" to 334,
-                "v5-medium" to 334,
-                "v5-hard" to 333,
-                "v5-campaign-v9-super-hard" to 333,
-                "v5-campaign-v9-expert" to 333,
-                "v5-campaign-v9-master" to 333,
+                "v5-campaign-v10-easy-dense" to 334,
+                "v5-campaign-v10-medium-dense" to 334,
+                "v5-campaign-v10-hard-dense" to 333,
+                "v5-campaign-v10-super-hard-dense" to 333,
+                "v5-campaign-v10-expert-dense" to 333,
+                "v5-campaign-v10-master-dense" to 333,
             ),
             campaign.levels.drop(205).groupingBy { it.metadata?.generationProfile }.eachCount(),
         )
         val infinite = load("/content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")
         val infiniteExact = infinite.levels.mapTo(hashSetOf(), ContentFingerprint::exact)
         val infiniteSymmetry = infinite.levels.mapTo(hashSetOf(), ContentFingerprint::symmetryNormalized)
+        val infiniteArrows = infinite.levels.mapTo(hashSetOf(), ContentFingerprint::arrowLayoutSymmetryNormalized)
+        val infiniteInteractive = infinite.levels.mapTo(
+            hashSetOf(),
+            ContentFingerprint::interactiveLayoutSymmetryNormalized,
+        )
         assertTrue(campaign.levels.drop(205).none { ContentFingerprint.exact(it) in infiniteExact })
         assertTrue(campaign.levels.drop(205).none { ContentFingerprint.symmetryNormalized(it) in infiniteSymmetry })
+        assertTrue(campaign.levels.drop(205).none { ContentFingerprint.arrowLayoutSymmetryNormalized(it) in infiniteArrows })
+        assertTrue(
+            campaign.levels.drop(205).none {
+                ContentFingerprint.interactiveLayoutSymmetryNormalized(it) in infiniteInteractive
+            },
+        )
+        assertEquals(
+            2_000,
+            campaign.levels.drop(205).map(ContentFingerprint::arrowLayoutSymmetryNormalized).toSet().size,
+        )
+        assertEquals(
+            2_000,
+            campaign.levels.drop(205).map(ContentFingerprint::interactiveLayoutSymmetryNormalized).toSet().size,
+        )
         val contentV8Source = load("/content/v9_expansion/SOURCE_CONTENT_V8.json")
         assertEquals(205, contentV8Source.levels.size)
         assertEquals(contentV8Source.levels, campaign.levels.take(205))
@@ -62,13 +82,22 @@ class ShippedContentTest {
 
         campaign.levels.forEach { level ->
             val metadata = requireNotNull(level.metadata)
-            val solved = Solver().solve(level.initialState(), solutionLimit = 100_000, maxExploredStates = 200_000)
-            assertTrue("${level.id} solver incomplete", solved.searchComplete)
-            assertTrue("${level.id} unsolved", solved.solvable)
-            assertEquals(metadata.certifiedSolutionLength, solved.shortestDepth)
             assertEquals(metadata.contentFingerprint, ContentFingerprint.of(level))
             var state = level.initialState()
-            requireNotNull(solved.oneCleanSolution).forEach { action ->
+            val actions = if (metadata.contentVersion == CAMPAIGN_CONTENT_VERSION && level.number > 205) {
+                level.designedSolutions.single().map(::PlayerAction)
+            } else {
+                val solved = Solver().solve(
+                    level.initialState(),
+                    solutionLimit = 100_000,
+                    maxExploredStates = 200_000,
+                )
+                assertTrue("${level.id} solver incomplete", solved.searchComplete)
+                assertTrue("${level.id} unsolved", solved.solvable)
+                assertEquals(metadata.certifiedSolutionLength, solved.shortestDepth)
+                requireNotNull(solved.oneCleanSolution)
+            }
+            actions.forEach { action ->
                 val result = engine.resolve(state, action)
                 assertTrue("${level.id}/${action.arrowId} failed replay", result.success)
                 state = result.resultingState

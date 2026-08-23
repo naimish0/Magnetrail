@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 const val GENERATOR_VERSION_V5 = 5
 const val D2_STAGING_CONTENT_VERSION = 7
-const val CAMPAIGN_CONTENT_VERSION = 9
+const val CAMPAIGN_CONTENT_VERSION = 10
 const val D2_SELECTION_VERSION = 1
 const val D2_SKILL_VERSION = 1
 const val D2_1_SPATIAL_CONFIGURATION_VERSION = 2
@@ -144,6 +144,7 @@ data class GenerationProfileV5(
     val repairAttemptCap: Int = 0,
     val experimental: Boolean = false,
     val maximumPurposefulEmptyCellRatio: Double = 0.0,
+    val enforceAutomatedDifficultyGates: Boolean = true,
 ) {
     init {
         require(id.isNotBlank())
@@ -494,4 +495,176 @@ object GenerationProfilesCampaignV9 {
     val MASTER = GenerationProfilesD21.MASTER.copy(id = "v5-campaign-v9-master")
 
     val highBands: List<GenerationProfileV5> = listOf(SUPER_HARD, EXPERT, MASTER)
+}
+
+/**
+ * Campaign V10 density-remediation profiles. These are deliberately new identities so V9 can be
+ * reconstructed and audited after its human study exposed repeated high-band silhouettes. V10
+ * requires substantially more arrows and occupied cells. Automated difficulty metrics are
+ * diagnostic for these profiles; the labels remain candidates until a fresh blinded playtest
+ * approves them.
+ */
+object GenerationProfilesCampaignV10 {
+    val EASY = GenerationProfilesV5.EASY.copy(
+        id = "v5-campaign-v10-easy-dense",
+        minArrows = 6,
+        maxArrows = 12,
+        minWalls = 0,
+        maxWalls = 64,
+        objectDensityRange = MetricRangeV5(0.50, 0.90),
+        interactionDensityRange = MetricRangeV5(0.0, 1.0),
+        minArrowDependencyDepth = 0,
+        minPolarityImpactDepth = 0,
+        minMandatoryOrderingDepth = 0,
+        minConsequenceDepth = 0,
+        minRelevantObjectRatio = 0.20,
+        maxSafeChoiceRatio = 1.0,
+        maxGreedySolveRate = 1.0,
+        maxRandomSuccessRate = 1.0,
+        minMeaningfulFailureRate = 0.0,
+        minRecoveryPressure = 0.0,
+        minStrategicChoiceDensity = 0.0,
+        minExposureEvents = 0,
+        minAlternativePathCount = 0,
+        maxPermutationRedundancy = 1.0,
+        solverStateCap = 400_000,
+        analysisStateCap = 25_000,
+        enforceAutomatedDifficultyGates = false,
+    )
+    val MEDIUM = GenerationProfilesV5.MEDIUM.copy(
+        id = "v5-campaign-v10-medium-dense",
+        minArrows = 8,
+        maxArrows = 14,
+        minWalls = 0,
+        maxWalls = 64,
+        objectDensityRange = MetricRangeV5(0.56, 0.92),
+        interactionDensityRange = MetricRangeV5(0.0, 1.0),
+        minArrowDependencyDepth = 1,
+        minPolarityImpactDepth = 0,
+        minMandatoryOrderingDepth = 1,
+        minConsequenceDepth = 1,
+        minRelevantObjectRatio = 0.20,
+        maxSafeChoiceRatio = 1.0,
+        maxGreedySolveRate = 1.0,
+        maxRandomSuccessRate = 1.0,
+        minMeaningfulFailureRate = 0.0,
+        minRecoveryPressure = 0.0,
+        minStrategicChoiceDensity = 0.0,
+        minExposureEvents = 0,
+        minAlternativePathCount = 0,
+        maxPermutationRedundancy = 1.0,
+        solverStateCap = 750_000,
+        analysisStateCap = 25_000,
+        enforceAutomatedDifficultyGates = false,
+    )
+    val HARD = GenerationProfilesV5.HARD.copy(
+        id = "v5-campaign-v10-hard-dense",
+        minArrows = 10,
+        maxArrows = 16,
+        minWalls = 0,
+        maxWalls = 64,
+        objectDensityRange = MetricRangeV5(0.62, 0.94),
+        interactionDensityRange = MetricRangeV5(0.0, 1.0),
+        minArrowDependencyDepth = 1,
+        minPolarityImpactDepth = 0,
+        minCancellationTransitions = 0,
+        minMandatoryOrderingDepth = 1,
+        minConsequenceDepth = 1,
+        minRelevantObjectRatio = 0.20,
+        maxSafeChoiceRatio = 1.0,
+        maxGreedySolveRate = 1.0,
+        maxRandomSuccessRate = 1.0,
+        minMeaningfulFailureRate = 0.0,
+        minRecoveryPressure = 0.0,
+        minStrategicChoiceDensity = 0.0,
+        minExposureEvents = 0,
+        minAlternativePathCount = 0,
+        maxPermutationRedundancy = 1.0,
+        solverStateCap = 1_000_000,
+        analysisStateCap = 25_000,
+        enforceAutomatedDifficultyGates = false,
+    )
+    val SUPER_HARD = GenerationProfilesCampaignV9.SUPER_HARD.copy(
+        id = "v5-campaign-v10-super-hard-dense",
+        minArrows = 14,
+        maxArrows = 14,
+        objectDensityRange = MetricRangeV5(0.68, 0.94),
+        interactionDensityRange = MetricRangeV5(0.0, 1.0),
+        minArrowDependencyDepth = 2,
+        minPolarityImpactDepth = 1,
+        minCancellationTransitions = 0,
+        minMandatoryOrderingDepth = 2,
+        minConsequenceDepth = 2,
+        minRelevantObjectRatio = 0.20,
+        maxSafeChoiceRatio = 1.0,
+        maxGreedySolveRate = 1.0,
+        maxRandomSuccessRate = 1.0,
+        minMeaningfulFailureRate = 0.0,
+        minRecoveryPressure = 0.0,
+        minStrategicChoiceDensity = 0.0,
+        minExposureEvents = 1,
+        minAlternativePathCount = 0,
+        maxPermutationRedundancy = 1.0,
+        solverStateCap = 1_500_000,
+        analysisStateCap = 25_000,
+        enforceAutomatedDifficultyGates = false,
+        spatialDensityProfile = null,
+        maximumPurposefulEmptyCellRatio = 0.0,
+    )
+    val EXPERT = GenerationProfilesCampaignV9.EXPERT.copy(
+        id = "v5-campaign-v10-expert-dense",
+        minArrows = 16,
+        maxArrows = 16,
+        objectDensityRange = MetricRangeV5(0.74, 0.95),
+        interactionDensityRange = MetricRangeV5(0.0, 1.0),
+        minArrowDependencyDepth = 2,
+        minPolarityImpactDepth = 1,
+        minCancellationTransitions = 0,
+        minMandatoryOrderingDepth = 2,
+        minConsequenceDepth = 2,
+        minRelevantObjectRatio = 0.20,
+        maxSafeChoiceRatio = 1.0,
+        maxGreedySolveRate = 1.0,
+        maxRandomSuccessRate = 1.0,
+        minMeaningfulFailureRate = 0.0,
+        minRecoveryPressure = 0.0,
+        minStrategicChoiceDensity = 0.0,
+        minExposureEvents = 1,
+        minAlternativePathCount = 0,
+        maxPermutationRedundancy = 1.0,
+        solverStateCap = 2_000_000,
+        analysisStateCap = 25_000,
+        enforceAutomatedDifficultyGates = false,
+        spatialDensityProfile = null,
+        maximumPurposefulEmptyCellRatio = 0.0,
+    )
+    val MASTER = GenerationProfilesCampaignV9.MASTER.copy(
+        id = "v5-campaign-v10-master-dense",
+        minArrows = 18,
+        maxArrows = 18,
+        objectDensityRange = MetricRangeV5(0.80, 0.96),
+        interactionDensityRange = MetricRangeV5(0.0, 1.0),
+        minArrowDependencyDepth = 2,
+        minPolarityImpactDepth = 1,
+        minCancellationTransitions = 0,
+        minMandatoryOrderingDepth = 2,
+        minConsequenceDepth = 2,
+        minRelevantObjectRatio = 0.20,
+        maxSafeChoiceRatio = 1.0,
+        maxGreedySolveRate = 1.0,
+        maxRandomSuccessRate = 1.0,
+        minMeaningfulFailureRate = 0.0,
+        minRecoveryPressure = 0.0,
+        minStrategicChoiceDensity = 0.0,
+        minExposureEvents = 1,
+        minAlternativePathCount = 0,
+        maxPermutationRedundancy = 1.0,
+        solverStateCap = 2_500_000,
+        analysisStateCap = 25_000,
+        enforceAutomatedDifficultyGates = false,
+        spatialDensityProfile = null,
+        maximumPurposefulEmptyCellRatio = 0.0,
+    )
+
+    val all: List<GenerationProfileV5> = listOf(EASY, MEDIUM, HARD, SUPER_HARD, EXPERT, MASTER)
 }

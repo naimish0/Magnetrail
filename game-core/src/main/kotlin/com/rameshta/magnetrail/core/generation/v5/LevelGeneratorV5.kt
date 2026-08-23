@@ -94,12 +94,104 @@ sealed interface CertificationResultV5 {
     data class Rejected(val reasons: List<String>) : CertificationResultV5
 }
 
+sealed interface HumanCalibrationCertificationResultV5 {
+    data class Accepted(val level: LevelDefinition) : HumanCalibrationCertificationResultV5
+    data class Rejected(val reasons: List<String>) : HumanCalibrationCertificationResultV5
+}
+
 /** Production-engine certification for staging candidates. */
 class CertificationPipelineV5(
     private val engine: GameEngine = DefaultGameEngine(),
     private val solver: Solver = Solver(engine),
     private val structuralAnalyzer: StructuralAnalyzerV5 = StructuralAnalyzerV5(engine),
 ) {
+    /**
+     * Mechanical certification for a catalog whose difficulty bands are intentionally awaiting
+     * human calibration. It proves a production-engine solution witness and immutable replay, but
+     * does not count every strategy or turn automated metrics into a difficulty approval.
+     */
+    fun certifyForHumanCalibration(
+        level: LevelDefinition,
+        profile: GenerationProfileV5,
+        seed: Long,
+        packId: String,
+        contentVersion: Int,
+        previousContentFingerprint: String,
+    ): HumanCalibrationCertificationResultV5 {
+        val reasons = mutableListOf<String>()
+        if (level.width != level.height || level.width !in profile.gridSizes) reasons += "grid-out-of-profile"
+        if (level.arrows.size !in profile.minArrows..profile.maxArrows) reasons += "arrow-count-out-of-profile"
+        if (level.magnets.size !in profile.minMagnets..profile.maxMagnets) reasons += "magnet-count-out-of-profile"
+        if (level.walls.size !in profile.minWalls..profile.maxWalls) reasons += "wall-count-out-of-profile"
+        val density = (level.arrows.size + level.magnets.size + level.walls.size).toDouble() /
+            (level.width * level.height)
+        if (density !in profile.objectDensityRange) reasons += "object-density-out-of-profile"
+        level.arrows.forEach { arrow ->
+            val state = level.initialState()
+            val result = engine.resolve(state, PlayerAction(arrow.id))
+            if (!result.success && result.resultingState != state) reasons += "failed-action-mutated-state:${arrow.id}"
+        }
+        if (reasons.isNotEmpty()) return HumanCalibrationCertificationResultV5.Rejected(reasons.distinct())
+
+        val solutionIds = level.designedSolutions.singleOrNull()
+        val arrowIds = level.arrows.mapTo(hashSetOf()) { it.id }
+        if (solutionIds == null || solutionIds.size != arrowIds.size || solutionIds.toSet() != arrowIds) {
+            reasons += "missing-complete-solution-witness"
+        }
+        val solution = solutionIds?.map(::PlayerAction)
+        if (reasons.isNotEmpty()) return HumanCalibrationCertificationResultV5.Rejected(reasons.distinct())
+        var replay = level.initialState()
+        requireNotNull(solution).forEach { action ->
+            val result = engine.resolve(replay, action)
+            if (!result.success) reasons += "solution-replay-failed:${action.arrowId}"
+            replay = result.resultingState
+        }
+        if (replay.arrows.isNotEmpty()) reasons += "solution-replay-did-not-clear"
+        if (reasons.isNotEmpty()) return HumanCalibrationCertificationResultV5.Rejected(reasons.distinct())
+
+        val par = requireNotNull(solution).size
+        val twoStar = par + maxOf(2, ceil(par * 0.25).toInt())
+        val raw = level.copy(metadata = null, designedSolutions = listOf(solution.map(PlayerAction::arrowId)))
+        val tags = buildList {
+            if (raw.magnets.isNotEmpty()) add("MAGNET_CONTROL")
+            if (raw.arrows.any { arrow ->
+                    engine.resolve(raw.initialState(), PlayerAction(arrow.id)).polarityChange != null
+                }
+            ) add("POLARITY_DEPENDENCY")
+            if (raw.walls.isNotEmpty()) add("WALLS")
+            if (raw.arrows.any { arrow -> !engine.resolve(raw.initialState(), PlayerAction(arrow.id)).success }) {
+                add("ORDER_DEPENDENCY")
+            }
+        }.ifEmpty { listOf("MOVEMENT") }
+        val fingerprint = ContentFingerprint.of(raw)
+        return HumanCalibrationCertificationResultV5.Accepted(
+            raw.copy(
+                metadata = LevelMetadata(
+                    contentVersion = contentVersion,
+                    origin = LevelOrigin.GENERATOR_ASSISTED,
+                    generatorVersion = GENERATOR_VERSION_V5,
+                    generatorSeed = seed,
+                    generationProfile = profile.id,
+                    difficultyBand = when (profile.difficultyBand) {
+                        StructuralDifficultyBandV5.TUTORIAL -> DifficultyBand.INTRO
+                        StructuralDifficultyBandV5.EASY, StructuralDifficultyBandV5.MEDIUM -> DifficultyBand.DEVELOPING
+                        else -> DifficultyBand.ADVANCED
+                    },
+                    certifiedSolutionLength = par,
+                    solutionCount = 1,
+                    solutionCountCapped = true,
+                    validFirstActionCount = engine.validActions(level.initialState()).size,
+                    exploredStateCount = 1,
+                    grading = GradingThresholds(par, twoStar),
+                    packId = packId,
+                    mechanicTags = tags,
+                    contentFingerprint = fingerprint,
+                    previousContentFingerprint = previousContentFingerprint,
+                ),
+            ),
+        )
+    }
+
     fun certify(
         level: LevelDefinition,
         profile: GenerationProfileV5,
@@ -231,7 +323,9 @@ class CertificationPipelineV5(
     private fun v4PreGate(
         profile: GenerationProfileV5,
         v4: com.rameshta.magnetrail.core.difficulty.v4.DifficultyV4Score,
-    ): List<String> = buildList {
+    ): List<String> = if (!profile.enforceAutomatedDifficultyGates) {
+        emptyList()
+    } else buildList {
         val metrics = v4.metrics
         if (!v4.searchComplete || v4.searchTruncated) add("incomplete-v4-analysis")
         if (metrics.safeChoiceRatio > profile.maxSafeChoiceRatio) add("safe-choice-ratio-above-profile")
@@ -263,7 +357,9 @@ class CertificationPipelineV5(
     private fun structuralGate(
         profile: GenerationProfileV5,
         diagnostics: StructuralDiagnosticsV5,
-    ): List<String> = buildList {
+    ): List<String> = if (!profile.enforceAutomatedDifficultyGates) {
+        emptyList()
+    } else buildList {
         if (!diagnostics.searchComplete || diagnostics.truncated) add("incomplete-structural-analysis")
         if (diagnostics.interactionGraph.interactionDensity !in profile.interactionDensityRange) {
             add("interaction-density-out-of-profile")
@@ -965,12 +1061,14 @@ class LevelGeneratorV5(
             designedSolutions = listOf(arrows.map { it.id }),
         )
         val canonicalStates = findCanonicalStates(level) ?: return null
+        val currentWalls = existingWalls.map(::Wall)
         return candidates.firstOrNull { candidate ->
             canonicalStates.all { (state, canonicalActionId) ->
                 canonicalActionId == null || run {
-                    val baseline = engine.resolve(state, PlayerAction(canonicalActionId))
+                    val currentState = state.copy(walls = currentWalls)
+                    val baseline = engine.resolve(currentState, PlayerAction(canonicalActionId))
                     val changed = engine.resolve(
-                        state.copy(walls = state.walls + Wall(candidate)),
+                        currentState.copy(walls = currentWalls + Wall(candidate)),
                         PlayerAction(canonicalActionId),
                     )
                     wallRoleSignature(baseline) == wallRoleSignature(changed)

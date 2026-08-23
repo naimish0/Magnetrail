@@ -19,6 +19,8 @@ import com.rameshta.magnetrail.core.generation.v5.GENERATOR_VERSION_V5
 import com.rameshta.magnetrail.core.generation.v5.GenerationProfilesV5
 import com.rameshta.magnetrail.core.generation.v5.GenerationProfilesD21
 import com.rameshta.magnetrail.core.generation.v5.GenerationProfilesCampaignV9
+import com.rameshta.magnetrail.core.generation.v5.GenerationProfilesCampaignV10
+import com.rameshta.magnetrail.core.generation.v5.MetricRangeV5
 import com.rameshta.magnetrail.core.level.LevelCatalog
 import com.rameshta.magnetrail.core.level.LevelParser
 import com.rameshta.magnetrail.core.model.DifficultyBand
@@ -67,6 +69,25 @@ fun main(arguments: Array<String>) {
         "generate-infinite-catalog" -> generateInfiniteCatalog(options)
         "generate-campaign-v9-expansion" -> generateCampaignV9Expansion(options)
         "promote-campaign-v9-expansion" -> promoteCampaignV9Expansion(options)
+        "probe-campaign-v10-remediation" -> probeCampaignV10Remediation(options)
+        "generate-campaign-v10-remediation" -> generateCampaignV10Remediation(options)
+        "promote-campaign-v10-remediation" -> promoteCampaignV10Remediation(options)
+        "stage-certified-v11-merge" -> stageCertifiedV11Merge(options)
+        "audit-generator-v6-baseline" -> auditGeneratorV6Baseline(options)
+        "generate-generator-v6-pilot" -> generateGeneratorV6Pilot(options)
+        "calibrate-human-like-difficulty-v1" -> calibrateHumanLikeDifficultyV1(options)
+        "validate-generator-v6-human-certificate" -> validateGeneratorV6HumanCertificate(options)
+        "generate-generator-v6-production-candidates" -> generateGeneratorV6ProductionCandidates(options)
+        "promote-generator-v6-campaign" -> promoteGeneratorV6Campaign(options)
+        "analyze-generator-v6.1-regression" -> analyzeGeneratorV61Regression(options)
+        "prove-generator-v6.1-expert-capacity" -> proveGeneratorV61ExpertCapacity(options)
+        "prove-generator-v6.1-super-hard-capacity" -> proveGeneratorV61SuperHardCapacity(options)
+        "write-generator-v6.1-preflight" -> writeGeneratorV61Preflight(options)
+        "generate-generator-v6.1-campaign" -> generateGeneratorV61Campaign(options)
+        "merge-certify-generator-v6.1-campaign" -> mergeAndCertifyGeneratorV61Campaign(options)
+        "promote-generator-v6.1-campaign" -> promoteGeneratorV61Campaign(options)
+        "benchmark-generator-v6.1-auto-journey" -> benchmarkGeneratorV61AutoJourney(options)
+        "benchmark-generator-v6.1-parallel-workflow" -> benchmarkGeneratorV61ParallelWorkflow(options)
         else -> error("Unknown command '${arguments.first()}'")
     }
 }
@@ -303,15 +324,34 @@ private fun validateCatalog(catalog: LevelCatalog, dailyFallback: Boolean = fals
             val profile = (
                 GenerationProfilesV5.productionCandidateProfiles +
                     GenerationProfilesD21.benchmarkProfiles +
-                    GenerationProfilesCampaignV9.highBands
+                    GenerationProfilesCampaignV9.highBands +
+                    GenerationProfilesCampaignV10.all
                 )
                 .distinctBy { it.id }
                 .singleOrNull {
                 it.id == metadata.generationProfile
             } ?: error("Unknown V5 profile '${metadata.generationProfile}' for ${level.id}")
+            val isRecordedV51Expert = level.id == "campaign-205" &&
+                metadata.contentFingerprint ==
+                "sha256:8202008ccb4f0fa3488b60883061574998f6426f3d7f5a53193145974cb3026d"
+            val certificationProfile = if (isRecordedV51Expert) {
+                // This board was generated and owner-waived while D2.1 Expert required full
+                // occupancy. Reconstruct that immutable authored-density profile so certification
+                // reaches the solver/V4 gates covered by the fingerprint-bound waiver below.
+                profile.copy(
+                    objectDensityRange = MetricRangeV5(1.0, 1.0),
+                    spatialDensityProfile = requireNotNull(profile.spatialDensityProfile).copy(
+                        minimumOccupancyRatio = 1.0,
+                        targetOccupancyRatio = 1.0,
+                        maximumOccupancyRatio = 1.0,
+                    ),
+                )
+            } else {
+                profile
+            }
             val result = pipelineV5.certify(
                 level = level.copy(metadata = null),
-                profile = profile,
+                profile = certificationProfile,
                 seed = requireNotNull(metadata.generatorSeed),
                 packId = metadata.packId,
                 contentVersion = metadata.contentVersion,
@@ -325,9 +365,7 @@ private fun validateCatalog(catalog: LevelCatalog, dailyFallback: Boolean = fals
                 }
             } else {
                 val rejected = result as CertificationResultV5.Rejected
-                val isRecordedV51ExpertWaiver = level.id == "campaign-205" &&
-                    metadata.contentFingerprint ==
-                    "sha256:8202008ccb4f0fa3488b60883061574998f6426f3d7f5a53193145974cb3026d" &&
+                val isRecordedV51ExpertWaiver = isRecordedV51Expert &&
                     rejected.reasons.toSet() == setOf(
                         "interaction-density-out-of-profile",
                         "object-participation-below-profile",

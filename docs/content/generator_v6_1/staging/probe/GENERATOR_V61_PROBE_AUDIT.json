@@ -1,0 +1,149 @@
+{
+    "schemaVersion": 1,
+    "generatorIdentity": "Generator V6.1 — Semantic Novelty plus Cued Multi-Phase Adversarial Difficulty",
+    "candidates": [
+        {
+            "levelNumber": 13,
+            "requestedBand": "Easy",
+            "accepted": false,
+            "identity": "",
+            "causalFamily": "",
+            "strategyCluster": "",
+            "fingerprints": {},
+            "occupiedRatio": -1.0,
+            "purposefulOccupiedRatio": -1.0,
+            "inertOccupiedRatio": -1.0,
+            "solverStateCount": 0,
+            "analysisTruncated": false,
+            "criticalDecisionCount": 0,
+            "persistentTrapCount": 0,
+            "minimumVisibleLookahead": 0,
+            "inferableCriticalDecisionRatio": 0.0,
+            "bestCheapPolicySolveRate": 1.0,
+            "maximumEligibleBand": "NONE",
+            "rejectionCounts": {
+                "REJECT_PURPOSEFUL_OCCUPANCY:purposeful-occupied-ratio:0.5": 1,
+                "REJECT_PURPOSEFUL_OCCUPANCY:purposeful-occupied-ratio:0.625": 3,
+                "REJECT_UNSOLVABLE": 4
+            }
+        },
+        {
+            "levelNumber": 14,
+            "requestedBand": "Medium",
+            "accepted": false,
+            "identity": "",
+            "causalFamily": "",
+            "strategyCluster": "",
+            "fingerprints": {},
+            "occupiedRatio": -1.0,
+            "purposefulOccupiedRatio": -1.0,
+            "inertOccupiedRatio": -1.0,
+            "solverStateCount": 0,
+            "analysisTruncated": false,
+            "criticalDecisionCount": 0,
+            "persistentTrapCount": 0,
+            "minimumVisibleLookahead": 0,
+            "inferableCriticalDecisionRatio": 0.0,
+            "bestCheapPolicySolveRate": 1.0,
+            "maximumEligibleBand": "NONE",
+            "rejectionCounts": {
+                "REJECT_PURPOSEFUL_OCCUPANCY:purposeful-occupied-ratio:0.5714285714285714": 1,
+                "REJECT_PURPOSEFUL_OCCUPANCY:purposeful-occupied-ratio:0.6428571428571429": 1,
+                "REJECT_PURPOSEFUL_OCCUPANCY:purposeful-occupied-ratio:0.7142857142857143": 2,
+                "REJECT_UNSOLVABLE": 4
+            }
+        },
+        {
+            "levelNumber": 15,
+            "requestedBand": "Hard",
+            "accepted": false,
+            "identity": "",
+            "causalFamily": "",
+            "strategyCluster": "",
+            "fingerprints": {},
+            "occupiedRatio": -1.0,
+            "purposefulOccupiedRatio": -1.0,
+            "inertOccupiedRatio": -1.0,
+            "solverStateCount": 0,
+            "analysisTruncated": false,
+            "criticalDecisionCount": 0,
+            "persistentTrapCount": 0,
+            "minimumVisibleLookahead": 0,
+            "inferableCriticalDecisionRatio": 0.0,
+            "bestCheapPolicySolveRate": 1.0,
+            "maximumEligibleBand": "NONE",
+            "rejectionCounts": {
+                "REJECT_UNSOLVABLE": 8
+            }
+        },
+        {
+            "levelNumber": 16,
+            "requestedBand": "Super Hard",
+            "accepted": false,
+            "identity": "",
+            "causalFamily": "",
+            "strategyCluster": "",
+            "fingerprints": {},
+            "occupiedRatio": -1.0,
+            "purposefulOccupiedRatio": -1.0,
+            "inertOccupiedRatio": -1.0,
+            "solverStateCount": 0,
+            "analysisTruncated": false,
+            "criticalDecisionCount": 0,
+            "persistentTrapCount": 0,
+            "minimumVisibleLookahead": 0,
+            "inferableCriticalDecisionRatio": 0.0,
+            "bestCheapPolicySolveRate": 1.0,
+            "maximumEligibleBand": "NONE",
+            "rejectionCounts": {
+                "REJECT_UNSOLVABLE": 8
+            }
+        },
+        {
+            "levelNumber": 17,
+            "requestedBand": "Expert",
+            "accepted": false,
+            "identity": "",
+            "causalFamily": "",
+            "strategyCluster": "",
+            "fingerprints": {},
+            "occupiedRatio": -1.0,
+            "purposefulOccupiedRatio": -1.0,
+            "inertOccupiedRatio": -1.0,
+            "solverStateCount": 0,
+            "analysisTruncated": false,
+            "criticalDecisionCount": 0,
+            "persistentTrapCount": 0,
+            "minimumVisibleLookahead": 0,
+            "inferableCriticalDecisionRatio": 0.0,
+            "bestCheapPolicySolveRate": 1.0,
+            "maximumEligibleBand": "NONE",
+            "rejectionCounts": {
+                "REJECT_UNSOLVABLE": 8
+            }
+        },
+        {
+            "levelNumber": 18,
+            "requestedBand": "Master",
+            "accepted": false,
+            "identity": "",
+            "causalFamily": "",
+            "strategyCluster": "",
+            "fingerprints": {},
+            "occupiedRatio": -1.0,
+            "purposefulOccupiedRatio": -1.0,
+            "inertOccupiedRatio": -1.0,
+            "solverStateCount": 0,
+            "analysisTruncated": false,
+            "criticalDecisionCount": 0,
+            "persistentTrapCount": 0,
+            "minimumVisibleLookahead": 0,
+            "inferableCriticalDecisionRatio": 0.0,
+            "bestCheapPolicySolveRate": 1.0,
+            "maximumEligibleBand": "NONE",
+            "rejectionCounts": {
+                "REJECT_UNSOLVABLE": 8
+            }
+        }
+    ]
+}

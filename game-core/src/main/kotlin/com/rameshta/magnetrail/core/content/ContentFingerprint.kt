@@ -20,11 +20,63 @@ object ContentFingerprint {
         .map { symmetry -> transformedCanonicalBoard(level, symmetry) }
         .min()
 
+    /**
+     * Smallest arrow-position silhouette under every valid board symmetry. Directions are
+     * intentionally omitted: two boards that only repaint the same reflected arrangement still
+     * look like the same setup to a player scanning the campaign.
+     */
+    fun arrowLayoutSymmetryNormalized(level: LevelDefinition): String =
+        "sha256:${sha256Hex(canonicalArrowLayout(level))}"
+
+    fun canonicalArrowLayout(level: LevelDefinition): String = validSymmetries(level).map { symmetry ->
+        buildString {
+            append("magnetrail-arrow-layout-2|")
+                .append(symmetry.outputWidth(level.width, level.height)).append('x')
+                .append(symmetry.outputHeight(level.width, level.height))
+            append("|arrows=")
+            level.arrows.map { symmetry.transform(it.position, level.width, level.height) }
+                .sortedWith(compareBy(Position::row, Position::column))
+                .forEach { append(position(it)).append(';') }
+        }
+    }.min()
+
+    /**
+     * D4-normalized interactive layout without walls. This prevents wall-only variation from
+     * disguising a repeated arrow-and-magnet puzzle skeleton.
+     */
+    fun interactiveLayoutSymmetryNormalized(level: LevelDefinition): String =
+        "sha256:${sha256Hex(canonicalInteractiveLayout(level))}"
+
+    fun canonicalInteractiveLayout(level: LevelDefinition): String = validSymmetries(level).map { symmetry ->
+        buildString {
+            append("magnetrail-interactive-layout-2|")
+                .append(symmetry.outputWidth(level.width, level.height)).append('x')
+                .append(symmetry.outputHeight(level.width, level.height))
+            append("|arrows=")
+            level.arrows.map { arrow ->
+                symmetry.transform(arrow.position, level.width, level.height) to
+                    symmetry.transform(arrow.printedDirection)
+            }.sortedWith(compareBy({ it.first.row }, { it.first.column }, { it.second.name }))
+                .forEach { (cell, direction) ->
+                    append(position(cell)).append(':').append(direction.code).append(';')
+                }
+            append("|magnets=")
+            level.magnets.map { magnet ->
+                symmetry.transform(magnet.position, level.width, level.height) to magnet.polarity
+            }.sortedWith(compareBy({ it.first.row }, { it.first.column }, { it.second.name }))
+                .forEach { (cell, polarity) ->
+                    append(position(cell)).append(':').append(polarity.name).append(';')
+                }
+        }
+    }.min()
+
     /** Review-only coarse shape key; never used as a hard rejection by itself. */
     fun structuralSimilaritySignature(level: LevelDefinition): String {
         val canonical = validSymmetries(level).map { symmetry ->
             buildString {
-                append("magnetrail-similarity-1|").append(level.width).append('x').append(level.height)
+                append("magnetrail-similarity-2|")
+                    .append(symmetry.outputWidth(level.width, level.height)).append('x')
+                    .append(symmetry.outputHeight(level.width, level.height))
                 append("|arrows=")
                 level.arrows.map { symmetry.transform(it.position, level.width, level.height) }
                     .sortedWith(compareBy(Position::row, Position::column))
@@ -38,6 +90,68 @@ object ContentFingerprint {
         }.min()
         return "sha256:${sha256Hex(canonical)}"
     }
+
+    /**
+     * Coarse D4-normalized visual template. Positions are folded into a 3x3 perceptual grid and
+     * retain object type plus arrow-direction counts. This intentionally collides layouts that
+     * differ in a few coordinates but present the same large-scale composition to a player.
+     */
+    fun perceptualTemplateSignature(level: LevelDefinition): String {
+        val canonical = validSymmetries(level).map { symmetry ->
+            val transformedWidth = symmetry.outputWidth(level.width, level.height)
+            val transformedHeight = symmetry.outputHeight(level.width, level.height)
+            val arrowCells = level.arrows.groupingBy { arrow ->
+                val position = symmetry.transform(arrow.position, level.width, level.height)
+                val direction = symmetry.transform(arrow.printedDirection)
+                "${coarse(position.row, transformedHeight)},${coarse(position.column, transformedWidth)}:${direction.code}"
+            }.eachCount().toSortedMap()
+            val magnetCells = level.magnets.groupingBy { magnet ->
+                val position = symmetry.transform(magnet.position, level.width, level.height)
+                "${coarse(position.row, transformedHeight)},${coarse(position.column, transformedWidth)}:${magnet.polarity.name}"
+            }.eachCount().toSortedMap()
+            val wallCells = level.walls.groupingBy { wall ->
+                val position = symmetry.transform(wall.position, level.width, level.height)
+                "${coarse(position.row, transformedHeight)},${coarse(position.column, transformedWidth)}"
+            }.eachCount().toSortedMap()
+            buildString {
+                append("magnetrail-perceptual-template-2|").append(transformedWidth).append('x').append(transformedHeight)
+                append("|counts=").append(level.arrows.size).append(',').append(level.magnets.size)
+                    .append(',').append(level.walls.size)
+                append("|arrows=").append(arrowCells.entries.joinToString(";") { "${it.key}=${it.value}" })
+                append("|magnets=").append(magnetCells.entries.joinToString(";") { "${it.key}=${it.value}" })
+                append("|walls=").append(wallCells.entries.joinToString(";") { "${it.key}=${it.value}" })
+            }
+        }.min()
+        return "sha256:${sha256Hex(canonical)}"
+    }
+
+    /** Maximum arrow-position Jaccard similarity under every valid board symmetry. */
+    fun arrowVisualSimilarity(first: LevelDefinition, second: LevelDefinition): Double =
+        visualSimilarity(first, second) { level, symmetry ->
+            level.arrows.mapTo(hashSetOf()) { arrow ->
+                val position = symmetry.transform(arrow.position, level.width, level.height)
+                "A:${position.row},${position.column}"
+            }
+        }
+
+    /** Maximum typed-object-position Jaccard similarity under every valid board symmetry. */
+    fun objectVisualSimilarity(first: LevelDefinition, second: LevelDefinition): Double =
+        visualSimilarity(first, second) { level, symmetry ->
+            buildSet {
+                level.arrows.forEach { arrow ->
+                    val position = symmetry.transform(arrow.position, level.width, level.height)
+                    add("A:${position.row},${position.column}")
+                }
+                level.magnets.forEach { magnet ->
+                    val position = symmetry.transform(magnet.position, level.width, level.height)
+                    add("M:${position.row},${position.column}")
+                }
+                level.walls.forEach { wall ->
+                    val position = symmetry.transform(wall.position, level.width, level.height)
+                    add("W:${position.row},${position.column}")
+                }
+            }
+        }
 
     fun canonicalBoard(level: LevelDefinition): String = buildString {
         append("magnetrail-core-1|")
@@ -66,20 +180,33 @@ object ContentFingerprint {
 
     private fun position(position: Position): String = "${position.row},${position.column}"
 
-    private fun validSymmetries(level: LevelDefinition): List<BoardSymmetry> = if (level.width == level.height) {
-        BoardSymmetry.entries
-    } else {
-        listOf(
-            BoardSymmetry.IDENTITY,
-            BoardSymmetry.ROTATE_180,
-            BoardSymmetry.REFLECT_HORIZONTAL,
-            BoardSymmetry.REFLECT_VERTICAL,
-        )
+    private fun coarse(value: Int, extent: Int): Int = ((value - 1) * 3 / extent).coerceIn(0, 2)
+
+    private fun visualSimilarity(
+        first: LevelDefinition,
+        second: LevelDefinition,
+        objects: (LevelDefinition, BoardSymmetry) -> Set<String>,
+    ): Double {
+        val firstObjects = objects(first, BoardSymmetry.IDENTITY)
+        val compatible = validSymmetries(second).filter { symmetry ->
+            symmetry.outputWidth(second.width, second.height) == first.width &&
+                symmetry.outputHeight(second.width, second.height) == first.height
+        }
+        if (compatible.isEmpty()) return 0.0
+        return compatible.maxOf { symmetry ->
+            val secondObjects = objects(second, symmetry)
+            val union = firstObjects union secondObjects
+            if (union.isEmpty()) 1.0 else (firstObjects intersect secondObjects).size.toDouble() / union.size
+        }
     }
 
+    private fun validSymmetries(@Suppress("UNUSED_PARAMETER") level: LevelDefinition): List<BoardSymmetry> =
+        BoardSymmetry.entries
+
     private fun transformedCanonicalBoard(level: LevelDefinition, symmetry: BoardSymmetry): String = buildString {
-        append("magnetrail-symmetry-1|")
-        append(level.width).append('x').append(level.height)
+        append("magnetrail-symmetry-2|")
+        append(symmetry.outputWidth(level.width, level.height)).append('x')
+            .append(symmetry.outputHeight(level.width, level.height))
         append("|arrows=")
         level.arrows.map { arrow ->
             symmetry.transform(arrow.position, level.width, level.height) to symmetry.transform(arrow.printedDirection)
@@ -109,6 +236,16 @@ enum class BoardSymmetry {
     REFLECT_MAIN_DIAGONAL,
     REFLECT_ANTI_DIAGONAL,
     ;
+
+    fun outputWidth(width: Int, height: Int): Int = when (this) {
+        ROTATE_90, ROTATE_270, REFLECT_MAIN_DIAGONAL, REFLECT_ANTI_DIAGONAL -> height
+        else -> width
+    }
+
+    fun outputHeight(width: Int, height: Int): Int = when (this) {
+        ROTATE_90, ROTATE_270, REFLECT_MAIN_DIAGONAL, REFLECT_ANTI_DIAGONAL -> width
+        else -> height
+    }
 
     fun transform(position: Position, width: Int, height: Int): Position = when (this) {
         IDENTITY -> position

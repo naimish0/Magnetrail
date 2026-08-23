@@ -89,19 +89,16 @@ fun SettingsScreen(
                         onClick = onPrivacyOptions,
                     )
                 }
-                if (privacyPolicyUrl != null || showPrivacyPolicyPlaceholder) {
-                    HorizontalDivider()
-                    SettingsAction(
-                        title = "Privacy policy",
-                        detail = if (privacyPolicyUrl != null) {
-                            "Open the Magnetrail privacy policy"
-                        } else {
-                            "Debug placeholder — production URL is not configured"
-                        },
-                        onClick = onPrivacyPolicy,
-                        enabled = privacyPolicyUrl != null,
-                    )
-                }
+                HorizontalDivider()
+                SettingsAction(
+                    title = "Privacy policy",
+                    detail = if (privacyPolicyUrl != null) {
+                        "Open the public Magnetrail privacy policy"
+                    } else {
+                        "Read the in-app policy — public production URL is not configured"
+                    },
+                    onClick = onPrivacyPolicy,
+                )
                 HorizontalDivider()
                 SettingToggle(
                     title = "Haptics",

@@ -39,6 +39,18 @@ class GameViewModelTest {
     }
 
     @Test
+    fun `privacy policy has an in-app navigation fallback`() {
+        val viewModel = viewModel()
+        viewModel.onAction(GameAction.OpenSettings)
+        viewModel.onAction(GameAction.OpenPrivacyPolicy)
+
+        assertEquals(AppDestination.PRIVACY_POLICY, viewModel.uiState.value.destination)
+
+        viewModel.onAction(GameAction.ClosePrivacyPolicy)
+        assertEquals(AppDestination.SETTINGS, viewModel.uiState.value.destination)
+    }
+
+    @Test
     fun `valid tap creates one in-flight result and disables input`() {
         val viewModel = viewModel()
 
@@ -198,7 +210,7 @@ class GameViewModelTest {
     }
 
     @Test
-    fun `content v9 campaign crosses expansion boundaries and stops at 2205`() {
+    fun `content v10 campaign crosses expansion boundaries and stops at 2205`() {
         val levels = LevelParser().parseCatalog(
             checkNotNull(javaClass.getResource("/Magnetrail_Campaign_Levels_v3.json")).readText(),
         ).levels

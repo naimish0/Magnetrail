@@ -1,0 +1,12 @@
+{
+    "schemaVersion": 2,
+    "status": "AWAITING_HUMAN_CALIBRATION",
+    "baselineStatus": "BASELINE_VERIFIED",
+    "calibrationStatus": "V6_TECHNICALLY_CERTIFIED",
+    "sealedValidationStatus": "V6_TECHNICALLY_CERTIFIED",
+    "humanModelStatus": "AWAITING_HUMAN_CALIBRATION",
+    "productionChanged": false,
+    "reasons": [
+        "Real V6 human calibration and sealed-validation observations are absent"
+    ]
+}
