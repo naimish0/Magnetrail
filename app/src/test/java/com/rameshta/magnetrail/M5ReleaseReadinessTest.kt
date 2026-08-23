@@ -66,6 +66,8 @@ class M5ReleaseReadinessTest {
 
     @Test
     fun `external policy URL accepts only safe HTTPS hosts`() {
+        assertEquals("https://naimish0.github.io/Magnetrail/", BuildConfig.PRIVACY_POLICY_URL)
+        assertTrue(ExternalUrlPolicy.isSafeHttpsUrl(BuildConfig.PRIVACY_POLICY_URL))
         assertTrue(ExternalUrlPolicy.isSafeHttpsUrl("https://example.test/privacy"))
         assertFalse(ExternalUrlPolicy.isSafeHttpsUrl("http://example.test/privacy"))
         assertFalse(ExternalUrlPolicy.isSafeHttpsUrl("https://user@example.test/privacy"))
