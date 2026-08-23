@@ -30,15 +30,16 @@ application {
 
 sourceSets {
     test {
-        resources.srcDir(rootProject.file("docs"))
-        resources.exclude("content/combined_v10_v11/staging/**")
-        resources.exclude("content/generator_v6_1/staging/**")
-        resources.exclude("content/generator_v6_1/benchmark/**")
+        resources.srcDir(rootProject.layout.buildDirectory.dir("generated/magnetrailTestResources"))
     }
 }
 
 tasks.test {
     useJUnit()
+}
+
+tasks.named("processTestResources") {
+    dependsOn(rootProject.tasks.named("syncDocsTestResources"))
 }
 
 val docsDirectory = rootProject.layout.projectDirectory.dir("docs")

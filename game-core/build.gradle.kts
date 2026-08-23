@@ -23,12 +23,7 @@ dependencies {
 
 sourceSets {
     test {
-        resources.srcDir(rootProject.file("docs"))
-        // Campaign certification writes atomically into docs staging. Those mutable outputs are
-        // never test fixtures and must not invalidate the hash-bound mandatory preflight.
-        resources.exclude("content/combined_v10_v11/staging/**")
-        resources.exclude("content/generator_v6_1/staging/**")
-        resources.exclude("content/generator_v6_1/benchmark/**")
+        resources.srcDir(rootProject.layout.buildDirectory.dir("generated/magnetrailTestResources"))
     }
 }
 
@@ -37,8 +32,9 @@ tasks.test {
 }
 
 tasks.named("processTestResources") {
-    // D1 reports live under docs, which is also a test-resource source. Preserve ordering
-    // only when diagnostic writers and tests are explicitly requested together.
+    dependsOn(rootProject.tasks.named("syncDocsTestResources"))
+    // D1 reports live under docs, which supplies the generated test-resource snapshot. Preserve
+    // ordering only when diagnostic writers and tests are explicitly requested together.
     mustRunAfter(":level-tools:analyzeCampaignDifficultyV4")
     mustRunAfter(":level-tools:calibrateDifficultyV4")
     mustRunAfter(":level-tools:analyzeGeneratorV61Regression")
