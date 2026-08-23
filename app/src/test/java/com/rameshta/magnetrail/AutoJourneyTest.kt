@@ -14,6 +14,7 @@ import com.rameshta.magnetrail.core.generation.v6.AutomatedDifficultyBandV61
 import com.rameshta.magnetrail.core.generation.v6.GENERATOR_IDENTITY_V61
 import com.rameshta.magnetrail.core.generation.v6.V61GenerationFailure
 import com.rameshta.magnetrail.core.generation.v6.V61GenerationResult
+import com.rameshta.magnetrail.core.generation.v6.V6FingerprintBundle
 import com.rameshta.magnetrail.core.level.LevelCatalog
 import com.rameshta.magnetrail.core.level.LevelParser
 import com.rameshta.magnetrail.core.model.Arrow
@@ -143,18 +144,39 @@ class AutoJourneyTest {
         )
     }
 
-    private fun record(ordinal: Int): AutoJourneyRecord {
-        val level = LevelDefinition(
-            "auto-journey-v1-$ordinal",
-            AUTO_JOURNEY_FIRST_LEVEL_NUMBER + ordinal - 1,
-            "Auto Journey",
-            3,
-            3,
-            listOf(Arrow("A", Position(1, 1), Direction.NORTH)),
-            emptyList(),
-            emptyList(),
-            listOf(listOf("A")),
+    @Test
+    fun `shipped fingerprint index is deduplicated and deferred until generation`() = runTest {
+        val shippedLevel = level(1)
+        val shippedCatalog = LevelCatalog(
+            2,
+            "magnetrail-core-1",
+            "shared-catalog",
+            listOf(shippedLevel),
+            10,
+            5,
         )
+        var fingerprintCalls = 0
+        val coordinator = AutoJourneyCoordinator(
+            repository = FakeAutoJourneyRepository(),
+            shippedCatalogs = listOf(shippedCatalog, shippedCatalog),
+            generate = { request ->
+                V61GenerationResult.Rejected(V61GenerationFailure(request, 1, mapOf("cap" to 1), listOf("cap")))
+            },
+            dispatcher = UnconfinedTestDispatcher(testScheduler),
+            isMainThread = { false },
+            fingerprintLevel = { candidate ->
+                fingerprintCalls += 1
+                fingerprint(candidate)
+            },
+        )
+
+        assertEquals(0, fingerprintCalls)
+        assertTrue(coordinator.prepareAhead(3) is AutoJourneyPreparation.Preparing)
+        assertEquals(1, fingerprintCalls)
+    }
+
+    private fun record(ordinal: Int): AutoJourneyRecord {
+        val level = level(ordinal)
         val json = LevelParser().encodeCatalog(
             LevelCatalog(2, "magnetrail-core-1", "auto-$ordinal", listOf(level), 12, 6),
         )
@@ -185,6 +207,36 @@ class AutoJourneyTest {
             "",
         )
         return initial.copy(certificationReceiptSha256 = DataStoreAutoJourneyRepository.receipt(initial))
+    }
+
+    private fun level(ordinal: Int) = LevelDefinition(
+        "auto-journey-v1-$ordinal",
+        AUTO_JOURNEY_FIRST_LEVEL_NUMBER + ordinal - 1,
+        "Auto Journey",
+        3,
+        3,
+        listOf(Arrow("A", Position(1, 1), Direction.NORTH)),
+        emptyList(),
+        emptyList(),
+        listOf(listOf("A")),
+    )
+
+    private fun fingerprint(level: LevelDefinition): V6FingerprintBundle {
+        val exact = ContentFingerprint.exact(level)
+        return V6FingerprintBundle(
+            exact,
+            ContentFingerprint.symmetryNormalized(level),
+            ContentFingerprint.arrowLayoutSymmetryNormalized(level),
+            ContentFingerprint.interactiveLayoutSymmetryNormalized(level),
+            ContentFingerprint.perceptualTemplateSignature(level),
+            ContentFingerprint.symmetryNormalized(level),
+            "unavailable:causal:${level.id}",
+            "unavailable:dag:${level.id}",
+            "unavailable:policy:${level.id}",
+            "unavailable:trace:${level.id}",
+            "unavailable:rhythm:${level.id}",
+            emptyList(),
+        )
     }
 
     private fun sha256(value: String): String = MessageDigest.getInstance("SHA-256")

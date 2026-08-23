@@ -210,11 +210,13 @@ class MagnetrailStateUiTest {
     fun strongSolveShowsBetweenGameConfettiAndDynamicPraise() {
         val level = level(1, "Celebrate skill")
         val initial = level.initialState()
+        var shareRequested = false
         composeRule.setContent {
             MagnetrailTheme {
                 GameScreen(
                     uiState = completedState(level, initial),
                     onAction = {},
+                    onShareCelebration = { shareRequested = true },
                 )
             }
         }
@@ -223,6 +225,8 @@ class MagnetrailStateUiTest {
         composeRule.onNodeWithContentDescription("Performance confetti animation").assertIsDisplayed()
         composeRule.onNodeWithContentDescription("Celebration", substring = true).assertIsDisplayed()
         composeRule.onNodeWithText("Board cleared").assertIsDisplayed()
+        composeRule.onNodeWithText("Share celebration").assertIsDisplayed().performClick()
+        composeRule.runOnIdle { assertTrue(shareRequested) }
     }
 
     @Test

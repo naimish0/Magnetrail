@@ -23,6 +23,8 @@ import com.rameshta.magnetrail.core.level.LevelParser
 import com.rameshta.magnetrail.core.model.LevelDefinition
 import java.io.IOException
 import java.security.MessageDigest
+import java.util.Collections
+import java.util.IdentityHashMap
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
@@ -199,8 +201,17 @@ class AutoJourneyCoordinator(
     private val generate: (V61GenerationRequest) -> V61GenerationResult = generator::generate,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default,
     private val isMainThread: () -> Boolean = { Looper.myLooper() == Looper.getMainLooper() },
+    private val fingerprintLevel: (LevelDefinition) -> V6FingerprintBundle = ::layoutBundle,
 ) {
-    private val shippedFingerprints = shippedCatalogs.flatMap { catalog -> catalog.levels.map(::layoutBundle) }
+    private val shippedLevels = buildList {
+        val seenCatalogs = Collections.newSetFromMap(IdentityHashMap<LevelCatalog, Boolean>())
+        shippedCatalogs.forEach { catalog ->
+            if (seenCatalogs.add(catalog)) addAll(catalog.levels)
+        }
+    }
+    private val shippedFingerprints by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+        shippedLevels.map(fingerprintLevel)
+    }
 
     suspend fun prepareAhead(count: Int = AUTO_JOURNEY_PREFETCH_COUNT): AutoJourneyPreparation = withContext(dispatcher) {
         require(count in 3..5)

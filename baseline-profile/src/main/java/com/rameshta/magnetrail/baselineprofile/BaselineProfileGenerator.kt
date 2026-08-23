@@ -22,7 +22,7 @@ class BaselineProfileGenerator {
     ) {
         pressHome()
         startActivityAndWait()
-        device.waitForDescription("Play current level")
+        device.waitForDescriptionPrefix("Play Level ")
     }
 
     @Test
@@ -33,7 +33,7 @@ class BaselineProfileGenerator {
         pressHome()
         startActivityAndWait()
 
-        device.clickDescription("Play current level")
+        device.clickDescriptionPrefix("Play Level ")
         device.waitForDescriptionPrefix("Arrow ")?.click()
         device.wait(Until.hasObject(By.text("Board cleared")), TIMEOUT_MILLIS)
         device.findObject(By.desc("Return home"))?.click()
@@ -58,6 +58,10 @@ class BaselineProfileGenerator {
 
     private fun UiDevice.clickDescription(description: String) {
         checkNotNull(waitForDescription(description)) { "Missing UI object '$description'" }.click()
+    }
+
+    private fun UiDevice.clickDescriptionPrefix(prefix: String) {
+        checkNotNull(waitForDescriptionPrefix(prefix)) { "Missing UI object starting with '$prefix'" }.click()
     }
 
     private companion object {

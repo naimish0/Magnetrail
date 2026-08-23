@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Magnetrail</string>
+    <string name="share_celebration_chooser">Share your celebration</string>
+    <string name="share_celebration_error">Couldn’t prepare the celebration screenshot.</string>
 </resources>

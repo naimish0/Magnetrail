@@ -1,6 +1,7 @@
 package com.rameshta.magnetrail.core.level
 
 import com.rameshta.magnetrail.core.prototypeCatalog
+import java.io.ByteArrayInputStream
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
@@ -24,6 +25,25 @@ class LevelParserTest {
     fun `malformed JSON reports a parsing failure`() {
         val error = assertThrows(LevelParsingException::class.java) {
             parser.parseCatalog("{ not-json }")
+        }
+
+        assertTrue(error.message.orEmpty().contains("not valid JSON"))
+    }
+
+    @Test
+    fun `stream parser produces the same validated catalog as string parser`() {
+        val source = catalogJson()
+
+        val fromString = parser.parseCatalog(source)
+        val fromStream = ByteArrayInputStream(source.toByteArray()).use(parser::parseCatalog)
+
+        assertEquals(fromString, fromStream)
+    }
+
+    @Test
+    fun `malformed JSON stream reports a parsing failure`() {
+        val error = assertThrows(LevelParsingException::class.java) {
+            ByteArrayInputStream("{ not-json }".toByteArray()).use(parser::parseCatalog)
         }
 
         assertTrue(error.message.orEmpty().contains("not valid JSON"))
