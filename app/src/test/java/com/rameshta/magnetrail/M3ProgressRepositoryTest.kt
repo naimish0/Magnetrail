@@ -18,6 +18,7 @@ import com.rameshta.magnetrail.data.RewardedSkipTarget
 import com.rameshta.magnetrail.core.level.LevelCatalog
 import com.rameshta.magnetrail.core.level.LevelParser
 import java.io.File
+import java.time.LocalDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -122,6 +123,7 @@ class M3ProgressRepositoryTest {
         assertEquals(EconomyConfig.STARTING_BALANCE + 2 * EconomyConfig.LEVEL_COMPLETION_REWARD, progress.coinBalance)
         assertTrue(progress.completedLevelIds.isEmpty())
         assertEquals(1, progress.highestUnlockedLevel)
+        assertEquals(2, progress.monetization.interstitialEligibleCompletions)
     }
 
     @Test
@@ -647,20 +649,19 @@ class M3ProgressRepositoryTest {
     }
 
     @Test
-    fun `tutorials are excluded and Level 17 creates the exact first five-clear opportunity`() = runTest {
+    fun `tutorials are excluded and Level 11 creates the first opportunity`() = runTest {
         val store = dataStore(this)
         val catalog = campaignCatalog()
         var repository = repository(store, catalog)
 
-        catalog.levels.take(12).forEach { level ->
+        catalog.levels.take(10).forEach { level ->
             repository.recordCampaignCompletion(level.id, AttemptSummary(level.arrows.size, 0, 0))
         }
         assertEquals(0, repository.preferences.first().progress.monetization.interstitialEligibleCompletions)
         assertFalse(repository.claimInterstitialOpportunity())
 
-        catalog.levels.subList(12, 17).forEach { level ->
-            repository.recordCampaignCompletion(level.id, AttemptSummary(level.arrows.size, 0, 0))
-        }
+        val level11 = catalog.levels[10]
+        repository.recordCampaignCompletion(level11.id, AttemptSummary(level11.arrows.size, 0, 0))
         assertEquals(5, repository.preferences.first().progress.monetization.interstitialEligibleCompletions)
 
         repository = repository(store, catalog)
@@ -670,11 +671,54 @@ class M3ProgressRepositoryTest {
     }
 
     @Test
+    fun `campaign and normal Infinite first clears share the next five-completion opportunity`() = runTest {
+        val store = dataStore(this)
+        val catalog = campaignCatalog()
+        val repository = repository(store, catalog)
+        catalog.levels.take(11).forEach { level ->
+            repository.recordCampaignCompletion(level.id, AttemptSummary(level.arrows.size, 0, 0))
+        }
+        assertTrue(repository.claimInterstitialOpportunity())
+
+        catalog.levels.subList(11, 13).forEach { level ->
+            repository.recordCampaignCompletion(level.id, AttemptSummary(level.arrows.size, 0, 0))
+        }
+        repeat(3) { index ->
+            val ordinal = index + 1
+            val puzzleId = "infinite-v5-v5-d2-1-hard-660000$ordinal-${('a' + index).toString().repeat(64)}"
+            val fingerprint = "sha256:${('a' + index).toString().repeat(64)}"
+            repository.recordInfiniteSelection(puzzleId, fingerprint, "MASTER", ordinal)
+            val receipt = repository.recordInfiniteCompletion(puzzleId, AttemptSummary(9, 0, 0))
+            assertTrue(receipt.firstCompletion)
+        }
+
+        assertEquals(5, repository.preferences.first().progress.monetization.interstitialEligibleCompletions)
+        assertTrue(repository.claimInterstitialOpportunity())
+        assertFalse(repository.claimInterstitialOpportunity())
+    }
+
+    @Test
+    fun `interstitial impression tracking has no daily cap`() = runTest {
+        val repository = repository(dataStore(this), campaignCatalog())
+        val date = LocalDate.of(2026, 8, 23)
+
+        repeat(7) { index ->
+            repository.recordFullScreenAdDismissal(date, index.toLong(), interstitialShown = true)
+        }
+
+        assertEquals(7, repository.preferences.first().progress.monetization.interstitialsShownOnDate)
+    }
+
+    @Test
     fun `replay duplicate callbacks and rewarded progression cannot create interstitial debt`() = runTest {
         val store = dataStore(this)
         val catalog = campaignCatalog()
         val repository = repository(store, catalog)
-        catalog.levels.take(13).forEach { level ->
+        catalog.levels.take(11).forEach { level ->
+            repository.recordCampaignCompletion(level.id, AttemptSummary(level.arrows.size, 0, 0))
+        }
+        assertTrue(repository.claimInterstitialOpportunity())
+        catalog.levels.subList(11, 13).forEach { level ->
             repository.recordCampaignCompletion(level.id, AttemptSummary(level.arrows.size, 0, 0))
         }
         val eligible = repository.preferences.first().progress.monetization.interstitialEligibleCompletions

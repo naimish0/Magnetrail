@@ -123,7 +123,7 @@ android {
         buildConfigField("String", "ADMOB_APP_ID", googleSampleAppId.asBuildConfigString())
         buildConfigField("String", "REWARDED_AD_UNIT_ID", googleRewardedTestId.asBuildConfigString())
         buildConfigField("String", "INTERSTITIAL_AD_UNIT_ID", googleInterstitialTestId.asBuildConfigString())
-        buildConfigField("String", "PRIVACY_POLICY_URL", "".asBuildConfigString())
+        buildConfigField("String", "PRIVACY_POLICY_URL", releasePrivacyPolicyUrl.asBuildConfigString())
         buildConfigField("String", "TARGET_AUDIENCE", "unspecified".asBuildConfigString())
         buildConfigField("boolean", "PRODUCTION_RELEASE_REQUESTED", "false")
         buildConfigField("boolean", "FIREBASE_CONFIGURED", "false")
@@ -247,19 +247,37 @@ val verifyPrivacyPolicyArtifacts by tasks.registering {
     val markdown = rootProject.layout.projectDirectory.file("design/context/privacy-policy.md")
     val html = rootProject.layout.projectDirectory.file("docs/index.html")
     val dataSafety = rootProject.layout.projectDirectory.file("design/context/DATA_SAFETY_MAPPING.md")
-    inputs.files(markdown, html, dataSafety)
+    val inApp = project.layout.projectDirectory.file(
+        "src/main/java/com/rameshta/magnetrail/privacy/PrivacyPolicyScreen.kt",
+    )
+    inputs.files(markdown, html, dataSafety, inApp)
     doLast {
         val markdownText = markdown.asFile.readText()
         val htmlText = html.asFile.readText()
         val mappingText = dataSafety.asFile.readText()
+        val inAppText = inApp.asFile.readText()
         listOf("Google Mobile Ads", "User Messaging Platform", "Firebase Analytics", "Firebase Crashlytics").forEach {
             check(it in markdownText) { "Privacy policy is missing installed provider disclosure: $it" }
         }
         check("does not require an account" in markdownText)
         check("Android cloud backup and device-to-device transfer are disabled" in markdownText)
-        check("[OWNER MUST CONFIGURE]" in markdownText && "[OWNER MUST CONFIGURE]" in htmlText)
-        check("public HTTPS" in markdownText && "public HTTPS" in htmlText)
+        listOf("Naimish Gupta", "naimish.app@gmail.com", "Sandi, Hardoi, 241403, Uttar Pradesh").forEach {
+            check(it in markdownText && it in htmlText && it in inAppText) {
+                "Privacy policy is missing configured publisher detail: $it"
+            }
+        }
+        val publicPolicyUrl = "https://naimish0.github.io/Magnetrail/"
+        check(publicPolicyUrl in markdownText && publicPolicyUrl in htmlText && publicPolicyUrl in inAppText)
+        check("public HTTPS" in markdownText)
         check("Data Safety" in mappingText && "owner must validate" in mappingText)
+        listOf("Campaign Level 11", "normal Infinite", "Auto Journey", "Celebration screen", "60 seconds").forEach {
+            check(it in markdownText && it in htmlText) { "Privacy policy is missing current ad disclosure: $it" }
+        }
+        listOf("Level 11", "normal Infinite", "Auto Journey", "Celebration screen", "60 seconds").forEach {
+            check(it in inAppText) { "In-app privacy policy is missing current ad disclosure: $it" }
+        }
+        check("no daily limit to rewarded-ad use" in markdownText && "no daily limit to rewarded-ad use" in htmlText)
+        check("no app daily limit" in inAppText)
     }
 }
 

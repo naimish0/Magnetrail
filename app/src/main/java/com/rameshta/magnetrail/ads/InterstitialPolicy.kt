@@ -1,17 +1,11 @@
 package com.rameshta.magnetrail.ads
 
-import java.time.LocalDate
-
 enum class InterstitialReason {
     ELIGIBLE,
     NOT_CAMPAIGN,
-    FIRST_LEVELS,
     NOT_FORWARD_PROGRESS,
     COMPLETION_GAP,
-    COOLDOWN,
     RECENT_REWARDED,
-    DAILY_CAP,
-    DATE_ROLLBACK,
     CONSENT_BLOCKED,
     NOT_LOADED,
     BACKGROUND,
@@ -21,16 +15,10 @@ enum class InterstitialReason {
 
 data class InterstitialPolicyInput(
     val campaign: Boolean,
-    val lifetimeCampaignCompletions: Int,
+    val infinite: Boolean = false,
     val forwardProgression: Boolean,
     val eligibleCompletionsSinceLastAd: Int,
-    val nowDate: LocalDate,
-    val storedDailyDate: LocalDate?,
-    val interstitialsShownOnStoredDate: Int,
-    val nowWallMillis: Long,
-    val lastFullScreenWallMillis: Long?,
     val nowElapsedMillis: Long,
-    val lastFullScreenElapsedMillis: Long?,
     val lastRewardedElapsedMillis: Long?,
     val consentAllowsAds: Boolean,
     val loaded: Boolean,
@@ -43,40 +31,29 @@ data class InterstitialPolicyInput(
 data class InterstitialDecision(val eligible: Boolean, val reason: InterstitialReason)
 
 object InterstitialPolicy {
+    const val FIRST_CAMPAIGN_OPPORTUNITY_LEVEL = 11
     const val COMPLETION_GAP = 5
-    const val COOLDOWN_MILLIS = 120_000L
-    const val DAILY_CAP = 4
+    const val REWARDED_TO_INTERSTITIAL_GUARD_MILLIS = 60_000L
 
     fun evaluate(input: InterstitialPolicyInput): InterstitialDecision {
         fun blocked(reason: InterstitialReason) = InterstitialDecision(false, reason)
-        if (!input.campaign && !input.autoJourney) return blocked(InterstitialReason.NOT_CAMPAIGN)
+        if (!input.campaign && !input.infinite && !input.autoJourney) {
+            return blocked(InterstitialReason.NOT_CAMPAIGN)
+        }
         if (!input.forwardProgression) return blocked(InterstitialReason.NOT_FORWARD_PROGRESS)
         if (input.eligibleCompletionsSinceLastAd < COMPLETION_GAP) return blocked(InterstitialReason.COMPLETION_GAP)
-        if (input.storedDailyDate != null && input.nowDate.isBefore(input.storedDailyDate)) {
-            return blocked(InterstitialReason.DATE_ROLLBACK)
+        input.lastRewardedElapsedMillis?.let { lastRewarded ->
+            if (input.nowElapsedMillis < lastRewarded ||
+                input.nowElapsedMillis - lastRewarded < REWARDED_TO_INTERSTITIAL_GUARD_MILLIS
+            ) {
+                return blocked(InterstitialReason.RECENT_REWARDED)
+            }
         }
-        val shownToday = if (input.storedDailyDate == input.nowDate) input.interstitialsShownOnStoredDate else 0
-        if (shownToday >= DAILY_CAP) return blocked(InterstitialReason.DAILY_CAP)
-        if (!cooldownPassed(input)) return blocked(InterstitialReason.COOLDOWN)
-        if (input.lastRewardedElapsedMillis != null &&
-            input.nowElapsedMillis - input.lastRewardedElapsedMillis < COOLDOWN_MILLIS
-        ) return blocked(InterstitialReason.RECENT_REWARDED)
         if (!input.consentAllowsAds) return blocked(InterstitialReason.CONSENT_BLOCKED)
         if (!input.loaded) return blocked(InterstitialReason.NOT_LOADED)
         if (!input.foreground) return blocked(InterstitialReason.BACKGROUND)
         if (!input.expectedCompletionScreen) return blocked(InterstitialReason.WRONG_SCREEN)
         if (!input.fullScreenIdle) return blocked(InterstitialReason.FULL_SCREEN_BUSY)
         return InterstitialDecision(true, InterstitialReason.ELIGIBLE)
-    }
-
-    private fun cooldownPassed(input: InterstitialPolicyInput): Boolean {
-        input.lastFullScreenElapsedMillis?.let { last ->
-            return input.nowElapsedMillis >= last && input.nowElapsedMillis - last >= COOLDOWN_MILLIS
-        }
-        input.lastFullScreenWallMillis?.let { last ->
-            return input.nowWallMillis >= last && input.nowWallMillis - last >= COOLDOWN_MILLIS &&
-                input.nowElapsedMillis >= COOLDOWN_MILLIS
-        }
-        return true
     }
 }

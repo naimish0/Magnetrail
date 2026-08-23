@@ -4862,7 +4862,7 @@ Blind playtest schema 5 exposes five complete fairness anchors from “Completel
 
 `docs/privacy-policy.md`, `docs/privacy-policy.html`, and `docs/DATA_SAFETY_MAPPING.md` match the audited SDK/storage configuration. Settings always provides an accessible in-app fallback if no browser/public URL is available. Mobile Ads/UMP and conditional opt-in Firebase processing are disclosed; the policy does not claim “no data.” Backups/transfer and cleartext are disabled.
 
-External blocker: the repository still lacks a verified legal publisher identity, privacy contact/postal decision, active public HTTPS policy URL, live AdMob values and console evidence, genuine Firebase configuration/retention choices, upload signing credentials, and verified Play audience/Data Safety/App content declarations. The local HTML is deployable but is not itself a Play URL.
+External blocker: the repository now records the publisher identity, privacy contact/postal address, and public HTTPS privacy-policy URL, but still lacks hosted-byte verification, live AdMob values and console evidence, genuine Firebase configuration/retention choices, upload signing credentials, and verified Play audience/Data Safety/App content declarations.
 
 ### 26.7 Rollback and operator status
 

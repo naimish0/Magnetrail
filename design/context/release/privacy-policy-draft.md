@@ -1,10 +1,12 @@
 # Magnetrail privacy policy — owner/legal review draft
 
-**Not ready to publish.** Effective date, developer legal identity, contact, hosted URL, audience decision, production SDK configuration, retention choices, and deletion process are owner-required. This draft is not legal advice.
+**Not ready to publish.** Effective date, audience decision, production SDK configuration, retention choices, deletion process, verification of the hosted bytes, and legal review are still required. This draft is not legal advice.
 
 Effective date: `[OWNER REQUIRED]`  
-Developer/publisher: `[OWNER REQUIRED]`  
-Privacy contact: `[OWNER REQUIRED]`
+Developer/publisher: Naimish Gupta
+Privacy contact: [naimish.app@gmail.com](mailto:naimish.app@gmail.com)
+Postal address: Sandi, Hardoi, 241403, Uttar Pradesh
+Public privacy-policy URL: [https://naimish0.github.io/Magnetrail/](https://naimish0.github.io/Magnetrail/)
 
 ## Scope and data stored on the device
 
@@ -12,7 +14,7 @@ Magnetrail does not provide an account, custom backend, cloud save, social profi
 
 ## Advertising and consent
 
-The planned production app contains Google AdMob rewarded and interstitial advertising and Google's User Messaging Platform (UMP). Rewarded ads are optional. Interstitial display is restricted by the app's gameplay policy. UMP obtains current consent information and exposes privacy options when required. If consent is unavailable, denied, or unresolved, the app does not request ads.
+The planned production app contains Google AdMob rewarded and interstitial advertising and Google's User Messaging Platform (UMP). Rewarded ads are optional, have no app-defined daily limit, and grant a hint or eligible level skip only after Google's SDK confirms reward completion. Interstitial opportunities begin at the Campaign Level 11 boundary and then follow a shared five-first-completion cadence across Campaign, normal Infinite, and Auto Journey. An eligible interstitial is evaluated after the solved board is recorded and may appear over the Celebration screen. There is no app-defined daily interstitial limit or general cooldown, but interstitials are suppressed for 60 seconds after a rewarded ad is completed. UMP obtains current consent information and exposes privacy options when required. If consent is unavailable, denied, or unresolved, the app does not request ads.
 
 Depending on region, consent, device, and Google configuration, the Mobile Ads SDK may collect or share approximate location derived from IP address, app interactions, diagnostic information, device or other identifiers, and advertising data for advertising, analytics, fraud prevention, security, and compliance. Google and an ad creative may process network data when an ad is requested or shown. The owner must review the final AdMob partners, Privacy & messaging configuration, and Play Data safety answers before publication.
 
@@ -27,7 +29,7 @@ Google/Firebase processes this information to provide analytics, stability diagn
 - Use the in-app Diagnostics switch to stop or allow optional Analytics/Crashlytics collection, subject to consent.
 - Use Privacy options in the app when UMP reports that privacy choices are available.
 - Clear local gameplay information by clearing Magnetrail's storage or uninstalling it. Reinstalling starts fresh because Android backup is disabled.
-- Contact `[OWNER REQUIRED CONTACT]` for privacy questions or requests concerning data controlled by the developer. The owner must document what can be located/deleted without an account identifier and how processor requests are handled.
+- Contact [naimish.app@gmail.com](mailto:naimish.app@gmail.com) for privacy questions or requests concerning data controlled by the developer. The publisher must document what can be located or deleted without an account identifier and how processor requests are handled.
 
 Previously transmitted data may remain for the periods selected in Firebase/AdMob or required for security/legal purposes. Those periods and request procedures must be confirmed before this draft is published.
 
@@ -43,5 +45,4 @@ The app disables cleartext network traffic. Google SDK traffic is documented by 
 
 - Google AdMob and UMP: [Google privacy policy](https://policies.google.com/privacy)
 - Firebase Analytics and Crashlytics: [Firebase privacy and security](https://firebase.google.com/support/privacy)
-- Publisher privacy contact and postal details: `[OWNER REQUIRED]`
-
+- Publisher: Naimish Gupta; privacy contact: [naimish.app@gmail.com](mailto:naimish.app@gmail.com); postal address: Sandi, Hardoi, 241403, Uttar Pradesh

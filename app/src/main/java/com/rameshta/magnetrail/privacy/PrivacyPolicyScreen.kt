@@ -21,9 +21,11 @@ import com.rameshta.magnetrail.ui.theme.LocalMagnetrailSpacing
 import com.rameshta.magnetrail.ui.theme.MagnetrailMuted
 
 object LocalPrivacyPolicy {
-    const val lastUpdated = "22 August 2026"
+    const val lastUpdated = "23 August 2026"
     const val externalConfigurationNotice =
-        "A verified developer identity, contact address, and public HTTPS policy URL are not configured in this source build."
+        "Developer and publisher: Naimish Gupta. Privacy contact: naimish.app@gmail.com. " +
+            "Postal address: Sandi, Hardoi, 241403, Uttar Pradesh. " +
+            "Public policy: https://naimish0.github.io/Magnetrail/."
 
     val sections: List<Pair<String, String>> = listOf(
         "Overview" to
@@ -34,7 +36,13 @@ object LocalPrivacyPolicy {
             "and consent permits a request, Google and its advertising partners may receive device or advertising " +
             "identifiers, IP-derived approximate location, app interactions, diagnostics, and other data described " +
             "by Google's policies to deliver, limit, measure, and prevent fraud in ads. If consent is denied, " +
-            "unavailable, or unresolved, gameplay continues without waiting for an ad.",
+            "unavailable, or unresolved, gameplay continues without waiting for an ad. Rewarded ads are optional, " +
+            "have no app daily limit, and grant a hint or eligible level skip only after reward completion. Campaign " +
+            "Levels 1–10 do not count toward interstitials; Level 11 creates the first Campaign opportunity, followed " +
+            "by each five first-time completions shared across Campaign, normal Infinite, and Auto Journey. Eligible " +
+            "interstitials are evaluated after a solved board is recorded and may appear over the Celebration screen. " +
+            "There is no daily interstitial limit or general cooldown, but an interstitial is suppressed for 60 seconds " +
+            "after a rewarded ad is completed.",
         "Optional diagnostics" to
             "Firebase Analytics and Firebase Crashlytics are included only in a configured production build. Their " +
             "collection is disabled by default and is enabled only when the Usage & crash diagnostics setting and " +
@@ -50,16 +58,19 @@ object LocalPrivacyPolicy {
         "Sharing and security" to
             "Magnetrail does not sell an account profile because it has no account system. Data may be processed by " +
             "Google through Mobile Ads, UMP, and—only when configured and enabled—Firebase Analytics and " +
-            "Crashlytics. Network cleartext traffic is disabled, release configuration fails closed when required " +
-            "production values are absent, and stored progress is excluded from Android backup and device transfer.",
+            "Crashlytics. The Celebration Share button captures the visible game screen in temporary app cache and " +
+            "opens the Android Sharesheet; Magnetrail does not choose a recipient or upload it. Network cleartext " +
+            "traffic is disabled, release configuration fails closed when required production values are absent, " +
+            "and stored progress is excluded from Android backup and device transfer.",
         "Children and audience" to
             "The repository expects an owner-reviewed general-audience declaration before a production release. It " +
             "does not currently contain a verified Play Console target-audience declaration. Distribution must not " +
             "begin until the owner configures and verifies that declaration and any age-treatment requirements.",
         "Your choices" to
             "Where required, the privacy form lets you review consent choices. You can disable optional Usage & " +
-            "crash diagnostics in Settings. You can remove local gameplay data by clearing app storage or uninstalling.",
-        "Contact and public policy" to externalConfigurationNotice,
+            "crash diagnostics in Settings, choose whether and where to share a Celebration screenshot, and remove " +
+            "local gameplay data by clearing app storage or uninstalling.",
+        "Publisher and contact" to externalConfigurationNotice,
     )
 }
 

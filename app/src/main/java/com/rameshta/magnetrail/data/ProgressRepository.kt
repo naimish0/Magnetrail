@@ -41,8 +41,6 @@ sealed interface RewardedCreditGrantResult {
     data object Granted : RewardedCreditGrantResult
     data object Duplicate : RewardedCreditGrantResult
     data object InventoryFull : RewardedCreditGrantResult
-    data object DailyCapReached : RewardedCreditGrantResult
-    data object DateRollback : RewardedCreditGrantResult
 }
 
 sealed interface RewardedSkipTarget {

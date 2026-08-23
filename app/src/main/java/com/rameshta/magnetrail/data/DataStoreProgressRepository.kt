@@ -13,6 +13,7 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.rameshta.magnetrail.ads.InterstitialPolicy
 import com.rameshta.magnetrail.core.daily.DailySeed
 import com.rameshta.magnetrail.core.daily.StreakPolicy
 import com.rameshta.magnetrail.core.daily.StreakState
@@ -23,6 +24,8 @@ import com.rameshta.magnetrail.core.generation.GENERATOR_VERSION
 import com.rameshta.magnetrail.core.grading.GradingPolicy
 import com.rameshta.magnetrail.core.level.LevelCatalog
 import com.rameshta.magnetrail.core.model.GradingThresholds
+import com.rameshta.magnetrail.crash.CrashReporter
+import com.rameshta.magnetrail.crash.NoOpCrashReporter
 import java.io.IOException
 import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
@@ -30,8 +33,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
-import com.rameshta.magnetrail.crash.CrashReporter
-import com.rameshta.magnetrail.crash.NoOpCrashReporter
 
 internal val playerDataStoreCorruptionHandler = ReplaceFileCorruptionHandler<Preferences> {
     emptyPreferences()
@@ -156,9 +157,14 @@ class DataStoreProgressRepository private constructor(
             )
             writeVersionedRecords(stored, records)
             stored[Keys.coinBalance] = rewards.resultingBalance
-            if (isFirstClear && level.number > 12) {
+            if (isFirstClear && level.number >= InterstitialPolicy.FIRST_CAMPAIGN_OPPORTUNITY_LEVEL) {
+                val currentCount = (stored[Keys.interstitialEligibleCompletions] ?: 0).coerceAtLeast(0)
                 stored[Keys.interstitialEligibleCompletions] =
-                    (stored[Keys.interstitialEligibleCompletions] ?: 0).coerceAtLeast(0) + 1
+                    if (level.number == InterstitialPolicy.FIRST_CAMPAIGN_OPPORTUNITY_LEVEL) {
+                        InterstitialPolicy.COMPLETION_GAP
+                    } else {
+                        currentCount + 1
+                    }
             }
             receipt = CompletionReceipt(grade, best, rewards)
         }
@@ -263,6 +269,10 @@ class DataStoreProgressRepository private constructor(
             stored[Keys.infiniteCurrentStreak] = currentStreak
             stored[Keys.infiniteBestStreak] = bestStreak
             stored[Keys.coinBalance] = rewards.resultingBalance
+            if (firstCompletion) {
+                stored[Keys.interstitialEligibleCompletions] =
+                    (stored[Keys.interstitialEligibleCompletions] ?: 0).coerceAtLeast(0) + 1
+            }
             receipt = InfiniteCompletionReceipt(
                 firstCompletion = firstCompletion,
                 completedCount = completedCount,
@@ -295,7 +305,7 @@ class DataStoreProgressRepository private constructor(
         dataStore.edit { stored ->
             migrateStored(stored)
             val count = (stored[Keys.interstitialEligibleCompletions] ?: 0).coerceAtLeast(0)
-            if (count >= 5) {
+            if (count >= InterstitialPolicy.COMPLETION_GAP) {
                 claimed = true
                 stored[Keys.interstitialEligibleCompletions] = 0
             }
@@ -339,30 +349,24 @@ class DataStoreProgressRepository private constructor(
             migrateStored(stored)
             val processed = stored[Keys.processedRewardTransactionIds].orEmpty()
             val pending = stored[Keys.pendingAdHintTransactionId]
-            val storedDateRaw = stored[Keys.rewardedGrantDate]
-            val storedDate = storedDateRaw?.let(::parseDateOrNull)
+            val storedDate = stored[Keys.rewardedGrantDate]?.let(::parseDateOrNull)
             result = when {
                 transactionId in processed || transactionId == pending -> RewardedCreditGrantResult.Duplicate
                 pending != null -> RewardedCreditGrantResult.InventoryFull
-                storedDateRaw != null && storedDate == null -> RewardedCreditGrantResult.DateRollback
-                storedDate != null && localDate.isBefore(storedDate) -> RewardedCreditGrantResult.DateRollback
                 else -> {
                     val grants = if (storedDate == localDate) {
-                        (stored[Keys.rewardedGrantsOnDate] ?: 0).coerceIn(0, MAX_REWARDED_GRANTS_PER_DAY)
+                        (stored[Keys.rewardedGrantsOnDate] ?: 0).coerceAtLeast(0)
                     } else {
                         0
                     }
-                    if (grants >= MAX_REWARDED_GRANTS_PER_DAY) {
-                        RewardedCreditGrantResult.DailyCapReached
-                    } else {
-                        stored[Keys.rewardedGrantDate] = localDate.toString()
-                        stored[Keys.rewardedGrantsOnDate] = grants + 1
-                        stored[Keys.pendingAdHintTransactionId] = transactionId
-                        stored[Keys.processedRewardTransactionIds] = (processed + transactionId).toList()
-                            .takeLast(MAX_REWARD_TRANSACTION_HISTORY)
-                            .toSet()
-                        RewardedCreditGrantResult.Granted
-                    }
+                    stored[Keys.rewardedGrantDate] = localDate.toString()
+                    stored[Keys.rewardedGrantsOnDate] =
+                        if (grants == Int.MAX_VALUE) Int.MAX_VALUE else grants + 1
+                    stored[Keys.pendingAdHintTransactionId] = transactionId
+                    stored[Keys.processedRewardTransactionIds] = (processed + transactionId).toList()
+                        .takeLast(MAX_REWARD_TRANSACTION_HISTORY)
+                        .toSet()
+                    RewardedCreditGrantResult.Granted
                 }
             }
         }
@@ -470,7 +474,7 @@ class DataStoreProgressRepository private constructor(
             if (storedDateRaw != null && storedDate == null) return@edit
             if (storedDate != null && localDate.isBefore(storedDate)) return@edit
             val shown = if (storedDate == localDate) {
-                (stored[Keys.interstitialsShownOnDate] ?: 0).coerceIn(0, MAX_INTERSTITIALS_PER_DAY)
+                (stored[Keys.interstitialsShownOnDate] ?: 0).coerceAtLeast(0)
             } else {
                 0
             }
@@ -480,7 +484,8 @@ class DataStoreProgressRepository private constructor(
             )
             stored[Keys.lastFullScreenAdDate] = localDate.toString()
             if (interstitialShown) {
-                stored[Keys.interstitialsShownOnDate] = (shown + 1).coerceAtMost(MAX_INTERSTITIALS_PER_DAY)
+                stored[Keys.interstitialsShownOnDate] =
+                    if (shown == Int.MAX_VALUE) Int.MAX_VALUE else shown + 1
             } else if (storedDate != localDate) {
                 stored[Keys.interstitialsShownOnDate] = 0
             }
@@ -530,9 +535,9 @@ class DataStoreProgressRepository private constructor(
         stored[Keys.interstitialEligibleCompletions] =
             (stored[Keys.interstitialEligibleCompletions] ?: 0).coerceAtLeast(0)
         stored[Keys.interstitialsShownOnDate] =
-            (stored[Keys.interstitialsShownOnDate] ?: 0).coerceIn(0, MAX_INTERSTITIALS_PER_DAY)
+            (stored[Keys.interstitialsShownOnDate] ?: 0).coerceAtLeast(0)
         stored[Keys.rewardedGrantsOnDate] =
-            (stored[Keys.rewardedGrantsOnDate] ?: 0).coerceIn(0, MAX_REWARDED_GRANTS_PER_DAY)
+            (stored[Keys.rewardedGrantsOnDate] ?: 0).coerceAtLeast(0)
         stored[Keys.infiniteSelectionOrdinal] = (stored[Keys.infiniteSelectionOrdinal] ?: 0).coerceAtLeast(0)
         stored[Keys.infiniteCompletedCount] = (stored[Keys.infiniteCompletedCount] ?: 0).coerceAtLeast(0)
         stored[Keys.infiniteCurrentStreak] = (stored[Keys.infiniteCurrentStreak] ?: 0).coerceAtLeast(0)
@@ -705,10 +710,10 @@ class DataStoreProgressRepository private constructor(
                     lastFullScreenAdWallTimeMillis = stored[Keys.lastFullScreenAdWallTime]?.takeIf { it >= 0L },
                     lastFullScreenAdDate = stored[Keys.lastFullScreenAdDate].conservativeDate(),
                     interstitialsShownOnDate = (stored[Keys.interstitialsShownOnDate] ?: 0)
-                        .coerceIn(0, MAX_INTERSTITIALS_PER_DAY),
+                        .coerceAtLeast(0),
                     rewardedGrantDate = stored[Keys.rewardedGrantDate].conservativeDate(),
                     rewardedGrantsOnDate = (stored[Keys.rewardedGrantsOnDate] ?: 0)
-                        .coerceIn(0, MAX_REWARDED_GRANTS_PER_DAY),
+                        .coerceAtLeast(0),
                     pendingAdHintTransactionId = stored[Keys.pendingAdHintTransactionId],
                     processedRewardTransactionIds = stored[Keys.processedRewardTransactionIds].orEmpty(),
                 ),
@@ -1031,8 +1036,6 @@ class DataStoreProgressRepository private constructor(
         private const val M6_SCHEMA_VERSION = 6
         private const val M7_SCHEMA_VERSION = 7
         private const val MAX_DAILY_HISTORY = 512
-        private const val MAX_REWARDED_GRANTS_PER_DAY = 5
-        private const val MAX_INTERSTITIALS_PER_DAY = 4
         private const val MAX_REWARD_TRANSACTION_HISTORY = 16
         private const val MAX_LEGACY_BOARD_RECORDS_PER_LEVEL = 4
         private const val MAX_INFINITE_HISTORY = 100

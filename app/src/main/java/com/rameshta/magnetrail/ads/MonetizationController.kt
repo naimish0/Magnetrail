@@ -17,11 +17,10 @@ import com.rameshta.magnetrail.privacy.PrivacyManager
 import com.rameshta.magnetrail.crash.CrashKey
 import com.rameshta.magnetrail.crash.CrashReporter
 import com.rameshta.magnetrail.crash.NoOpCrashReporter
-import java.time.LocalDate
 import kotlinx.coroutines.flow.first
 import java.util.concurrent.atomic.AtomicBoolean
 
-enum class RewardedOfferStatus { CREDIT_READY, AVAILABLE, LOADING, UNAVAILABLE, DAILY_CAP, DATE_ROLLBACK }
+enum class RewardedOfferStatus { CREDIT_READY, AVAILABLE, LOADING, UNAVAILABLE }
 
 data class RewardedOffer(
     val status: RewardedOfferStatus,
@@ -40,7 +39,7 @@ class MonetizationController(
     private val crashReporter: CrashReporter = NoOpCrashReporter,
     private val clock: AdClock = SystemAdClock,
 ) {
-    private val nextLevelInFlight = AtomicBoolean(false)
+    private val completionInterstitialInFlight = AtomicBoolean(false)
     private val rewardedSkipInFlight = AtomicBoolean(false)
     fun rewardedOffer(progress: PlayerProgress): RewardedOffer {
         val state = progress.monetization
@@ -49,20 +48,6 @@ class MonetizationController(
             enabled = true,
             label = "Use earned ad hint",
             supportingText = "Your earned hint is ready.",
-        )
-        val today = clock.localDate()
-        val storedDate = state.rewardedGrantDate?.let { value -> runCatching { LocalDate.parse(value) }.getOrNull() }
-        if (storedDate != null && today.isBefore(storedDate)) return RewardedOffer(
-            RewardedOfferStatus.DATE_ROLLBACK,
-            false,
-            "Watch an ad for one hint",
-            "No ad available right now",
-        )
-        if (storedDate == today && state.rewardedGrantsOnDate >= 5) return RewardedOffer(
-            RewardedOfferStatus.DAILY_CAP,
-            false,
-            "Watch an ad for one hint",
-            "More ad hints available tomorrow",
         )
         if (!privacyManager.state.value.canRequestAds) return unavailableOffer()
         return when (rewardedAdService.state.value) {
@@ -133,7 +118,6 @@ class MonetizationController(
                 repository.recordFullScreenAdDismissal(clock.localDate(), clock.wallTimeMillis(), interstitialShown = false)
                 when (repository.grantRewardedHintCredit(outcome.transactionId, clock.localDate())) {
                     RewardedCreditGrantResult.Granted, RewardedCreditGrantResult.Duplicate -> onCreditReady(outcome.transactionId)
-                    RewardedCreditGrantResult.DailyCapReached -> onMessage("More ad hints available tomorrow")
                     else -> onMessage("No ad available right now")
                 }
             }
@@ -209,60 +193,55 @@ class MonetizationController(
         }
     }
 
-    suspend fun nextLevel(
+    suspend fun showInterstitialForCompletion(
         activity: Activity,
         uiState: GameUiState,
-        navigate: () -> Unit,
     ) {
-        if (!nextLevelInFlight.compareAndSet(false, true)) return
+        if (!completionInterstitialInFlight.compareAndSet(false, true)) return
         try {
-        val progress = repository.preferences.first().progress
-        val storedDate = progress.monetization.lastFullScreenAdDate?.let { value ->
-            runCatching { LocalDate.parse(value) }.getOrNull()
-        }
-        val input = InterstitialPolicyInput(
-            campaign = uiState.gameMode == GameMode.CAMPAIGN,
-            lifetimeCampaignCompletions = progress.completedLevelIds.size +
-                if (uiState.completionWasFirstClear && uiState.currentLevel.id !in progress.completedLevelIds) 1 else 0,
-            forwardProgression = uiState.completionWasFirstClear,
-            eligibleCompletionsSinceLastAd = progress.monetization.interstitialEligibleCompletions,
-            nowDate = clock.localDate(),
-            storedDailyDate = storedDate,
-            interstitialsShownOnStoredDate = progress.monetization.interstitialsShownOnDate,
-            nowWallMillis = clock.wallTimeMillis(),
-            lastFullScreenWallMillis = progress.monetization.lastFullScreenAdWallTimeMillis,
-            nowElapsedMillis = clock.elapsedRealtimeMillis(),
-            lastFullScreenElapsedMillis = coordinator.lastDismissedElapsedMillis,
-            lastRewardedElapsedMillis = coordinator.lastRewardedElapsedMillis,
-            consentAllowsAds = privacyManager.state.value.canRequestAds,
-            loaded = interstitialAdService.state.value == InterstitialAdState.READY,
-            foreground = activity.isResumed(),
-            expectedCompletionScreen = uiState.destination == AppDestination.GAME && uiState.isComplete,
-            fullScreenIdle = coordinator.isIdle(),
-            autoJourney = uiState.isAutoJourney,
-        )
-        val decision = InterstitialPolicy.evaluate(input)
-        crashReporter.setKey(CrashKey.LAST_AD_POLICY_REASON, decision.reason.name.lowercase())
-        crashReporter.setKey(CrashKey.AD_STATE, interstitialAdService.state.value.name.lowercase())
-        analytics.track(AnalyticsEvent.InterstitialEligible(decision.reason.name.lowercase(), if (decision.eligible) "show" else "skip"))
-        val claimed = if (progress.monetization.interstitialEligibleCompletions >= InterstitialPolicy.COMPLETION_GAP) {
-            repository.claimInterstitialOpportunity()
-        } else {
-            false
-        }
-        if (decision.eligible && claimed) {
-            when (interstitialAdService.showAtBoundary(activity)) {
-                InterstitialOutcome.Dismissed -> repository.recordFullScreenAdDismissal(
-                    clock.localDate(),
-                    clock.wallTimeMillis(),
-                    interstitialShown = true,
-                )
-                is InterstitialOutcome.Failed, is InterstitialOutcome.Unavailable -> Unit
+            val progress = repository.preferences.first().progress
+            val input = InterstitialPolicyInput(
+                campaign = uiState.gameMode == GameMode.CAMPAIGN,
+                infinite = uiState.gameMode == GameMode.INFINITE && !uiState.isAutoJourney,
+                forwardProgression = uiState.completionWasFirstClear,
+                eligibleCompletionsSinceLastAd = progress.monetization.interstitialEligibleCompletions,
+                nowElapsedMillis = clock.elapsedRealtimeMillis(),
+                lastRewardedElapsedMillis = coordinator.lastRewardedElapsedMillis,
+                consentAllowsAds = privacyManager.state.value.canRequestAds,
+                loaded = interstitialAdService.state.value == InterstitialAdState.READY,
+                foreground = activity.isResumed(),
+                expectedCompletionScreen = uiState.destination == AppDestination.GAME && uiState.isComplete,
+                fullScreenIdle = coordinator.isIdle(),
+                autoJourney = uiState.isAutoJourney,
+            )
+            val decision = InterstitialPolicy.evaluate(input)
+            crashReporter.setKey(CrashKey.LAST_AD_POLICY_REASON, decision.reason.name.lowercase())
+            crashReporter.setKey(CrashKey.AD_STATE, interstitialAdService.state.value.name.lowercase())
+            analytics.track(
+                AnalyticsEvent.InterstitialEligible(
+                    decision.reason.name.lowercase(),
+                    if (decision.eligible) "show" else "skip",
+                ),
+            )
+            val claimed = if (
+                progress.monetization.interstitialEligibleCompletions >= InterstitialPolicy.COMPLETION_GAP
+            ) {
+                repository.claimInterstitialOpportunity()
+            } else {
+                false
             }
-        }
-        navigate()
+            if (decision.eligible && claimed) {
+                when (interstitialAdService.showAtBoundary(activity)) {
+                    InterstitialOutcome.Dismissed -> repository.recordFullScreenAdDismissal(
+                        clock.localDate(),
+                        clock.wallTimeMillis(),
+                        interstitialShown = true,
+                    )
+                    is InterstitialOutcome.Failed, is InterstitialOutcome.Unavailable -> Unit
+                }
+            }
         } finally {
-            nextLevelInFlight.set(false)
+            completionInterstitialInFlight.set(false)
         }
     }
 
