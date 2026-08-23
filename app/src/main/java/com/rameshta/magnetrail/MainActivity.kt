@@ -1,60 +1,71 @@
 package com.rameshta.magnetrail
 
 import android.animation.ValueAnimator
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.Settings
-import android.content.Intent
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
-import com.rameshta.magnetrail.ads.MonetizationController
-import com.rameshta.magnetrail.analytics.AnalyticsEvent
-import com.rameshta.magnetrail.crash.CrashKey
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.core.view.drawToBitmap
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.rameshta.magnetrail.ads.MonetizationController
+import com.rameshta.magnetrail.analytics.AnalyticsEvent
+import com.rameshta.magnetrail.autojourney.AutoJourneyCoordinator
+import com.rameshta.magnetrail.autojourney.DataStoreAutoJourneyRepository
+import com.rameshta.magnetrail.crash.CrashKey
 import com.rameshta.magnetrail.data.AssetLevelCatalog
 import com.rameshta.magnetrail.data.DataStoreProgressRepository
 import com.rameshta.magnetrail.daily.DailyChallengeService
 import com.rameshta.magnetrail.feedback.FeedbackController
 import com.rameshta.magnetrail.feedback.SynthSoundController
 import com.rameshta.magnetrail.feedback.ViewHapticController
-import com.rameshta.magnetrail.game.GameViewModel
 import com.rameshta.magnetrail.game.GameAction
-import com.rameshta.magnetrail.game.MagnetrailApp
 import com.rameshta.magnetrail.game.GameMode
+import com.rameshta.magnetrail.game.GameViewModel
+import com.rameshta.magnetrail.game.MagnetrailApp
 import com.rameshta.magnetrail.infinite.InfiniteModeService
 import com.rameshta.magnetrail.playtest.DataStoreHumanPlaytestRepository
 import com.rameshta.magnetrail.playtest.HumanPlaytestExport
-import com.rameshta.magnetrail.autojourney.AutoJourneyCoordinator
-import com.rameshta.magnetrail.autojourney.DataStoreAutoJourneyRepository
 import com.rameshta.magnetrail.privacy.ExternalUrlPolicy
 import com.rameshta.magnetrail.ui.theme.MagnetrailTheme
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
     private lateinit var feedbackController: FeedbackController
+    private val startupStartedMillis = SystemClock.elapsedRealtime()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,28 +82,25 @@ class MainActivity : ComponentActivity() {
         val privacyPolicyUri = ExternalUrlPolicy.httpsUriOrNull(BuildConfig.PRIVACY_POLICY_URL)
         setContent {
             MagnetrailTheme {
-                val catalogResult = remember {
-                    runCatching {
-                        val assets = AssetLevelCatalog(applicationContext)
-                        val campaign = assets.load()
-                        listOf(
-                            campaign,
-                            assets.loadDailyFallbacks(),
-                            assets.loadInfiniteCatalog(),
-                            if (BuildConfig.DEBUG) {
-                                assets.loadHumanPlaytestCatalog(BuildConfig.HUMAN_PLAYTEST_CATALOG)
-                            } else {
-                                campaign
+                val catalogResult by produceState<Result<StartupCatalogs>?>(initialValue = null) {
+                    value = try {
+                        Result.success(
+                            withContext(Dispatchers.IO) {
+                                loadStartupCatalogs()
                             },
                         )
+                    } catch (cancelled: CancellationException) {
+                        throw cancelled
+                    } catch (error: Exception) {
+                        Result.failure(error)
                     }
                 }
-                catalogResult.fold(
+                catalogResult?.fold(
                     onSuccess = { catalogs ->
-                        val catalog = catalogs[0]
-                        val dailyFallbacks = catalogs[1]
-                        val infiniteCatalog = catalogs[2]
-                        val humanPlaytestCatalog = catalogs[3]
+                        val catalog = catalogs.campaign
+                        val dailyFallbacks = catalogs.dailyFallbacks
+                        val infiniteCatalog = catalogs.infinite
+                        val humanPlaytestCatalog = catalogs.humanPlaytest
                         val repository = remember(catalog) {
                             DataStoreProgressRepository(
                                 context = applicationContext,
@@ -256,6 +264,7 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             },
+                            onShareCelebration = ::shareCelebration,
                             privacyOptionsRequired = privacyState.privacyOptionsRequired,
                             privacyPolicyUrl = privacyPolicyUri?.toString(),
                             showPrivacyPolicyPlaceholder = BuildConfig.DEBUG && privacyPolicyUri == null,
@@ -279,11 +288,20 @@ class MainActivity : ComponentActivity() {
                             },
                             showHumanPlaytest = gameViewModel.humanPlaytestEnabled,
                         )
+                        LaunchedEffect(Unit) {
+                            reportFullyDrawn()
+                            if (BuildConfig.DEBUG) {
+                                Log.i(
+                                    STARTUP_LOG_TAG,
+                                    "home_ready_ms=${SystemClock.elapsedRealtime() - startupStartedMillis}",
+                                )
+                            }
+                        }
                     },
                     onFailure = { error ->
                         CatalogErrorScreen(error)
                     },
-                )
+                ) ?: CatalogLoadingScreen()
             }
         }
     }
@@ -326,6 +344,98 @@ class MainActivity : ComponentActivity() {
         val registry = Class.forName("androidx.test.platform.app.InstrumentationRegistry")
         registry.getMethod("getInstrumentation").invoke(null) != null
     }.getOrDefault(false)
+
+    private fun loadStartupCatalogs(): StartupCatalogs {
+        val startedMillis = SystemClock.elapsedRealtime()
+        val assets = AssetLevelCatalog(applicationContext)
+        val campaign = assets.load()
+        return StartupCatalogs(
+            campaign = campaign,
+            dailyFallbacks = assets.loadDailyFallbacks(),
+            infinite = assets.loadInfiniteCatalog(),
+            humanPlaytest = if (BuildConfig.DEBUG) {
+                assets.loadHumanPlaytestCatalog(BuildConfig.HUMAN_PLAYTEST_CATALOG)
+            } else {
+                campaign
+            },
+        ).also {
+            if (BuildConfig.DEBUG) {
+                Log.i(
+                    STARTUP_LOG_TAG,
+                    "catalog_load_ms=${SystemClock.elapsedRealtime() - startedMillis}",
+                )
+            }
+        }
+    }
+
+    private fun shareCelebration() {
+        val contentView = window.decorView.rootView
+        contentView.post {
+            val screenshot = runCatching {
+                check(contentView.width > 0 && contentView.height > 0) {
+                    "Celebration screen is not ready to capture"
+                }
+                contentView.drawToBitmap(Bitmap.Config.ARGB_8888)
+            }.getOrElse {
+                showCelebrationShareError()
+                return@post
+            }
+            lifecycleScope.launch {
+                try {
+                    val imageUri = withContext(Dispatchers.IO) {
+                        CelebrationShare.storeScreenshot(this@MainActivity, screenshot)
+                    }
+                    startActivity(
+                        Intent.createChooser(
+                            CelebrationShare.sendIntent(contentResolver, imageUri),
+                            getString(R.string.share_celebration_chooser),
+                        ),
+                    )
+                } catch (cancelled: CancellationException) {
+                    throw cancelled
+                } catch (_: Exception) {
+                    showCelebrationShareError()
+                } finally {
+                    screenshot.recycle()
+                }
+            }
+        }
+    }
+
+    private fun showCelebrationShareError() {
+        Toast.makeText(this, R.string.share_celebration_error, Toast.LENGTH_SHORT).show()
+    }
+
+    private companion object {
+        const val STARTUP_LOG_TAG = "MagnetrailStartup"
+    }
+}
+
+private data class StartupCatalogs(
+    val campaign: com.rameshta.magnetrail.core.level.LevelCatalog,
+    val dailyFallbacks: com.rameshta.magnetrail.core.level.LevelCatalog,
+    val infinite: com.rameshta.magnetrail.core.level.LevelCatalog,
+    val humanPlaytest: com.rameshta.magnetrail.core.level.LevelCatalog,
+)
+
+@androidx.compose.runtime.Composable
+private fun CatalogLoadingScreen() {
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            CircularProgressIndicator()
+            Text(
+                text = "Loading campaign…",
+                modifier = Modifier.padding(top = 16.dp),
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
+    }
 }
 
 @androidx.compose.runtime.Composable

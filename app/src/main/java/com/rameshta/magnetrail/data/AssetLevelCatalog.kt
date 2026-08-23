@@ -9,6 +9,7 @@ class AssetLevelCatalog(
     private val parser: LevelParser = LevelParser(),
 ) {
     private val assets = context.applicationContext.assets
+    private val loadedCatalogs = mutableMapOf<String, LevelCatalog>()
 
     fun load(): LevelCatalog = load(CAMPAIGN_ASSET_PATH)
 
@@ -34,14 +35,16 @@ class AssetLevelCatalog(
         else -> error("Unsupported human-playtest catalog '$selection'")
     }
 
-    private fun load(path: String): LevelCatalog = try {
-        val source = assets.open(path).bufferedReader().use { it.readText() }
-        parser.parseCatalog(source)
-    } catch (error: Exception) {
-        throw IllegalStateException(
-            "Unable to load or validate canonical level asset '$path'",
-            error,
-        )
+    @Synchronized
+    private fun load(path: String): LevelCatalog = loadedCatalogs.getOrPut(path) {
+        try {
+            assets.open(path).buffered().use(parser::parseCatalog)
+        } catch (error: Exception) {
+            throw IllegalStateException(
+                "Unable to load or validate canonical level asset '$path'",
+                error,
+            )
+        }
     }
 
     companion object {

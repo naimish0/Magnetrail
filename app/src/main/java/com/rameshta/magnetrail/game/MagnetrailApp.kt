@@ -31,6 +31,7 @@ fun MagnetrailApp(
     onRewardedHint: () -> Unit = {},
     onRewardedSkip: () -> Unit = {},
     onNextLevel: () -> Unit = { onAction(GameAction.NextLevel) },
+    onShareCelebration: () -> Unit = {},
     privacyOptionsRequired: Boolean = false,
     privacyPolicyUrl: String? = null,
     showPrivacyPolicyPlaceholder: Boolean = false,
@@ -80,6 +81,7 @@ fun MagnetrailApp(
             onRewardedHint = onRewardedHint,
             onRewardedSkip = onRewardedSkip,
             onNextLevel = onNextLevel,
+            onShareCelebration = onShareCelebration,
         )
         AppDestination.INFINITE -> InfiniteModeScreen(
             progress = uiState.progress.infinite,

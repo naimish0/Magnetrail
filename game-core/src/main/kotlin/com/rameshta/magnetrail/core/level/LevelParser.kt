@@ -1,13 +1,16 @@
 package com.rameshta.magnetrail.core.level
 
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.json.Json
 import com.rameshta.magnetrail.core.model.DifficultyBand
 import com.rameshta.magnetrail.core.model.GradingThresholds
 import com.rameshta.magnetrail.core.model.LevelDefinition
 import com.rameshta.magnetrail.core.model.LevelMetadata
 import com.rameshta.magnetrail.core.model.LevelOrigin
+import java.io.InputStream
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
 
 class LevelParsingException(message: String, cause: Throwable? = null) : IllegalArgumentException(message, cause)
 
@@ -20,6 +23,16 @@ class LevelParser(
     fun parseCatalog(source: String): LevelCatalog {
         val dto = try {
             json.decodeFromString<LevelCatalogDto>(source)
+        } catch (error: SerializationException) {
+            throw LevelParsingException("Level catalog is not valid JSON: ${error.message}", error)
+        }
+        return LevelValidation.toDomain(dto)
+    }
+
+    @OptIn(ExperimentalSerializationApi::class)
+    fun parseCatalog(source: InputStream): LevelCatalog {
+        val dto = try {
+            json.decodeFromStream<LevelCatalogDto>(source)
         } catch (error: SerializationException) {
             throw LevelParsingException("Level catalog is not valid JSON: ${error.message}", error)
         }

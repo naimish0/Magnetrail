@@ -100,6 +100,7 @@ fun GameScreen(
     onRewardedHint: () -> Unit = {},
     onRewardedSkip: () -> Unit = {},
     onNextLevel: () -> Unit = { onAction(GameAction.NextLevel) },
+    onShareCelebration: () -> Unit = {},
 ) {
     val spacing = LocalMagnetrailSpacing.current
     val dimensions = LocalMagnetrailDimensions.current
@@ -225,6 +226,7 @@ fun GameScreen(
                         requireNotNull(completionCelebration),
                         onAction,
                         onNextLevel,
+                        onShareCelebration,
                     )
                 }
 
@@ -815,6 +817,7 @@ private fun CompletionCard(
     celebration: CompletionCelebrationStyle,
     onAction: (GameAction) -> Unit,
     onNextLevel: () -> Unit,
+    onShareCelebration: () -> Unit,
 ) {
     val spacing = LocalMagnetrailSpacing.current
     Card(
@@ -942,8 +945,14 @@ private fun CompletionCard(
                     }
                 }
             }
+            OutlinedButton(
+                onClick = onShareCelebration,
+                modifier = Modifier.fillMaxWidth().padding(top = spacing.sm),
+            ) {
+                Text("Share celebration")
+            }
             Row(
-                modifier = Modifier.padding(top = spacing.sm),
+                modifier = Modifier.padding(top = spacing.xs),
                 horizontalArrangement = Arrangement.spacedBy(spacing.sm),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
