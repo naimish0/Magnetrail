@@ -14,6 +14,7 @@ import com.rameshta.magnetrail.data.AttemptSummary
 import com.rameshta.magnetrail.data.DataStoreProgressRepository
 import com.rameshta.magnetrail.data.HintSpendResult
 import com.rameshta.magnetrail.data.PLAYER_PREFERENCES_SCHEMA_VERSION
+import com.rameshta.magnetrail.data.RewardedSkipTarget
 import com.rameshta.magnetrail.core.level.LevelCatalog
 import com.rameshta.magnetrail.core.level.LevelParser
 import java.io.File
@@ -382,7 +383,7 @@ class M3ProgressRepositoryTest {
         val first = repository.preferences.first().progress
         val second = repository.preferences.first().progress
 
-        assertEquals(9, first.contentVersion)
+        assertEquals(10, first.contentVersion)
         assertEquals(5, first.generatorVersion)
         assertEquals(151, first.highestUnlockedLevel)
         assertEquals("campaign-151", first.lastSelectedLevelId)
@@ -458,7 +459,7 @@ class M3ProgressRepositoryTest {
 
         val first = repository(store, catalog).preferences.first().progress
 
-        assertEquals(9, first.contentVersion)
+        assertEquals(10, first.contentVersion)
         assertEquals(201, first.highestUnlockedLevel)
         assertEquals("campaign-201", first.lastSelectedLevelId)
         assertEquals(setOf("campaign-200"), first.completedLevelIds)
@@ -467,7 +468,7 @@ class M3ProgressRepositoryTest {
     }
 
     @Test
-    fun `content v9 migration moves a completed level 205 player to 206`() = runTest {
+    fun `expanded campaign migration moves a completed level 205 player to 206`() = runTest {
         val catalog = campaignCatalog()
         val store = dataStore(this)
         store.edit { stored ->
@@ -482,7 +483,7 @@ class M3ProgressRepositoryTest {
 
         val progress = repository(store, catalog).preferences.first().progress
 
-        assertEquals(9, progress.contentVersion)
+        assertEquals(10, progress.contentVersion)
         assertEquals(206, progress.highestUnlockedLevel)
         assertEquals("campaign-206", progress.lastSelectedLevelId)
         assertEquals(setOf("campaign-205"), progress.completedLevelIds)
@@ -606,7 +607,7 @@ class M3ProgressRepositoryTest {
         val second = repository.preferences.first()
         val progress = first.progress
 
-        assertEquals(9, progress.contentVersion)
+        assertEquals(10, progress.contentVersion)
         assertEquals(5, progress.generatorVersion)
         assertEquals(201, progress.highestUnlockedLevel)
         assertEquals("campaign-201", progress.lastSelectedLevelId)
@@ -643,6 +644,66 @@ class M3ProgressRepositoryTest {
         assertEquals(1, restarted.recordsByLevel.getValue("proto-001").legacyRecords.size)
         assertEquals(5, restarted.recordsByLevel.getValue("proto-001").lowestActions)
         assertEquals(12_345, restarted.coinBalance)
+    }
+
+    @Test
+    fun `tutorials are excluded and Level 17 creates the exact first five-clear opportunity`() = runTest {
+        val store = dataStore(this)
+        val catalog = campaignCatalog()
+        var repository = repository(store, catalog)
+
+        catalog.levels.take(12).forEach { level ->
+            repository.recordCampaignCompletion(level.id, AttemptSummary(level.arrows.size, 0, 0))
+        }
+        assertEquals(0, repository.preferences.first().progress.monetization.interstitialEligibleCompletions)
+        assertFalse(repository.claimInterstitialOpportunity())
+
+        catalog.levels.subList(12, 17).forEach { level ->
+            repository.recordCampaignCompletion(level.id, AttemptSummary(level.arrows.size, 0, 0))
+        }
+        assertEquals(5, repository.preferences.first().progress.monetization.interstitialEligibleCompletions)
+
+        repository = repository(store, catalog)
+        assertTrue(repository.claimInterstitialOpportunity())
+        assertFalse(repository.claimInterstitialOpportunity())
+        assertEquals(0, repository.preferences.first().progress.monetization.interstitialEligibleCompletions)
+    }
+
+    @Test
+    fun `replay duplicate callbacks and rewarded progression cannot create interstitial debt`() = runTest {
+        val store = dataStore(this)
+        val catalog = campaignCatalog()
+        val repository = repository(store, catalog)
+        catalog.levels.take(13).forEach { level ->
+            repository.recordCampaignCompletion(level.id, AttemptSummary(level.arrows.size, 0, 0))
+        }
+        val eligible = repository.preferences.first().progress.monetization.interstitialEligibleCompletions
+        val level13 = catalog.levels[12]
+
+        repository.recordCampaignCompletion(level13.id, AttemptSummary(level13.arrows.size + 1, 0, 0))
+        repository.recordCampaignCompletion(level13.id, AttemptSummary(level13.arrows.size + 2, 0, 0))
+
+        val beforeSkip = repository.preferences.first().progress.monetization.interstitialEligibleCompletions
+        repository.recordRewardedSkip("skip-does-not-count", RewardedSkipTarget.Campaign(catalog.levels[13].id))
+
+        assertEquals(beforeSkip, repository.preferences.first().progress.monetization.interstitialEligibleCompletions)
+        assertEquals(eligible, beforeSkip)
+        assertFalse(repository.claimInterstitialOpportunity())
+    }
+
+    @Test
+    fun `Auto Journey first completion participates once and survives process death`() = runTest {
+        val store = dataStore(this)
+        var repository = repository(store, campaignCatalog())
+
+        assertTrue(repository.recordAutoJourneyCompletion("auto-journey-v1-1"))
+        assertFalse(repository.recordAutoJourneyCompletion("auto-journey-v1-1"))
+        assertEquals(1, repository.preferences.first().progress.monetization.interstitialEligibleCompletions)
+
+        repository = repository(store, campaignCatalog())
+        assertEquals(setOf("auto-journey-v1-1"), repository.preferences.first().progress.completedAutoJourneyIds)
+        assertFalse(repository.recordAutoJourneyCompletion("auto-journey-v1-1"))
+        assertEquals(1, repository.preferences.first().progress.monetization.interstitialEligibleCompletions)
     }
 
     private fun dataStore(scope: TestScope): DataStore<Preferences> {

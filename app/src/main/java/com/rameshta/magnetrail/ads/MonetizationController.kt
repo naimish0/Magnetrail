@@ -157,7 +157,8 @@ class MonetizationController(
             val mode = uiState.gameMode.name.lowercase()
             analytics.track(AnalyticsEvent.RewardedSkip("requested_${offer.status.name.lowercase()}", mode))
             if (!offer.enabled || !activity.isResumed() || uiState.destination != AppDestination.GAME ||
-                uiState.gameMode == GameMode.DAILY || uiState.isComplete || uiState.inFlightResult != null
+                uiState.gameMode !in setOf(GameMode.CAMPAIGN, GameMode.INFINITE) ||
+                uiState.isComplete || uiState.inFlightResult != null
             ) {
                 analytics.track(AnalyticsEvent.RewardedSkip("denied", mode))
                 onMessage(offer.supportingText)
@@ -176,6 +177,7 @@ class MonetizationController(
                             requireNotNull(uiState.infinitePuzzleId) { "Infinite skip requires a puzzle ID" },
                         )
                         GameMode.DAILY -> error("Daily Challenge cannot be skipped")
+                        GameMode.PLAYTEST -> error("Human playtest boards cannot be skipped with ads")
                     }
                     when (val result = repository.recordRewardedSkip(outcome.transactionId, target)) {
                         is RewardedSkipResult.Applied -> {
@@ -223,10 +225,7 @@ class MonetizationController(
             lifetimeCampaignCompletions = progress.completedLevelIds.size +
                 if (uiState.completionWasFirstClear && uiState.currentLevel.id !in progress.completedLevelIds) 1 else 0,
             forwardProgression = uiState.completionWasFirstClear,
-            eligibleCompletionsSinceLastAd = progress.monetization.interstitialEligibleCompletions +
-                if (uiState.completionWasFirstClear &&
-                    uiState.currentLevel.id !in progress.firstClearRewardedLevelIds
-                ) 1 else 0,
+            eligibleCompletionsSinceLastAd = progress.monetization.interstitialEligibleCompletions,
             nowDate = clock.localDate(),
             storedDailyDate = storedDate,
             interstitialsShownOnStoredDate = progress.monetization.interstitialsShownOnDate,
@@ -240,12 +239,18 @@ class MonetizationController(
             foreground = activity.isResumed(),
             expectedCompletionScreen = uiState.destination == AppDestination.GAME && uiState.isComplete,
             fullScreenIdle = coordinator.isIdle(),
+            autoJourney = uiState.isAutoJourney,
         )
         val decision = InterstitialPolicy.evaluate(input)
         crashReporter.setKey(CrashKey.LAST_AD_POLICY_REASON, decision.reason.name.lowercase())
         crashReporter.setKey(CrashKey.AD_STATE, interstitialAdService.state.value.name.lowercase())
         analytics.track(AnalyticsEvent.InterstitialEligible(decision.reason.name.lowercase(), if (decision.eligible) "show" else "skip"))
-        if (decision.eligible) {
+        val claimed = if (progress.monetization.interstitialEligibleCompletions >= InterstitialPolicy.COMPLETION_GAP) {
+            repository.claimInterstitialOpportunity()
+        } else {
+            false
+        }
+        if (decision.eligible && claimed) {
             when (interstitialAdService.showAtBoundary(activity)) {
                 InterstitialOutcome.Dismissed -> repository.recordFullScreenAdDismissal(
                     clock.localDate(),

@@ -1,0 +1,9 @@
+{
+    "status": "AWAITING_HUMAN_CALIBRATION",
+    "reasons": [
+        "Sealed V6 validation results are absent; the frozen model cannot be human-certified."
+    ],
+    "calibrationResultsPresent": false,
+    "sealedResultsPresent": false,
+    "modelSha256": null
+}

@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 val googleSampleAppId = "ca-app-pub-3940256099942544~3347511713"
@@ -70,6 +71,10 @@ fun productionConfigurationProblems(): List<String> = buildList {
 val releaseMonetizationReady = productionReleaseRequested && productionConfigurationProblems().isEmpty()
 val releaseVersionCode = providers.gradleProperty("magnetrail.versionCode").get().toInt()
 val releaseVersionName = providers.gradleProperty("magnetrail.versionName").get()
+val humanPlaytestCatalog = providers.gradleProperty("humanPlaytestCatalog").getOrElse("v10")
+require(humanPlaytestCatalog in setOf("v6", "v10")) {
+    "humanPlaytestCatalog must be v6 or v10"
+}
 
 val syncM3Levels by tasks.registering(Sync::class) {
     from(rootProject.layout.projectDirectory.file("docs/Magnetrail_Campaign_Levels_v3.json"))
@@ -79,6 +84,25 @@ val syncM3Levels by tasks.registering(Sync::class) {
     rename("Magnetrail_Campaign_Levels_v3.json", "magnetrail_campaign_levels_v3.json")
     rename("Magnetrail_Daily_Fallbacks_v1.json", "magnetrail_daily_fallbacks_v1.json")
     rename("INFINITE_CERTIFIED_CATALOG_V1.json", "magnetrail_infinite_catalog_v1.json")
+}
+
+val syncV6Pilot by tasks.registering(Sync::class) {
+    val playtestCatalog = providers.gradleProperty("v6PlaytestCatalog").getOrElse("calibration")
+    require(playtestCatalog in setOf("calibration", "sealed-validation")) {
+        "v6PlaytestCatalog must be calibration or sealed-validation"
+    }
+    from(
+        rootProject.layout.projectDirectory.file(
+            if (playtestCatalog == "calibration") {
+                "docs/content/generator_v6/staging/calibration/GENERATOR_V6_CALIBRATION_CATALOG.json"
+            } else {
+                "docs/content/generator_v6/staging/sealed-validation/GENERATOR_V6_SEALED_VALIDATION_CATALOG.json"
+            },
+        ),
+    )
+    inputs.property("v6PlaytestCatalog", playtestCatalog)
+    into(layout.buildDirectory.dir("generated/magnetrailDebugAssetsV6/levels"))
+    rename("GENERATOR_V6_(CALIBRATION|SEALED_VALIDATION)_CATALOG\\.json", "magnetrail_v6_calibration.json")
 }
 
 android {
@@ -104,6 +128,7 @@ android {
         buildConfigField("boolean", "PRODUCTION_RELEASE_REQUESTED", "false")
         buildConfigField("boolean", "FIREBASE_CONFIGURED", "false")
         buildConfigField("boolean", "UPLOAD_SIGNING_CONFIGURED", "false")
+        buildConfigField("String", "HUMAN_PLAYTEST_CATALOG", humanPlaytestCatalog.asBuildConfigString())
     }
 
     signingConfigs {
@@ -179,6 +204,18 @@ android {
         }
         named("test") {
             resources.directories.add(rootProject.file("docs").absolutePath)
+            // V6.1 checkpoints and benchmark reports are mutable staging evidence, not app test
+            // fixtures. Excluding them keeps a passed source-bound preflight reusable on resume.
+            (resources as org.gradle.api.tasks.util.PatternFilterable).exclude(
+                "content/combined_v10_v11/staging/**",
+                "content/generator_v6_1/staging/**",
+                "content/generator_v6_1/benchmark/**",
+            )
+        }
+        named("debug") {
+            assets.directories.add(
+                layout.buildDirectory.dir("generated/magnetrailDebugAssetsV6").get().asFile.absolutePath,
+            )
         }
     }
 }
@@ -187,9 +224,50 @@ tasks.named("preBuild") {
     dependsOn(syncM3Levels)
 }
 
+tasks.configureEach {
+    if (name == "preDebugBuild") dependsOn(syncV6Pilot)
+}
+
+val verifyGeneratorV6ReleaseExclusion by tasks.registering {
+    group = "verification"
+    description = "Prove the V6 blind-playtest catalog is absent from merged release assets."
+    dependsOn("mergeReleaseAssets")
+    val mergedReleaseAssets = layout.buildDirectory.dir("intermediates/assets/release/mergeReleaseAssets")
+    inputs.dir(mergedReleaseAssets)
+    doLast {
+        val forbidden = mergedReleaseAssets.get().asFile.walkTopDown().filter { file ->
+            file.name == "magnetrail_v6_calibration.json"
+        }.toList()
+        check(forbidden.isEmpty()) { "Debug-only playtest assets leaked into release: $forbidden" }
+    }
+}
+
+val verifyPrivacyPolicyArtifacts by tasks.registering {
+    group = "verification"
+    description = "Verify the in-app and deployable privacy-policy artifacts remain truthful and explicitly blocked on owner values."
+    val markdown = rootProject.layout.projectDirectory.file("docs/privacy-policy.md")
+    val html = rootProject.layout.projectDirectory.file("docs/privacy-policy.html")
+    val dataSafety = rootProject.layout.projectDirectory.file("docs/DATA_SAFETY_MAPPING.md")
+    inputs.files(markdown, html, dataSafety)
+    doLast {
+        val markdownText = markdown.asFile.readText()
+        val htmlText = html.asFile.readText()
+        val mappingText = dataSafety.asFile.readText()
+        listOf("Google Mobile Ads", "User Messaging Platform", "Firebase Analytics", "Firebase Crashlytics").forEach {
+            check(it in markdownText) { "Privacy policy is missing installed provider disclosure: $it" }
+        }
+        check("does not require an account" in markdownText)
+        check("Android cloud backup and device-to-device transfer are disabled" in markdownText)
+        check("[OWNER MUST CONFIGURE]" in markdownText && "[OWNER MUST CONFIGURE]" in htmlText)
+        check("public HTTPS" in markdownText && "public HTTPS" in htmlText)
+        check("Data Safety" in mappingText && "owner must validate" in mappingText)
+    }
+}
+
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     implementation(project(":game-core"))
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -251,14 +329,19 @@ val validateReleaseConfiguration by tasks.registering {
     }
 }
 
+val releaseMergedManifest = layout.buildDirectory
+    .file("intermediates/merged_manifests/release/processReleaseManifest/AndroidManifest.xml")
+
 val verifyReleaseManifest by tasks.registering {
     group = "verification"
     description = "Assert the merged release manifest has the expected package, SDK, permissions, and component exposure."
     dependsOn("processReleaseManifest")
+    inputs.file(releaseMergedManifest)
+    inputs.property("googleSampleAppId", googleSampleAppId)
+    inputs.property("googleRewardedTestId", googleRewardedTestId)
+    inputs.property("googleInterstitialTestId", googleInterstitialTestId)
     doLast {
-        val manifestFile = layout.buildDirectory
-            .file("intermediates/merged_manifests/release/processReleaseManifest/AndroidManifest.xml")
-            .get().asFile
+        val manifestFile = inputs.files.singleFile
         check(manifestFile.isFile) { "Merged release manifest was not generated" }
         val factory = javax.xml.parsers.DocumentBuilderFactory.newInstance().apply { isNamespaceAware = true }
         val document = factory.newDocumentBuilder().parse(manifestFile)
@@ -311,9 +394,9 @@ val verifyReleaseManifest by tasks.registering {
         }
 
         val mergedText = manifestFile.readText()
-        check(googleSampleAppId !in mergedText)
-        check(googleRewardedTestId !in mergedText)
-        check(googleInterstitialTestId !in mergedText)
+        check(inputs.properties.getValue("googleSampleAppId").toString() !in mergedText)
+        check(inputs.properties.getValue("googleRewardedTestId").toString() !in mergedText)
+        check(inputs.properties.getValue("googleInterstitialTestId").toString() !in mergedText)
     }
 }
 
@@ -324,6 +407,21 @@ tasks.configureEach {
         "processDebugUnitTestJavaRes", "processReleaseUnitTestJavaRes" -> {
             mustRunAfter(":level-tools:finalizePhase0")
             mustRunAfter(":level-tools:finalizePhase1")
+            mustRunAfter(":level-tools:analyzeGeneratorV61Regression")
         }
     }
+}
+
+tasks.register("verifyReleaseReadinessLocal") {
+    group = "verification"
+    description = "Run repository-local release compilation, shrinker, manifest, lint, tests, debug UI compilation, and privacy checks."
+    dependsOn(
+        "bundleRelease",
+        "lintRelease",
+        "testDebugUnitTest",
+        "compileDebugAndroidTestKotlin",
+        verifyGeneratorV6ReleaseExclusion,
+        verifyPrivacyPolicyArtifacts,
+        verifyReleaseManifest,
+    )
 }

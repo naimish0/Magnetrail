@@ -33,6 +33,7 @@ internal fun GameUiState.activeTutorialLesson(): TutorialLesson? {
                 it in 0 until TUTORIAL_LEVEL_COUNT
         }
         GameMode.DAILY -> null
+        GameMode.PLAYTEST -> null
     } ?: return null
     val lesson = when (ordinal) {
         0 -> TutorialLesson(

@@ -14,16 +14,16 @@ import org.junit.Test
 
 class M4InterstitialPolicyTest {
     @Test
-    fun `first ten lifetime levels daily and replay are excluded`() {
-        assertReason(base().copy(lifetimeCampaignCompletions = 9), InterstitialReason.FIRST_LEVELS)
+    fun `non campaign non auto and replay are excluded`() {
         assertReason(base().copy(campaign = false), InterstitialReason.NOT_CAMPAIGN)
+        assertTrue(InterstitialPolicy.evaluate(base().copy(campaign = false, autoJourney = true)).eligible)
         assertReason(base().copy(forwardProgression = false), InterstitialReason.NOT_FORWARD_PROGRESS)
     }
 
     @Test
-    fun `third eligible completion is the first eligible gap`() {
-        assertReason(base().copy(eligibleCompletionsSinceLastAd = 2), InterstitialReason.COMPLETION_GAP)
-        assertTrue(InterstitialPolicy.evaluate(base().copy(eligibleCompletionsSinceLastAd = 3)).eligible)
+    fun `fifth eligible completion is the exact opportunity`() {
+        assertReason(base().copy(eligibleCompletionsSinceLastAd = 4), InterstitialReason.COMPLETION_GAP)
+        assertTrue(InterstitialPolicy.evaluate(base().copy(eligibleCompletionsSinceLastAd = 5)).eligible)
     }
 
     @Test
@@ -77,6 +77,14 @@ class M4InterstitialPolicyTest {
         assertEquals(clock.elapsed, coordinator.lastRewardedElapsedMillis)
     }
 
+    @Test
+    fun `app open ownership prevents an interstitial collision`() {
+        val coordinator = FullScreenAdCoordinator(FakeClock())
+        assertTrue(coordinator.tryAcquire(FullScreenOwner.APP_OPEN))
+        assertFalse(coordinator.tryAcquire(FullScreenOwner.INTERSTITIAL))
+        assertReason(base().copy(fullScreenIdle = coordinator.isIdle()), InterstitialReason.FULL_SCREEN_BUSY)
+    }
+
     private fun assertReason(input: InterstitialPolicyInput, reason: InterstitialReason) {
         assertEquals(reason, InterstitialPolicy.evaluate(input).reason)
     }
@@ -85,7 +93,7 @@ class M4InterstitialPolicyTest {
         campaign = true,
         lifetimeCampaignCompletions = 10,
         forwardProgression = true,
-        eligibleCompletionsSinceLastAd = 3,
+        eligibleCompletionsSinceLastAd = 5,
         nowDate = LocalDate.of(2026, 8, 19),
         storedDailyDate = LocalDate.of(2026, 8, 19),
         interstitialsShownOnStoredDate = 0,

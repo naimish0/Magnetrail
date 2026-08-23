@@ -11,6 +11,8 @@
 /build
 **/build/
 **/.kotlin/
+# Generator checkpoints are resumable build state, never source or release evidence.
+/docs/content/generator_v6_1/staging/checkpoints/
 # Compiler/parser intermediates belong under ignored build directories. Keep a
 # defensive root-wide rule so interrupted tool runs cannot pollute source state.
 *.class

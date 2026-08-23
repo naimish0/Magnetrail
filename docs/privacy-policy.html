@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Magnetrail Privacy Policy</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, -apple-system, sans-serif; line-height: 1.55; }
+    body { margin: 0; background: Canvas; color: CanvasText; }
+    main { max-width: 52rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    h1 { line-height: 1.15; }
+    h2 { margin-top: 2rem; line-height: 1.25; }
+    .warning { border: 2px solid #b45309; border-radius: .75rem; padding: 1rem; background: color-mix(in srgb, #f59e0b 12%, Canvas); }
+    a { color: LinkText; }
+    code { overflow-wrap: anywhere; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Magnetrail Privacy Policy</h1>
+  <p><strong>Last updated:</strong> 22 August 2026</p>
+  <p class="warning"><strong>Configuration required before publication:</strong> The repository does not contain a verified developer/publisher legal identity, privacy contact, postal address, or active public HTTPS policy URL. The owner must replace the marked fields below, legally review this policy against the exact release binary, and host this page publicly.</p>
+
+  <h2>Overview</h2>
+  <p>Magnetrail is an offline-first puzzle game and does not require an account. Numbered-campaign progress, Auto Journey boards and uniqueness history, settings, rewards, and local records are stored on the device. The app includes Google software for advertising and consent. A configured production build may also use Firebase Analytics and Crashlytics when optional diagnostics and the applicable consent state permit collection.</p>
+
+  <h2>Data stored locally</h2>
+  <p>Private app storage contains campaign, Daily, Infinite, and Auto Journey progress and records; settings and reward balances; ad-cadence state; consent-managed state; and exact generated Auto Journey boards, identities, certification receipts, and fingerprints. Debug builds may store blinded playtest sessions and optional comments.</p>
+  <p>There is no Magnetrail account or cloud-sync system. Android cloud backup and device transfer are disabled. Clearing app storage or uninstalling deletes local progress and resets local Auto Journey history.</p>
+
+  <h2>Advertising and consent</h2>
+  <p>Magnetrail includes Google Mobile Ads and Google's User Messaging Platform (UMP). In a correctly configured production build, UMP updates consent information at launch and presents required forms or privacy options. Ads are requested only when UMP reports that ads may be requested. Missing or denied consent and unavailable ads never block gameplay.</p>
+  <p>Depending on region, consent, device settings, and Google configuration, Google and its advertising partners may process device or advertising identifiers, app-instance identifiers, IP-derived approximate location, app and ad interactions, and device, diagnostic, security, and fraud-prevention information. These may be used for ad delivery, limiting, permitted personalization, measurement, security, and fraud prevention. Non-personalized ads may still use identifiers or local storage for frequency capping and aggregated reporting.</p>
+  <p>Read <a href="https://policies.google.com/privacy">Google's privacy policy</a>, <a href="https://developers.google.com/admob/android/privacy/play-data-disclosure">Mobile Ads disclosures</a>, and <a href="https://developers.google.com/admob/android/privacy/ad-serving-modes">ad-serving modes</a>.</p>
+  <p>Interstitial opportunities are counted locally after each five eligible first-time level completions. Tutorials, replays, failed attempts, hints, and rewarded-ad skips do not count. A skipped ad opportunity creates no later ad debt.</p>
+
+  <h2>Optional usage and crash diagnostics</h2>
+  <p>Firebase Analytics and Crashlytics libraries are included, but automatic collection is disabled in the manifest. Collection is enabled only when the binary has valid Firebase configuration, the player enables <strong>Usage &amp; crash diagnostics</strong>, and the applicable consent state permits it.</p>
+  <p>When enabled, Analytics may process coarse app-use events and related device/app identifiers and metadata. Crashlytics may process crash and ANR stack traces, app state, device metadata, and a Crashlytics installation identifier. Magnetrail's event allow-list does not intentionally include canonical board state, free-text playtest comments, raw consent strings, or advertising identifiers. Read <a href="https://firebase.google.com/support/privacy">Firebase privacy and security</a> and <a href="https://firebase.google.com/docs/android/play-data-disclosure">Firebase's data-disclosure guidance</a>.</p>
+
+  <h2>Sharing, retention, and deletion</h2>
+  <p>Magnetrail does not sell an account profile because it has no account system. Google and its advertising partners may process data for advertising, consent, security, measurement, and fraud-prevention purposes. Configured and enabled Firebase services may process diagnostics to measure app use and reliability.</p>
+  <p>Local data remains until normal gameplay replaces it, app storage is cleared, or the app is uninstalled. Google and advertising partners control retention for data they process. Disable optional diagnostics in Settings, use UMP's Privacy options when available, and use Google's privacy controls for provider-held data.</p>
+
+  <h2>Security</h2>
+  <p>The app disables cleartext traffic, uses private app storage, excludes app data from backup and transfer, limits diagnostic event fields, and makes production release configuration fail closed when required values are absent. No security measure eliminates every risk.</p>
+
+  <h2>Children and target audience</h2>
+  <p>The source requires an owner-reviewed general-audience configuration before live production services can be enabled. The repository does not prove the Play Console target-audience declaration or completed age-treatment choices. The publisher must verify audience, rating, advertising treatment, and consent settings before distribution. This policy does not claim that Magnetrail is directed to children.</p>
+
+  <h2>Publisher and contact — required before publication</h2>
+  <ul>
+    <li>Legal developer/publisher identity: <code>[OWNER MUST CONFIGURE]</code></li>
+    <li>Privacy contact: <code>[OWNER MUST CONFIGURE]</code></li>
+    <li>Postal address, if legally required: <code>[OWNER/LEGAL MUST CONFIGURE]</code></li>
+    <li>Public HTTPS URL: <code>[OWNER MUST HOST AND CONFIGURE]</code></li>
+  </ul>
+  <p>This local HTML file is deployable source, not a Play privacy-policy URL. Configure the hosted URL through <code>MAGNETRAIL_PRIVACY_POLICY_URL</code>.</p>
+</main>
+</body>
+</html>

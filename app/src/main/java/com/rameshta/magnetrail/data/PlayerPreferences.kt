@@ -5,7 +5,7 @@ import com.rameshta.magnetrail.core.economy.EconomyConfig
 import com.rameshta.magnetrail.core.generation.CONTENT_VERSION
 import com.rameshta.magnetrail.core.generation.GENERATOR_VERSION
 
-const val PLAYER_PREFERENCES_SCHEMA_VERSION = 7
+const val PLAYER_PREFERENCES_SCHEMA_VERSION = 8
 
 data class InfiniteHistoryEntry(
     val ordinal: Int,
@@ -68,6 +68,7 @@ data class PlayerProgress(
     val dailyGeneratorVersion: Int = DailySeed.GENERATOR_VERSION,
     val monetization: AdMonetizationState = AdMonetizationState(),
     val infinite: InfiniteProgress = InfiniteProgress(),
+    val completedAutoJourneyIds: Set<String> = emptySet(),
 )
 
 data class LevelRecord(

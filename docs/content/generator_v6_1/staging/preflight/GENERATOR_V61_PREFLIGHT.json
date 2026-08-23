@@ -1,0 +1,11 @@
+{
+    "schemaVersion": 1,
+    "status": "V61_PREFLIGHT_PASS",
+    "validationPlan": "PHASED_V61_1325_868_FINAL_2205",
+    "sourceCampaignSha256": "8ad274b5dcf39f69db006c87bc0861e9b7037516755f79d8560206b4f2577de9",
+    "relevantSourceHash": "349be0ae6aadd3bc6db46260ff5bfaa0933812f1f87b06123fa7e4d1eb9bf5aa",
+    "relevantFileCount": 249,
+    "mandatoryAutomatedTestsPassed": true,
+    "testCommandResults": "game-core:test;level-tools:test;app:testDebugUnitTest;app:lintRelease;app:compileReleaseKotlin;app:compileDebugAndroidTestKotlin;app:verifyGeneratorV6ReleaseExclusion;app:verifyReleaseManifest",
+    "completedAt": "2026-08-22T18:46:17.972202Z"
+}

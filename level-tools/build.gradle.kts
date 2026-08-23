@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.security.MessageDigest
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -30,6 +31,9 @@ application {
 sourceSets {
     test {
         resources.srcDir(rootProject.file("docs"))
+        resources.exclude("content/combined_v10_v11/staging/**")
+        resources.exclude("content/generator_v6_1/staging/**")
+        resources.exclude("content/generator_v6_1/benchmark/**")
     }
 }
 
@@ -48,6 +52,862 @@ val infiniteDirectory = docsDirectory.dir("infinite")
 val infiniteContentDirectory = docsDirectory.dir("content/infinite")
 val campaignV9StagingDirectory = layout.buildDirectory.dir("campaign-v9-staging")
 val campaignV9CheckpointDirectory = layout.buildDirectory.dir("campaign-v9-checkpoints")
+val campaignV10StagingDirectory = layout.buildDirectory.dir("campaign-v10-staging")
+val campaignV10CheckpointDirectory = layout.buildDirectory.dir("campaign-v10-checkpoints")
+val campaignV10SourceSnapshot = docsDirectory.file("content/v10_density_remediation/SOURCE_CONTENT_V9.json")
+val campaignV10SourceFile = providers.provider {
+    campaignV10SourceSnapshot.asFile.takeIf { it.isFile }
+        ?: docsDirectory.file("Magnetrail_Campaign_Levels_v3.json").asFile
+}
+val generatorV6Directory = docsDirectory.dir("content/generator_v6")
+val generatorV61Directory = docsDirectory.dir("content/generator_v6_1")
+val generatorV61RelevantSourcePaths = listOf(
+    rootProject.file("game-core/src"),
+    rootProject.file("game-core/build.gradle.kts"),
+    rootProject.file("level-tools/src"),
+    rootProject.file("level-tools/build.gradle.kts"),
+    rootProject.file("app/src"),
+    rootProject.file("app/build.gradle.kts"),
+    rootProject.file("gradle/libs.versions.toml"),
+)
+val generatorV61RelevantSourcePathArgument =
+    generatorV61RelevantSourcePaths.joinToString(File.pathSeparator, transform = File::getPath)
+
+tasks.register<JavaExec>("analyzeGeneratorV61Regression") {
+    group = "verification"
+    description = "Freeze the failed V6 human evidence and verify V6.1 caps plus semantic uniqueness."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val v6Catalog = generatorV6Directory.file("staging/calibration/GENERATOR_V6_CALIBRATION_CATALOG.json")
+    val v6Audit = generatorV6Directory.file("staging/calibration/GENERATOR_V6_CALIBRATION_AUDIT.json")
+    val human = docsDirectory.file("magnetrail-playtest-naimish-b054cc41.csv")
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    inputs.files(v6Catalog, v6Audit, human, campaign)
+    outputs.dir(generatorV61Directory.dir("regression"))
+    args(
+        "analyze-generator-v6.1-regression",
+        "--v6-catalog=${v6Catalog.asFile}",
+        "--v6-audit=${v6Audit.asFile}",
+        "--human-results=${human.asFile}",
+        "--campaign=${campaign.asFile}",
+        "--output=${generatorV61Directory.dir("regression").asFile}",
+    )
+}
+
+tasks.named("processTestResources") {
+    mustRunAfter("analyzeGeneratorV61Regression")
+}
+
+tasks.register<JavaExec>("probeGeneratorV61") {
+    group = "verification"
+    description = "Probe one strictly gated V6.1 board per automated band; writes staging diagnostics only."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val infinite = docsDirectory.file("content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")
+    val daily = docsDirectory.file("Magnetrail_Daily_Fallbacks_v1.json")
+    val v11 = docsDirectory.file("content/v11_pilot/V11_PILOT_CATALOG.json")
+    val audit = generatorV6Directory.file("staging/calibration/GENERATOR_V6_CALIBRATION_AUDIT.json")
+    val expertCapacityAudit = generatorV61Directory.file("capacity/expert/GENERATOR_V61_EXPERT_CAPACITY_AUDIT.json")
+    val superHardCapacityAudit = generatorV61Directory.file("capacity/super_hard/GENERATOR_V61_SUPER_HARD_CAPACITY_AUDIT.json")
+    val regression = generatorV61Directory.file("regression/GENERATOR_V61_HARD_NEGATIVE_REGRESSION.json")
+    val output = generatorV61Directory.dir("staging/probe")
+    dependsOn("analyzeGeneratorV61Regression")
+    inputs.files(campaign, infinite, daily, v11, audit, expertCapacityAudit, superHardCapacityAudit, regression)
+    outputs.dir(output)
+    outputs.upToDateWhen { false }
+    args(
+        "generate-generator-v6.1-campaign",
+        "--campaign=${campaign.asFile}",
+        "--expected-production-sha=8ad274b5dcf39f69db006c87bc0861e9b7037516755f79d8560206b4f2577de9",
+        "--comparison-catalogs=${listOf(campaign, infinite, daily, v11).joinToString(File.pathSeparator) { it.asFile.path }}",
+        "--v6-audit=${audit.asFile}",
+        "--capacity-audits=${listOf(expertCapacityAudit, superHardCapacityAudit).joinToString(File.pathSeparator) { it.asFile.path }}",
+        "--regression=${regression.asFile}",
+        "--output=${output.asFile}",
+        "--probe=true",
+        "--maximum-attempts=${providers.gradleProperty("v61ProbeAttempts").getOrElse("8")}",
+    )
+}
+
+tasks.register<JavaExec>("proveGeneratorV61ExpertCapacity") {
+    group = "verification"
+    description = "Prove 24 archive-aware, non-isomorphic Expert boards before any full campaign run."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val infinite = docsDirectory.file("content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")
+    val daily = docsDirectory.file("Magnetrail_Daily_Fallbacks_v1.json")
+    val v11 = docsDirectory.file("content/v11_pilot/V11_PILOT_CATALOG.json")
+    val rejectedV6Audit = generatorV6Directory.file("staging/calibration/GENERATOR_V6_CALIBRATION_AUDIT.json")
+    val superHardCapacityAudit = generatorV61Directory.file("capacity/super_hard/GENERATOR_V61_SUPER_HARD_CAPACITY_AUDIT.json")
+    val precedingV61Audit = generatorV61Directory.file("staging/production/GENERATOR_V61_CAMPAIGN_AUDIT.json")
+    val output = generatorV61Directory.dir("capacity/expert")
+    dependsOn(":game-core:test")
+    inputs.files(campaign, infinite, daily, v11, rejectedV6Audit, superHardCapacityAudit, precedingV61Audit)
+    outputs.dir(output)
+    outputs.upToDateWhen { false }
+    args(
+        "prove-generator-v6.1-expert-capacity",
+        "--campaign=${campaign.asFile}",
+        "--expected-production-sha=8ad274b5dcf39f69db006c87bc0861e9b7037516755f79d8560206b4f2577de9",
+        "--comparison-catalogs=${listOf(campaign, infinite, daily, v11).joinToString(File.pathSeparator) { it.asFile.path }}",
+        "--archive-audits=${listOf(rejectedV6Audit, superHardCapacityAudit, precedingV61Audit).joinToString(File.pathSeparator) { it.asFile.path }}",
+        "--sample-size=${providers.gradleProperty("v61ExpertCapacitySize").getOrElse("24")}",
+        "--maximum-attempts=${providers.gradleProperty("v61ExpertCapacityAttempts").getOrElse("64")}",
+        "--output=${output.asFile}",
+    )
+}
+
+tasks.register("verifyGeneratorV61ExpertCapacity") {
+    group = "verification"
+    description = "Verify the hash-bound Expert capacity proof and reject stale synthesis evidence."
+    val capacity = generatorV61Directory.dir("capacity/expert")
+    val proof = capacity.file("GENERATOR_V61_EXPERT_CAPACITY_PROOF.json")
+    val catalog = capacity.file("GENERATOR_V61_EXPERT_CAPACITY_CATALOG.json")
+    val audit = capacity.file("GENERATOR_V61_EXPERT_CAPACITY_AUDIT.json")
+    val synthesisSources = fileTree(rootProject.file("game-core/src/main/kotlin/com/rameshta/magnetrail/core/generation/v6")) {
+        include("**/*.kt")
+    }
+    inputs.files(proof, catalog, audit, synthesisSources)
+    doLast {
+        check(proof.asFile.isFile && catalog.asFile.isFile && audit.asFile.isFile) {
+            "Expert capacity artifacts are missing; run proveGeneratorV61ExpertCapacity"
+        }
+        val proofText = proof.asFile.readText()
+        check(proofText.contains("\"status\": \"EXPERT_CAPACITY_PROVED\""))
+        check(proofText.contains("\"campaignRunAuthorized\": true"))
+        check(proofText.contains("\"sampleSize\": 24") && proofText.contains("\"acceptedCount\": 24"))
+        val digest = MessageDigest.getInstance("SHA-256")
+        fun sha256(file: File): String = digest.digest(file.readBytes()).joinToString("") {
+            "%02x".format(it.toInt() and 0xff)
+        }
+        check(proofText.contains("\"catalogSha256\": \"${sha256(catalog.asFile)}\""))
+        check(proofText.contains("\"auditSha256\": \"${sha256(audit.asFile)}\""))
+        val newestSynthesisSource = synthesisSources.files.maxOfOrNull(File::lastModified) ?: 0L
+        check(proof.asFile.lastModified() >= newestSynthesisSource) {
+            "Expert synthesis source changed after the capacity proof; re-run proveGeneratorV61ExpertCapacity"
+        }
+    }
+}
+
+tasks.register<JavaExec>("proveGeneratorV61SuperHardCapacity") {
+    group = "verification"
+    description = "Prove 24 archive-aware, non-isomorphic Super Hard boards before any full campaign run."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val infinite = docsDirectory.file("content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")
+    val daily = docsDirectory.file("Magnetrail_Daily_Fallbacks_v1.json")
+    val v11 = docsDirectory.file("content/v11_pilot/V11_PILOT_CATALOG.json")
+    val rejectedV6Audit = generatorV6Directory.file("staging/calibration/GENERATOR_V6_CALIBRATION_AUDIT.json")
+    val precedingV61Audit = generatorV61Directory.file("staging/production/GENERATOR_V61_CAMPAIGN_AUDIT.json")
+    val output = generatorV61Directory.dir("capacity/super_hard")
+    dependsOn(":game-core:test")
+    inputs.files(campaign, infinite, daily, v11, rejectedV6Audit, precedingV61Audit)
+    outputs.dir(output)
+    outputs.upToDateWhen { false }
+    args(
+        "prove-generator-v6.1-super-hard-capacity",
+        "--campaign=${campaign.asFile}",
+        "--expected-production-sha=8ad274b5dcf39f69db006c87bc0861e9b7037516755f79d8560206b4f2577de9",
+        "--comparison-catalogs=${listOf(campaign, infinite, daily, v11).joinToString(File.pathSeparator) { it.asFile.path }}",
+        "--archive-audits=${listOf(rejectedV6Audit, precedingV61Audit).joinToString(File.pathSeparator) { it.asFile.path }}",
+        "--sample-size=${providers.gradleProperty("v61SuperHardCapacitySize").getOrElse("24")}",
+        "--maximum-attempts=${providers.gradleProperty("v61SuperHardCapacityAttempts").getOrElse("64")}",
+        "--output=${output.asFile}",
+    )
+}
+
+tasks.register("verifyGeneratorV61SuperHardCapacity") {
+    group = "verification"
+    description = "Verify the hash-bound Super Hard capacity proof and reject stale synthesis evidence."
+    val capacity = generatorV61Directory.dir("capacity/super_hard")
+    val proof = capacity.file("GENERATOR_V61_SUPER_HARD_CAPACITY_PROOF.json")
+    val catalog = capacity.file("GENERATOR_V61_SUPER_HARD_CAPACITY_CATALOG.json")
+    val audit = capacity.file("GENERATOR_V61_SUPER_HARD_CAPACITY_AUDIT.json")
+    val synthesisSources = fileTree(rootProject.file("game-core/src/main/kotlin/com/rameshta/magnetrail/core/generation/v6")) {
+        include("**/*.kt")
+    }
+    inputs.files(proof, catalog, audit, synthesisSources)
+    doLast {
+        check(proof.asFile.isFile && catalog.asFile.isFile && audit.asFile.isFile) {
+            "Super Hard capacity artifacts are missing; run proveGeneratorV61SuperHardCapacity"
+        }
+        val proofText = proof.asFile.readText()
+        check(proofText.contains("\"status\": \"SUPER_HARD_CAPACITY_PROVED\""))
+        check(proofText.contains("\"campaignRunAuthorized\": true"))
+        check(proofText.contains("\"sampleSize\": 24") && proofText.contains("\"acceptedCount\": 24"))
+        val digest = MessageDigest.getInstance("SHA-256")
+        fun sha256(file: File): String = digest.digest(file.readBytes()).joinToString("") {
+            "%02x".format(it.toInt() and 0xff)
+        }
+        check(proofText.contains("\"catalogSha256\": \"${sha256(catalog.asFile)}\""))
+        check(proofText.contains("\"auditSha256\": \"${sha256(audit.asFile)}\""))
+        val newestSynthesisSource = synthesisSources.files.maxOfOrNull(File::lastModified) ?: 0L
+        check(proof.asFile.lastModified() >= newestSynthesisSource) {
+            "Super Hard synthesis source changed after the capacity proof; re-run proveGeneratorV61SuperHardCapacity"
+        }
+    }
+}
+
+tasks.register<JavaExec>("benchmarkGeneratorV61AutoJourney") {
+    group = "verification"
+    description = "Measure bounded V6.1 mobile-budget attempts on the host; never mutates production."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val output = generatorV61Directory.dir("benchmark")
+    outputs.dir(output)
+    outputs.upToDateWhen { false }
+    args(
+        "benchmark-generator-v6.1-auto-journey",
+        "--output=${output.asFile}",
+    )
+}
+
+tasks.register<JavaExec>("benchmarkGeneratorV61ParallelWorkflow") {
+    group = "verification"
+    description = "Benchmark deterministic indexed multi-core admission against the former sequential scan."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val output = generatorV61Directory.dir("benchmark/parallel-workflow")
+    outputs.dir(output)
+    outputs.upToDateWhen { false }
+    args(
+        "benchmark-generator-v6.1-parallel-workflow",
+        "--workers=${providers.gradleProperty("v61Workers").getOrElse((Runtime.getRuntime().availableProcessors() - 1).coerceAtLeast(2).toString())}",
+        "--output=${output.asFile}",
+    )
+}
+
+tasks.register<JavaExec>("prepareGeneratorV61Preflight") {
+    group = "verification"
+    description = "Run mandatory gates once per relevant V6.1 revision and persist their hash-bound result."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val output = layout.buildDirectory.file("v61-preflight/GENERATOR_V61_PREFLIGHT.json")
+    dependsOn(
+        "analyzeGeneratorV61Regression",
+        ":game-core:test",
+        ":level-tools:test",
+        ":app:testDebugUnitTest",
+        ":app:lintRelease",
+        ":app:compileReleaseKotlin",
+        ":app:compileDebugAndroidTestKotlin",
+        ":app:verifyGeneratorV6ReleaseExclusion",
+        ":app:verifyReleaseManifest",
+    )
+    inputs.files(generatorV61RelevantSourcePaths)
+    inputs.file(campaign)
+    outputs.file(output)
+    args(
+        "write-generator-v6.1-preflight",
+        "--campaign=${campaign.asFile}",
+        "--relevant-source-paths=$generatorV61RelevantSourcePathArgument",
+        "--output=${output.get().asFile}",
+        "--mandatory-tests-passed=true",
+        "--test-command-summary=game-core:test;level-tools:test;app:testDebugUnitTest;app:lintRelease;" +
+            "app:compileReleaseKotlin;app:compileDebugAndroidTestKotlin;app:verifyGeneratorV6ReleaseExclusion;" +
+            "app:verifyReleaseManifest",
+    )
+}
+
+tasks.register<JavaExec>("generateGeneratorV61Phase1Candidates") {
+    group = "magnetrail content"
+    description = "Generate and certify the 1,325 Easy/Medium/Hard V6.1 phase; never mutates production."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val infinite = docsDirectory.file("content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")
+    val daily = docsDirectory.file("Magnetrail_Daily_Fallbacks_v1.json")
+    val v11 = docsDirectory.file("content/v11_pilot/V11_PILOT_CATALOG.json")
+    val audit = generatorV6Directory.file("staging/calibration/GENERATOR_V6_CALIBRATION_AUDIT.json")
+    val regression = generatorV61Directory.file("regression/GENERATOR_V61_HARD_NEGATIVE_REGRESSION.json")
+    val output = generatorV61Directory.dir("staging/phase-1")
+    val checkpoint = layout.buildDirectory.dir("generator-v6_1/checkpoints/phase-1")
+    val preflight = layout.buildDirectory.file("v61-preflight/GENERATOR_V61_PREFLIGHT.json")
+    val precedingV61Audit = generatorV61Directory.file("staging/production/GENERATOR_V61_CAMPAIGN_AUDIT.json")
+    dependsOn(
+        "prepareGeneratorV61Preflight",
+    )
+    inputs.files(campaign, infinite, daily, v11, audit, regression, precedingV61Audit, preflight)
+    outputs.files(
+        output.file("GENERATOR_V61_PHASE1_CATALOG.json"),
+        output.file("GENERATOR_V61_PHASE1_AUDIT.json"),
+        output.file("GENERATOR_V61_PHASE1_MANIFEST.json"),
+        output.file("GENERATOR_V61_PHASE1_CERTIFICATE.json"),
+    )
+    args(
+        "generate-generator-v6.1-campaign",
+        "--campaign=${campaign.asFile}",
+        "--expected-production-sha=8ad274b5dcf39f69db006c87bc0861e9b7037516755f79d8560206b4f2577de9",
+        "--comparison-catalogs=${listOf(campaign, infinite, daily, v11).joinToString(File.pathSeparator) { it.asFile.path }}",
+        "--v6-audit=${audit.asFile}",
+        "--archive-audits=${precedingV61Audit.asFile}",
+        "--regression=${regression.asFile}",
+        "--output=${output.asFile}",
+        "--checkpoint=${checkpoint.get().asFile}",
+        "--preflight=${preflight.get().asFile}",
+        "--relevant-source-paths=$generatorV61RelevantSourcePathArgument",
+        "--probe=false",
+        "--phase=phase-1",
+        "--maximum-attempts=${providers.gradleProperty("v61Phase1Attempts").orElse(providers.gradleProperty("v61CampaignAttempts")).getOrElse("64")}",
+        "--workers=${providers.gradleProperty("v61Workers").getOrElse((Runtime.getRuntime().availableProcessors() - 1).coerceAtLeast(1).toString())}",
+        "--working-tree-identity=${providers.gradleProperty("v61WorkingTreeIdentity").getOrElse("local-dirty-worktree")}",
+        "--mandatory-tests-passed=true",
+        "--test-command-summary=game-core:test;level-tools:test;app:testDebugUnitTest;app:lintRelease;" +
+            "app:compileReleaseKotlin;app:compileDebugAndroidTestKotlin;app:verifyGeneratorV6ReleaseExclusion;" +
+            "app:verifyReleaseManifest",
+    )
+}
+
+tasks.register("certifyGeneratorV61Phase1Candidates") {
+    group = "verification"
+    description = "Fail unless all 1,325 Easy/Medium/Hard phase boards are certified."
+    dependsOn("generateGeneratorV61Phase1Candidates")
+    val staging = generatorV61Directory.dir("staging/phase-1")
+    val candidate = staging.file("GENERATOR_V61_PHASE1_CATALOG.json")
+    val certificate = staging.file("GENERATOR_V61_PHASE1_CERTIFICATE.json")
+    inputs.files(candidate, certificate)
+    doLast {
+        check(candidate.asFile.isFile && certificate.asFile.isFile)
+        val text = certificate.asFile.readText()
+        check(text.contains("\"certificationType\": \"V61_PHASE_1_CERTIFIED\""))
+        check(text.contains("\"boardCount\": 1325"))
+        check(text.contains("\"pacingDeferredToFinalMerge\": true"))
+        listOf(
+            "allAnalysisComplete", "allVisibleProofsComplete", "allProductionEngineSolvableAndReplayed",
+            "allDifficultyCapsPassed", "allPurposefulOccupancyPassed", "regressionCorpusPassed",
+            "deterministicRegenerationPassed", "mandatoryAutomatedTestSuitePassed",
+        ).forEach { gate -> check(text.contains("\"$gate\": true")) { "Phase 1 gate failed: $gate" } }
+        listOf(
+            "requiredGuessingPredictionCount", "exactDuplicateCount", "d4DuplicateCount",
+            "relevancePrunedD4DuplicateCount", "causalGraphDuplicateCount", "decisionDagDuplicateCount",
+            "solutionPolicyDuplicateCount", "synthesisGraphDuplicateCount", "nearSemanticFailureCount",
+        ).forEach { gate -> check(text.contains("\"$gate\": 0")) { "Phase 1 count gate failed: $gate" } }
+    }
+}
+
+tasks.register<JavaExec>("generateGeneratorV61Phase2Candidates") {
+    group = "magnetrail content"
+    description = "Generate and certify the 868 Super Hard/Expert V6.1 phase; never mutates production."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val infinite = docsDirectory.file("content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")
+    val daily = docsDirectory.file("Magnetrail_Daily_Fallbacks_v1.json")
+    val v11 = docsDirectory.file("content/v11_pilot/V11_PILOT_CATALOG.json")
+    val audit = generatorV6Directory.file("staging/calibration/GENERATOR_V6_CALIBRATION_AUDIT.json")
+    val expertCapacityAudit = generatorV61Directory.file("capacity/expert/GENERATOR_V61_EXPERT_CAPACITY_AUDIT.json")
+    val superHardCapacityAudit = generatorV61Directory.file("capacity/super_hard/GENERATOR_V61_SUPER_HARD_CAPACITY_AUDIT.json")
+    val regression = generatorV61Directory.file("regression/GENERATOR_V61_HARD_NEGATIVE_REGRESSION.json")
+    val phaseOne = generatorV61Directory.dir("staging/phase-1")
+    val phaseOneCatalog = phaseOne.file("GENERATOR_V61_PHASE1_CATALOG.json")
+    val phaseOneAudit = phaseOne.file("GENERATOR_V61_PHASE1_AUDIT.json")
+    val output = generatorV61Directory.dir("staging/phase-2")
+    val checkpoint = layout.buildDirectory.dir("generator-v6_1/checkpoints/phase-2")
+    val preflight = layout.buildDirectory.file("v61-preflight/GENERATOR_V61_PREFLIGHT.json")
+    val precedingV61Audit = generatorV61Directory.file("staging/production/GENERATOR_V61_CAMPAIGN_AUDIT.json")
+    dependsOn(
+        "certifyGeneratorV61Phase1Candidates",
+        "verifyGeneratorV61ExpertCapacity",
+        "verifyGeneratorV61SuperHardCapacity",
+        "prepareGeneratorV61Preflight",
+    )
+    inputs.files(
+        campaign, infinite, daily, v11, audit, expertCapacityAudit, superHardCapacityAudit,
+        regression, phaseOneCatalog, phaseOneAudit, precedingV61Audit, preflight,
+    )
+    outputs.files(
+        output.file("GENERATOR_V61_PHASE2_CATALOG.json"),
+        output.file("GENERATOR_V61_PHASE2_AUDIT.json"),
+        output.file("GENERATOR_V61_PHASE2_MANIFEST.json"),
+        output.file("GENERATOR_V61_PHASE2_CERTIFICATE.json"),
+    )
+    args(
+        "generate-generator-v6.1-campaign",
+        "--campaign=${campaign.asFile}",
+        "--expected-production-sha=8ad274b5dcf39f69db006c87bc0861e9b7037516755f79d8560206b4f2577de9",
+        "--comparison-catalogs=${listOf(campaign, infinite, daily, v11, phaseOneCatalog).joinToString(File.pathSeparator) { it.asFile.path }}",
+        "--v6-audit=${audit.asFile}",
+        "--capacity-audits=${listOf(expertCapacityAudit, superHardCapacityAudit).joinToString(File.pathSeparator) { it.asFile.path }}",
+        "--archive-audits=${listOf(phaseOneAudit, precedingV61Audit).joinToString(File.pathSeparator) { it.asFile.path }}",
+        "--pacing-audits=${phaseOneAudit.asFile}",
+        "--regression=${regression.asFile}",
+        "--output=${output.asFile}",
+        "--checkpoint=${checkpoint.get().asFile}",
+        "--preflight=${preflight.get().asFile}",
+        "--relevant-source-paths=$generatorV61RelevantSourcePathArgument",
+        "--probe=false",
+        "--phase=phase-2",
+        "--maximum-attempts=${providers.gradleProperty("v61Phase2Attempts").orElse(providers.gradleProperty("v61CampaignAttempts")).getOrElse("64")}",
+        "--workers=${providers.gradleProperty("v61Workers").getOrElse((Runtime.getRuntime().availableProcessors() - 1).coerceAtLeast(1).toString())}",
+        "--working-tree-identity=${providers.gradleProperty("v61WorkingTreeIdentity").getOrElse("local-dirty-worktree")}",
+        "--mandatory-tests-passed=true",
+        "--test-command-summary=game-core:test;level-tools:test;app:testDebugUnitTest;app:lintRelease;" +
+            "app:compileReleaseKotlin;app:compileDebugAndroidTestKotlin;app:verifyGeneratorV6ReleaseExclusion;" +
+            "app:verifyReleaseManifest",
+    )
+}
+
+tasks.register("certifyGeneratorV61Phase2Candidates") {
+    group = "verification"
+    description = "Fail unless all 868 Super Hard/Expert phase boards are certified."
+    dependsOn("generateGeneratorV61Phase2Candidates")
+    val staging = generatorV61Directory.dir("staging/phase-2")
+    val candidate = staging.file("GENERATOR_V61_PHASE2_CATALOG.json")
+    val certificate = staging.file("GENERATOR_V61_PHASE2_CERTIFICATE.json")
+    inputs.files(candidate, certificate)
+    doLast {
+        check(candidate.asFile.isFile && certificate.asFile.isFile)
+        val text = certificate.asFile.readText()
+        check(text.contains("\"certificationType\": \"V61_PHASE_2_CERTIFIED\""))
+        check(text.contains("\"boardCount\": 868"))
+        check(text.contains("\"pacingDeferredToFinalMerge\": true"))
+        listOf(
+            "allAnalysisComplete", "allVisibleProofsComplete", "allProductionEngineSolvableAndReplayed",
+            "allDifficultyCapsPassed", "allPurposefulOccupancyPassed", "regressionCorpusPassed",
+            "deterministicRegenerationPassed", "mandatoryAutomatedTestSuitePassed",
+        ).forEach { gate -> check(text.contains("\"$gate\": true")) { "Phase 2 gate failed: $gate" } }
+        listOf(
+            "requiredGuessingPredictionCount", "exactDuplicateCount", "d4DuplicateCount",
+            "relevancePrunedD4DuplicateCount", "causalGraphDuplicateCount", "decisionDagDuplicateCount",
+            "solutionPolicyDuplicateCount", "synthesisGraphDuplicateCount", "nearSemanticFailureCount",
+        ).forEach { gate -> check(text.contains("\"$gate\": 0")) { "Phase 2 count gate failed: $gate" } }
+    }
+}
+
+tasks.register<JavaExec>("mergeAndCertifyGeneratorV61ProductionCandidates") {
+    group = "verification"
+    description = "Merge both certified phases, then run global uniqueness, pacing, and 2,205-board replay certification."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    dependsOn("certifyGeneratorV61Phase1Candidates", "certifyGeneratorV61Phase2Candidates")
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val regression = generatorV61Directory.file("regression/GENERATOR_V61_HARD_NEGATIVE_REGRESSION.json")
+    val phaseOne = generatorV61Directory.dir("staging/phase-1")
+    val phaseTwo = generatorV61Directory.dir("staging/phase-2")
+    val output = generatorV61Directory.dir("staging/production")
+    val preflight = layout.buildDirectory.file("v61-preflight/GENERATOR_V61_PREFLIGHT.json")
+    inputs.files(
+        campaign, regression, preflight,
+        phaseOne.file("GENERATOR_V61_PHASE1_CATALOG.json"),
+        phaseOne.file("GENERATOR_V61_PHASE1_AUDIT.json"),
+        phaseOne.file("GENERATOR_V61_PHASE1_MANIFEST.json"),
+        phaseOne.file("GENERATOR_V61_PHASE1_CERTIFICATE.json"),
+        phaseTwo.file("GENERATOR_V61_PHASE2_CATALOG.json"),
+        phaseTwo.file("GENERATOR_V61_PHASE2_AUDIT.json"),
+        phaseTwo.file("GENERATOR_V61_PHASE2_MANIFEST.json"),
+        phaseTwo.file("GENERATOR_V61_PHASE2_CERTIFICATE.json"),
+    )
+    outputs.files(
+        output.file("GENERATOR_V61_CAMPAIGN_CANDIDATE.json"),
+        output.file("GENERATOR_V61_CAMPAIGN_AUDIT.json"),
+        output.file("GENERATOR_V61_MANIFEST.json"),
+        output.file("GENERATOR_V61_AUTOMATED_CERTIFICATE.json"),
+    )
+    args(
+        "merge-certify-generator-v6.1-campaign",
+        "--campaign=${campaign.asFile}",
+        "--expected-production-sha=8ad274b5dcf39f69db006c87bc0861e9b7037516755f79d8560206b4f2577de9",
+        "--phase-1-catalog=${phaseOne.file("GENERATOR_V61_PHASE1_CATALOG.json").asFile}",
+        "--phase-1-audit=${phaseOne.file("GENERATOR_V61_PHASE1_AUDIT.json").asFile}",
+        "--phase-1-manifest=${phaseOne.file("GENERATOR_V61_PHASE1_MANIFEST.json").asFile}",
+        "--phase-1-certificate=${phaseOne.file("GENERATOR_V61_PHASE1_CERTIFICATE.json").asFile}",
+        "--phase-2-catalog=${phaseTwo.file("GENERATOR_V61_PHASE2_CATALOG.json").asFile}",
+        "--phase-2-audit=${phaseTwo.file("GENERATOR_V61_PHASE2_AUDIT.json").asFile}",
+        "--phase-2-manifest=${phaseTwo.file("GENERATOR_V61_PHASE2_MANIFEST.json").asFile}",
+        "--phase-2-certificate=${phaseTwo.file("GENERATOR_V61_PHASE2_CERTIFICATE.json").asFile}",
+        "--regression=${regression.asFile}",
+        "--output=${output.asFile}",
+        "--preflight=${preflight.get().asFile}",
+        "--relevant-source-paths=$generatorV61RelevantSourcePathArgument",
+        "--workers=${providers.gradleProperty("v61Workers").getOrElse((Runtime.getRuntime().availableProcessors() - 1).coerceAtLeast(1).toString())}",
+        "--working-tree-identity=${providers.gradleProperty("v61WorkingTreeIdentity").getOrElse("local-dirty-worktree")}",
+        "--mandatory-tests-passed=true",
+        "--test-command-summary=game-core:test;level-tools:test;app:testDebugUnitTest;app:lintRelease;" +
+            "app:compileReleaseKotlin;app:compileDebugAndroidTestKotlin;app:verifyGeneratorV6ReleaseExclusion;" +
+            "app:verifyReleaseManifest",
+    )
+}
+
+tasks.register("generateGeneratorV61ProductionCandidates") {
+    group = "magnetrail content"
+    description = "Run V6.1 Phase 1, Phase 2, and the final merged campaign certification."
+    dependsOn("mergeAndCertifyGeneratorV61ProductionCandidates")
+}
+
+tasks.register("certifyGeneratorV61ProductionCandidates") {
+    group = "verification"
+    description = "Fail unless both phases and the merged 2,205-board campaign are certified."
+    dependsOn("generateGeneratorV61ProductionCandidates")
+    val staging = generatorV61Directory.dir("staging/production")
+    val candidate = staging.file("GENERATOR_V61_CAMPAIGN_CANDIDATE.json")
+    val certificate = staging.file("GENERATOR_V61_AUTOMATED_CERTIFICATE.json")
+    inputs.files(candidate, certificate)
+    doLast {
+        check(candidate.asFile.isFile && certificate.asFile.isFile)
+        val text = certificate.asFile.readText()
+        check(text.contains("\"validationPlan\": \"PHASED_V61_1325_868_FINAL_2205\""))
+        check(text.contains("\"certificationType\": \"AUTOMATED_CAMPAIGN_CERTIFIED\"")) {
+            "V6.1 phased campaign is not AUTOMATED_CAMPAIGN_CERTIFIED"
+        }
+        check(text.contains("\"phaseOneBoardCount\": 1325"))
+        check(text.contains("\"phaseTwoBoardCount\": 868"))
+        check(text.contains("\"boardCount\": 2205"))
+        check(text.contains("\"certifiedBoardCount\": 2205"))
+    }
+}
+
+tasks.register<JavaExec>("promoteGeneratorV61Campaign") {
+    group = "magnetrail content"
+    description = "Atomically promote only a hash-bound AUTOMATED_CAMPAIGN_CERTIFIED V6.1 candidate."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val staging = generatorV61Directory.dir("staging/production")
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val rollback = docsDirectory.file("content/generator_v6_1/rollback/Magnetrail_Campaign_Levels_V10_SOURCE.json")
+    val receipt = generatorV61Directory.file("promotion/GENERATOR_V61_PROMOTION_RECEIPT.txt")
+    dependsOn("certifyGeneratorV61ProductionCandidates")
+    doFirst {
+        check(providers.gradleProperty("v61ExpectedCandidateSha").isPresent)
+        check(providers.gradleProperty("v61CertificateSha").isPresent)
+        check(providers.gradleProperty("v61ManifestSha").isPresent)
+    }
+    args(
+        "promote-generator-v6.1-campaign",
+        "--campaign=${campaign.asFile}",
+        "--candidate=${staging.file("GENERATOR_V61_CAMPAIGN_CANDIDATE.json").asFile}",
+        "--certificate=${staging.file("GENERATOR_V61_AUTOMATED_CERTIFICATE.json").asFile}",
+        "--manifest=${staging.file("GENERATOR_V61_MANIFEST.json").asFile}",
+        "--rollback=${rollback.asFile}",
+        "--receipt=${receipt.asFile}",
+        "--expected-production-sha=8ad274b5dcf39f69db006c87bc0861e9b7037516755f79d8560206b4f2577de9",
+        "--expected-candidate-sha=${providers.gradleProperty("v61ExpectedCandidateSha").getOrElse("missing")}",
+        "--certificate-sha=${providers.gradleProperty("v61CertificateSha").getOrElse("missing")}",
+        "--manifest-sha=${providers.gradleProperty("v61ManifestSha").getOrElse("missing")}",
+    )
+}
+
+tasks.register<JavaExec>("auditGeneratorV6Baseline") {
+    group = "verification"
+    description = "Audit protected V10/Infinite/Daily/V11 baselines and representative semantic clone families."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val infinite = docsDirectory.file("content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")
+    val daily = docsDirectory.file("Magnetrail_Daily_Fallbacks_v1.json")
+    val v11 = docsDirectory.file("content/v11_pilot/V11_PILOT_CATALOG.json")
+    val v9 = docsDirectory.file("content/v10_density_remediation/SOURCE_CONTENT_V9.json")
+    val playtest = docsDirectory.file("magnetrail-playtest-pet-52c263fb.csv")
+    inputs.files(campaign, infinite, daily, v11, v9, playtest)
+    outputs.files(
+        docsDirectory.file("GENERATOR_V6_BASELINE_AUDIT.json"),
+        docsDirectory.file("GENERATOR_V6_BASELINE_AUDIT.md"),
+    )
+    outputs.upToDateWhen { false }
+    args(
+        "audit-generator-v6-baseline",
+        "--campaign=${campaign.asFile}",
+        "--infinite=${infinite.asFile}",
+        "--daily=${daily.asFile}",
+        "--v11=${v11.asFile}",
+        "--v9-source=${v9.asFile}",
+        "--playtest=${playtest.asFile}",
+        "--output=${docsDirectory.asFile}",
+    )
+}
+
+tasks.register<JavaExec>("probeGeneratorV6") {
+    group = "verification"
+    description = "Run the bounded V6 calibration generator; writes staging diagnostics only."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val infinite = docsDirectory.file("content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")
+    val daily = docsDirectory.file("Magnetrail_Daily_Fallbacks_v1.json")
+    val v11 = docsDirectory.file("content/v11_pilot/V11_PILOT_CATALOG.json")
+    inputs.files(campaign, infinite, daily, v11)
+    outputs.dir(generatorV6Directory.dir("staging/probe"))
+    outputs.upToDateWhen { false }
+    args(
+        "generate-generator-v6-pilot",
+        "--campaign=${campaign.asFile}",
+        "--infinite=${infinite.asFile}",
+        "--daily=${daily.asFile}",
+        "--v11=${v11.asFile}",
+        "--output=${generatorV6Directory.dir("staging/probe").asFile}",
+        "--kind=calibration",
+    )
+}
+
+tasks.register<JavaExec>("generateGeneratorV6Pilot") {
+    group = "magnetrail content"
+    description = "Generate isolated 30-board five-band calibration and sealed V6 catalogs without promotion."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val infinite = docsDirectory.file("content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")
+    val daily = docsDirectory.file("Magnetrail_Daily_Fallbacks_v1.json")
+    val v11 = docsDirectory.file("content/v11_pilot/V11_PILOT_CATALOG.json")
+    val staging = generatorV6Directory.dir("staging")
+    val pilotKind = providers.gradleProperty("v6PilotKind").getOrElse("both")
+    inputs.files(campaign, infinite, daily, v11)
+    inputs.property("generatorV6", 6)
+    inputs.property("v6PilotKind", pilotKind)
+    outputs.dir(staging)
+    outputs.upToDateWhen { false }
+    args(
+        "generate-generator-v6-pilot",
+        "--campaign=${campaign.asFile}",
+        "--infinite=${infinite.asFile}",
+        "--daily=${daily.asFile}",
+        "--v11=${v11.asFile}",
+        "--output=${staging.asFile}",
+        "--kind=$pilotKind",
+    )
+}
+
+tasks.register("analyzeGeneratorV6Pilot") {
+    group = "verification"
+    description = "Generate and retain complete V6 per-candidate, rejection, neighbour and MAP-Elites reports."
+    dependsOn("generateGeneratorV6Pilot")
+}
+
+tasks.register("certifyGeneratorV6Pilot") {
+    group = "verification"
+    description = "Require complete technically certified V6 calibration and sealed catalogs."
+    dependsOn("generateGeneratorV6Pilot")
+    inputs.files(
+        generatorV6Directory.file("staging/calibration/GENERATOR_V6_CALIBRATION_AUDIT.json"),
+        generatorV6Directory.file("staging/sealed-validation/GENERATOR_V6_SEALED_VALIDATION_AUDIT.json"),
+    )
+    doLast {
+        inputs.files.files.sortedBy { it.path }.forEach { audit ->
+            check(audit.isFile && audit.readText().contains("\"status\": \"V6_TECHNICALLY_CERTIFIED\"")) {
+                "V6 pilot is not technically certified: ${audit.path}"
+            }
+        }
+    }
+}
+
+tasks.register<JavaExec>("calibrateHumanLikeDifficultyV1") {
+    group = "verification"
+    description = "Fit HumanLikeDifficultyV1 only from sufficient real V6 calibration results."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val staging = generatorV6Directory.dir("staging/calibration")
+    val human = generatorV6Directory.dir("human")
+    args(
+        "calibrate-human-like-difficulty-v1",
+        "--audit=${staging.file("GENERATOR_V6_CALIBRATION_AUDIT.json").asFile}",
+        "--catalog=${staging.file("GENERATOR_V6_CALIBRATION_CATALOG.json").asFile}",
+        "--results=${human.file("calibration_results.csv").asFile}",
+        "--output=${human.asFile}",
+    )
+}
+
+tasks.register<JavaExec>("validateGeneratorV6HumanCertificate") {
+    group = "verification"
+    description = "Validate the frozen HumanLikeDifficultyV1 certificate against sealed V6 results."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val calibration = generatorV6Directory.dir("staging/calibration")
+    val validation = generatorV6Directory.dir("staging/sealed-validation")
+    val human = generatorV6Directory.dir("human")
+    args(
+        "validate-generator-v6-human-certificate",
+        "--model=${human.file("HUMAN_LIKE_DIFFICULTY_V1_MODEL.json").asFile}",
+        "--calibration-results=${human.file("calibration_results.csv").asFile}",
+        "--calibration-audit=${calibration.file("GENERATOR_V6_CALIBRATION_AUDIT.json").asFile}",
+        "--validation-results=${human.file("sealed_validation_results.csv").asFile}",
+        "--validation-audit=${validation.file("GENERATOR_V6_SEALED_VALIDATION_AUDIT.json").asFile}",
+        "--validation-catalog=${validation.file("GENERATOR_V6_SEALED_VALIDATION_CATALOG.json").asFile}",
+        "--output=${human.asFile}",
+    )
+}
+
+tasks.register<JavaExec>("generateGeneratorV6ProductionCandidates") {
+    group = "magnetrail content"
+    description = "Generate full V6 campaign staging only after a certified human model exists."
+    dependsOn("validateGeneratorV6HumanCertificate")
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val human = generatorV6Directory.dir("human")
+    val production = generatorV6Directory.dir("production")
+    args(
+        "generate-generator-v6-production-candidates",
+        "--campaign=${docsDirectory.file("Magnetrail_Campaign_Levels_v3.json").asFile}",
+        "--infinite=${docsDirectory.file("content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json").asFile}",
+        "--daily=${docsDirectory.file("Magnetrail_Daily_Fallbacks_v1.json").asFile}",
+        "--v11=${docsDirectory.file("content/v11_pilot/V11_PILOT_CATALOG.json").asFile}",
+        "--human-certificate=${human.file("HUMAN_DIFFICULTY_CERTIFICATE.json").asFile}",
+        "--model=${human.file("HUMAN_LIKE_DIFFICULTY_V1_MODEL.json").asFile}",
+        "--output=${production.asFile}",
+    )
+}
+
+tasks.register("certifyGeneratorV6ProductionCandidates") {
+    group = "verification"
+    description = "Certify the frozen full V6 campaign and final human production sample."
+    dependsOn("generateGeneratorV6ProductionCandidates")
+}
+
+tasks.register("prepareGeneratorV6Promotion") {
+    group = "magnetrail content"
+    description = "Prepare the hash-bound V6 promotion manifest without mutating production."
+    dependsOn("certifyGeneratorV6ProductionCandidates")
+}
+
+tasks.register<JavaExec>("promoteGeneratorV6Campaign") {
+    group = "magnetrail content"
+    description = "Atomically promote only an exact hash-bound CAMPAIGN_CERTIFIED V6 campaign."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val promotion = generatorV6Directory.dir("promotion")
+    val candidate = generatorV6Directory.file("production/GENERATOR_V6_PRODUCTION_CANDIDATE.json")
+    val technical = generatorV6Directory.file("production/V6_TECHNICAL_CERTIFICATE.json")
+    val human = generatorV6Directory.file("human/HUMAN_DIFFICULTY_CERTIFICATE.json")
+    val sample = generatorV6Directory.file("production/V6_PRODUCTION_SAMPLE_CERTIFICATE.json")
+    val manifest = promotion.file("V6_PROMOTION_MANIFEST.json")
+    outputs.upToDateWhen { false }
+    args(
+        "promote-generator-v6-campaign",
+        "--campaign=${campaign.asFile}",
+        "--candidate=${candidate.asFile}",
+        "--technical-certificate=${technical.asFile}",
+        "--human-certificate=${human.asFile}",
+        "--sample-certificate=${sample.asFile}",
+        "--manifest=${manifest.asFile}",
+        "--rollback=${promotion.file("SOURCE_CAMPAIGN_V10_ROLLBACK.json").asFile}",
+        "--confirmation=${providers.gradleProperty("confirmGeneratorV6Promotion").getOrElse("false")}",
+        "--expected-production-sha=${providers.gradleProperty("expectedGeneratorV6ProductionSha").getOrElse("")}",
+        "--expected-content-version=${providers.gradleProperty("expectedGeneratorV6ContentVersion").getOrElse("")}",
+        "--expected-candidate-sha=${providers.gradleProperty("expectedGeneratorV6CandidateSha").getOrElse("")}",
+        "--technical-certificate-sha=${providers.gradleProperty("expectedGeneratorV6TechnicalCertificateSha").getOrElse("")}",
+        "--human-certificate-sha=${providers.gradleProperty("expectedGeneratorV6HumanCertificateSha").getOrElse("")}",
+        "--sample-certificate-sha=${providers.gradleProperty("expectedGeneratorV6SampleCertificateSha").getOrElse("")}",
+        "--manifest-sha=${providers.gradleProperty("expectedGeneratorV6ManifestSha").getOrElse("")}",
+    )
+}
+
+tasks.register<JavaExec>("stageCertifiedV11Merge") {
+    group = "magnetrail content"
+    description = "Fail-closed staging merge of V10 with only pre-certified, evidence-complete V11 boards."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val v10 = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val v10Audit = docsDirectory.file("content/v10_density_remediation/CAMPAIGN_V10_GENERATION_AUDIT.json")
+    val v10Promotion = docsDirectory.file("content/v10_density_remediation/CAMPAIGN_V10_PROMOTION_RESULT.md")
+    val v10Waiver = docsDirectory.file("content/v10_density_remediation/LEGACY_V10_OWNER_WAIVER.json")
+    val v10HumanCsv = docsDirectory.file("magnetrail-playtest-pet-52c263fb.csv")
+    val v10Rejection = docsDirectory.file("content/v11_pilot/V10_HUMAN_PLAYTEST_REJECTION.md")
+    val v11 = docsDirectory.file("content/v11_pilot/V11_PILOT_CATALOG.json")
+    val v11Audit = docsDirectory.file("content/v11_pilot/V11_PILOT_AUDIT.json")
+    val v11Certificate = docsDirectory.file("content/v11_pilot/V11_PILOT_CERTIFICATE.json")
+    val output = docsDirectory.dir("content/combined_v10_v11/staging")
+    inputs.files(v10, v10Audit, v10Promotion, v10Waiver, v10HumanCsv, v10Rejection, v11, v11Audit)
+    outputs.files(
+        output.file("COMBINED_V10_CERTIFIED_V11_CATALOG.json"),
+        output.file("COMBINED_V10_V11_MERGE_MANIFEST.json"),
+        output.file("COMBINED_V10_V11_CERTIFICATE.json"),
+    )
+    outputs.upToDateWhen { false }
+    args(
+        "stage-certified-v11-merge",
+        "--v10=${v10.asFile}",
+        "--v10-audit=${v10Audit.asFile}",
+        "--v10-promotion=${v10Promotion.asFile}",
+        "--v10-waiver=${v10Waiver.asFile}",
+        "--v10-human-csv=${v10HumanCsv.asFile}",
+        "--v10-rejection=${v10Rejection.asFile}",
+        "--v11=${v11.asFile}",
+        "--v11-audit=${v11Audit.asFile}",
+        "--v11-certificate=${v11Certificate.asFile}",
+        "--output=${output.asFile}",
+    )
+}
+
+tasks.register<JavaExec>("probeCampaignV10Remediation") {
+    group = "verification"
+    description = "Probe every V10 density-remediation band through production certification."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    args(
+        "probe-campaign-v10-remediation",
+        "--campaign=${campaignV10SourceFile.get()}",
+        "--count-per-band=${providers.gradleProperty("campaignV10ProbePerBand").getOrElse("2")}",
+        "--retries-per-level=${providers.gradleProperty("campaignV10RetriesPerLevel").getOrElse("24")}",
+        "--seed=${providers.gradleProperty("campaignV10Seed").getOrElse("10200001")}",
+    )
+    providers.gradleProperty("campaignV10ProbeBand").orNull?.let { args("--band=$it") }
+    providers.gradleProperty("campaignV10ProbeLevel").orNull?.let { args("--level=$it") }
+}
+
+tasks.register<JavaExec>("generateCampaignV10Remediation") {
+    group = "magnetrail content"
+    description = "Rebuild Levels 206-2205 with dense arrows and component-level uniqueness gates."
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = campaignV10SourceFile
+    val infinite = docsDirectory.file("content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")
+    inputs.files(campaign, infinite)
+    inputs.property("campaignV10Seed", providers.gradleProperty("campaignV10Seed").getOrElse("10200001"))
+    inputs.property("campaignV10Workers", providers.gradleProperty("campaignV10Workers").getOrElse("10"))
+    inputs.property(
+        "campaignV10RetriesPerLevel",
+        providers.gradleProperty("campaignV10RetriesPerLevel").getOrElse("2048"),
+    )
+    outputs.files(
+        campaignV10StagingDirectory.map { it.file("Magnetrail_Campaign_Levels_v10.json") },
+        campaignV10StagingDirectory.map { it.file("CAMPAIGN_V10_GENERATION_AUDIT.json") },
+        campaignV10StagingDirectory.map { it.file("CAMPAIGN_V10_GENERATION_REPORT.md") },
+    )
+    outputs.upToDateWhen { false }
+    args(
+        "generate-campaign-v10-remediation",
+        "--campaign=${campaign.get()}",
+        "--infinite=${infinite.asFile}",
+        "--output=${campaignV10StagingDirectory.get().asFile}",
+        "--checkpoint=${campaignV10CheckpointDirectory.get().asFile}",
+        "--seed=${providers.gradleProperty("campaignV10Seed").getOrElse("10200001")}",
+        "--workers=${providers.gradleProperty("campaignV10Workers").getOrElse("10")}",
+        "--retries-per-level=${providers.gradleProperty("campaignV10RetriesPerLevel").getOrElse("2048")}",
+    )
+}
+
+tasks.register<JavaExec>("promoteCampaignV10Remediation") {
+    group = "magnetrail content"
+    description = "Promote certified V10 density remediation while retaining V9 migration evidence."
+    dependsOn("generateCampaignV10Remediation")
+    val confirmed = providers.gradleProperty("confirmCampaignV10Promotion")
+    inputs.property("campaignV10PromotionConfirmed", confirmed.orElse("false"))
+    doFirst {
+        check(confirmed.orNull == "true") {
+            "Refusing Campaign V10 promotion without -PconfirmCampaignV10Promotion=true"
+        }
+    }
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = application.mainClass
+    val campaign = docsDirectory.file("Magnetrail_Campaign_Levels_v3.json")
+    val infinite = docsDirectory.file("content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json")
+    val promotion = docsDirectory.dir("content/v10_density_remediation")
+    args(
+        "promote-campaign-v10-remediation",
+        "--campaign=${campaign.asFile}",
+        "--staged-campaign=${campaignV10StagingDirectory.get().file("Magnetrail_Campaign_Levels_v10.json").asFile}",
+        "--staged-audit=${campaignV10StagingDirectory.get().file("CAMPAIGN_V10_GENERATION_AUDIT.json").asFile}",
+        "--staged-report=${campaignV10StagingDirectory.get().file("CAMPAIGN_V10_GENERATION_REPORT.md").asFile}",
+        "--infinite=${infinite.asFile}",
+        "--source-snapshot=${promotion.file("SOURCE_CONTENT_V9.json").asFile}",
+        "--published-audit=${promotion.file("CAMPAIGN_V10_GENERATION_AUDIT.json").asFile}",
+        "--published-report=${promotion.file("CAMPAIGN_V10_GENERATION_REPORT.md").asFile}",
+        "--result=${promotion.file("CAMPAIGN_V10_PROMOTION_RESULT.md").asFile}",
+        "--authorization=project-owner-directed-v10-density-remediation",
+    )
+}
 
 tasks.register<JavaExec>("generateCampaignV9Expansion") {
     group = "magnetrail content"

@@ -1,0 +1,181 @@
+{
+    "schemaVersion": 1,
+    "status": "BASELINE_VERIFIED",
+    "catalogs": [
+        {
+            "name": "Campaign V10",
+            "path": "/Users/naimishgupta/AndroidStudioProjects/Magnetrail/docs/Magnetrail_Campaign_Levels_v3.json",
+            "expectedSha256": "8ad274b5dcf39f69db006c87bc0861e9b7037516755f79d8560206b4f2577de9",
+            "actualSha256": "8ad274b5dcf39f69db006c87bc0861e9b7037516755f79d8560206b4f2577de9",
+            "hashMatches": true,
+            "schemaVersion": 2,
+            "contentVersion": 10,
+            "generatorVersion": 5,
+            "levelCount": 2205,
+            "exactUnique": 2205,
+            "d4Unique": 2205,
+            "arrowLayoutUnique": 2205,
+            "interactiveLayoutUnique": 2205,
+            "perceptualUnique": 2205
+        },
+        {
+            "name": "Infinite V1",
+            "path": "/Users/naimishgupta/AndroidStudioProjects/Magnetrail/docs/content/infinite/INFINITE_CERTIFIED_CATALOG_V1.json",
+            "expectedSha256": "c3500d87eedfa7cdbfdde1000bf49ae9af5c2a0e0c24c4ce5c7d977b5d6b4f83",
+            "actualSha256": "c3500d87eedfa7cdbfdde1000bf49ae9af5c2a0e0c24c4ce5c7d977b5d6b4f83",
+            "hashMatches": true,
+            "schemaVersion": 1,
+            "contentVersion": 1,
+            "generatorVersion": 5,
+            "levelCount": 624,
+            "exactUnique": 624,
+            "d4Unique": 624,
+            "arrowLayoutUnique": 570,
+            "interactiveLayoutUnique": 602,
+            "perceptualUnique": 619
+        },
+        {
+            "name": "Daily fallback V1",
+            "path": "/Users/naimishgupta/AndroidStudioProjects/Magnetrail/docs/Magnetrail_Daily_Fallbacks_v1.json",
+            "expectedSha256": "3f21a633fa1e51d29938b830fe567103a52354e367d3177c20b8196c881156c8",
+            "actualSha256": "3f21a633fa1e51d29938b830fe567103a52354e367d3177c20b8196c881156c8",
+            "hashMatches": true,
+            "schemaVersion": 2,
+            "contentVersion": 3,
+            "generatorVersion": 1,
+            "levelCount": 7,
+            "exactUnique": 7,
+            "d4Unique": 7,
+            "arrowLayoutUnique": 3,
+            "interactiveLayoutUnique": 3,
+            "perceptualUnique": 7
+        },
+        {
+            "name": "V11 pilot",
+            "path": "/Users/naimishgupta/AndroidStudioProjects/Magnetrail/docs/content/v11_pilot/V11_PILOT_CATALOG.json",
+            "expectedSha256": "035ebef661048892fe5236dd4a8c6682c1decf9d9e0585a505c645e4e8b39184",
+            "actualSha256": "035ebef661048892fe5236dd4a8c6682c1decf9d9e0585a505c645e4e8b39184",
+            "hashMatches": true,
+            "schemaVersion": 2,
+            "contentVersion": 11,
+            "generatorVersion": 5,
+            "levelCount": 53,
+            "exactUnique": 53,
+            "d4Unique": 53,
+            "arrowLayoutUnique": 53,
+            "interactiveLayoutUnique": 53,
+            "perceptualUnique": 53
+        }
+    ],
+    "d4Contract": {
+        "idsAndMetadata": "removed",
+        "entityOrdering": "canonical sort",
+        "coordinates": "all eight D4 transforms",
+        "directions": "transformed with geometry",
+        "rectangles": "90-degree/diagonal transforms swap serialized width and height",
+        "magnetPolarity": "included",
+        "walls": "included in full-board D4"
+    },
+    "runtimePathFindings": {
+        "canonicalJson": "protected bytes match expected V10 and parse as 2,205 distinct levels",
+        "runtimeBoardState": "LevelParser creates independent immutable BoardState objects from the selected LevelDefinition",
+        "renderedInteractableBoard": "Compose consumes current BoardState and emits arrow IDs; it does not transform or cache level geometry",
+        "catalogSelection": "AssetLevelCatalog selects stable IDs from the canonical asset; no evidence of wrong-catalog substitution",
+        "cause": "literal shared V9 cores plus semantic equivalence beyond exact/D4/arrow/interactive fingerprints"
+    },
+    "representativeCloneGroups": [
+        {
+            "sourceCatalog": "Campaign V9 source cores used by V10 remediation",
+            "signatureType": "D4 arrow+magnet interactive core",
+            "signature": "sha256:0e4899da552670818db6bbb16db641e0423adc46cb3fae4efec2c4ae9d0d466a",
+            "levelIds": [
+                "campaign-1103",
+                "campaign-1122",
+                "campaign-1182",
+                "campaign-1284",
+                "campaign-1350",
+                "campaign-1404",
+                "campaign-1427",
+                "campaign-1631",
+                "campaign-1781",
+                "campaign-1872",
+                "campaign-1997",
+                "campaign-257",
+                "campaign-269",
+                "campaign-426",
+                "campaign-497",
+                "campaign-551",
+                "campaign-629",
+                "campaign-744",
+                "campaign-755",
+                "campaign-894",
+                "campaign-924",
+                "campaign-984"
+            ],
+            "reason": "V10 rebuilt density around a shared V9 interaction core; walls/cascades changed full layouts but not the underlying strategy template.",
+            "catalogLoadingCause": false,
+            "runtimeCachingCause": false,
+            "renderingCause": false,
+            "literalTransformCause": true,
+            "semanticEquivalenceBeyondOldFingerprint": true
+        },
+        {
+            "sourceCatalog": "Campaign V9 source cores used by V10 remediation",
+            "signatureType": "D4 arrow+magnet interactive core",
+            "signature": "sha256:4b230c4a7c95a5243492886bbf89d9efe94bca8dbe9d9175fef35de17882ef5f",
+            "levelIds": [
+                "campaign-1129",
+                "campaign-1249",
+                "campaign-1303",
+                "campaign-1435",
+                "campaign-1711",
+                "campaign-1933",
+                "campaign-1987",
+                "campaign-2101",
+                "campaign-349",
+                "campaign-619",
+                "campaign-817",
+                "campaign-937"
+            ],
+            "reason": "V10 rebuilt density around a shared V9 interaction core; walls/cascades changed full layouts but not the underlying strategy template.",
+            "catalogLoadingCause": false,
+            "runtimeCachingCause": false,
+            "renderingCause": false,
+            "literalTransformCause": true,
+            "semanticEquivalenceBeyondOldFingerprint": true
+        }
+    ],
+    "solverStrategyFindings": [
+        {
+            "levelId": "campaign-744",
+            "complete": true,
+            "reachableStates": 576,
+            "meaningfulDecisions": 5,
+            "successfulLosingBranches": 11,
+            "hardestWinningShare": 0.5,
+            "solutionPolicyClasses": 73,
+            "truncationReasons": []
+        },
+        {
+            "levelId": "campaign-349",
+            "complete": true,
+            "reachableStates": 340,
+            "meaningfulDecisions": 8,
+            "successfulLosingBranches": 20,
+            "hardestWinningShare": 0.4,
+            "solutionPolicyClasses": 44,
+            "truncationReasons": []
+        },
+        {
+            "levelId": "campaign-1997",
+            "complete": true,
+            "reachableStates": 576,
+            "meaningfulDecisions": 5,
+            "successfulLosingBranches": 11,
+            "hardestWinningShare": 0.5,
+            "solutionPolicyClasses": 73,
+            "truncationReasons": []
+        }
+    ],
+    "conclusion": "Known high-band clones are content-generation/semantic-template clones, not parser, runtime-cache, catalog-selection or renderer defects."
+}

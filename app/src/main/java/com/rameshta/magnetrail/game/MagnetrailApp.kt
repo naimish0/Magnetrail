@@ -8,6 +8,8 @@ import com.rameshta.magnetrail.settings.SettingsScreen
 import com.rameshta.magnetrail.infinite.InfiniteModeScreen
 import com.rameshta.magnetrail.ads.RewardedOffer
 import com.rameshta.magnetrail.ads.RewardedOfferStatus
+import com.rameshta.magnetrail.playtest.HumanPlaytestScreen
+import com.rameshta.magnetrail.privacy.PrivacyPolicyScreen
 
 @Composable
 fun MagnetrailApp(
@@ -34,6 +36,7 @@ fun MagnetrailApp(
     showPrivacyPolicyPlaceholder: Boolean = false,
     onPrivacyOptions: () -> Unit = {},
     onPrivacyPolicy: () -> Unit = {},
+    showHumanPlaytest: Boolean = false,
 ) {
     BackHandler(enabled = uiState.destination != AppDestination.HOME) {
         onAction(
@@ -41,6 +44,8 @@ fun MagnetrailApp(
                 AppDestination.LEVELS -> GameAction.CloseLevelSelection
                 AppDestination.INFINITE -> GameAction.CloseInfiniteMode
                 AppDestination.SETTINGS -> GameAction.CloseSettings
+                AppDestination.PRIVACY_POLICY -> GameAction.ClosePrivacyPolicy
+                AppDestination.HUMAN_PLAYTEST -> GameAction.CloseHumanPlaytest
                 AppDestination.GAME -> GameAction.NavigateHome
                 AppDestination.HOME -> return@BackHandler
             },
@@ -52,6 +57,8 @@ fun MagnetrailApp(
             onPlay = { onAction(GameAction.Play) },
             onOpenDaily = { onAction(GameAction.OpenDailyChallenge) },
             onOpenSettings = { onAction(GameAction.OpenSettings) },
+            showHumanPlaytest = showHumanPlaytest,
+            onOpenHumanPlaytest = { onAction(GameAction.OpenHumanPlaytest) },
         )
         AppDestination.LEVELS -> LevelSelectionScreen(
             levels = uiState.levels,
@@ -91,6 +98,13 @@ fun MagnetrailApp(
             showPrivacyPolicyPlaceholder = showPrivacyPolicyPlaceholder,
             onPrivacyOptions = onPrivacyOptions,
             onPrivacyPolicy = onPrivacyPolicy,
+        )
+        AppDestination.PRIVACY_POLICY -> PrivacyPolicyScreen(
+            onBack = { onAction(GameAction.ClosePrivacyPolicy) },
+        )
+        AppDestination.HUMAN_PLAYTEST -> HumanPlaytestScreen(
+            uiState = uiState,
+            onAction = onAction,
         )
     }
 }

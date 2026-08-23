@@ -37,20 +37,19 @@ data class InterstitialPolicyInput(
     val foreground: Boolean,
     val expectedCompletionScreen: Boolean,
     val fullScreenIdle: Boolean,
+    val autoJourney: Boolean = false,
 )
 
 data class InterstitialDecision(val eligible: Boolean, val reason: InterstitialReason)
 
 object InterstitialPolicy {
-    const val MIN_LIFETIME_COMPLETIONS = 10
-    const val COMPLETION_GAP = 3
+    const val COMPLETION_GAP = 5
     const val COOLDOWN_MILLIS = 120_000L
     const val DAILY_CAP = 4
 
     fun evaluate(input: InterstitialPolicyInput): InterstitialDecision {
         fun blocked(reason: InterstitialReason) = InterstitialDecision(false, reason)
-        if (!input.campaign) return blocked(InterstitialReason.NOT_CAMPAIGN)
-        if (input.lifetimeCampaignCompletions < MIN_LIFETIME_COMPLETIONS) return blocked(InterstitialReason.FIRST_LEVELS)
+        if (!input.campaign && !input.autoJourney) return blocked(InterstitialReason.NOT_CAMPAIGN)
         if (!input.forwardProgression) return blocked(InterstitialReason.NOT_FORWARD_PROGRESS)
         if (input.eligibleCompletionsSinceLastAd < COMPLETION_GAP) return blocked(InterstitialReason.COMPLETION_GAP)
         if (input.storedDailyDate != null && input.nowDate.isBefore(input.storedDailyDate)) {

@@ -21,6 +21,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,6 +47,8 @@ fun HomeScreen(
     onPlay: () -> Unit,
     onOpenDaily: () -> Unit,
     onOpenSettings: () -> Unit,
+    showHumanPlaytest: Boolean = false,
+    onOpenHumanPlaytest: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val spacing = LocalMagnetrailSpacing.current
@@ -177,6 +180,21 @@ fun HomeScreen(
                         color = MaterialTheme.colorScheme.error,
                         textAlign = TextAlign.Center,
                     )
+                }
+
+                if (showHumanPlaytest) {
+                    OutlinedButton(
+                        onClick = onOpenHumanPlaytest,
+                        modifier = Modifier
+                            .widthIn(max = 420.dp)
+                            .fillMaxWidth()
+                            .padding(top = spacing.md)
+                            .height(56.dp)
+                            .semantics { contentDescription = "Open blind human difficulty playtest" },
+                        shape = MaterialTheme.shapes.small,
+                    ) {
+                        Text("Human Playtest")
+                    }
                 }
             }
 

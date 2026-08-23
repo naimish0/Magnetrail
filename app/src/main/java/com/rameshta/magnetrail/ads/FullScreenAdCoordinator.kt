@@ -2,7 +2,7 @@ package com.rameshta.magnetrail.ads
 
 import java.util.concurrent.atomic.AtomicReference
 
-enum class FullScreenOwner { CONSENT, REWARDED, INTERSTITIAL }
+enum class FullScreenOwner { CONSENT, REWARDED, INTERSTITIAL, APP_OPEN }
 
 class FullScreenAdCoordinator(private val clock: AdClock) {
     private val owner = AtomicReference<FullScreenOwner?>(null)

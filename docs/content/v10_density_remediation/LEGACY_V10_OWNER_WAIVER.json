@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "authorizationType": "LEGACY_MECHANICAL_OWNER_WAIVER",
+  "authorizationDate": "2026-08-23",
+  "ownerDirective": "Promote/reuse V10 under an explicit legacy owner waiver while retaining the rejected human evidence.",
+  "certificationType": "LEGACY_MECHANICAL_OWNER_APPROVED",
+  "catalogSha256": "8ad274b5dcf39f69db006c87bc0861e9b7037516755f79d8560206b4f2577de9",
+  "boardCount": 2205,
+  "generationAuditSha256": "f94f433e5f377102b81434cf37441c3ec04138cc756aba341a7c1dfb52cdc82e",
+  "generationAuditStatus": "MECHANICALLY_CERTIFIED_STAGING",
+  "promotionEvidenceSha256": "da401d1915b10df2c116558127b7f7e50be343572e6beef04e746ad90863771b",
+  "humanEvidence": {
+    "status": "HUMAN_DIFFICULTY_REJECTED",
+    "csvSha256": "276fa032aec81cceefc8271b5ef6d5e3a65b2425c5d746716378e14fb1dda845",
+    "rejectionSummarySha256": "8d2749f17b78cb78d9dc73ab7036275a1b2f650537e66afb2728aa59a892477a",
+    "retained": true,
+    "knownSummaryDiscrepancyRetained": true,
+    "knownSummaryDiscrepancy": "The derived rejection note embeds a stale CSV hash and says all runs used no hints; the direct CSV is authoritative."
+  },
+  "legacyAcceptance": {
+    "mechanicalCertificationAccepted": true,
+    "productionEngineReplayAccepted": true,
+    "layoutUniquenessAccepted": true,
+    "progressMigrationAccepted": true,
+    "difficultyLabelsRetained": true,
+    "difficultyLabelsMeaning": "Owner-defined campaign navigation bands; not validated human difficulty classifications."
+  },
+  "waivedNotPassed": [
+    "automated difficulty certification",
+    "human difficulty calibration",
+    "current-analyzer metadata reproduction",
+    "modern decision-DAG, inferability, guessing, purposeful-occupancy, and semantic-uniqueness certification"
+  ],
+  "conditions": {
+    "automatedCampaignCertifiedMustRemainFalse": true,
+    "humanDifficultyRejectionMustRemainRetained": true,
+    "v11WorkAuthorized": false,
+    "productionCatalogMustMatchAuthorizedHash": true,
+    "productionContentChangeAuthorized": false
+  },
+  "ownerAuthorized": true
+}

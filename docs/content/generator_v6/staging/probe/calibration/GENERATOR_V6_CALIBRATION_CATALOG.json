@@ -1,0 +1,2852 @@
+{
+    "schemaVersion": 2,
+    "ruleVersion": "magnetrail-core-1",
+    "catalogId": "magnetrail-v6-calibration-five-band-v2",
+    "levels": [
+        {
+            "id": "v6-calibration-001",
+            "number": 1,
+            "title": "Blind board 001",
+            "width": 3,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-00",
+                    "v6-a-01"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6121000004,
+                "generationProfile": "v6-bucket-1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 2,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 1,
+                "exploredStateCount": 6,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "FLIPS_REQUIRED_POLARITY",
+                    "V6_CAUSAL_sha256:83c00e975b474ddc89b979eba82f49feac682bd6b716abede91d215fd25913a9",
+                    "V6_DAG_sha256:3c32cb16ed714306aaa3d5bbee4d5c5c30c9c3fef725b06e01a74bec95884836",
+                    "V6_FAMILY_POLARITY_LOCK_RELEASE",
+                    "V6_POLICY_sha256:a9444291271c21db0b2438f2c34808ff5927ca5ed19a29740ee4a95b618c10c7"
+                ],
+                "contentFingerprint": "sha256:91f2f2618ca15d0d09e34c0c8daa581f366b59aec47afb86695844877e794e54"
+            }
+        },
+        {
+            "id": "v6-calibration-002",
+            "number": 2,
+            "title": "Blind board 002",
+            "width": 3,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 3,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-01",
+                    "v6-a-00",
+                    "v6-a-02"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6121097007,
+                "generationProfile": "v6-bucket-1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 1,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 1,
+                "exploredStateCount": 4,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "REVEALS_CONTROLLER",
+                    "V6_CAUSAL_sha256:fa24a4ab9d6ccb7d8c104e2a0d25e90d07e5b929ac7a4d0b42b40f6a5cabcb89",
+                    "V6_DAG_sha256:aefb56d299815ba595609e0bf6adb5aa71def00d44e5f4cb69d87a55320a7b02",
+                    "V6_FAMILY_OCCLUSION_REVEAL_CHAIN",
+                    "V6_POLICY_sha256:df04efeac3c456e7d4e2a8d8c04fecab20d2bb67917cd9cc6e0d779e8fb318b5"
+                ],
+                "contentFingerprint": "sha256:285243f087d46fe85a309c5829220eb0f0034fd8703e138ab3c1c462b3c34804"
+            }
+        },
+        {
+            "id": "v6-calibration-003",
+            "number": 3,
+            "title": "Blind board 003",
+            "width": 3,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 3,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 1,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-01",
+                    "v6-a-00"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6121194010,
+                "generationProfile": "v6-bucket-1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 1,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 1,
+                "exploredStateCount": 6,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "CREATES_CANCELLATION",
+                    "V6_CAUSAL_sha256:549a030d50cd79707c82714e34d98615438e51c8858e7d52139cd060350d8e68",
+                    "V6_DAG_sha256:bdb2ced69983e17458a1fce8f7ecd990b21ec0dc028d60cd3ba1e485df1d9b3c",
+                    "V6_FAMILY_CANCELLATION_RELEASE",
+                    "V6_POLICY_sha256:d62c7cd906043e168183c408240c44f125336b88111c68c22e43745e9839d335"
+                ],
+                "contentFingerprint": "sha256:663f1b257bedb89a8618cdcfb950c27559d6c563dc306ff1563812ea98a55b88"
+            }
+        },
+        {
+            "id": "v6-calibration-004",
+            "number": 4,
+            "title": "Blind board 004",
+            "width": 3,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-03"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6121291013,
+                "generationProfile": "v6-bucket-1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 4,
+                "solutionCount": 24,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 4,
+                "exploredStateCount": 20,
+                "parActions": 4,
+                "twoStarMaxActions": 6,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "CHANGES_CONTROLLER",
+                    "V6_CAUSAL_sha256:813fdffa09503dd7344841ad9c36ce58c37b0b294ac3ecda06c2a1ce0d23955b",
+                    "V6_DAG_sha256:65804d9bf5f254b855ea682b9bfda31680202ca52f7dd097758501a560416867",
+                    "V6_FAMILY_COMPETING_CONTROLLER_HANDOFF",
+                    "V6_POLICY_sha256:287f7a85fd6a36e264d1d5f3d61d562f318cd5b88ced49f13a0471a37c9640d9"
+                ],
+                "contentFingerprint": "sha256:b1d9f4a082191dd0a81c6c3330af65ffc08f887fd3df1fc254264519c1082e83"
+            }
+        },
+        {
+            "id": "v6-calibration-005",
+            "number": 5,
+            "title": "Blind board 005",
+            "width": 3,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-02",
+                    "v6-a-01"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6121388016,
+                "generationProfile": "v6-bucket-1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 1,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 1,
+                "exploredStateCount": 5,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "FORK_JOIN_DEPENDENCY",
+                    "V6_CAUSAL_sha256:ca56762b54ca1dcec9c1653185188131bfc0f9704b9fd6f98b70e90ef01f60bb",
+                    "V6_DAG_sha256:9afbf23edd7ae10e2c75dd14179c9daf15fbe55cbd4513836f8aa77f6b67fd6a",
+                    "V6_FAMILY_FORK_JOIN_COUPLED",
+                    "V6_POLICY_sha256:0a36998664cb40a86d593965a9430c361a056ba95e4bc72629d4ba68fc0e7f92"
+                ],
+                "contentFingerprint": "sha256:e7ebe2187d385fa2514e038eaa3255671e7d8d658c26da6026be8a85b3cc5e8c"
+            }
+        },
+        {
+            "id": "v6-calibration-006",
+            "number": 6,
+            "title": "Blind board 006",
+            "width": 3,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 2,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-01",
+                    "v6-a-02"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6121485019,
+                "generationProfile": "v6-bucket-1",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 3,
+                "solutionCount": 3,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 8,
+                "parActions": 3,
+                "twoStarMaxActions": 5,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:6bdfa872c0213d2e535dfe7c8f80c4821c2aae9fa1ae5a6802504eb70108fdbf",
+                    "V6_DAG_sha256:1b22e50435b48ac38bfd9999c55806ce7911ccd1e0135df628cc6d01dbd8352d",
+                    "V6_FAMILY_INTERACTING_CHAINS_DELAYED_TRAPS",
+                    "V6_POLICY_sha256:c73c4a07ccf4e87b5abd887de9500a6d1775f848f5e8cc20c8d657d28fe460a3"
+                ],
+                "contentFingerprint": "sha256:da2ba143a3e40bc470be6ad0a5807834b8d16ed1b6223d4676b5750030ca6686"
+            }
+        },
+        {
+            "id": "v6-calibration-007",
+            "number": 7,
+            "title": "Blind board 007",
+            "width": 4,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 3,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 3,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-03",
+                    "v6-a-00",
+                    "v6-a-01"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6122000007,
+                "generationProfile": "v6-bucket-2",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 4,
+                "solutionCount": 8,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 12,
+                "parActions": 4,
+                "twoStarMaxActions": 6,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "REVEALS_CONTROLLER",
+                    "V6_CAUSAL_sha256:a672afbf5702d4822d0e7e4a97cb35719ae9cf6d49b883f690a50ad258f3748c",
+                    "V6_DAG_sha256:f59610913bb7025614b2b499b2ababc46a6d8e18e3eb893a0d9e23ae8e65e145",
+                    "V6_FAMILY_OCCLUSION_REVEAL_CHAIN",
+                    "V6_POLICY_sha256:73dbb28f2c30a4f5f6d706e691562e061541f5948bb995361eb715da35a0462d"
+                ],
+                "contentFingerprint": "sha256:8b8bd19d4c5e9e5874ce30179527a163dcf1b000497b0617238151b0539839c8"
+            }
+        },
+        {
+            "id": "v6-calibration-008",
+            "number": 8,
+            "title": "Blind board 008",
+            "width": 4,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 3,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-01",
+                    "v6-a-00",
+                    "v6-a-02",
+                    "v6-a-03"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6122097010,
+                "generationProfile": "v6-bucket-2",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 4,
+                "solutionCount": 5,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 11,
+                "parActions": 4,
+                "twoStarMaxActions": 6,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "CREATES_CANCELLATION",
+                    "V6_CAUSAL_sha256:f277e89d6c392d8b28e73cb5a7f18172168e022ce0efb263cd5f2063405897b3",
+                    "V6_DAG_sha256:55cd4a0dfb61ae0be2d11338d2bc49d819c1f7dd661a73a25fd1e9808cc6b44d",
+                    "V6_FAMILY_CANCELLATION_RELEASE",
+                    "V6_POLICY_sha256:cabba3638e135b31f8b70dbc2d3926c18ff115064c8b855c3fc8c0233066d365"
+                ],
+                "contentFingerprint": "sha256:b20a4773b7c770a97b4e8f5f08fc49437aef44a4ddee98562e8e4d8cf9eea56a"
+            }
+        },
+        {
+            "id": "v6-calibration-009",
+            "number": 9,
+            "title": "Blind board 009",
+            "width": 4,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 3,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-02",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-03"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6122194013,
+                "generationProfile": "v6-bucket-2",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 4,
+                "solutionCount": 12,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 3,
+                "exploredStateCount": 20,
+                "parActions": 4,
+                "twoStarMaxActions": 6,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "CHANGES_CONTROLLER",
+                    "V6_CAUSAL_sha256:7bbe0e34be694154b02a0b169a7cd0e4ba2cd999b785cab28eca18431ac21364",
+                    "V6_DAG_sha256:5720fb6f9dace030abb9aa9b56f6b4106fc5861fc8c2477886e355aa505e785f",
+                    "V6_FAMILY_COMPETING_CONTROLLER_HANDOFF",
+                    "V6_POLICY_sha256:938d47f3465427b9188617e8537e918d4e05b27891d69e8637f20113d40279b8"
+                ],
+                "contentFingerprint": "sha256:e02c2aace9d88c20c22f245b169322f44986d552b01d44bcc1a0a3610f360111"
+            }
+        },
+        {
+            "id": "v6-calibration-010",
+            "number": 10,
+            "title": "Blind board 010",
+            "width": 4,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 3,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-01",
+                    "v6-a-03",
+                    "v6-a-02"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6122291016,
+                "generationProfile": "v6-bucket-2",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 4,
+                "solutionCount": 8,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 3,
+                "exploredStateCount": 14,
+                "parActions": 4,
+                "twoStarMaxActions": 6,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "FORK_JOIN_DEPENDENCY",
+                    "V6_CAUSAL_sha256:ee97d9a0aaa6fd49745b3c41f44fdbc89372080d0abbd67746d4c82c508b78e2",
+                    "V6_DAG_sha256:55c780ab34dcf56d0130d38ec9be17489de0a2bf92956d1f9863194d9c46bb6e",
+                    "V6_FAMILY_FORK_JOIN_COUPLED",
+                    "V6_POLICY_sha256:399402d862c342e7d535de1a8d4adf1291fca0a8b550ecd1669e2f580519bd5c"
+                ],
+                "contentFingerprint": "sha256:e1f8195ac976e6133619968c0cfd5006b374fd9fd1883f0c9413b8ecf9aa9818"
+            }
+        },
+        {
+            "id": "v6-calibration-011",
+            "number": 11,
+            "title": "Blind board 011",
+            "width": 4,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 2,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 1,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-03"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6122388019,
+                "generationProfile": "v6-bucket-2",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 4,
+                "solutionCount": 8,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 12,
+                "parActions": 4,
+                "twoStarMaxActions": 6,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:b2b154b80d241d6dfffd16b7d6297c7b84217eed6f04f2f00e4f3b22636937bd",
+                    "V6_DAG_sha256:d4433a343c4386feb6c33a0c8d5b26b5e28d570d425f69c064331e3adc8be87d",
+                    "V6_FAMILY_INTERACTING_CHAINS_DELAYED_TRAPS",
+                    "V6_POLICY_sha256:28e667ef41fc3f23fcaf1152fdda1dd87e364f607cce15f3df11fe1728e9707e"
+                ],
+                "contentFingerprint": "sha256:fcbca280b96096c4b2151b14dcd5418437e823082808c684c247a6ea51c78869"
+            }
+        },
+        {
+            "id": "v6-calibration-012",
+            "number": 12,
+            "title": "Blind board 012",
+            "width": 4,
+            "height": 3,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 2,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-03"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6122485022,
+                "generationProfile": "v6-bucket-2",
+                "difficultyBand": "DEVELOPING",
+                "certifiedSolutionLength": 4,
+                "solutionCount": 6,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 12,
+                "parActions": 4,
+                "twoStarMaxActions": 6,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "FLIPS_REQUIRED_POLARITY",
+                    "V6_CAUSAL_sha256:6df23ffee333b4dc2b8a3dbd9e52421b122ba25d634669df0787452ff3f5ffd0",
+                    "V6_DAG_sha256:b978b99f385ad1b380930ea3f8edba810ea3e6c6226c6495dbdd6d4e4f52b2ed",
+                    "V6_FAMILY_POLARITY_LOCK_RELEASE",
+                    "V6_POLICY_sha256:408a0545e61a2ea68a93294b6a854175c4bd2be4a1b19afdabd64a15cc406a70"
+                ],
+                "contentFingerprint": "sha256:0ab9825ddd4d8160e16008e44c3b04a2dee3ab769d9a6c98ce64f23e58a81005"
+            }
+        },
+        {
+            "id": "v6-calibration-013",
+            "number": 13,
+            "title": "Blind board 013",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 3,
+                    "column": 3,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 2
+                },
+                {
+                    "row": 4,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-03",
+                    "v6-a-04",
+                    "v6-a-01",
+                    "v6-a-02"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6123000010,
+                "generationProfile": "v6-bucket-3",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 5,
+                "solutionCount": 40,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 3,
+                "exploredStateCount": 23,
+                "parActions": 5,
+                "twoStarMaxActions": 7,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "CREATES_CANCELLATION",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:2ed7c37a64e9fd8b91c89c4a6a09cb3acc62fe78a0f52a7e8599abe9910e21d9",
+                    "V6_DAG_sha256:85b236f1e75cfff3db07ed2aadf77ba65989558a4e8aca75717731295931a96a",
+                    "V6_FAMILY_CANCELLATION_RELEASE",
+                    "V6_POLICY_sha256:ffc25ade0edeab4d87e0a7d29408b02addf4863f3d2c84a029dafac63a4e630a"
+                ],
+                "contentFingerprint": "sha256:c8ea85c05eb2dcf35eb14922a9fcee5505f97ff7656bdb07e14124ff46ec16c0"
+            }
+        },
+        {
+            "id": "v6-calibration-014",
+            "number": 14,
+            "title": "Blind board 014",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-03",
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-00",
+                    "v6-a-04"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6123097013,
+                "generationProfile": "v6-bucket-3",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 5,
+                "solutionCount": 5,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 16,
+                "parActions": 5,
+                "twoStarMaxActions": 7,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "CHANGES_CONTROLLER",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:ca2686b44893b1ed4ad00c17ce01581cbe6c860e270475f29b5ecff9833be743",
+                    "V6_DAG_sha256:b62f83f2a77cafddb0feeb8b533bdbb300e1d398fd5332b10f1445575a19b5ee",
+                    "V6_FAMILY_COMPETING_CONTROLLER_HANDOFF",
+                    "V6_POLICY_sha256:4cc675bc16c551a26d8d9dc147470f610a723fcb8b3f0911349efa3ab917d9f0"
+                ],
+                "contentFingerprint": "sha256:c763689b93051fbdcad1497d535004df7924da44d73c41fc07c6bb4325364ef1"
+            }
+        },
+        {
+            "id": "v6-calibration-015",
+            "number": 15,
+            "title": "Blind board 015",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 4,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 3,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 4,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-03",
+                    "v6-a-04",
+                    "v6-a-00"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6123194016,
+                "generationProfile": "v6-bucket-3",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 5,
+                "solutionCount": 10,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 20,
+                "parActions": 5,
+                "twoStarMaxActions": 7,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "FORK_JOIN_DEPENDENCY",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:ff0798b23707e7739d2a9119efc7c106196304afbf515e54953485d4c92a24d6",
+                    "V6_DAG_sha256:17db7d9980edd14104b3ebfa0477d087684518ee7e0257b5174edf05afac8ac5",
+                    "V6_FAMILY_FORK_JOIN_COUPLED",
+                    "V6_POLICY_sha256:02b97258b41d19d2a2d81e7a86a5268ee862a074c75f9ab84d9e6cd6ea4c8f31"
+                ],
+                "contentFingerprint": "sha256:89bf0193ca6dbc85d1814a6c68df9e836058307852aefce0102abe95c62dcb83"
+            }
+        },
+        {
+            "id": "v6-calibration-016",
+            "number": 16,
+            "title": "Blind board 016",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 2,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 4
+                },
+                {
+                    "row": 2,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-02",
+                    "v6-a-03",
+                    "v6-a-01",
+                    "v6-a-04"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6123291019,
+                "generationProfile": "v6-bucket-3",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 5,
+                "solutionCount": 2,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 1,
+                "exploredStateCount": 10,
+                "parActions": 5,
+                "twoStarMaxActions": 7,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:16fadb9d8cf42d07cf0cd68118f08998a99168d4472e423368f655ce6e8459d1",
+                    "V6_DAG_sha256:1614e5bbebb6f34ebd9ca1c8c8c77b4fb68cb698c96848a2f144c57b5a38e4bf",
+                    "V6_FAMILY_INTERACTING_CHAINS_DELAYED_TRAPS",
+                    "V6_POLICY_sha256:f2074078e28a7a2776c50369463c792c9e17e84e17918964854c8320460b8f37"
+                ],
+                "contentFingerprint": "sha256:487db1866a8e79b9a73f82bd2575052717efb3e903f778b6f8d85edc4ce7cdd6"
+            }
+        },
+        {
+            "id": "v6-calibration-017",
+            "number": 17,
+            "title": "Blind board 017",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 4,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 2,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 2
+                },
+                {
+                    "row": 1,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-03",
+                    "v6-a-04"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6123388022,
+                "generationProfile": "v6-bucket-3",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 5,
+                "solutionCount": 20,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 18,
+                "parActions": 5,
+                "twoStarMaxActions": 7,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "FLIPS_REQUIRED_POLARITY",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:7d22e443fb64cf68b88a2f189ac1db504d8ac4df78c297f627d1f4b08b43271a",
+                    "V6_DAG_sha256:3eedcf1c51432198e0dfac0ea9f7bab54e3ee11b9f147b20b4aa3e458e1d1e14",
+                    "V6_FAMILY_POLARITY_LOCK_RELEASE",
+                    "V6_POLICY_sha256:d1fe916357dd785bcf8ecdf99cbd18c8b8b8cb613d83a2e138441a0573e959a7"
+                ],
+                "contentFingerprint": "sha256:07407f45b061912b7320e306fcea64881c65b53b2a54980cd44bcde5e3f8ab75"
+            }
+        },
+        {
+            "id": "v6-calibration-018",
+            "number": 18,
+            "title": "Blind board 018",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 3,
+                    "column": 2
+                },
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-04",
+                    "v6-a-01",
+                    "v6-a-00",
+                    "v6-a-03"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6123485025,
+                "generationProfile": "v6-bucket-3",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 5,
+                "solutionCount": 3,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 1,
+                "exploredStateCount": 12,
+                "parActions": 5,
+                "twoStarMaxActions": 7,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "REVEALS_CONTROLLER",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:b0340c6572bf27d334b76c819ffae9f64cdfcc3794137474127c1c9beb311a0f",
+                    "V6_DAG_sha256:2a1c7e7fb7ec0139f2ed5a1715b9e6878cd5e4d35d244e718f7c2eae5605c665",
+                    "V6_FAMILY_OCCLUSION_REVEAL_CHAIN",
+                    "V6_POLICY_sha256:85c9fe5c86926a37eac8f860eb1bb4e20c6c7f74a53ef7f66bf16e3bb589764d"
+                ],
+                "contentFingerprint": "sha256:551dc6e10f3590ffbfb393658ecfa8698c9d240b8a6f43a429fe8b45d0ca868b"
+            }
+        },
+        {
+            "id": "v6-calibration-019",
+            "number": 19,
+            "title": "Blind board 019",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 4
+                },
+                {
+                    "row": 2,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-03",
+                    "v6-a-04",
+                    "v6-a-01",
+                    "v6-a-05",
+                    "v6-a-02"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6124000013,
+                "generationProfile": "v6-bucket-4",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 6,
+                "solutionCount": 78,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 4,
+                "exploredStateCount": 56,
+                "parActions": 6,
+                "twoStarMaxActions": 8,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "CHANGES_CONTROLLER",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:6d90d67e90e1faf2c9ca20d82ad8bef0c82052c15c2864429859639a740c3890",
+                    "V6_DAG_sha256:3275721266caf4dbade977932712693cdfb580590e503626e27e7fc297c5355e",
+                    "V6_FAMILY_COMPETING_CONTROLLER_HANDOFF",
+                    "V6_POLICY_sha256:aca265a4e686b5b1ae43247a1cec29808d13c755e39b30fe23e43146d596de82"
+                ],
+                "contentFingerprint": "sha256:db82f95812926baaeae6cce60b2745e637ebfe6b59afa01bc485923454f2d7a3"
+            }
+        },
+        {
+            "id": "v6-calibration-020",
+            "number": 20,
+            "title": "Blind board 020",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 1,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 4,
+                    "column": 3,
+                    "initialPolarity": "PUSH"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 2,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 1
+                },
+                {
+                    "row": 2,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-03",
+                    "v6-a-00",
+                    "v6-a-04",
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-05"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6124097016,
+                "generationProfile": "v6-bucket-4",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 6,
+                "solutionCount": 6,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 20,
+                "parActions": 6,
+                "twoStarMaxActions": 8,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "FORK_JOIN_DEPENDENCY",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:a5225aabd3df6833110578f7ba36e2d7343116530098c71a237ac0c0b18afdcf",
+                    "V6_DAG_sha256:dd8f1b9bf0477b555ff50bce2ec1c359a95520f20af2d6daa2b95a3ca468ff66",
+                    "V6_FAMILY_FORK_JOIN_COUPLED",
+                    "V6_POLICY_sha256:1da854d011435a2a27b6c5496e319680049e8c8d94895c820531f08968ab0bea"
+                ],
+                "contentFingerprint": "sha256:e0a648d6a7487773e80b6b5f7c39591918d1584c495745d07c67c6eadfcaef44"
+            }
+        },
+        {
+            "id": "v6-calibration-021",
+            "number": 21,
+            "title": "Blind board 021",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 2
+                },
+                {
+                    "row": 4,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-04",
+                    "v6-a-03",
+                    "v6-a-05"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6124194019,
+                "generationProfile": "v6-bucket-4",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 6,
+                "solutionCount": 80,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 36,
+                "parActions": 6,
+                "twoStarMaxActions": 8,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:ee0c7c07bf362f9844766dc661af86ddde7eccbd51f4ed738ebcc6346dbdbb19",
+                    "V6_DAG_sha256:3ce53473123d396aac005b4e837e1aeabf5385ec02a0028e2ba8bdabf3008529",
+                    "V6_FAMILY_INTERACTING_CHAINS_DELAYED_TRAPS",
+                    "V6_POLICY_sha256:f07633828b2d51635c0a9d5338ca0d9f1f77fee40550716fd2caba276a071528"
+                ],
+                "contentFingerprint": "sha256:e4148ad62caea4496ec2c817f91cd34d6e303201c8b3394ba57472a7d156f9c0"
+            }
+        },
+        {
+            "id": "v6-calibration-022",
+            "number": 22,
+            "title": "Blind board 022",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 1,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "N"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 3,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 1,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 2,
+                    "column": 1
+                },
+                {
+                    "row": 4,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-01",
+                    "v6-a-02",
+                    "v6-a-03",
+                    "v6-a-04",
+                    "v6-a-00",
+                    "v6-a-05"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6124291022,
+                "generationProfile": "v6-bucket-4",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 6,
+                "solutionCount": 48,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 40,
+                "parActions": 6,
+                "twoStarMaxActions": 8,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "FLIPS_REQUIRED_POLARITY",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:dc35145b55d96b2dfc81c15efede87c50b03bacc7fef11bd33b391de5f8116e7",
+                    "V6_DAG_sha256:88ab5f83cfb56e91c539bf701b30083461b951d56b88b7a79ac0e520a11d17a5",
+                    "V6_FAMILY_POLARITY_LOCK_RELEASE",
+                    "V6_POLICY_sha256:e0cd0fd0c07953bbbc7ae1a54d2af8bc5ea75c98c59ef6ab5d55650fad9102d9"
+                ],
+                "contentFingerprint": "sha256:e7c5dce54197196b5591b8f19f6a15bdfda581d8fa52fd831cdc227a514072ac"
+            }
+        },
+        {
+            "id": "v6-calibration-023",
+            "number": 23,
+            "title": "Blind board 023",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 4,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 1,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 4,
+                    "column": 2
+                },
+                {
+                    "row": 2,
+                    "column": 3
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-00",
+                    "v6-a-03",
+                    "v6-a-05",
+                    "v6-a-01",
+                    "v6-a-04"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6124388025,
+                "generationProfile": "v6-bucket-4",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 6,
+                "solutionCount": 14,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 24,
+                "parActions": 6,
+                "twoStarMaxActions": 8,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "NON_COMMUTING_CHOICE",
+                    "REVEALS_CONTROLLER",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:a2b0cc8b6f72e636283ff36a5771a215b6df15ab6d847636987605e2a5c01846",
+                    "V6_DAG_sha256:d8dd4899d85b3a1868cf46ee92d35858c0c37ff371ea01f563565fe3a270f283",
+                    "V6_FAMILY_OCCLUSION_REVEAL_CHAIN",
+                    "V6_POLICY_sha256:56ac056217799d7ca45261a272ec1b5650c2274fa47575c8d8b0162cad90dab4"
+                ],
+                "contentFingerprint": "sha256:883904f54076163b0dab3e2dd1b250a6ecece9f723bea7feea632a1c0a6dd630"
+            }
+        },
+        {
+            "id": "v6-calibration-024",
+            "number": 24,
+            "title": "Blind board 024",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 2,
+                    "column": 4,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 3,
+                    "column": 2,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 2
+                },
+                {
+                    "row": 4,
+                    "column": 4
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-01",
+                    "v6-a-00",
+                    "v6-a-02",
+                    "v6-a-03",
+                    "v6-a-04",
+                    "v6-a-05"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6124485028,
+                "generationProfile": "v6-bucket-4",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 6,
+                "solutionCount": 16,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 32,
+                "parActions": 6,
+                "twoStarMaxActions": 8,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "CREATES_CANCELLATION",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:32093af8180bcf6f147ca01d24a674e3a8bf5ae8b5eabc87cd32d5fbe2a4750f",
+                    "V6_DAG_sha256:d1950c0777a3457bd04dd5df948920adad5dff3c10671bf4ca89223353c321db",
+                    "V6_FAMILY_CANCELLATION_RELEASE",
+                    "V6_POLICY_sha256:c1dbc54e2ef013110671cce96940f7abe6385f4a9c49ac64d0aafa100e24bccf"
+                ],
+                "contentFingerprint": "sha256:675479e6f50088459910788e97cda359767a683d9f06d0773dfd9dd8a058ff70"
+            }
+        },
+        {
+            "id": "v6-calibration-025",
+            "number": 25,
+            "title": "Blind board 025",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-06",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 2,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-00",
+                    "v6-a-01",
+                    "v6-a-04",
+                    "v6-a-02",
+                    "v6-a-06",
+                    "v6-a-03",
+                    "v6-a-05"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6125000016,
+                "generationProfile": "v6-bucket-5",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 7,
+                "solutionCount": 20,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 30,
+                "parActions": 7,
+                "twoStarMaxActions": 9,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "FORK_JOIN_DEPENDENCY",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:03a7a8e2e0cda6bf08dddde7acca38835ae013c1d8530b8fc1743e5de6d36ce4",
+                    "V6_DAG_sha256:128e0deaa7966d041be92150c68b779171ab4cfb5350b43369ba7ec72fa8985b",
+                    "V6_FAMILY_FORK_JOIN_COUPLED",
+                    "V6_POLICY_sha256:1883a8d91bdc979433ef1700ea10d1b3ad42814ae6c732141619b1b29738603b"
+                ],
+                "contentFingerprint": "sha256:1ebac628d4d16a23695d4b27a65b9ceb1aa7a8a962e65e79a1fc31cda4f56bd7"
+            }
+        },
+        {
+            "id": "v6-calibration-026",
+            "number": 26,
+            "title": "Blind board 026",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-06",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 4
+                },
+                {
+                    "row": 2,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-00",
+                    "v6-a-04",
+                    "v6-a-01",
+                    "v6-a-06",
+                    "v6-a-03",
+                    "v6-a-05"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6125097019,
+                "generationProfile": "v6-bucket-5",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 7,
+                "solutionCount": 20,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 30,
+                "parActions": 7,
+                "twoStarMaxActions": 9,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:9f5183df2184cfe49da5297f4abd329a4c7fa7fd0e9b5d7302102b32c094db1b",
+                    "V6_DAG_sha256:d280fc28393a92ed0813c0aea57ca74c87ebf00d1562c75c6fa9179f5de905c8",
+                    "V6_FAMILY_INTERACTING_CHAINS_DELAYED_TRAPS",
+                    "V6_POLICY_sha256:669b704bb377dd201b023d1c77510c76d8c38dce4de786cb06c8929c7d0a08aa"
+                ],
+                "contentFingerprint": "sha256:cf98664d6ed568db12d84f87a1d564faa8b2cfc092d564022439a4623ff58375"
+            }
+        },
+        {
+            "id": "v6-calibration-027",
+            "number": 27,
+            "title": "Blind board 027",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 1,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-06",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 2,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-00",
+                    "v6-a-04",
+                    "v6-a-01",
+                    "v6-a-06",
+                    "v6-a-03",
+                    "v6-a-05"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6125194022,
+                "generationProfile": "v6-bucket-5",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 7,
+                "solutionCount": 20,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 30,
+                "parActions": 7,
+                "twoStarMaxActions": 9,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "FLIPS_REQUIRED_POLARITY",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:f90e143316e7028b048f52b0ec82ef37d3b12bf14b58fa909a22fda9410d3d76",
+                    "V6_DAG_sha256:268dea1eafee37d107ebaabaa3657af048baba373581d3415352a9d54da5ceb8",
+                    "V6_FAMILY_POLARITY_LOCK_RELEASE",
+                    "V6_POLICY_sha256:cc7348d270802a09dc60343ab04ee4b851fd6092cedaaa3f5d93fbf0de17f6d8"
+                ],
+                "contentFingerprint": "sha256:97d502e1cd567262c6cbbfef0aeab84c05f36b2e7e8204b694dbb04dd9044354"
+            }
+        },
+        {
+            "id": "v6-calibration-028",
+            "number": 28,
+            "title": "Blind board 028",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-06",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                },
+                {
+                    "row": 1,
+                    "column": 2
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-00",
+                    "v6-a-03",
+                    "v6-a-01",
+                    "v6-a-06",
+                    "v6-a-05",
+                    "v6-a-04"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6125291025,
+                "generationProfile": "v6-bucket-5",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 7,
+                "solutionCount": 10,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 28,
+                "parActions": 7,
+                "twoStarMaxActions": 9,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "NON_COMMUTING_CHOICE",
+                    "REVEALS_CONTROLLER",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:4910bfb6c82c873fc32a227d8edaea8079e3a38adb5e01430da50578090bd216",
+                    "V6_DAG_sha256:c60c874376132ef351784207bb6b3bc13d18a120070e5948ebcfe1e414810903",
+                    "V6_FAMILY_OCCLUSION_REVEAL_CHAIN",
+                    "V6_POLICY_sha256:287ab70f2836b15aa9a85275c63d89deeff124196a92181db07f30a2620098a7"
+                ],
+                "contentFingerprint": "sha256:a1f91959dd88d958211ef2f40a55bfe19b566916b7abe287fb6a2923c6c1d317"
+            }
+        },
+        {
+            "id": "v6-calibration-029",
+            "number": 29,
+            "title": "Blind board 029",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 3,
+                    "column": 2,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 3,
+                    "column": 1,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 4,
+                    "column": 1,
+                    "printedDirection": "N"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-06",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 2,
+                    "column": 4,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 2,
+                    "initialPolarity": "PUSH"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 2
+                },
+                {
+                    "row": 2,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-00",
+                    "v6-a-04",
+                    "v6-a-01",
+                    "v6-a-03",
+                    "v6-a-06",
+                    "v6-a-05"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6125388028,
+                "generationProfile": "v6-bucket-5",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 7,
+                "solutionCount": 20,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 32,
+                "parActions": 7,
+                "twoStarMaxActions": 9,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "CREATES_CANCELLATION",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:e7f9e1a70fe7ea23a2acde7b8619d49f35db7ad877e8b1c8546f43156e731fd1",
+                    "V6_DAG_sha256:1cd68041958cc623d0c96f797c57c38ee24c135b17752d1b1a8e7b3ea80bdbb0",
+                    "V6_FAMILY_CANCELLATION_RELEASE",
+                    "V6_POLICY_sha256:fc9f6223555d88260b65da41f98f891eceb681bf223faa18decd9da172c15c6d"
+                ],
+                "contentFingerprint": "sha256:49e99259b28a09b5dc86071eac9ea701761ffe07e3cd6d36586e40ec291adba2"
+            }
+        },
+        {
+            "id": "v6-calibration-030",
+            "number": 30,
+            "title": "Blind board 030",
+            "width": 4,
+            "height": 4,
+            "arrows": [
+                {
+                    "id": "v6-a-00",
+                    "row": 2,
+                    "column": 2,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-01",
+                    "row": 4,
+                    "column": 3,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-02",
+                    "row": 3,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-03",
+                    "row": 4,
+                    "column": 2,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-04",
+                    "row": 2,
+                    "column": 3,
+                    "printedDirection": "S"
+                },
+                {
+                    "id": "v6-a-05",
+                    "row": 1,
+                    "column": 4,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-06",
+                    "row": 4,
+                    "column": 4,
+                    "printedDirection": "W"
+                },
+                {
+                    "id": "v6-a-07",
+                    "row": 2,
+                    "column": 1,
+                    "printedDirection": "E"
+                },
+                {
+                    "id": "v6-a-08",
+                    "row": 3,
+                    "column": 3,
+                    "printedDirection": "E"
+                }
+            ],
+            "magnets": [
+                {
+                    "id": "v6-m-00",
+                    "row": 1,
+                    "column": 3,
+                    "initialPolarity": "PULL"
+                },
+                {
+                    "id": "v6-m-01",
+                    "row": 4,
+                    "column": 1,
+                    "initialPolarity": "PULL"
+                }
+            ],
+            "walls": [
+                {
+                    "row": 1,
+                    "column": 1
+                }
+            ],
+            "designedSolutions": [
+                [
+                    "v6-a-02",
+                    "v6-a-04",
+                    "v6-a-05",
+                    "v6-a-08",
+                    "v6-a-01",
+                    "v6-a-03",
+                    "v6-a-06",
+                    "v6-a-07",
+                    "v6-a-00"
+                ]
+            ],
+            "metadata": {
+                "contentVersion": 12,
+                "origin": "GENERATOR_ASSISTED",
+                "generatorVersion": 6,
+                "generatorSeed": 6125485031,
+                "generationProfile": "v6-bucket-5",
+                "difficultyBand": "ADVANCED",
+                "certifiedSolutionLength": 9,
+                "solutionCount": 15,
+                "solutionCountCapped": false,
+                "validFirstActionCount": 2,
+                "exploredStateCount": 84,
+                "parActions": 9,
+                "twoStarMaxActions": 12,
+                "packId": "v6-calibration",
+                "mechanicTags": [
+                    "CHANGES_CONTROLLER",
+                    "NON_COMMUTING_CHOICE",
+                    "SUCCESSFUL_TRAP",
+                    "V6_CAUSAL_sha256:bcab976fd9c06798e16412097e6b24c9dc27557e8e1d3d944b48770a0ca03e2c",
+                    "V6_DAG_sha256:b11a1ef68d9cd068896815b93aa34bd88c9bd2d0650a7d63b1057e161bf44aa8",
+                    "V6_FAMILY_COMPETING_CONTROLLER_HANDOFF",
+                    "V6_POLICY_sha256:0e12c6b8425d774a24124004ff1662f36c4784d7c00ea226cf648bfd4bd73a8c"
+                ],
+                "contentFingerprint": "sha256:51bee3f1fb96df8be49ccb967f3afb45e358d55f0c60cf733e08b5dfee2c041d"
+            }
+        }
+    ],
+    "contentVersion": 12,
+    "generatorVersion": 6
+}

@@ -1,0 +1,14 @@
+{
+    "schemaVersion": 1,
+    "generatorIdentity": "Generator V6.1 — Semantic Novelty plus Cued Multi-Phase Adversarial Difficulty",
+    "contentVersion": 12,
+    "generatorVersion": 6,
+    "frozenCoreVersion": "magnetrail-core-1",
+    "sourceCampaignSha256": "8ad274b5dcf39f69db006c87bc0861e9b7037516755f79d8560206b4f2577de9",
+    "candidateCampaignSha256": "0ed9fb1b5af6533f1ce3874ba99c8db629f916f034cb4ab5bb4c4bbe452b12cf",
+    "candidateAuditSha256": "70766d9a6e7a1f0ab50c6d6291f5698650bf49a2081184732390c09a332bd948",
+    "requestedNonTutorialLevels": 2193,
+    "generatedNonTutorialLevels": 235,
+    "maximumAttemptsPerLevel": 64,
+    "mandatoryAutomatedTestsPassed": true
+}

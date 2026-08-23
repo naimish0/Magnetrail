@@ -1,0 +1,13 @@
+{
+    "schemaVersion": 1,
+    "status": "V61_PARALLEL_WORKFLOW_BENCHMARK_COMPLETE",
+    "workers": 11,
+    "archiveCandidates": 2,
+    "maximumAttempts": 12,
+    "sequentialWallMillis": 6412,
+    "parallelWallMillis": 3073,
+    "wallSpeedup": 2.0865603644646926,
+    "identicalAdmissionOutput": true,
+    "sequentialStatus": "Certified",
+    "parallelStatus": "Certified"
+}

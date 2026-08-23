@@ -93,6 +93,12 @@ interface ProgressRepository {
         rewards = RewardBreakdown(resultingBalance = 0),
     )
 
+    /** Atomically records Auto Journey first completion and its interstitial cadence increment. */
+    suspend fun recordAutoJourneyCompletion(internalId: String): Boolean = false
+
+    /** Claims and consumes one exact five-completion opportunity; failed/no-fill ads create no debt. */
+    suspend fun claimInterstitialOpportunity(): Boolean = false
+
     suspend fun spendHintCoins(): HintSpendResult
 
     suspend fun cacheDailyChallenge(cache: DailyCache)

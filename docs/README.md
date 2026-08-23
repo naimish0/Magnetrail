@@ -15,9 +15,19 @@ This folder is the source of truth for the Android implementation of Magnetrail.
 
 - `Magnetrail_Campaign_Levels_v3.json` — canonical 2,205-level campaign asset.
 - `content/v9_expansion/` — Campaign V9 source snapshot, 2,000-level audit, and promotion evidence.
+- `content/v10_density_remediation/` — preserved V9 source, submitted-study findings, V10 density/diversity audit, promotion evidence, and the hash-bound legacy owner waiver retaining the rejected difficulty evidence.
+- `content/v11_pilot/` — preserved, excluded 53-board V11 partial-pilot source evidence; it has no current certificate, generator command, runtime asset, or production role.
+- `content/generator_v6/` — V6 contracts, bounded staging pilots, per-candidate audits, human-model status, command/hash reports, and fail-closed promotion evidence; not production content.
+- `content/generator_v6_1/` — automated-only V6.1 hard-negative regression, 24-board Expert capacity proof, and rejected strict production staging evidence; not production content.
+- `GENERATOR_V61_ARCHITECTURE.md` / `GENERATOR_V61_OPERATOR_COMMANDS.md` — dual-engine gates, Auto Journey, certification, promotion, and reproduction commands.
+- `privacy-policy.md` / `.html` and `DATA_SAFETY_MAPPING.md` — audited policy source, deployable page, and owner/console worksheet; external identity/contact/hosting remain blocked.
+- `magnetrail-playtest-pet-cffc4bb6.csv` — immutable submitted V9 playtest export retained as source evidence.
+- `magnetrail-playtest-pet-52c263fb.csv` — submitted V10 playtest evidence retained for rejection analysis.
+- `HUMAN_DIFFICULTY_PLAYTEST_PROTOCOL.md` — archived blinded-pilot protocol and approval gates.
 - `Magnetrail_Daily_Fallbacks_v1.json` — seven certified deterministic fallbacks.
 - `M3_CONTENT_REPORT.csv` / `.md` — reproducible certification and distribution report.
 - `M3_CONTENT_TOOLING.md` — bounded generation, staging, promotion, and certification commands.
+- `HUMAN_DIFFICULTY_PLAYTEST_PROTOCOL.md` — blind sampling, tester workflow, exports, and approval gates.
 - `M3_ECONOMY_SIMULATION.md` — frozen economy scenario results.
 - `M3_DAILY_BENCHMARK.md` — repeatable host JVM timing record.
 - `M3_MANUAL_QA.md` — campaign, Daily, economy, accessibility, and clock-change checks.

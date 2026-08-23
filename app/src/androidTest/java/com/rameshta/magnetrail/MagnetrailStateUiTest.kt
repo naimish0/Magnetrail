@@ -18,6 +18,7 @@ import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.runtime.mutableStateOf
 import com.rameshta.magnetrail.core.model.Arrow
 import com.rameshta.magnetrail.core.model.Direction
 import com.rameshta.magnetrail.core.model.LevelDefinition
@@ -40,6 +41,10 @@ import com.rameshta.magnetrail.game.GameMode
 import com.rameshta.magnetrail.core.economy.RewardBreakdown
 import com.rameshta.magnetrail.core.grading.AttemptGrade
 import com.rameshta.magnetrail.settings.SettingsScreen
+import com.rameshta.magnetrail.privacy.PrivacyPolicyScreen
+import com.rameshta.magnetrail.playtest.HumanPlaytestOutcome
+import com.rameshta.magnetrail.playtest.HumanPlaytestOutcomeDraft
+import com.rameshta.magnetrail.playtest.HumanPlaytestGuessResponse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -273,7 +278,7 @@ class MagnetrailStateUiTest {
     }
 
     @Test
-    fun settingsExposeDiagnosticsPrivacyOptionsAndDebugPolicyPlaceholder() {
+    fun settingsExposeDiagnosticsPrivacyOptionsAndInAppPolicyFallback() {
         composeRule.setContent {
             MagnetrailTheme {
                 SettingsScreen(
@@ -288,7 +293,92 @@ class MagnetrailStateUiTest {
 
         composeRule.onNodeWithContentDescription("Usage & crash diagnostics").assertIsDisplayed()
         composeRule.onNodeWithText("Privacy options").performScrollTo().assertIsDisplayed()
-        composeRule.onNodeWithText("Privacy policy").performScrollTo().assertIsDisplayed().assertIsNotEnabled()
+        composeRule.onNodeWithText("Privacy policy").performScrollTo().assertIsDisplayed().assertIsEnabled()
+    }
+
+    @Test
+    fun privacyFallbackIsAccessibleWithoutAnExternalBrowser() {
+        composeRule.setContent {
+            MagnetrailTheme { PrivacyPolicyScreen(onBack = {}) }
+        }
+
+        composeRule.onNodeWithText("Privacy Policy").assertIsDisplayed()
+        composeRule.onNodeWithContentDescription("Close privacy policy").assertHasClickAction()
+        composeRule.onNodeWithText("Advertising and consent").performScrollTo().assertIsDisplayed()
+    }
+
+    @Test
+    fun blindFeedbackScrollsThroughEveryRequiredAnswerAndCanContinue() {
+        val level = level(1, "Blind board")
+        val initial = level.initialState()
+        val state = mutableStateOf(
+            GameUiState(
+                levels = listOf(level),
+                currentLevelIndex = -1,
+                currentLevel = level,
+                initialState = initial,
+                boardState = initial,
+                gameMode = GameMode.PLAYTEST,
+                humanPlaytestOutcome = HumanPlaytestOutcomeDraft(
+                    outcome = HumanPlaytestOutcome.COMPLETED,
+                    finalAttemptActions = 1,
+                    totalActions = 1,
+                    totalOverloads = 0,
+                    hintsUsed = 0,
+                    restarts = 0,
+                    durationMillis = 1_000,
+                    startedAtEpochMillis = 1,
+                ),
+            ),
+        )
+        var submitted = false
+        composeRule.setContent {
+            MagnetrailTheme {
+                GameScreen(
+                    uiState = state.value,
+                    onAction = { action ->
+                        val feedback = state.value.humanPlaytestFeedback
+                        when (action) {
+                            is GameAction.RateHumanPlaytestBoard -> state.value = state.value.copy(
+                                humanPlaytestFeedback = feedback.copy(perceivedRating = action.rating),
+                            )
+                            is GameAction.RateHumanPlaytestFairness -> state.value = state.value.copy(
+                                humanPlaytestFeedback = feedback.copy(fairnessRating = action.rating),
+                            )
+                            is GameAction.SetHumanPlaytestGuessResponse -> state.value = state.value.copy(
+                                humanPlaytestFeedback = feedback.copy(guessResponse = action.response),
+                            )
+                            is GameAction.SetHumanPlaytestRepeatedStrategy -> state.value = state.value.copy(
+                                humanPlaytestFeedback = feedback.copy(repeatedStrategy = action.repeated),
+                            )
+                            GameAction.SubmitHumanPlaytestFeedback -> submitted = true
+                            else -> Unit
+                        }
+                    },
+                )
+            }
+        }
+
+        composeRule.onNodeWithTag("human_playtest_feedback_scroll").assert(hasScrollAction())
+        composeRule.onNodeWithText("Save response and continue")
+            .performScrollTo()
+            .assertIsDisplayed()
+            .assertIsNotEnabled()
+        composeRule.onNodeWithContentDescription("Rate 3, Hard").performScrollTo().performClick()
+        composeRule.onNodeWithContentDescription(
+            "Fairness rating 4 of 5: Mostly fair — visible reasoning usually worked",
+        ).performScrollTo().performClick()
+        composeRule.onNodeWithContentDescription("Required guessing: No").performScrollTo().performClick()
+        composeRule.onNodeWithContentDescription("Repeated strategy: No").performScrollTo().performClick()
+        composeRule.onNodeWithText("All required questions answered. Save to continue.")
+            .performScrollTo()
+            .assertIsDisplayed()
+        composeRule.onNodeWithText("Save response and continue")
+            .performScrollTo()
+            .assertIsDisplayed()
+            .assertIsEnabled()
+            .performClick()
+        composeRule.runOnIdle { assertTrue(submitted) }
     }
 
     @Test

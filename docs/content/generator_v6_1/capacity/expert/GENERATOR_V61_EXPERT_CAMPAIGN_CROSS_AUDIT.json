@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "status": "EXPERT_CAPACITY_CAMPAIGN_CROSS_AUDIT_PASS",
+  "capacityAcceptedCount": 24,
+  "campaignAcceptedNonTutorialCount": 85,
+  "campaignAcceptedExpertCount": 8,
+  "capacityAuditSha256": "72cb0336277cbbc7b26bdd1b4189dff6651a164ed3ff0a0c4c3cd48779f1575f",
+  "campaignAuditSha256": "3ceecf39799ec4fc4408497d4e0c39c18177509aea9ea20c0d3eb59d572a29ed",
+  "exactCollisionCount": 0,
+  "d4CollisionCount": 0,
+  "relevancePrunedD4CollisionCount": 0,
+  "causalGraphCollisionCount": 0,
+  "decisionDagCollisionCount": 0,
+  "solutionPolicyCollisionCount": 0,
+  "synthesisGraphCollisionCount": 0,
+  "note": "Operational fingerprint uniqueness within the checked capacity and final staged campaign corpora; not a claim of universal mathematical uniqueness."
+}
