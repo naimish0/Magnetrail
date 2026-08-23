@@ -281,6 +281,32 @@ val verifyPrivacyPolicyArtifacts by tasks.registering {
     }
 }
 
+val verifyProjectPage by tasks.registering {
+    group = "verification"
+    description = "Verify the public Magnetrail app-details page and its release-facing links."
+    val projectPage = rootProject.layout.projectDirectory.file("docs/project.html")
+    inputs.file(projectPage)
+    doLast {
+        val html = projectPage.asFile.readText()
+        val requiredContent = listOf(
+            "<title>Magnetrail — Android magnetic logic puzzle</title>",
+            "https://naimish0.github.io/Magnetrail/project.html",
+            "https://play.google.com/store/apps/details?id=com.rameshta.magnetrail",
+            "2,205 campaign levels",
+            "Naimish Gupta",
+            "naimish.app@gmail.com",
+            "href=\"index.html\">Privacy Policy</a>",
+            "Illustrated gameplay preview",
+        )
+        requiredContent.forEach { value ->
+            check(value in html) { "Public app-details page is missing required content: $value" }
+        }
+        check("<main id=\"main\">" in html && "</main>" in html)
+        check("<script type=\"application/ld+json\">" in html)
+        check("MAGNETRAIL_" !in html) { "Internal release configuration leaked into the public app-details page." }
+    }
+}
+
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     implementation(project(":game-core"))
@@ -439,6 +465,7 @@ tasks.register("verifyReleaseReadinessLocal") {
         "compileDebugAndroidTestKotlin",
         verifyGeneratorV6ReleaseExclusion,
         verifyPrivacyPolicyArtifacts,
+        verifyProjectPage,
         verifyReleaseManifest,
     )
 }

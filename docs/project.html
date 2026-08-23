@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#183153">
+  <meta name="description" content="Magnetrail is a calm Android logic game about arrows, magnetic fields, and finding the right sequence.">
+  <link rel="canonical" href="https://naimish0.github.io/Magnetrail/project.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Magnetrail — Bend the path. Clear the board.">
+  <meta property="og:description" content="Plan magnetic routes, master Pull and Push fields, and clear 2,205 campaign puzzles.">
+  <meta property="og:url" content="https://naimish0.github.io/Magnetrail/project.html">
+  <title>Magnetrail — Android magnetic logic puzzle</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Magnetrail",
+    "operatingSystem": "Android",
+    "applicationCategory": "GameApplication",
+    "description": "A calm arrow puzzle built around Pull and Push magnets, automatic polarity flips, and sequence reasoning.",
+    "author": {
+      "@type": "Person",
+      "name": "Naimish Gupta",
+      "email": "naimish.app@gmail.com"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "url": "https://naimish0.github.io/Magnetrail/project.html",
+    "downloadUrl": "https://play.google.com/store/apps/details?id=com.rameshta.magnetrail"
+  }
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --primary: #183153;
+      --primary-strong: #10223c;
+      --pull: #18a7b8;
+      --pull-soft: #e8f7f8;
+      --push: #e79a2d;
+      --push-soft: #fff4df;
+      --background: #f4f7fb;
+      --surface: #ffffff;
+      --ink: #172033;
+      --muted: #5b6574;
+      --border: #d7dee7;
+      --success: #267a5b;
+      --shadow: 0 22px 60px rgb(16 34 60 / 12%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+      text-rendering: optimizeLegibility;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--ink);
+      font-weight: 500;
+    }
+    a { color: inherit; }
+    a:focus-visible {
+      outline: 3px solid var(--push);
+      outline-offset: 4px;
+      border-radius: .35rem;
+    }
+    .skip-link {
+      position: fixed;
+      z-index: 20;
+      top: .75rem;
+      left: .75rem;
+      transform: translateY(-180%);
+      border-radius: .75rem;
+      background: var(--surface);
+      color: var(--primary);
+      padding: .75rem 1rem;
+      font-weight: 800;
+    }
+    .skip-link:focus { transform: translateY(0); }
+    .shell { width: min(1160px, calc(100% - 2rem)); margin-inline: auto; }
+
+    header {
+      position: relative;
+      z-index: 5;
+      border-bottom: 1px solid rgb(215 222 231 / 80%);
+      background: rgb(244 247 251 / 92%);
+      backdrop-filter: blur(16px);
+    }
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .75rem;
+      color: var(--primary-strong);
+      text-decoration: none;
+      font-size: 1.15rem;
+      font-weight: 850;
+      letter-spacing: -.02em;
+    }
+    .brand-mark { width: 42px; height: 42px; flex: 0 0 auto; }
+    .nav-links { display: flex; align-items: center; gap: .4rem; }
+    .nav-link {
+      border-radius: .75rem;
+      padding: .65rem .8rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .92rem;
+      font-weight: 750;
+    }
+    .nav-link:hover { background: var(--surface); color: var(--primary); }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(3.25rem, 8vw, 7rem) 0 clamp(4rem, 9vw, 7rem);
+    }
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(2px);
+      pointer-events: none;
+    }
+    .hero::before {
+      width: 34rem;
+      height: 34rem;
+      top: -20rem;
+      right: -10rem;
+      background: rgb(24 167 184 / 12%);
+    }
+    .hero::after {
+      width: 28rem;
+      height: 28rem;
+      bottom: -20rem;
+      left: -12rem;
+      background: rgb(231 154 45 / 11%);
+    }
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(360px, .98fr);
+      align-items: center;
+      gap: clamp(2.5rem, 7vw, 6rem);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      margin: 0 0 1rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--primary);
+      padding: .45rem .75rem;
+      font-size: .8rem;
+      font-weight: 850;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      content: "";
+      width: .55rem;
+      height: .55rem;
+      border-radius: 999px;
+      background: var(--pull);
+      box-shadow: 0 0 0 4px var(--pull-soft);
+    }
+    h1 {
+      max-width: 11ch;
+      margin: 0;
+      color: var(--primary-strong);
+      font-size: clamp(3rem, 7.2vw, 5.8rem);
+      line-height: .98;
+      letter-spacing: -.06em;
+    }
+    .hero-copy {
+      max-width: 38rem;
+      margin: 1.5rem 0 0;
+      color: var(--muted);
+      font-size: clamp(1.08rem, 2vw, 1.28rem);
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+    .button {
+      min-height: 54px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .7rem;
+      border: 1px solid transparent;
+      border-radius: 1rem;
+      padding: .8rem 1.15rem;
+      text-decoration: none;
+      font-weight: 850;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary {
+      background: var(--primary);
+      color: var(--surface);
+      box-shadow: 0 10px 24px rgb(24 49 83 / 20%);
+    }
+    .button-primary:hover { background: var(--primary-strong); }
+    .button-secondary { border-color: var(--border); background: var(--surface); color: var(--primary); }
+    .play-icon { width: 1.1rem; height: 1.1rem; }
+    .quick-facts { display: flex; flex-wrap: wrap; gap: .65rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
+    .quick-facts li {
+      border-radius: 999px;
+      background: var(--pull-soft);
+      color: var(--primary);
+      padding: .45rem .72rem;
+      font-size: .82rem;
+      font-weight: 800;
+    }
+
+    .phone-wrap { position: relative; display: grid; place-items: center; }
+    .field-orbit {
+      position: absolute;
+      width: min(100%, 31rem);
+      aspect-ratio: 1;
+      border: 1px dashed rgb(24 167 184 / 32%);
+      border-radius: 50%;
+    }
+    .phone {
+      position: relative;
+      width: min(100%, 350px);
+      border: 8px solid var(--primary-strong);
+      border-radius: 2.7rem;
+      background: var(--surface);
+      padding: 1rem 1rem 1.35rem;
+      box-shadow: var(--shadow);
+      transform: rotate(2deg);
+    }
+    .phone::before {
+      content: "";
+      display: block;
+      width: 38%;
+      height: .36rem;
+      margin: -.15rem auto 1rem;
+      border-radius: 999px;
+      background: var(--primary-strong);
+    }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .game-title { color: var(--primary); font-weight: 900; }
+    .level-pill { border-radius: 999px; background: var(--push-soft); color: #81520e; padding: .3rem .55rem; font-size: .72rem; font-weight: 850; }
+    .board {
+      position: relative;
+      aspect-ratio: 1;
+      margin-top: 1rem;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 1.4rem;
+      background-color: var(--background);
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 20% 20%;
+      box-shadow: inset 0 0 0 1px rgb(255 255 255 / 70%);
+    }
+    .magnet {
+      position: absolute;
+      width: 30%;
+      height: 30%;
+      border: 13px solid;
+      border-bottom-color: transparent;
+      border-radius: 50%;
+      transform: rotate(-45deg);
+    }
+    .magnet-pull { top: 14%; left: 14%; border-color: var(--pull); border-bottom-color: transparent; }
+    .magnet-push { right: 13%; bottom: 14%; border-color: var(--push); border-bottom-color: transparent; transform: rotate(135deg); }
+    .dart {
+      position: absolute;
+      width: 25%;
+      height: 9%;
+      border-radius: 999px 0 0 999px;
+      background: var(--primary);
+      filter: drop-shadow(0 5px 7px rgb(16 34 60 / 22%));
+    }
+    .dart::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -45%;
+      transform: translateY(-50%);
+      border-top: 1.15rem solid transparent;
+      border-bottom: 1.15rem solid transparent;
+      border-left: 1.55rem solid var(--primary);
+    }
+    .dart-one { top: 27%; left: 39%; transform: rotate(20deg); }
+    .dart-two { right: 32%; bottom: 27%; transform: rotate(200deg); }
+    .route {
+      position: absolute;
+      top: 46%;
+      left: 18%;
+      width: 62%;
+      height: 23%;
+      border-bottom: 4px dashed rgb(24 49 83 / 34%);
+      border-radius: 50%;
+      transform: rotate(-12deg);
+    }
+    .game-hint { margin: 1rem 0 0; color: var(--muted); font-size: .78rem; text-align: center; }
+    .preview-note { margin: 1rem 0 0; color: var(--muted); font-size: .75rem; text-align: center; }
+
+    section { padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
+    .section-tint { border-block: 1px solid var(--border); background: var(--surface); }
+    .section-heading { max-width: 46rem; }
+    .kicker { margin: 0 0 .65rem; color: var(--pull); font-size: .8rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+    h2 { margin: 0; color: var(--primary-strong); font-size: clamp(2rem, 4.5vw, 3.35rem); line-height: 1.05; letter-spacing: -.045em; }
+    .section-lede { margin: 1rem 0 0; color: var(--muted); font-size: 1.08rem; }
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2.5rem; }
+    .feature-card {
+      min-height: 225px;
+      border: 1px solid var(--border);
+      border-radius: 1.4rem;
+      background: var(--surface);
+      padding: 1.4rem;
+    }
+    .section-tint .feature-card { background: var(--background); }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 1rem;
+      background: var(--pull-soft);
+      color: var(--primary);
+      font-size: 1.35rem;
+      font-weight: 950;
+    }
+    .feature-card:nth-child(2) .feature-icon { background: var(--push-soft); }
+    .feature-card:nth-child(3) .feature-icon { background: #edf3fb; }
+    .feature-card h3 { margin: 1.1rem 0 .5rem; color: var(--primary); font-size: 1.08rem; }
+    .feature-card p { margin: 0; color: var(--muted); }
+
+    .steps { counter-reset: steps; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.75rem; }
+    .step { position: relative; padding-top: 4.25rem; }
+    .step::before {
+      counter-increment: steps;
+      content: counter(steps, decimal-leading-zero);
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: var(--push);
+      font-size: 2.5rem;
+      font-weight: 950;
+      line-height: 1;
+    }
+    .step h3 { margin: 0 0 .5rem; color: var(--primary); }
+    .step p { margin: 0; color: var(--muted); }
+
+    .modes {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: clamp(2rem, 7vw, 5rem);
+      align-items: start;
+    }
+    .mode-list { display: grid; gap: .8rem; }
+    .mode {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 1.2rem;
+      background: var(--surface);
+      padding: 1rem;
+    }
+    .mode-dot { width: .8rem; height: .8rem; margin-top: .38rem; border-radius: 50%; background: var(--pull); box-shadow: 0 0 0 5px var(--pull-soft); }
+    .mode:nth-child(even) .mode-dot { background: var(--push); box-shadow: 0 0 0 5px var(--push-soft); }
+    .mode h3 { margin: 0; color: var(--primary); font-size: 1rem; }
+    .mode p { margin: .3rem 0 0; color: var(--muted); font-size: .93rem; }
+
+    .details-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      background: var(--surface);
+      box-shadow: 0 12px 32px rgb(16 34 60 / 7%);
+    }
+    .detail { padding: 1.15rem 1.25rem; border-bottom: 1px solid var(--border); }
+    .detail:nth-child(odd) { border-right: 1px solid var(--border); }
+    .detail:nth-last-child(-n + 2) { border-bottom: 0; }
+    .detail dt { color: var(--muted); font-size: .76rem; font-weight: 850; letter-spacing: .07em; text-transform: uppercase; }
+    .detail dd { margin: .25rem 0 0; color: var(--primary); font-weight: 850; }
+
+    .cta {
+      position: relative;
+      overflow: hidden;
+      border-radius: 2rem;
+      background: var(--primary);
+      color: var(--surface);
+      padding: clamp(2rem, 7vw, 4.5rem);
+    }
+    .cta::after {
+      content: "";
+      position: absolute;
+      width: 22rem;
+      height: 22rem;
+      right: -8rem;
+      bottom: -13rem;
+      border: 3rem solid var(--pull);
+      border-radius: 50%;
+      opacity: .38;
+    }
+    .cta-content { position: relative; z-index: 1; max-width: 43rem; }
+    .cta h2 { color: var(--surface); }
+    .cta p { color: rgb(255 255 255 / 78%); font-size: 1.08rem; }
+    .cta .button-primary { background: var(--surface); color: var(--primary); }
+    .cta .button-primary:hover { background: var(--pull-soft); }
+
+    footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .88rem; }
+    .footer-grid { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .footer-links a { color: var(--primary); font-weight: 750; text-underline-offset: .16em; }
+
+    @media (max-width: 850px) {
+      .hero-grid, .modes { grid-template-columns: 1fr; }
+      .hero-copy { max-width: 34rem; }
+      .phone-wrap { margin-top: 1rem; }
+      .feature-grid, .steps { grid-template-columns: 1fr; }
+      .feature-card { min-height: 0; }
+    }
+    @media (max-width: 560px) {
+      .shell { width: min(100% - 1.25rem, 1160px); }
+      .nav { min-height: 66px; }
+      .nav-link:first-child { display: none; }
+      .hero { padding-top: 2.7rem; }
+      h1 { font-size: clamp(2.85rem, 17vw, 4.2rem); }
+      .hero-actions { display: grid; }
+      .button { width: 100%; }
+      .phone { width: min(90%, 330px); }
+      .details-card { grid-template-columns: 1fr; }
+      .detail:nth-child(odd) { border-right: 0; }
+      .detail:nth-last-child(2) { border-bottom: 1px solid var(--border); }
+      .footer-grid { align-items: flex-start; flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header>
+    <nav class="nav shell" aria-label="Primary navigation">
+      <a class="brand" href="project.html" aria-label="Magnetrail home">
+        <svg class="brand-mark" viewBox="0 0 108 108" role="img" aria-label="Magnetrail split magnet and arrow mark">
+          <rect width="108" height="108" rx="24" fill="#183153"/>
+          <path d="M48 25C32 28 23 39 23 54s9 26 25 29" fill="none" stroke="#18a7b8" stroke-width="9" stroke-linecap="round"/>
+          <path d="M60 25c16 3 25 14 25 29s-9 26-25 29" fill="none" stroke="#e79a2d" stroke-width="9" stroke-linecap="round"/>
+          <path d="M34 49h26v-8l17 13-17 13v-8H34z" fill="#fff"/>
+        </svg>
+        <span>Magnetrail</span>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="#features">Features</a>
+        <a class="nav-link" href="index.html">Privacy</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div class="hero">
+      <div class="hero-grid shell">
+        <div>
+          <p class="eyebrow">Magnetic logic puzzle</p>
+          <h1>Bend the path. Clear the board.</h1>
+          <p class="hero-copy">Every arrow has a direction. Every magnet changes the route. Find the right sequence, master polarity flips, and turn a crowded board into a clean solution.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://play.google.com/store/apps/details?id=com.rameshta.magnetrail" rel="noopener noreferrer">
+              <svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3.8v16.4c0 .7.8 1.1 1.4.7l12.8-8.2a.83.83 0 0 0 0-1.4L6.4 3.1C5.8 2.7 5 3.1 5 3.8Z"/></svg>
+              View on Google Play
+            </a>
+            <a class="button button-secondary" href="#how-it-works">See how it plays</a>
+          </div>
+          <ul class="quick-facts" aria-label="App highlights">
+            <li>2,205 campaign levels</li>
+            <li>Offline campaign</li>
+            <li>No account required</li>
+          </ul>
+        </div>
+
+        <div class="phone-wrap">
+          <div class="field-orbit" aria-hidden="true"></div>
+          <div class="phone" role="img" aria-label="Illustrated Magnetrail game board with Pull and Push magnets and two directional arrows">
+            <div class="game-top">
+              <span class="game-title">Magnetrail</span>
+              <span class="level-pill">POLARITY: PULL</span>
+            </div>
+            <div class="board" aria-hidden="true">
+              <span class="magnet magnet-pull"></span>
+              <span class="magnet magnet-push"></span>
+              <span class="route"></span>
+              <span class="dart dart-one"></span>
+              <span class="dart dart-two"></span>
+            </div>
+            <p class="game-hint">Choose the next arrow carefully.</p>
+          </div>
+          <p class="preview-note">Illustrated gameplay preview</p>
+        </div>
+      </div>
+    </div>
+
+    <section id="features" class="section-tint">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="kicker">Made for thoughtful play</p>
+          <h2>Simple rules. Satisfying consequences.</h2>
+          <p class="section-lede">Magnetrail keeps the interaction direct while letting route order, magnetic influence, and polarity create increasingly rich logic.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">↗</div>
+            <h3>Sequence matters</h3>
+            <p>Pick a directional arrow and watch its complete route resolve. One move can open—or close—the path for everything that remains.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">±</div>
+            <h3>Pull, Push, flip</h3>
+            <p>Magnetic fields bend routes, and polarity can flip after a magnetic move. Read the whole board before committing.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">✓</div>
+            <h3>Certified challenge</h3>
+            <p>A 2,205-level campaign moves from approachable lessons to demanding puzzles built for deliberate reasoning.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-it-works">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="kicker">How it works</p>
+          <h2>Read. Launch. Reconsider.</h2>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <h3>Read the field</h3>
+            <p>Check each arrow’s direction, the current polarity, walls, and the magnetic zones that can bend its path.</p>
+          </article>
+          <article class="step">
+            <h3>Choose an arrow</h3>
+            <p>Launch one arrow and let the board resolve the full route. Failed actions leave the board unchanged, so you can rethink safely.</p>
+          </article>
+          <article class="step">
+            <h3>Clear the board</h3>
+            <p>Use what changed—including any polarity flip—to find the next move. Remove every arrow to complete the puzzle.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tint">
+      <div class="modes shell">
+        <div class="section-heading">
+          <p class="kicker">Ways to play</p>
+          <h2>A puzzle ready for every kind of session.</h2>
+          <p class="section-lede">Settle into the campaign, keep a daily streak, or ask Magnetrail for another certified challenge.</p>
+        </div>
+        <div class="mode-list">
+          <article class="mode">
+            <span class="mode-dot" aria-hidden="true"></span>
+            <div><h3>Campaign</h3><p>Learn step by step, earn stars, and work through 2,205 levels at your own pace—even offline.</p></div>
+          </article>
+          <article class="mode">
+            <span class="mode-dot" aria-hidden="true"></span>
+            <div><h3>Daily Challenge</h3><p>Return for a focused daily board and build local streak progress.</p></div>
+          </article>
+          <article class="mode">
+            <span class="mode-dot" aria-hidden="true"></span>
+            <div><h3>Infinite</h3><p>Choose a difficulty and continue with more certified magnetic puzzles.</p></div>
+          </article>
+          <article class="mode">
+            <span class="mode-dot" aria-hidden="true"></span>
+            <div><h3>Auto Journey</h3><p>Keep moving through a prepared sequence when you reach the end of the numbered campaign.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <div class="section-heading">
+          <p class="kicker">App details</p>
+          <h2>Focused by design.</h2>
+          <p class="section-lede">No account, no leaderboard pressure, and controls for sound, haptics, reduced motion, contrast, path assistance, and optional diagnostics.</p>
+        </div>
+        <dl class="details-card">
+          <div class="detail"><dt>Platform</dt><dd>Android</dd></div>
+          <div class="detail"><dt>Category</dt><dd>Puzzle game</dd></div>
+          <div class="detail"><dt>Price</dt><dd>Free</dd></div>
+          <div class="detail"><dt>Account</dt><dd>Not required</dd></div>
+          <div class="detail"><dt>Campaign</dt><dd>Playable offline</dd></div>
+          <div class="detail"><dt>Publisher</dt><dd>Naimish Gupta</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section aria-labelledby="download-title">
+      <div class="cta shell">
+        <div class="cta-content">
+          <p class="kicker">Your next move</p>
+          <h2 id="download-title">Ready to follow the field?</h2>
+          <p>Start with approachable magnetic routes, then keep going until every arrow has a way out.</p>
+          <a class="button button-primary" href="https://play.google.com/store/apps/details?id=com.rameshta.magnetrail" rel="noopener noreferrer">View Magnetrail on Google Play</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-grid shell">
+      <span>© 2026 Naimish Gupta. Magnetrail.</span>
+      <div class="footer-links">
+        <a href="index.html">Privacy Policy</a>
+        <a href="mailto:naimish.app@gmail.com">Contact</a>
+        <a href="https://play.google.com/store/apps/details?id=com.rameshta.magnetrail" rel="noopener noreferrer">Google Play</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
