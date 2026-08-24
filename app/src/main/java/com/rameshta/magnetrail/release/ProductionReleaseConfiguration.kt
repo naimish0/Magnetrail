@@ -4,6 +4,7 @@ data class ProductionReleaseConfiguration(
     val adMobAppId: String,
     val rewardedAdUnitId: String,
     val interstitialAdUnitId: String,
+    val appOpenAdUnitId: String,
     val privacyPolicyUrl: String,
     val targetAudience: String,
     val liveAdsEnabled: Boolean,
@@ -28,6 +29,9 @@ object ProductionReleaseConfigurationValidator {
         }
         if (!validProductionUnit(configuration.interstitialAdUnitId)) {
             add("interstitial ad-unit ID is missing, malformed, or a Google test unit")
+        }
+        if (!validProductionUnit(configuration.appOpenAdUnitId)) {
+            add("app-open ad-unit ID is missing, malformed, or a Google test unit")
         }
         val policyUri = runCatching { java.net.URI(configuration.privacyPolicyUrl) }.getOrNull()
         if (policyUri?.scheme != "https" || policyUri.host.isNullOrBlank() || policyUri.userInfo != null) {

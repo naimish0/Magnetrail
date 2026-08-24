@@ -2,16 +2,11 @@ package com.rameshta.magnetrail
 
 import android.app.Application
 import com.rameshta.magnetrail.ads.AdConfiguration
-import com.rameshta.magnetrail.ads.FullScreenAdCoordinator
-import com.rameshta.magnetrail.ads.GoogleAdInitializer
-import com.rameshta.magnetrail.ads.GoogleInterstitialAdService
-import com.rameshta.magnetrail.ads.GoogleRewardedAdService
-import com.rameshta.magnetrail.ads.InterstitialAdService
-import com.rameshta.magnetrail.ads.NoOpInterstitialAdService
-import com.rameshta.magnetrail.ads.NoOpRewardedAdService
-import com.rameshta.magnetrail.ads.RewardedAdService
+import com.rameshta.magnetrail.ads.AppOpenAdService
 import com.rameshta.magnetrail.ads.ForegroundAdClock
-import com.rameshta.magnetrail.analytics.AnalyticsEvent
+import com.rameshta.magnetrail.ads.FullScreenAdCoordinator
+import com.rameshta.magnetrail.ads.InterstitialAdService
+import com.rameshta.magnetrail.ads.RewardedAdService
 import com.rameshta.magnetrail.analytics.AnalyticsTracker
 import com.rameshta.magnetrail.analytics.FirebaseAnalyticsTracker
 import com.rameshta.magnetrail.analytics.NoOpAnalyticsTracker
@@ -21,8 +16,6 @@ import com.rameshta.magnetrail.crash.FirebaseCrashReporter
 import com.rameshta.magnetrail.crash.NoOpCrashReporter
 import com.rameshta.magnetrail.privacy.ObservabilityController
 import com.rameshta.magnetrail.privacy.PrivacyManager
-import com.rameshta.magnetrail.privacy.UmpPrivacyManager
-import com.rameshta.magnetrail.privacy.NoOpPrivacyManager
 import com.rameshta.magnetrail.core.economy.EconomyConfig
 import com.rameshta.magnetrail.core.generation.v5.CAMPAIGN_CONTENT_VERSION
 import com.rameshta.magnetrail.core.generation.v5.GENERATOR_VERSION_V5
@@ -41,6 +34,7 @@ class MagnetrailApplication : Application() {
                     adMobAppId = BuildConfig.ADMOB_APP_ID,
                     rewardedAdUnitId = BuildConfig.REWARDED_AD_UNIT_ID,
                     interstitialAdUnitId = BuildConfig.INTERSTITIAL_AD_UNIT_ID,
+                    appOpenAdUnitId = BuildConfig.APP_OPEN_AD_UNIT_ID,
                     privacyPolicyUrl = BuildConfig.PRIVACY_POLICY_URL,
                     targetAudience = BuildConfig.TARGET_AUDIENCE,
                     liveAdsEnabled = BuildConfig.MONETIZATION_ENABLED,
@@ -58,42 +52,14 @@ class MagnetrailApplication : Application() {
         val crashReporter = if (automatedTest) NoOpCrashReporter else FirebaseCrashReporter.createOrNoOp(this)
         val clock = ForegroundAdClock()
         val coordinator = FullScreenAdCoordinator(clock)
-        lateinit var privacyManager: PrivacyManager
-        val rewarded: RewardedAdService
-        val interstitial: InterstitialAdService
-        if (configuration.enabled) {
-            rewarded = GoogleRewardedAdService(
-                this,
-                configuration,
-                canRequestAds = { privacyManager.state.value.canRequestAds },
-                coordinator = coordinator,
-                analytics = analytics,
-            )
-            interstitial = GoogleInterstitialAdService(
-                this,
-                configuration,
-                canRequestAds = { privacyManager.state.value.canRequestAds },
-                coordinator = coordinator,
-                analytics = analytics,
-            )
-        } else {
-            rewarded = NoOpRewardedAdService()
-            interstitial = NoOpInterstitialAdService()
-        }
-        val initializer = GoogleAdInitializer(this, configuration) {
-            rewarded.preloadIfAllowed()
-            interstitial.preloadIfAllowed()
-        }
-        privacyManager = if (automatedTest || !configuration.enabled) {
-            NoOpPrivacyManager()
-        } else {
-            UmpPrivacyManager(
-                context = this,
-                fullScreenCoordinator = coordinator,
-                onAdsPermitted = initializer::initializeOnce,
-                onResult = { analytics.track(AnalyticsEvent.ConsentFlowResult(it.name.lowercase())) },
-            )
-        }
+        val monetization = createVariantMonetizationServices(
+            context = this,
+            configuration = configuration,
+            automatedTest = automatedTest,
+            coordinator = coordinator,
+            analytics = analytics,
+            clock = clock,
+        )
         crashReporter.setKey(CrashKey.APP_VERSION, BuildConfig.VERSION_NAME)
         crashReporter.setKey(CrashKey.ENGINE_VERSION, "magnetrail-core-1")
         crashReporter.setKey(CrashKey.CONTENT_VERSION, CAMPAIGN_CONTENT_VERSION.toString())
@@ -105,9 +71,10 @@ class MagnetrailApplication : Application() {
             crashReporter = crashReporter,
             observability = ObservabilityController(analytics, crashReporter),
             coordinator = coordinator,
-            privacyManager = privacyManager,
-            rewardedAdService = rewarded,
-            interstitialAdService = interstitial,
+            privacyManager = monetization.privacyManager,
+            rewardedAdService = monetization.rewarded,
+            interstitialAdService = monetization.interstitial,
+            appOpenAdService = monetization.appOpen,
             clock = clock,
         )
     }
@@ -118,6 +85,13 @@ class MagnetrailApplication : Application() {
     }.getOrDefault(false)
 }
 
+internal data class VariantMonetizationServices(
+    val privacyManager: PrivacyManager,
+    val rewarded: RewardedAdService,
+    val interstitial: InterstitialAdService,
+    val appOpen: AppOpenAdService,
+)
+
 data class M4Services(
     val configuration: AdConfiguration,
     val analytics: AnalyticsTracker,
@@ -127,5 +101,6 @@ data class M4Services(
     val privacyManager: PrivacyManager,
     val rewardedAdService: RewardedAdService,
     val interstitialAdService: InterstitialAdService,
+    val appOpenAdService: AppOpenAdService,
     val clock: ForegroundAdClock,
 )

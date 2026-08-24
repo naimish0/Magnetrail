@@ -7,6 +7,7 @@ data class AdConfiguration(
     val mode: String,
     val rewardedAdUnitId: String,
     val interstitialAdUnitId: String,
+    val appOpenAdUnitId: String,
 ) {
     val isTestConfiguration: Boolean get() = mode == "google_test"
 
@@ -16,6 +17,7 @@ data class AdConfiguration(
             mode = BuildConfig.AD_CONFIGURATION_MODE,
             rewardedAdUnitId = BuildConfig.REWARDED_AD_UNIT_ID,
             interstitialAdUnitId = BuildConfig.INTERSTITIAL_AD_UNIT_ID,
+            appOpenAdUnitId = BuildConfig.APP_OPEN_AD_UNIT_ID,
         )
     }
 }

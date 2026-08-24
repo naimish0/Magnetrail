@@ -1265,6 +1265,9 @@ class GeneratorV61(
         when {
             existing.exactLayout == candidate.exactLayout -> "REJECT_EXACT_DUPLICATE"
             existing.d4Layout == candidate.d4Layout -> "REJECT_D4_DUPLICATE"
+            existing.arrowLayout == candidate.arrowLayout -> "REJECT_ARROW_LAYOUT_DUPLICATE"
+            existing.interactiveLayout == candidate.interactiveLayout -> "REJECT_INTERACTIVE_LAYOUT_DUPLICATE"
+            existing.perceptualLayout == candidate.perceptualLayout -> "REJECT_PERCEPTUAL_LAYOUT_DUPLICATE"
             existing.relevancePrunedD4Layout == candidate.relevancePrunedD4Layout -> "REJECT_RELEVANCE_DUPLICATE"
             existing.causalHypergraph == candidate.causalHypergraph -> "REJECT_CAUSAL_DUPLICATE"
             existing.quotientDecisionDag == candidate.quotientDecisionDag -> "REJECT_DECISION_DAG_DUPLICATE"

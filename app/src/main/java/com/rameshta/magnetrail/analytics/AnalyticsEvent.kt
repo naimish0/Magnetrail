@@ -128,6 +128,26 @@ sealed interface AnalyticsEvent {
         override val parameters = emptyMap<String, Any>()
     }
 
+    data class AppOpenEligible(val reason: String, val outcome: String) : AnalyticsEvent {
+        override val name = "app_open_eligible"
+        override val parameters = mapOf("reason" to reason, "outcome" to outcome)
+    }
+
+    data class AppOpenLoadResult(val result: String) : AnalyticsEvent {
+        override val name = "app_open_load_result"
+        override val parameters = mapOf("result" to result)
+    }
+
+    data object AppOpenShow : AnalyticsEvent {
+        override val name = "app_open_show"
+        override val parameters = emptyMap<String, Any>()
+    }
+
+    data object AppOpenDismiss : AnalyticsEvent {
+        override val name = "app_open_dismiss"
+        override val parameters = emptyMap<String, Any>()
+    }
+
     data class AdShowFailure(val format: String, val category: String) : AnalyticsEvent {
         override val name = "ad_show_failure"
         override val parameters = mapOf("format" to format, "category" to category)

@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 
 /**
- * O(1) exact uniqueness gates plus an exact semantic-neighbour verification bucket.
+ * O(1) layout/structural uniqueness gates plus an exact semantic-neighbour verification bucket.
  *
  * V6.1 semantic similarity cannot exceed 0.75 when the solution-policy fingerprints differ:
  * descriptor similarity contributes at most 0.60 and rhythm contributes at most 0.15. Therefore
@@ -17,6 +17,9 @@ import java.util.concurrent.atomic.AtomicLong
 class V61FingerprintIndex(fingerprints: Collection<V6FingerprintBundle> = emptyList()) {
     private val exact = linkedSetOf<String>()
     private val d4 = linkedSetOf<String>()
+    private val arrows = linkedSetOf<String>()
+    private val interactive = linkedSetOf<String>()
+    private val perceptual = linkedSetOf<String>()
     private val relevance = linkedSetOf<String>()
     private val causal = linkedSetOf<String>()
     private val dags = linkedSetOf<String>()
@@ -31,10 +34,15 @@ class V61FingerprintIndex(fingerprints: Collection<V6FingerprintBundle> = emptyL
 
     val size: Int get() = ordered.size
 
-    /** Exact structural gates that require no DAG, solver, occupancy, or causal analysis. */
+    /** Visual gates that require no DAG, solver, occupancy, or causal analysis. */
     fun layoutDuplicateReason(level: LevelDefinition): String? = when {
         ContentFingerprint.exact(level) in exact -> "REJECT_EXACT_DUPLICATE"
         ContentFingerprint.symmetryNormalized(level) in d4 -> "REJECT_D4_DUPLICATE"
+        ContentFingerprint.arrowLayoutSymmetryNormalized(level) in arrows -> "REJECT_ARROW_LAYOUT_DUPLICATE"
+        ContentFingerprint.interactiveLayoutSymmetryNormalized(level) in interactive ->
+            "REJECT_INTERACTIVE_LAYOUT_DUPLICATE"
+        ContentFingerprint.perceptualTemplateSignature(level) in perceptual ->
+            "REJECT_PERCEPTUAL_LAYOUT_DUPLICATE"
         else -> null
     }
 
@@ -43,6 +51,9 @@ class V61FingerprintIndex(fingerprints: Collection<V6FingerprintBundle> = emptyL
         ordered += value
         exact += value.exactLayout
         d4 += value.d4Layout
+        arrows += value.arrowLayout
+        interactive += value.interactiveLayout
+        perceptual += value.perceptualLayout
         relevance += value.relevancePrunedD4Layout
         causal += value.causalHypergraph
         dags += value.quotientDecisionDag
@@ -54,6 +65,9 @@ class V61FingerprintIndex(fingerprints: Collection<V6FingerprintBundle> = emptyL
     fun duplicateReason(candidate: V6FingerprintBundle): String? = when {
         candidate.exactLayout in exact -> "REJECT_EXACT_DUPLICATE"
         candidate.d4Layout in d4 -> "REJECT_D4_DUPLICATE"
+        candidate.arrowLayout in arrows -> "REJECT_ARROW_LAYOUT_DUPLICATE"
+        candidate.interactiveLayout in interactive -> "REJECT_INTERACTIVE_LAYOUT_DUPLICATE"
+        candidate.perceptualLayout in perceptual -> "REJECT_PERCEPTUAL_LAYOUT_DUPLICATE"
         candidate.relevancePrunedD4Layout in relevance -> "REJECT_RELEVANCE_DUPLICATE"
         candidate.causalHypergraph in causal -> "REJECT_CAUSAL_DUPLICATE"
         candidate.quotientDecisionDag in dags -> "REJECT_DECISION_DAG_DUPLICATE"
@@ -80,6 +94,21 @@ class V61FingerprintIndex(fingerprints: Collection<V6FingerprintBundle> = emptyL
                 .thenBy { it.first.exactLayout })
         return nearest?.first?.exactLayout to (nearest?.second ?: 0.0)
     }
+}
+
+internal fun duplicateRejectionCodeV6(reason: String): V6RejectionCode = when (reason) {
+    "REJECT_EXACT_DUPLICATE" -> V6RejectionCode.EXACT_DUPLICATE
+    "REJECT_D4_DUPLICATE" -> V6RejectionCode.D4_DUPLICATE
+    "REJECT_ARROW_LAYOUT_DUPLICATE" -> V6RejectionCode.ARROW_LAYOUT_DUPLICATE
+    "REJECT_INTERACTIVE_LAYOUT_DUPLICATE" -> V6RejectionCode.INTERACTIVE_LAYOUT_DUPLICATE
+    "REJECT_PERCEPTUAL_LAYOUT_DUPLICATE" -> V6RejectionCode.PERCEPTUAL_LAYOUT_DUPLICATE
+    "REJECT_RELEVANCE_DUPLICATE" -> V6RejectionCode.RELEVANCE_DUPLICATE
+    "REJECT_CAUSAL_DUPLICATE" -> V6RejectionCode.CAUSAL_DUPLICATE
+    "REJECT_DECISION_DAG_DUPLICATE" -> V6RejectionCode.DECISION_DAG_DUPLICATE
+    "REJECT_SOLUTION_POLICY_DUPLICATE" -> V6RejectionCode.SOLUTION_POLICY_DUPLICATE
+    "REJECT_SYNTHESIS_GRAPH_DUPLICATE" -> V6RejectionCode.SYNTHESIS_GRAPH_DUPLICATE
+    "REJECT_NEAR_SEMANTIC_DUPLICATE" -> V6RejectionCode.NEAR_SEMANTIC_CLONE
+    else -> error("Unknown V6 duplicate rejection reason '$reason'")
 }
 
 internal fun semanticSimilarityV61(first: V6FingerprintBundle, second: V6FingerprintBundle): Double {

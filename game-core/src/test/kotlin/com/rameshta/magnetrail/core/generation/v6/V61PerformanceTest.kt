@@ -152,6 +152,37 @@ class V61PerformanceTest {
         assertEquals("REJECT_EXACT_DUPLICATE", index.layoutDuplicateReason(board.copy(id = "renamed")))
     }
 
+    @Test
+    fun `indexed uniqueness gate rejects visual and relevance clones independently`() {
+        val archived = fingerprint("a", "policy-a", descriptor = List(18) { 1.0 })
+        val index = V61FingerprintIndex(listOf(archived))
+
+        assertEquals(
+            "REJECT_ARROW_LAYOUT_DUPLICATE",
+            index.duplicateReason(fingerprint("b", "policy-b", List(18) { 2.0 }).copy(
+                arrowLayout = archived.arrowLayout,
+            )),
+        )
+        assertEquals(
+            "REJECT_INTERACTIVE_LAYOUT_DUPLICATE",
+            index.duplicateReason(fingerprint("c", "policy-c", List(18) { 3.0 }).copy(
+                interactiveLayout = archived.interactiveLayout,
+            )),
+        )
+        assertEquals(
+            "REJECT_PERCEPTUAL_LAYOUT_DUPLICATE",
+            index.duplicateReason(fingerprint("d", "policy-d", List(18) { 4.0 }).copy(
+                perceptualLayout = archived.perceptualLayout,
+            )),
+        )
+        assertEquals(
+            "REJECT_RELEVANCE_DUPLICATE",
+            index.duplicateReason(fingerprint("e", "policy-e", List(18) { 5.0 }).copy(
+                relevancePrunedD4Layout = archived.relevancePrunedD4Layout,
+            )),
+        )
+    }
+
     private fun level(direction: Direction) = LevelDefinition(
         id = "cache-level",
         number = 1,

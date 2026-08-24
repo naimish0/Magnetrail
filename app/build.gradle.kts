@@ -1,4 +1,6 @@
 import java.net.URI
+import java.util.Properties
+import java.util.zip.ZipFile
 
 plugins {
     alias(libs.plugins.android.application)
@@ -12,13 +14,20 @@ plugins {
 val googleSampleAppId = "ca-app-pub-3940256099942544~3347511713"
 val googleRewardedTestId = "ca-app-pub-3940256099942544/5224354917"
 val googleInterstitialTestId = "ca-app-pub-3940256099942544/1033173712"
+val googleAppOpenTestId = "ca-app-pub-3940256099942544/9257395921"
 val blockedReleaseAppId = "ca-app-pub-0000000000000000~0000000000"
 val adMobAppIdPattern = Regex("^ca-app-pub-[0-9]{16}~[0-9]{10}$")
 val adMobUnitIdPattern = Regex("^ca-app-pub-[0-9]{16}/[0-9]{10}$")
 
 fun String.asBuildConfigString(): String = "\"${replace("\\", "\\\\").replace("\"", "\\\"")}\""
+val localReleaseProperties = providers.fileContents(
+    rootProject.layout.projectDirectory.file("release.properties"),
+).asText.orElse("").map { contents ->
+    Properties().apply { contents.reader().use(::load) }
+}
 fun secureBuildValue(name: String): String = providers.environmentVariable(name)
     .orElse(providers.gradleProperty(name))
+    .orElse(localReleaseProperties.map { it.getProperty(name).orEmpty() })
     .orNull
     .orEmpty()
 
@@ -26,6 +35,7 @@ val productionReleaseRequested = secureBuildValue("MAGNETRAIL_PRODUCTION_RELEASE
 val releaseAdMobAppId = secureBuildValue("MAGNETRAIL_ADMOB_APP_ID")
 val releaseRewardedId = secureBuildValue("MAGNETRAIL_REWARDED_AD_UNIT_ID")
 val releaseInterstitialId = secureBuildValue("MAGNETRAIL_INTERSTITIAL_AD_UNIT_ID")
+val releaseAppOpenId = secureBuildValue("MAGNETRAIL_APP_OPEN_AD_UNIT_ID")
 val releasePrivacyPolicyUrl = secureBuildValue("MAGNETRAIL_PRIVACY_POLICY_URL")
 val releaseTargetAudience = secureBuildValue("MAGNETRAIL_TARGET_AUDIENCE")
 val releaseLiveAdsRequested = secureBuildValue("MAGNETRAIL_ENABLE_LIVE_ADS") == "true"
@@ -56,6 +66,9 @@ fun productionConfigurationProblems(): List<String> = buildList {
     }
     if (!adMobUnitIdPattern.matches(releaseInterstitialId) || releaseInterstitialId == googleInterstitialTestId) {
         add("MAGNETRAIL_INTERSTITIAL_AD_UNIT_ID must be a non-test production unit ID")
+    }
+    if (!adMobUnitIdPattern.matches(releaseAppOpenId) || releaseAppOpenId == googleAppOpenTestId) {
+        add("MAGNETRAIL_APP_OPEN_AD_UNIT_ID must be a non-test production unit ID")
     }
     val policyUri = runCatching { URI(releasePrivacyPolicyUrl) }.getOrNull()
     if (policyUri?.scheme != "https" || policyUri.host.isNullOrBlank()) {
@@ -123,6 +136,7 @@ android {
         buildConfigField("String", "ADMOB_APP_ID", googleSampleAppId.asBuildConfigString())
         buildConfigField("String", "REWARDED_AD_UNIT_ID", googleRewardedTestId.asBuildConfigString())
         buildConfigField("String", "INTERSTITIAL_AD_UNIT_ID", googleInterstitialTestId.asBuildConfigString())
+        buildConfigField("String", "APP_OPEN_AD_UNIT_ID", googleAppOpenTestId.asBuildConfigString())
         buildConfigField("String", "PRIVACY_POLICY_URL", releasePrivacyPolicyUrl.asBuildConfigString())
         buildConfigField("String", "TARGET_AUDIENCE", "unspecified".asBuildConfigString())
         buildConfigField("boolean", "PRODUCTION_RELEASE_REQUESTED", "false")
@@ -180,11 +194,33 @@ android {
                 "INTERSTITIAL_AD_UNIT_ID",
                 releaseInterstitialId.asBuildConfigString(),
             )
+            buildConfigField(
+                "String",
+                "APP_OPEN_AD_UNIT_ID",
+                releaseAppOpenId.asBuildConfigString(),
+            )
             buildConfigField("String", "PRIVACY_POLICY_URL", releasePrivacyPolicyUrl.asBuildConfigString())
             buildConfigField("String", "TARGET_AUDIENCE", releaseTargetAudience.ifBlank { "unspecified" }.asBuildConfigString())
             buildConfigField("boolean", "PRODUCTION_RELEASE_REQUESTED", productionReleaseRequested.toString())
             buildConfigField("boolean", "FIREBASE_CONFIGURED", releaseFirebaseConfigured.toString())
             buildConfigField("boolean", "UPLOAD_SIGNING_CONFIGURED", uploadSigningConfigured.toString())
+        }
+        create("noAds") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".noads"
+            versionNameSuffix = "-no-ads"
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+            manifestPlaceholders["adMobAppId"] = blockedReleaseAppId
+            buildConfigField("boolean", "MONETIZATION_ENABLED", "false")
+            buildConfigField("String", "AD_CONFIGURATION_MODE", "no_ads".asBuildConfigString())
+            buildConfigField("String", "ADMOB_APP_ID", "".asBuildConfigString())
+            buildConfigField("String", "REWARDED_AD_UNIT_ID", "".asBuildConfigString())
+            buildConfigField("String", "INTERSTITIAL_AD_UNIT_ID", "".asBuildConfigString())
+            buildConfigField("String", "APP_OPEN_AD_UNIT_ID", "".asBuildConfigString())
+            buildConfigField("String", "TARGET_AUDIENCE", "unspecified".asBuildConfigString())
+            buildConfigField("boolean", "PRODUCTION_RELEASE_REQUESTED", "false")
+            buildConfigField("boolean", "UPLOAD_SIGNING_CONFIGURED", "false")
         }
     }
     compileOptions {
@@ -209,9 +245,13 @@ android {
             )
         }
         named("debug") {
+            kotlin.directories.add("src/withAds/java")
             assets.directories.add(
                 layout.buildDirectory.dir("generated/magnetrailDebugAssetsV6").get().asFile.absolutePath,
             )
+        }
+        named("release") {
+            kotlin.directories.add("src/withAds/java")
         }
     }
 }
@@ -316,12 +356,15 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.datastore.preferences)
-    implementation(libs.google.mobile.ads)
+    debugImplementation(libs.google.mobile.ads)
+    releaseImplementation(libs.google.mobile.ads)
     // Mobile Ads 25.4.0 declares WorkManager 2.7.0. Pin the current stable runtime for
     // Android 16 compatibility and to prevent its obsolete Room database from crashing
     // optimized release startup.
-    implementation(libs.androidx.work.runtime)
-    implementation(libs.google.ump)
+    debugImplementation(libs.androidx.work.runtime)
+    releaseImplementation(libs.androidx.work.runtime)
+    debugImplementation(libs.google.ump)
+    releaseImplementation(libs.google.ump)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
@@ -374,6 +417,56 @@ val validateReleaseConfiguration by tasks.registering {
 
 val releaseMergedManifest = layout.buildDirectory
     .file("intermediates/merged_manifests/release/processReleaseManifest/AndroidManifest.xml")
+
+val noAdsMergedManifest = layout.buildDirectory
+    .file("intermediates/merged_manifests/noAds/processNoAdsManifest/AndroidManifest.xml")
+val noAdsApk = layout.buildDirectory.file("outputs/apk/noAds/app-noAds.apk")
+
+val verifyNoAdsVariant by tasks.registering {
+    group = "verification"
+    description = "Assert the noAds variant cannot initialize or request Google ads."
+    dependsOn("assembleNoAds", "processNoAdsManifest")
+    inputs.file(noAdsMergedManifest)
+    inputs.file(noAdsApk)
+    doLast {
+        val manifestFile = inputs.files.files.single { it.name == "AndroidManifest.xml" }
+        check(manifestFile.isFile) { "Merged noAds manifest was not generated" }
+        val manifest = manifestFile.readText()
+        val forbiddenManifestEntries = listOf(
+            "com.google.android.gms.ads.APPLICATION_ID",
+            "com.google.android.gms.ads.AdActivity",
+            "com.google.android.gms.ads.AdService",
+            "com.google.android.gms.ads.MobileAdsInitProvider",
+            "com.google.android.gms.permission.AD_ID",
+            "android.permission.ACCESS_ADSERVICES_AD_ID",
+            "android.permission.ACCESS_ADSERVICES_ATTRIBUTION",
+            "android.permission.ACCESS_ADSERVICES_TOPICS",
+        )
+        forbiddenManifestEntries.forEach { entry ->
+            check(entry !in manifest) { "No-ads manifest still contains ad entry: $entry" }
+        }
+        check("package=\"com.rameshta.magnetrail.noads\"" in manifest) {
+            "The noAds build must keep its independently installable application ID"
+        }
+        val apkFile = inputs.files.files.single { it.extension == "apk" }
+        val forbiddenDexReferences = listOf(
+            "Lcom/google/android/gms/ads/MobileAds;",
+            "Lcom/google/android/gms/ads/AdRequest;",
+            "Lcom/google/android/ump/UserMessagingPlatform;",
+        )
+        ZipFile(apkFile).use { apk ->
+            val dexPayloads = apk.entries().asSequence()
+                .filter { it.name.endsWith(".dex") }
+                .map { String(apk.getInputStream(it).readBytes(), Charsets.ISO_8859_1) }
+                .toList()
+            forbiddenDexReferences.forEach { reference ->
+                check(dexPayloads.none { reference in it }) {
+                    "No-ads APK still references an ad SDK type: $reference"
+                }
+            }
+        }
+    }
+}
 
 val verifyReleaseManifest by tasks.registering {
     group = "verification"

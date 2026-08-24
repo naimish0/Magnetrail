@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.rameshta.magnetrail.ads.AdConfiguration
 import com.rameshta.magnetrail.data.DataStoreProgressRepository
 import com.rameshta.magnetrail.data.PLAYER_PREFERENCES_SCHEMA_VERSION
 import com.rameshta.magnetrail.data.playerDataStoreCorruptionHandler
@@ -35,6 +36,7 @@ class M5ReleaseReadinessTest {
                 adMobAppId = "ca-app-pub-3940256099942544~3347511713",
                 rewardedAdUnitId = "ca-app-pub-3940256099942544/5224354917",
                 interstitialAdUnitId = "ca-app-pub-3940256099942544/1033173712",
+                appOpenAdUnitId = "ca-app-pub-3940256099942544/9257395921",
                 privacyPolicyUrl = "http://example.test/privacy",
                 targetAudience = "unspecified",
                 liveAdsEnabled = false,
@@ -43,7 +45,7 @@ class M5ReleaseReadinessTest {
             ),
         )
 
-        assertEquals(8, problems.size)
+        assertEquals(9, problems.size)
     }
 
     @Test
@@ -53,6 +55,7 @@ class M5ReleaseReadinessTest {
                 adMobAppId = "ca-app-pub-1234567890123456~1234567890",
                 rewardedAdUnitId = "ca-app-pub-1234567890123456/1234567890",
                 interstitialAdUnitId = "ca-app-pub-1234567890123456/0987654321",
+                appOpenAdUnitId = "ca-app-pub-1234567890123456/1122334455",
                 privacyPolicyUrl = "https://example.test/magnetrail/privacy",
                 targetAudience = "general",
                 liveAdsEnabled = true,
@@ -112,6 +115,23 @@ class M5ReleaseReadinessTest {
         assertFalse("3940256099942544" in BuildConfig.ADMOB_APP_ID)
         assertFalse("3940256099942544" in BuildConfig.REWARDED_AD_UNIT_ID)
         assertFalse("3940256099942544" in BuildConfig.INTERSTITIAL_AD_UNIT_ID)
+        assertFalse("3940256099942544" in BuildConfig.APP_OPEN_AD_UNIT_ID)
+    }
+
+    @Test
+    fun `no ads variant disables every ad entry point`() {
+        if (BuildConfig.AD_CONFIGURATION_MODE != "no_ads") return
+
+        val configuration = AdConfiguration.fromBuild()
+        assertFalse(BuildConfig.DEBUG)
+        assertFalse(BuildConfig.PRODUCTION_RELEASE_REQUESTED)
+        assertFalse(configuration.enabled)
+        assertEquals("no_ads", configuration.mode)
+        assertTrue(configuration.rewardedAdUnitId.isBlank())
+        assertTrue(configuration.interstitialAdUnitId.isBlank())
+        assertTrue(configuration.appOpenAdUnitId.isBlank())
+        assertTrue(BuildConfig.ADMOB_APP_ID.isBlank())
+        assertTrue(BuildConfig.APPLICATION_ID.endsWith(".noads"))
     }
 
     @Test

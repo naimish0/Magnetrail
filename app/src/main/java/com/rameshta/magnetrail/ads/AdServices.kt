@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 enum class RewardedAdState { BLOCKED, LOADING, READY, SHOWING, UNAVAILABLE }
 enum class InterstitialAdState { BLOCKED, LOADING, READY, SHOWING, UNAVAILABLE }
+enum class AppOpenAdState { BLOCKED, LOADING, READY, SHOWING, UNAVAILABLE }
 
 sealed interface RewardedOutcome {
     data class Earned(val transactionId: String) : RewardedOutcome
@@ -19,6 +20,12 @@ sealed interface InterstitialOutcome {
     data object Dismissed : InterstitialOutcome
     data class Unavailable(val reason: String) : InterstitialOutcome
     data class Failed(val category: String) : InterstitialOutcome
+}
+
+sealed interface AppOpenOutcome {
+    data object Dismissed : AppOpenOutcome
+    data class Unavailable(val reason: String) : AppOpenOutcome
+    data class Failed(val category: String) : AppOpenOutcome
 }
 
 interface RewardedAdService {
@@ -36,6 +43,13 @@ interface InterstitialAdService {
     fun clear()
 }
 
+interface AppOpenAdService {
+    val state: StateFlow<AppOpenAdState>
+    fun preloadIfAllowed()
+    suspend fun showIfEligible(activity: Activity): AppOpenOutcome
+    fun clear()
+}
+
 class NoOpRewardedAdService : RewardedAdService {
     private val mutableState = MutableStateFlow(RewardedAdState.BLOCKED)
     override val state = mutableState.asStateFlow()
@@ -50,5 +64,14 @@ class NoOpInterstitialAdService : InterstitialAdService {
     override fun preloadIfAllowed() = Unit
     override suspend fun showAtBoundary(activity: Activity): InterstitialOutcome =
         InterstitialOutcome.Unavailable("disabled")
+    override fun clear() = Unit
+}
+
+class NoOpAppOpenAdService : AppOpenAdService {
+    private val mutableState = MutableStateFlow(AppOpenAdState.BLOCKED)
+    override val state = mutableState.asStateFlow()
+    override fun preloadIfAllowed() = Unit
+    override suspend fun showIfEligible(activity: Activity): AppOpenOutcome =
+        AppOpenOutcome.Unavailable("disabled")
     override fun clear() = Unit
 }
