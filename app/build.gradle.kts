@@ -5,8 +5,6 @@ import java.util.zip.ZipFile
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.androidx.baselineprofile)
-    alias(libs.plugins.google.services) apply false
-    alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -39,7 +37,6 @@ val releaseAppOpenId = secureBuildValue("MAGNETRAIL_APP_OPEN_AD_UNIT_ID")
 val releasePrivacyPolicyUrl = secureBuildValue("MAGNETRAIL_PRIVACY_POLICY_URL")
 val releaseTargetAudience = secureBuildValue("MAGNETRAIL_TARGET_AUDIENCE")
 val releaseLiveAdsRequested = secureBuildValue("MAGNETRAIL_ENABLE_LIVE_ADS") == "true"
-val releaseFirebaseConfigured = file("google-services.json").isFile
 val uploadStorePath = secureBuildValue("MAGNETRAIL_UPLOAD_STORE_FILE")
 val uploadKeyAlias = secureBuildValue("MAGNETRAIL_UPLOAD_KEY_ALIAS")
 val uploadStorePassword = secureBuildValue("MAGNETRAIL_UPLOAD_STORE_PASSWORD")
@@ -50,11 +47,6 @@ val uploadSigningConfigured = listOf(
     uploadStorePassword,
     uploadKeyPassword,
 ).all(String::isNotBlank) && file(uploadStorePath).isFile
-
-if (releaseFirebaseConfigured) {
-    apply(plugin = "com.google.gms.google-services")
-    apply(plugin = "com.google.firebase.crashlytics")
-}
 
 fun productionConfigurationProblems(): List<String> = buildList {
     if (!releaseLiveAdsRequested) add("MAGNETRAIL_ENABLE_LIVE_ADS must be true")
@@ -77,7 +69,6 @@ fun productionConfigurationProblems(): List<String> = buildList {
     if (releaseTargetAudience != "general") {
         add("MAGNETRAIL_TARGET_AUDIENCE must be the owner-reviewed value 'general'")
     }
-    if (!releaseFirebaseConfigured) add("app/google-services.json is missing")
     if (!uploadSigningConfigured) add("the complete owner-authorized upload signing configuration is missing")
 }
 
@@ -140,7 +131,6 @@ android {
         buildConfigField("String", "PRIVACY_POLICY_URL", releasePrivacyPolicyUrl.asBuildConfigString())
         buildConfigField("String", "TARGET_AUDIENCE", "unspecified".asBuildConfigString())
         buildConfigField("boolean", "PRODUCTION_RELEASE_REQUESTED", "false")
-        buildConfigField("boolean", "FIREBASE_CONFIGURED", "false")
         buildConfigField("boolean", "UPLOAD_SIGNING_CONFIGURED", "false")
         buildConfigField("String", "HUMAN_PLAYTEST_CATALOG", humanPlaytestCatalog.asBuildConfigString())
     }
@@ -202,7 +192,6 @@ android {
             buildConfigField("String", "PRIVACY_POLICY_URL", releasePrivacyPolicyUrl.asBuildConfigString())
             buildConfigField("String", "TARGET_AUDIENCE", releaseTargetAudience.ifBlank { "unspecified" }.asBuildConfigString())
             buildConfigField("boolean", "PRODUCTION_RELEASE_REQUESTED", productionReleaseRequested.toString())
-            buildConfigField("boolean", "FIREBASE_CONFIGURED", releaseFirebaseConfigured.toString())
             buildConfigField("boolean", "UPLOAD_SIGNING_CONFIGURED", uploadSigningConfigured.toString())
         }
         create("noAds") {
@@ -296,8 +285,11 @@ val verifyPrivacyPolicyArtifacts by tasks.registering {
         val htmlText = html.asFile.readText()
         val mappingText = dataSafety.asFile.readText()
         val inAppText = inApp.asFile.readText()
-        listOf("Google Mobile Ads", "User Messaging Platform", "Firebase Analytics", "Firebase Crashlytics").forEach {
+        listOf("Google Mobile Ads", "User Messaging Platform").forEach {
             check(it in markdownText) { "Privacy policy is missing installed provider disclosure: $it" }
+        }
+        check("Firebase Analytics" !in markdownText && "Firebase Crashlytics" !in markdownText) {
+            "Privacy policy still discloses Firebase even though it is not shipped in this release cycle"
         }
         check("does not require an account" in markdownText)
         check("Android cloud backup and device-to-device transfer are disabled" in markdownText)
@@ -312,6 +304,11 @@ val verifyPrivacyPolicyArtifacts by tasks.registering {
         check("Data Safety" in mappingText && "owner must validate" in mappingText)
         listOf("Campaign Level 11", "normal Infinite", "Auto Journey", "Celebration screen", "60 seconds").forEach {
             check(it in markdownText && it in htmlText) { "Privacy policy is missing current ad disclosure: $it" }
+        }
+        listOf("App Open ad", "per hour", "startup or resume").forEach {
+            check(it in markdownText && it in htmlText && it in inAppText) {
+                "Privacy policy is missing App Open ad disclosure: $it"
+            }
         }
         listOf("Level 11", "normal Infinite", "Auto Journey", "Celebration screen", "60 seconds").forEach {
             check(it in inAppText) { "In-app privacy policy is missing current ad disclosure: $it" }
@@ -365,9 +362,6 @@ dependencies {
     releaseImplementation(libs.androidx.work.runtime)
     debugImplementation(libs.google.ump)
     releaseImplementation(libs.google.ump)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics)
-    implementation(libs.firebase.crashlytics)
     implementation(libs.androidx.profileinstaller)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.foundation)
@@ -417,6 +411,7 @@ val validateReleaseConfiguration by tasks.registering {
 
 val releaseMergedManifest = layout.buildDirectory
     .file("intermediates/merged_manifests/release/processReleaseManifest/AndroidManifest.xml")
+val releaseAab = layout.buildDirectory.file("outputs/bundle/release/app-release.aab")
 
 val noAdsMergedManifest = layout.buildDirectory
     .file("intermediates/merged_manifests/noAds/processNoAdsManifest/AndroidManifest.xml")
@@ -533,6 +528,68 @@ val verifyReleaseManifest by tasks.registering {
         check(inputs.properties.getValue("googleSampleAppId").toString() !in mergedText)
         check(inputs.properties.getValue("googleRewardedTestId").toString() !in mergedText)
         check(inputs.properties.getValue("googleInterstitialTestId").toString() !in mergedText)
+        check("com.google.firebase" !in mergedText) {
+            "Release manifest still contains a deferred diagnostics provider"
+        }
+    }
+}
+
+val verifyFirebaseAbsent by tasks.registering {
+    group = "verification"
+    description = "Prove the deferred Firebase SDK and configuration are absent from the release graph and artifact."
+    dependsOn("bundleRelease", "processReleaseManifest")
+    val releaseRuntimeClasspath = configurations.named("releaseRuntimeClasspath")
+    val baselineProfile = project.layout.projectDirectory.file(
+        "src/release/generated/baselineProfiles/baseline-prof.txt",
+    )
+    val startupProfile = project.layout.projectDirectory.file(
+        "src/release/generated/baselineProfiles/startup-prof.txt",
+    )
+    inputs.files(releaseRuntimeClasspath, releaseMergedManifest, releaseAab, baselineProfile, startupProfile)
+    doLast {
+        val taskInputs = inputs.files.files
+        val runtimeArchives = taskInputs.filter { it.extension in setOf("aar", "jar") }
+        val firebaseArchives = runtimeArchives.filter { archive ->
+            archive.name.contains("firebase", ignoreCase = true) ||
+                runCatching {
+                    ZipFile(archive).use { zip ->
+                        zip.entries().asSequence().any { it.name.startsWith("com/google/firebase/") }
+                    }
+                }.getOrDefault(false)
+        }
+        check(firebaseArchives.isEmpty()) {
+            "Release dependency graph still contains Firebase archives: " +
+                firebaseArchives.joinToString { it.name }
+        }
+
+        val manifestFile = taskInputs.single { file ->
+            file.name == "AndroidManifest.xml" && "merged_manifests/release" in file.invariantSeparatorsPath
+        }
+        val manifestText = manifestFile.readText()
+        check("com.google.firebase" !in manifestText) {
+            "Release manifest still contains Firebase configuration or components"
+        }
+        taskInputs.filter { it.name in setOf("baseline-prof.txt", "startup-prof.txt") }.forEach { profile ->
+            check("com/google/firebase" !in profile.readText()) {
+                "Generated profile still references Firebase: ${profile.name}"
+            }
+        }
+
+        val aabFile = taskInputs.single { it.extension == "aab" }
+        check(aabFile.isFile) { "Release AAB was not generated" }
+        ZipFile(aabFile).use { aab ->
+            val packagedReferences = aab.entries().asSequence()
+                .filter { entry ->
+                    entry.name.endsWith(".dex") || entry.name.endsWith("AndroidManifest.xml")
+                }
+                .any { entry ->
+                    "com/google/firebase" in String(
+                        aab.getInputStream(entry).readBytes(),
+                        Charsets.ISO_8859_1,
+                    )
+                }
+            check(!packagedReferences) { "Release AAB still contains a Firebase class reference" }
+        }
     }
 }
 
@@ -555,8 +612,12 @@ tasks.register("verifyReleaseReadinessLocal") {
         "bundleRelease",
         "lintRelease",
         "testDebugUnitTest",
+        "testReleaseUnitTest",
+        "testNoAdsUnitTest",
         "compileDebugAndroidTestKotlin",
         verifyGeneratorV6ReleaseExclusion,
+        verifyFirebaseAbsent,
+        verifyNoAdsVariant,
         verifyPrivacyPolicyArtifacts,
         verifyProjectPage,
         verifyReleaseManifest,

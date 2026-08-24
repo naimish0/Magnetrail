@@ -345,7 +345,7 @@ Lifecycle interruption must never create a board state the engine did not produc
 | Item | Current value |
 |---|---|
 | Application ID / namespace | `com.rameshta.magnetrail` |
-| Version | code `1`, name `1.0` |
+| Version | code `2`, name `1.1` |
 | Minimum SDK | 24 |
 | Target SDK | 36 |
 | Compile SDK | 37 |
@@ -359,7 +359,6 @@ Lifecycle interruption must never create a board state the engine did not produc
 | DataStore | 1.2.1 |
 | Google Mobile Ads | 25.4.0 |
 | Google UMP | 4.0.0 |
-| Firebase BoM | 34.17.0 |
 | WorkManager pin | 2.11.2 |
 
 `compileSdk 37` is required because current AndroidX Core 1.19.0 and Lifecycle 2.11.0 declare a
@@ -367,7 +366,7 @@ minimum compile API of 37. `targetSdk 36` is intentionally independent and remai
 behavior opt-in level. `minSdk 24` remains the install floor.
 
 Debug uses official Google test ad identifiers. Release is fail-closed and remains structurally
-non-monetized unless every production input, audience choice, Firebase configuration, and upload
+non-monetized unless every production input, audience choice, and upload
 signing input is supplied and validated.
 
 Generated `.class`, `.tab`, `.keystream`, and `.len` files belong only in ignored build/compiler
@@ -1381,14 +1380,16 @@ Daily Challenge, launch/resume, back navigation, or app exit.
 - A full-screen coordinator prevents consent/rewarded/interstitial overlap.
 - Debug uses official Google test units.
 - Live release ads remain blocked until production IDs, audience, privacy URL, account/console
-  configuration, Firebase configuration, and signing inputs are valid.
+  configuration, and signing inputs are valid.
 
 ---
 
 ## 17. Analytics and crash reporting
 
-Analytics and Crashlytics are application-layer abstractions with no-op/fake implementations.
-Collection defaults off and requires the effective consent policy plus local Diagnostics opt-in.
+Analytics and crash reporting remain application-layer abstractions with no-op/fake implementations.
+Every current build uses the no-op implementations; no developer analytics or crash SDK is packaged,
+and the former user-facing diagnostics control is absent. Provider integration is deferred to the next
+release cycle and requires a fresh consent/privacy/Data Safety review.
 
 Tracked data is coarse and product-focused, including level start/complete/restart/deadlock, hint
 spend/display, Daily start/complete, consent result, rewarded lifecycle, interstitial
@@ -1403,9 +1404,9 @@ Never log:
 - raw ad payload or reward callback;
 - purchase token (purchases are forbidden anyway).
 
-Crash reports may include non-sensitive version/screen/state categories, but not board snapshots,
-preferences, consent strings, ad payloads, or identifiers. Routine offline/no-fill behavior is not
-a crash.
+No crash report is transmitted in this release. Any future provider must reject board snapshots,
+preferences, consent strings, ad payloads, and identifiers. Routine offline/no-fill behavior must not
+be reported as a crash.
 
 ---
 
@@ -1477,7 +1478,6 @@ Open owner/external blockers:
 - permanent package/version history confirmation;
 - owner-authorized upload key and Play App Signing records;
 - production AdMob IDs and UMP/target-audience/account configuration;
-- genuine Firebase project/configuration or an explicit decision not to ship optional diagnostics;
 - public HTTPS privacy policy and legal/support identity;
 - Play Data safety, Ads, Advertising ID, target audience, content rating, category, and app access
   declarations;
@@ -1827,8 +1827,9 @@ level-tools/src/main/kotlin/com/rameshta/magnetrail/tools/
    but the waiver must remain visible in certification, testing, and any human-review dataset.
 8. **No uploadable current release exists.** The recorded M5 AAB is stale; local release builds are
    deliberately structural/non-uploadable without owner production configuration.
-9. **Production services are unconfigured.** Live AdMob, UMP console state, Firebase, privacy URL,
-   audience choice, upload signing, and Play declarations remain blocked.
+9. **Production services remain externally unverified.** Production AdMob IDs and the privacy URL are
+   recorded, but live serving is disabled until AdMob/UMP console state, audience choice, upload
+   signing, hosted-policy bytes, and Play declarations are verified. Developer diagnostics is absent.
 10. **Representative device/accessibility/release testing is incomplete.** API 24, mid-range/API 35,
    tablet/foldable, TalkBack/Switch Access, current upgrade, and production-like consent/ad tests
    require real evidence.
@@ -4857,15 +4858,15 @@ benchmarking remains required before release.
 
 Only a first successful completion of a non-tutorial numbered campaign level or Auto Journey level increments the persisted counter. Levels 1–12, replays, duplicate completion callbacks, failed attempts, restarts, hints, ordinary taps, Daily/Infinite play, and rewarded skips do not count. The first opportunity is after Levels 13–17. The opportunity is claimed at the natural next-level boundary after completion persistence; denied/unresolved consent, no-fill/not-loaded, offline, cooldown, recent rewarded, App Open/full-screen ownership, background, wrong screen, or failure skips immediately with no spinner and no later ad debt. A process-wide coordinator (including a reserved App Open owner even though no App Open ad service is currently present) and minimum 120-second cooldown prevent overlap.
 
-Debug uses Google test IDs. Release configuration fails closed if a sample/test ID, missing live ID, unverified audience, missing Firebase configuration, missing signing inputs, or unsafe/missing privacy URL would be used for a requested production release.
+Debug uses Google test IDs. Release configuration fails closed if a sample/test ID, missing live ID, unverified audience, missing signing inputs, or unsafe/missing privacy URL would be used for a requested production release.
 
 ### 26.6 Fairness and privacy
 
 Blind playtest schema 5 exposes five complete fairness anchors from “Completely unfair — I could only guess” to “Completely fair — outcomes followed visible rules.” Guessing is separately No/Unsure/Yes, with an explanation distinguishing immutable failed exploratory taps from indistinguishable successful choices. The old `guess_required` CSV column remains; schema 5 appends response/anchor/decision-state fields, and schema 4 stored sessions migrate.
 
-`docs/privacy-policy.md`, `docs/privacy-policy.html`, and `docs/DATA_SAFETY_MAPPING.md` match the audited SDK/storage configuration. Settings always provides an accessible in-app fallback if no browser/public URL is available. Mobile Ads/UMP and conditional opt-in Firebase processing are disclosed; the policy does not claim “no data.” Backups/transfer and cleartext are disabled.
+The deployable Markdown/HTML privacy policy and Data Safety mapping match the audited SDK/storage configuration. Settings always provides an accessible in-app fallback if no browser/public URL is available. Mobile Ads/UMP processing is disclosed; no developer analytics/crash SDK is packaged, and the policy does not claim “no data.” Backups/transfer and cleartext are disabled.
 
-External blocker: the repository now records the publisher identity, privacy contact/postal address, and public HTTPS privacy-policy URL, but still lacks hosted-byte verification, live AdMob values and console evidence, genuine Firebase configuration/retention choices, upload signing credentials, and verified Play audience/Data Safety/App content declarations.
+External blocker: the repository now records the publisher identity, privacy contact/postal address, public HTTPS privacy-policy URL, and production AdMob identifiers, but still lacks hosted-byte verification, AdMob/UMP ownership and console evidence, upload signing credentials, and verified Play audience/Data Safety/App content declarations.
 
 ### 26.7 Rollback and operator status
 

@@ -40,12 +40,11 @@ class M5ReleaseReadinessTest {
                 privacyPolicyUrl = "http://example.test/privacy",
                 targetAudience = "unspecified",
                 liveAdsEnabled = false,
-                firebaseConfigured = false,
                 uploadSigningConfigured = false,
             ),
         )
 
-        assertEquals(9, problems.size)
+        assertEquals(8, problems.size)
     }
 
     @Test
@@ -59,7 +58,6 @@ class M5ReleaseReadinessTest {
                 privacyPolicyUrl = "https://example.test/magnetrail/privacy",
                 targetAudience = "general",
                 liveAdsEnabled = true,
-                firebaseConfigured = true,
                 uploadSigningConfigured = true,
             ),
         )

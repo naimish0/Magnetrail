@@ -6,7 +6,7 @@ Scope: implementation inventory for M5 decisions; **not legal advice and not a c
 ## Implementation status
 
 The app layer includes UMP consent orchestration, voluntary rewarded placements, capped
-campaign-boundary interstitials, a one-hour-capped app-open placement, consent-aware Firebase
+campaign-boundary interstitials, a one-hour-capped app-open placement, no-op observability
 interfaces, schema-v4 persistence, typed events, and safe no-op behavior. `:game-core`, solver,
 generator, certification, campaign JSON, and daily fallback JSON are outside this inventory.
 
@@ -18,12 +18,12 @@ External/account inputs found at implementation time:
 | Rewarded ad unit ID | Owner-provided production ID tracked in `gradle.properties`; debug still uses Google's rewarded test unit |
 | Interstitial ad unit ID | Owner-provided production ID tracked in `gradle.properties`; debug still uses Google's interstitial test unit |
 | App-open ad unit ID | Owner-provided production ID tracked in `gradle.properties`; debug still uses Google's app-open test unit |
-| Firebase Android configuration | Missing; no `google-services.json`, so observability factories remain no-op |
+| Firebase Analytics/Crashlytics | Explicitly deferred; SDKs, plugins, manifest metadata, and user-facing diagnostics controls are absent from this release cycle |
 | Published privacy-policy URL | Missing; debug shows a clearly labeled disabled placeholder |
 | Target audience/age classification | Missing; age-treatment request fields remain SDK-default `UNSPECIFIED` and live ads are blocked |
 
 Release is **not monetization-ready**. The owner-provided production AdMob identifiers are configured,
-but no Firebase file, target-audience choice, signing credential, or console state was invented.
+but no target-audience choice, signing credential, or console state was invented.
 
 ## SDKs and resolved versions
 
@@ -33,11 +33,9 @@ Resolved from `debugRuntimeClasspath`:
 |---|---|
 | Google Mobile Ads | `com.google.android.gms:play-services-ads:25.4.0` |
 | Google UMP | `com.google.android.ump:user-messaging-platform:4.0.0` |
-| Firebase Android BoM | `com.google.firebase:firebase-bom:34.17.0` |
-| Firebase Analytics | `com.google.firebase:firebase-analytics:23.2.0` |
-| Firebase Crashlytics | `com.google.firebase:firebase-crashlytics:20.1.0` |
 
-Firebase main modules are used, not discontinued KTX artifacts. A future configured Firebase build should use the then-current official Google services and Crashlytics plugins. On the access date the official setup showed `com.google.gms.google-services:4.5.0` and `com.google.firebase.crashlytics:3.0.7`; they are intentionally not applied while the project-specific Firebase configuration is absent.
+Firebase is intentionally absent. Reintroducing it in a later release requires a fresh SDK,
+privacy, consent, Data Safety, retention, and console review.
 
 ## Official primary sources consulted
 
@@ -53,17 +51,6 @@ All pages were accessed 2026-08-19.
 - Interstitial lifecycle, natural boundaries, and official test unit: https://developers.google.com/admob/android/interstitial
 - Test ads and authorized test devices: https://developers.google.com/admob/android/test-ads
 - Google Mobile Ads Play Data safety disclosure: https://developers.google.com/admob/android/privacy/play-data-disclosure
-
-### Firebase
-
-- Add Firebase to Android, BoM, main-module policy, and plugin setup: https://firebase.google.com/docs/android/setup
-- Analytics Android setup: https://firebase.google.com/docs/analytics/android/get-started
-- Analytics events: https://firebase.google.com/docs/analytics/events
-- Analytics collection configuration: https://firebase.google.com/docs/analytics/configure-data-collection
-- Crashlytics Android setup: https://firebase.google.com/docs/crashlytics/android/get-started
-- Crashlytics collection, custom keys, logs, and non-fatals: https://firebase.google.com/docs/crashlytics/android/customize-crash-reports
-- Firebase Android Play Data safety disclosure: https://firebase.google.com/docs/android/play-data-disclosure
-- Firebase privacy, processing, retention, and deletion information: https://firebase.google.com/support/privacy
 
 ### Google Play policy and declarations
 
@@ -83,18 +70,17 @@ These sources and final console configuration must be rechecked during M5 becaus
 - No personal test-device IDs are committed.
 - Release reads non-source Gradle properties: `MAGNETRAIL_ADMOB_APP_ID`, `MAGNETRAIL_REWARDED_AD_UNIT_ID`, `MAGNETRAIL_INTERSTITIAL_AD_UNIT_ID`, `MAGNETRAIL_APP_OPEN_AD_UNIT_ID`, `MAGNETRAIL_PRIVACY_POLICY_URL`, `MAGNETRAIL_TARGET_AUDIENCE`, and explicit `MAGNETRAIL_ENABLE_LIVE_ADS=true`.
 - Release live ads enable only when all values are present and the explicitly reviewed target audience is `general`. `mixed` and `children` deliberately remain build-blocked pending the required Families/age-treatment redesign. Otherwise services are no-op and the sample App ID is only a safe manifest fallback; no ad request is made.
-- Owner-approved public AdMob identifiers and the public privacy URL are tracked in `gradle.properties`. Keep signing keys, passwords, Firebase configuration, and other credentials outside Git.
+- Owner-approved public AdMob identifiers and the public privacy URL are tracked in `gradle.properties`. Keep signing keys, passwords, and other credentials outside Git.
 - Automated unit tests use pure fakes/no-op interfaces and make no SDK/network calls.
 
-## Consent, privacy options, and diagnostics
+## Consent and privacy options
 
-1. Firebase SDK configuration defaults Analytics and Crashlytics automatic collection to `false`; Analytics advertising-ID collection and default ad-personalization signals are also disabled in app metadata.
+1. Firebase Analytics and Crashlytics are not packaged; analytics/crash abstractions resolve to no-op implementations.
 2. The first rendered Compose frame is not blocked. A process-scoped privacy manager then requests UMP consent information once for the launch.
 3. UMP loads/shows a required form. Its own `canRequestAds()` is the sole ad-permission signal; geography and raw TCF strings are never read or stored.
 4. Permitted previous-session state can initialize ads while refresh is pending or failed. An atomic gate ensures Mobile Ads initializes once even if cached and refreshed callbacks both qualify.
 5. UMP-required privacy options appear in Settings and reopen UMP's form. A process-wide full-screen coordinator prevents consent/ad overlap.
-6. Usage & crash diagnostics defaults off. Effective collection requires local opt-in and the consent gate; Firebase consent mode remains authoritative for its granular consent signals. Turning the local switch off calls both SDK collection-disable APIs and deletes unsent Crashlytics reports.
-7. Failure or denial never blocks the game, reopens a dismissed form automatically, or enables ads from an inferred geography.
+6. Failure or denial never blocks the game, reopens a dismissed form automatically, or enables ads from an inferred geography.
 
 ## Ad formats, placements, and caps
 
@@ -129,17 +115,17 @@ No permission was manually added to the app manifest. The debug merged-manifest 
 
 | Merged permission | Primary manifest source/reason |
 |---|---|
-| `android.permission.INTERNET` | Mobile Ads API; also Firebase measurement/transport/Crashlytics for network delivery |
-| `android.permission.ACCESS_NETWORK_STATE` | Mobile Ads API; also Firebase measurement/installations/transport for connectivity-aware delivery |
+| `android.permission.INTERNET` | Mobile Ads API |
+| `android.permission.ACCESS_NETWORK_STATE` | Mobile Ads API |
 | `com.google.android.gms.permission.AD_ID` | Mobile Ads API, measurement API, and ads-identifier |
 | `android.permission.ACCESS_ADSERVICES_AD_ID` | Mobile Ads API and measurement API |
 | `android.permission.ACCESS_ADSERVICES_ATTRIBUTION` | Mobile Ads API and measurement API |
 | `android.permission.ACCESS_ADSERVICES_TOPICS` | Mobile Ads API |
-| `android.permission.WAKE_LOCK` | Firebase/Google measurement and transitive WorkManager |
+| `android.permission.WAKE_LOCK` | Mobile Ads and transitive WorkManager |
 | `com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE` | Google measurement |
 | `android.permission.FOREGROUND_SERVICE` | Transitive WorkManager manifest |
 
-The generated package-specific dynamic-receiver permission is Android build/runtime infrastructure, not an M4 source declaration. Before release, the owner must review every merged permission again, declare advertising-ID/Ads SDK use accurately in Play Console, and decide whether removing any optional ad-services permission is compatible with the final AdMob configuration. App metadata disables Analytics advertising-ID collection; this does not mean the Mobile Ads SDK cannot use identifiers under its own consent/configuration.
+The generated package-specific dynamic-receiver permission is Android build/runtime infrastructure, not an M4 source declaration. Before release, the owner must review every merged permission again, declare advertising-ID/Ads SDK use accurately in Play Console, and decide whether removing any optional ad-services permission is compatible with the final AdMob configuration.
 
 ## Vendor data inventory for Play Data safety drafting
 
@@ -149,14 +135,9 @@ This section paraphrases vendor disclosures; the owner must answer from actual p
 |---|---|---|---|
 | Google Mobile Ads | IP address, device/account or advertising identifiers where available, ad/app interactions, diagnostics, and device signals | Ads delivery/personalization as consented, measurement, analytics, fraud/abuse prevention; data may be shared with Google/advertising ecosystem per configuration | No request before UMP `canRequestAds`; test-only until owner decision; age treatment unspecified; Analytics ad-ID metadata does not govern AdMob |
 | UMP | Consent/message interaction and device/request context needed to determine/show configured messages | Consent management and regulatory-message operation | SDK state only; no raw consent string or geography persisted/logged |
-| Firebase Analytics | App/device identifiers including Firebase installation-related identifiers, app interactions/events, app/device metadata, diagnostics, and coarse location signals such as IP-derived context per vendor disclosure | Analytics and product measurement; Google service processing governed by project settings/consent | Default collection off, local opt-in + consent gate, no user ID, typed minimal events, ad-ID collection disabled |
-| Firebase Crashlytics | Crash/ANR stack traces, app/device/OS metadata, Firebase installation identifier, logs, and approved custom keys | App stability diagnostics | Default collection off, local opt-in + consent gate, unsent reports deleted on disable, strict key allowlist, expected ad/offline failures excluded |
 
 Retention/deletion notes:
 
-- Firebase Analytics user-level retention is configured in the Firebase/Google Analytics property (commonly 2 or 14 months for eligible data); aggregation and other service retention can differ. The owner must record the selected production setting.
-- Firebase's privacy documentation describes product-specific retention/deletion; Crashlytics event data is generally retained for a limited period (vendor documentation currently describes 90 days). Verify the current console/documentation before publishing the policy.
-- Crashlytics collection can be disabled and unsent local reports deleted by the app. Deletion of already-uploaded service data follows Firebase project/account controls, not the local switch alone.
 - AdMob/UMP retention and user-choice behavior depend on AdMob, Privacy & messaging, consent provider, region, and account settings. Record the actual production configuration; do not claim an app-only deletion mechanism.
 
 ## Target audience blocker
@@ -175,9 +156,9 @@ Until then request age-treatment fields are left at SDK-default `UNSPECIFIED`, t
 The owner-authored, published policy should accurately cover at least:
 
 - app identity/contact and effective date;
-- AdMob, UMP, Firebase Analytics, and Crashlytics use and links to relevant Google disclosures;
+- AdMob and UMP use and links to relevant Google disclosures;
 - data categories, purposes, sharing/processing, identifiers, consent/legal basis as applicable, retention/deletion, security, international processing, and user/guardian rights;
-- how to reopen Privacy options and disable Usage & crash diagnostics;
+- how to reopen Privacy options;
 - target audience/children treatment and region-specific choices after those decisions are made;
 - offline local progress (campaign, stars, coins, daily history/streak, ad caps/pending credit, settings) and uninstall/reset behavior;
 - an accurate statement that rewarded ads are optional and interstitial placement/caps;
@@ -187,7 +168,7 @@ The owner-authored, published policy should accurately cover at least:
 
 - Ads declaration: **Yes, contains ads** (rewarded and interstitial only), once production monetization is enabled.
 - Target audience/content: **unanswered/blocking**.
-- Data safety: review vendor categories above against the final AdMob personalization, Firebase project, consent messages, regions, and release manifest. Do not copy this draft as final declarations without verification.
+- Data safety: review vendor categories above against the final AdMob personalization, consent messages, regions, and release manifest. Do not copy this draft as final declarations without verification.
 - Advertising ID: merged permission is present transitively; answer the Play declaration based on final Mobile Ads use and current policy.
 - Families: if any selected age includes children, stop release enablement and complete the Families-specific review before using the current setup.
 - App access/account: no login/account was introduced.
@@ -203,13 +184,10 @@ The owner-authored, published policy should accurately cover at least:
 4. Record target-audience flags, content rating, personalization mode, and any test devices locally; never commit personal device IDs.
 5. Validate official test ads and Ad Inspector before any limited live test. Never click live ads.
 
-### Firebase
+### Deferred observability
 
-1. Create/select the production and preferably separate test Firebase projects; register the exact application ID.
-2. Download the genuine `google-services.json` into the protected build process/app module as intended by the team.
-3. Add then-current official Google services and Crashlytics Gradle plugins (current reviewed examples: 4.5.0 and 3.0.7), sync, and verify variant separation.
-4. Configure Analytics retention/data sharing/Google signals and Crashlytics collection to match the published policy and consent mode.
-5. With test consent, validate DebugView and send one controlled non-production Crashlytics test report; verify mapping upload for release builds.
+Firebase Analytics and Crashlytics are deferred to the next release cycle. Do not add their SDKs,
+plugins, manifest metadata, diagnostics UI, or Data Safety claims to this release artifact.
 
 ### Play Console and release
 
@@ -231,6 +209,6 @@ Final repository verification:
 - `./gradlew :app:lintDebug` — success, 0 errors and 10 pre-existing/toolchain-update warnings.
 - `./gradlew :app:assembleDebug :app:assembleRelease :app:processDebugMainManifest` — success; generated release configuration reports `MONETIZATION_ENABLED=false` and `AD_CONFIGURATION_MODE=release_blocked` with missing owner inputs.
 - `./gradlew :app:compileDebugAndroidTestKotlin` — success.
-- `./gradlew :app:connectedDebugAndroidTest` — 14/14 passed on the available Pixel 7a AVD; the instrumentation environment forces consent, ads, Analytics, and Crashlytics to no-op.
+- `./gradlew :app:connectedDebugAndroidTest` — 14/14 passed on the available Pixel 7a AVD; the instrumentation environment forces consent and ads to no-op.
 
-See `M4_MANUAL_QA.md` for device/console checks and `M4_EVENT_CATALOG.md` for the full typed telemetry inventory. Real AdMob/UMP console flows, UMP debug geography, Firebase DebugView, and Crashlytics delivery were unavailable during repository-only implementation and are not claimed as verified.
+See `M4_MANUAL_QA.md` for device/console checks and `M4_EVENT_CATALOG.md` for the retained typed no-op telemetry inventory. Real AdMob/UMP console flows and UMP debug geography were unavailable during repository-only implementation and are not claimed as verified.

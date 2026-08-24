@@ -1,6 +1,6 @@
 # Magnetrail privacy policy — owner/legal review draft
 
-**Not ready to publish.** Effective date, audience decision, production SDK configuration, retention choices, deletion process, verification of the hosted bytes, and legal review are still required. This draft is not legal advice.
+**Not ready to publish.** Audience decision, production advertising/consent configuration, verification of the hosted bytes, and legal review are still required. This draft is not legal advice. The canonical deployable text is `design/context/privacy-policy.md`.
 
 Effective date: `[OWNER REQUIRED]`  
 Developer/publisher: Naimish Gupta
@@ -18,20 +18,17 @@ The planned production app contains Google AdMob rewarded and interstitial adver
 
 Depending on region, consent, device, and Google configuration, the Mobile Ads SDK may collect or share approximate location derived from IP address, app interactions, diagnostic information, device or other identifiers, and advertising data for advertising, analytics, fraud prevention, security, and compliance. Google and an ad creative may process network data when an ad is requested or shown. The owner must review the final AdMob partners, Privacy & messaging configuration, and Play Data safety answers before publication.
 
-## Optional diagnostics
+## Developer diagnostics
 
-The app includes Firebase Analytics and Firebase Crashlytics code. Collection is disabled by default in the manifest and is enabled by app logic only when both the local Diagnostics setting is enabled and the consent state permits it. Analytics events use coarse gameplay fields such as a level identifier, attempt/duration/count bucket, difficulty, ad-flow outcome, and settings state; app code rejects free text and known direct identifiers. Crash reports may include stack traces, app/device state, installation identifiers, and bounded diagnostic keys.
-
-Google/Firebase processes this information to provide analytics, stability diagnostics, fraud/security, and service operation. Exact retention, deletion, Google Signals, data sharing, and linked-product choices depend on the production Firebase project and must be inserted here after owner/console verification: `[OWNER REQUIRED]`.
+No developer analytics or crash-reporting SDK is included in this release. The dormant typed event and reporter abstractions use no-op implementations and do not transmit data. Adding a diagnostics provider in a later release requires a new privacy, consent, retention, Data Safety, dependency, and binary review.
 
 ## Controls and deletion
 
-- Use the in-app Diagnostics switch to stop or allow optional Analytics/Crashlytics collection, subject to consent.
 - Use Privacy options in the app when UMP reports that privacy choices are available.
 - Clear local gameplay information by clearing Magnetrail's storage or uninstalling it. Reinstalling starts fresh because Android backup is disabled.
 - Contact [naimish.app@gmail.com](mailto:naimish.app@gmail.com) for privacy questions or requests concerning data controlled by the developer. The publisher must document what can be located or deleted without an account identifier and how processor requests are handled.
 
-Previously transmitted data may remain for the periods selected in Firebase/AdMob or required for security/legal purposes. Those periods and request procedures must be confirmed before this draft is published.
+Data transmitted through advertising and consent services may remain for the periods selected in AdMob or required for security/legal purposes. Those periods and request procedures must be confirmed before this draft is published.
 
 ## Children and target audience
 
@@ -44,5 +41,4 @@ The app disables cleartext network traffic. Google SDK traffic is documented by 
 ## Providers and contact
 
 - Google AdMob and UMP: [Google privacy policy](https://policies.google.com/privacy)
-- Firebase Analytics and Crashlytics: [Firebase privacy and security](https://firebase.google.com/support/privacy)
 - Publisher: Naimish Gupta; privacy contact: [naimish.app@gmail.com](mailto:naimish.app@gmail.com); postal address: Sandi, Hardoi, 241403, Uttar Pradesh

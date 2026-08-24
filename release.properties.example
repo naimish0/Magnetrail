@@ -22,5 +22,4 @@ MAGNETRAIL_UPLOAD_KEY_ALIAS=REPLACE_WITH_ALIAS
 MAGNETRAIL_UPLOAD_STORE_PASSWORD=REPLACE_WITH_SECRET
 MAGNETRAIL_UPLOAD_KEY_PASSWORD=REPLACE_WITH_SECRET
 
-# Download the genuine Firebase Android config to app/google-services.json.
-# Do not create a placeholder JSON file with invented project identifiers.
+# Developer analytics and crash reporting are intentionally deferred to the next release cycle.

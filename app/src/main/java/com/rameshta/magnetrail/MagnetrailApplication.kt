@@ -8,13 +8,10 @@ import com.rameshta.magnetrail.ads.FullScreenAdCoordinator
 import com.rameshta.magnetrail.ads.InterstitialAdService
 import com.rameshta.magnetrail.ads.RewardedAdService
 import com.rameshta.magnetrail.analytics.AnalyticsTracker
-import com.rameshta.magnetrail.analytics.FirebaseAnalyticsTracker
 import com.rameshta.magnetrail.analytics.NoOpAnalyticsTracker
 import com.rameshta.magnetrail.crash.CrashKey
 import com.rameshta.magnetrail.crash.CrashReporter
-import com.rameshta.magnetrail.crash.FirebaseCrashReporter
 import com.rameshta.magnetrail.crash.NoOpCrashReporter
-import com.rameshta.magnetrail.privacy.ObservabilityController
 import com.rameshta.magnetrail.privacy.PrivacyManager
 import com.rameshta.magnetrail.core.economy.EconomyConfig
 import com.rameshta.magnetrail.core.generation.v5.CAMPAIGN_CONTENT_VERSION
@@ -38,7 +35,6 @@ class MagnetrailApplication : Application() {
                     privacyPolicyUrl = BuildConfig.PRIVACY_POLICY_URL,
                     targetAudience = BuildConfig.TARGET_AUDIENCE,
                     liveAdsEnabled = BuildConfig.MONETIZATION_ENABLED,
-                    firebaseConfigured = BuildConfig.FIREBASE_CONFIGURED,
                     uploadSigningConfigured = BuildConfig.UPLOAD_SIGNING_CONFIGURED,
                 ),
             )
@@ -48,8 +44,8 @@ class MagnetrailApplication : Application() {
         val configuration = AdConfiguration.fromBuild().let { config ->
             if (automatedTest) config.copy(enabled = false, mode = "automated_test") else config
         }
-        val analytics = if (automatedTest) NoOpAnalyticsTracker else FirebaseAnalyticsTracker.createOrNoOp(this)
-        val crashReporter = if (automatedTest) NoOpCrashReporter else FirebaseCrashReporter.createOrNoOp(this)
+        val analytics = NoOpAnalyticsTracker
+        val crashReporter = NoOpCrashReporter
         val clock = ForegroundAdClock()
         val coordinator = FullScreenAdCoordinator(clock)
         val monetization = createVariantMonetizationServices(
@@ -69,7 +65,6 @@ class MagnetrailApplication : Application() {
             configuration = configuration,
             analytics = analytics,
             crashReporter = crashReporter,
-            observability = ObservabilityController(analytics, crashReporter),
             coordinator = coordinator,
             privacyManager = monetization.privacyManager,
             rewardedAdService = monetization.rewarded,
@@ -96,7 +91,6 @@ data class M4Services(
     val configuration: AdConfiguration,
     val analytics: AnalyticsTracker,
     val crashReporter: CrashReporter,
-    val observability: ObservabilityController,
     val coordinator: FullScreenAdCoordinator,
     val privacyManager: PrivacyManager,
     val rewardedAdService: RewardedAdService,
