@@ -181,9 +181,6 @@ class MainActivity : ComponentActivity() {
                         LaunchedEffect(Unit) {
                             services.privacyManager.refresh(this@MainActivity)
                         }
-                        LaunchedEffect(uiState.settings.diagnosticsEnabled, privacyState) {
-                            services.observability.apply(uiState.settings.diagnosticsEnabled, privacyState)
-                        }
                         LaunchedEffect(
                             uiState.isComplete,
                             uiState.completionPersisted,

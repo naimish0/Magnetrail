@@ -8,7 +8,6 @@ Use a non-production build, Google official test ad units, and UMP debug geograp
 - Relaunch and confirm one consent-information update per process launch and permitted cached-state behavior.
 - When UMP requires it, open Settings → Privacy options and change the choice.
 - Confirm denial never blocks Home, campaign, Daily Challenge, coin hints, or navigation.
-- Toggle Usage & crash diagnostics and verify Analytics/Crashlytics collection follows both local opt-in and consent.
 - Confirm the debug privacy-policy placeholder is non-clickable until a real URL is configured.
 
 ## Rewarded hint
@@ -29,11 +28,10 @@ Use a non-production build, Google official test ad units, and UMP debug geograp
 - Rotate, background, and kill around loading/dismissal; confirm no ad appears over the wrong screen.
 - Open Google Mobile Ads Ad Inspector only in an authorized test build.
 
-## Firebase and accessibility
+## Accessibility and offline behavior
 
-- After the owner supplies a test Firebase project, enable diagnostics with valid consent and inspect typed events in DebugView. Confirm no local date, seed, board state, raw consent, ad response, or identifiers.
-- Use the controlled non-production Crashlytics verification procedure from the Firebase console setup guide; never crash an automated release build.
+- Confirm the release dependency report, merged manifest, and optimized artifact contain no developer analytics or crash-reporting provider.
 - Check TalkBack focus after ad dismissal and navigation, 1.5×–2× font scale, reduced motion, and 360/390/430 dp portrait widths.
 - Repeat airplane-mode gameplay, campaign completion, Daily Challenge fallback/cache, and coin hints.
 
-The automated connected UI suite ran on a Pixel 7a AVD/API 17 image with M4 network SDKs forced to no-op (14/14 passed). That is not a substitute for this manual consent/ad/Firebase matrix. Record device, OS/API, consent debug geography, and observed result when running it.
+The automated connected UI suite ran on a Pixel 7a AVD/API 17 image with network SDKs forced to no-op (14/14 passed). That is not a substitute for this manual consent/ad/accessibility matrix. Record device, OS/API, consent debug geography, and observed result when running it.

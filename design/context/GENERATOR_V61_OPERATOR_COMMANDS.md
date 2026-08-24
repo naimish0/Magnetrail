@@ -121,4 +121,4 @@ This records bounded host wall/CPU/heap diagnostics for the five active bands. I
 ./gradlew :app:verifyReleaseReadinessLocal
 ```
 
-`verifyReleaseReadinessLocal` is repository-local. A production release additionally requires protected signing values, real AdMob IDs, Firebase configuration or an owner decision to remove it, verified audience/Play declarations, publisher identity/contact, and a hosted HTTPS privacy-policy URL.
+`verifyReleaseReadinessLocal` is repository-local. A production release additionally requires protected signing values, verified AdMob ownership/console configuration, audience/Play declarations, publisher identity/contact, and a hosted HTTPS privacy-policy URL. Developer analytics/crash reporting is intentionally absent this release cycle.

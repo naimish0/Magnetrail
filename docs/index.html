@@ -83,10 +83,10 @@
 <body>
 <main>
   <h1>Magnetrail Privacy Policy</h1>
-  <p><strong>Last updated:</strong> 23 August 2026</p>
+  <p><strong>Last updated:</strong> 24 August 2026</p>
 
   <h2>Overview</h2>
-  <p>Magnetrail is an offline-first puzzle game and does not require an account. Numbered-campaign progress, Auto Journey boards and uniqueness history, settings, rewards, and local records are stored on the device. The app includes Google software for advertising and consent. A configured production build may also use Firebase Analytics and Crashlytics when optional diagnostics and the applicable consent state permit collection.</p>
+  <p>Magnetrail is an offline-first puzzle game and does not require an account. Numbered-campaign progress, Auto Journey boards and uniqueness history, settings, rewards, and local records are stored on the device. The app includes Google software for advertising and consent. No developer analytics or crash-reporting SDK is included in this release.</p>
 
   <h2>Data stored locally</h2>
   <p>Private app storage contains campaign, Daily, Infinite, and Auto Journey progress and records; settings and reward balances; ad-cadence state; consent-managed state; and exact generated Auto Journey boards, identities, certification receipts, and fingerprints. Debug builds may store blinded playtest sessions and optional comments.</p>
@@ -99,20 +99,17 @@
   <p>Rewarded ads are optional and may grant one safe-move hint or an eligible Campaign or Infinite level skip only after Google’s SDK confirms that the rewarded ad was completed. Magnetrail applies no daily limit to rewarded-ad use, although an earned hint must be used before another hint credit can be held.</p>
   <p>Campaign Levels 1–10 are excluded from interstitial counting. Completing Campaign Level 11 creates the first Campaign interstitial opportunity. After that boundary, each five eligible first-time completions across Campaign, normal Infinite, and Auto Journey create another opportunity. Daily Challenges, human playtests, replays, failed attempts, hints, and rewarded-ad skips do not count.</p>
   <p>An eligible interstitial is evaluated immediately after the solved board is safely recorded and may appear over the Celebration screen; it is not triggered by the Next button. Magnetrail applies no daily interstitial limit or general interstitial cooldown. An interstitial is suppressed for 60 seconds after—and only after—a rewarded ad is completed and its reward is earned. Missing consent, an unavailable ad, or another failed eligibility check never blocks gameplay, and a skipped opportunity creates no later ad debt.</p>
-
-  <h2>Optional usage and crash diagnostics</h2>
-  <p>Firebase Analytics and Crashlytics libraries are included, but automatic collection is disabled in the manifest. Collection is enabled only when the binary has valid Firebase configuration, the player enables <strong>Usage &amp; crash diagnostics</strong>, and the applicable consent state permits it.</p>
-  <p>When enabled, Analytics may process coarse app-use events and related device/app identifiers and metadata. Crashlytics may process crash and ANR stack traces, app state, device metadata, and a Crashlytics installation identifier. Magnetrail’s event allow-list does not intentionally include canonical board state, free-text playtest comments, raw consent strings, or advertising identifiers. Read <a href="https://firebase.google.com/support/privacy">Firebase privacy and security</a> and <a href="https://firebase.google.com/docs/android/play-data-disclosure">Firebase’s data-disclosure guidance</a>.</p>
+  <p>An App Open ad may be shown when Magnetrail returns to the foreground if consent permits ads, an ad has already loaded, the activity is resumed, and no other full-screen content is active. At most one App Open ad may be shown per hour. Magnetrail also suppresses it for at least 60 seconds after another full-screen ad is dismissed. An unavailable or ineligible App Open ad is skipped immediately and never blocks startup or resume.</p>
 
   <h2>User-initiated sharing</h2>
   <p>The Celebration screen includes a Share button. When selected, Magnetrail captures the visible game screen as a PNG in temporary app cache and opens the Android Sharesheet with that screenshot and the Magnetrail Google Play URL. Magnetrail does not select a recipient or upload the screenshot itself. The app or service selected by the player receives the shared content and handles it under its own privacy policy. The cached screenshot may remain until it is replaced, app cache is cleared, or the app is uninstalled.</p>
 
   <h2>Sharing, retention, and deletion</h2>
-  <p>Magnetrail does not sell an account profile because it has no account system. Google and its advertising partners may process data for advertising, consent, security, measurement, and fraud-prevention purposes. Configured and enabled Firebase services may process diagnostics to measure app use and reliability.</p>
-  <p>Local data remains until normal gameplay replaces it, app storage is cleared, or the app is uninstalled. Google and advertising partners control retention for data they process. Disable optional diagnostics in Settings, use UMP’s Privacy options when available, and use Google’s privacy controls for provider-held data.</p>
+  <p>Magnetrail does not sell an account profile because it has no account system. Google and its advertising partners may process data for advertising, consent, security, measurement, and fraud-prevention purposes.</p>
+  <p>Local data remains until normal gameplay replaces it, app storage is cleared, or the app is uninstalled. Google and advertising partners control retention for data they process. Use UMP’s Privacy options when available and Google’s privacy controls for provider-held data.</p>
 
   <h2>Security</h2>
-  <p>The app disables cleartext traffic, uses private app storage, excludes app data from backup and transfer, limits diagnostic event fields, and makes production release configuration fail closed when required values are absent. Celebration screenshots are shared through a read-only, temporary content URI rather than broad storage access. No security measure eliminates every risk.</p>
+  <p>The app disables cleartext traffic, uses private app storage, excludes app data from backup and transfer, and makes production release configuration fail closed when required values are absent. Celebration screenshots are shared through a read-only, temporary content URI rather than broad storage access. No security measure eliminates every risk.</p>
 
   <h2>Children and target audience</h2>
   <p>The source requires an owner-reviewed general-audience configuration before live production services can be enabled. The repository does not prove the Play Console target-audience declaration or completed age-treatment choices. The publisher must verify audience, rating, advertising treatment, and consent settings before distribution. This policy does not claim that Magnetrail is directed to children.</p>
@@ -120,7 +117,6 @@
   <h2>Your choices</h2>
   <ul>
     <li>Use <strong>Privacy options</strong> in Settings when UMP makes that option available.</li>
-    <li>Disable <strong>Usage &amp; crash diagnostics</strong> in Settings.</li>
     <li>Choose whether and where to share a Celebration screenshot.</li>
     <li>Clear app storage or uninstall Magnetrail to remove locally stored data.</li>
     <li>Use Google’s privacy and advertising controls for data processed by Google.</li>

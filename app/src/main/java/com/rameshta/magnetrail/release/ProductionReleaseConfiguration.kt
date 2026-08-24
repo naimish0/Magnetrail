@@ -8,7 +8,6 @@ data class ProductionReleaseConfiguration(
     val privacyPolicyUrl: String,
     val targetAudience: String,
     val liveAdsEnabled: Boolean,
-    val firebaseConfigured: Boolean,
     val uploadSigningConfigured: Boolean,
 )
 
@@ -38,7 +37,6 @@ object ProductionReleaseConfigurationValidator {
             add("privacy policy URL is not a safe HTTPS URL")
         }
         if (configuration.targetAudience != "general") add("target audience is not owner-reviewed general audience")
-        if (!configuration.firebaseConfigured) add("Firebase production configuration is absent")
         if (!configuration.uploadSigningConfigured) add("upload signing configuration is absent")
     }
 

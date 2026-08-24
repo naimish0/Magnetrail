@@ -18,7 +18,7 @@ Use this list for one exact AAB. A box is evidence, not intent. Current M5 state
 - [ ] Owner-authorized upload key is supplied through protected local/CI variables; no key/password is committed or logged.
 - [ ] Upload certificate fingerprint matches the Play record; Play App Signing/app-signing certificate status recorded.
 - [ ] Production AdMob app/rewarded/interstitial IDs match package; UMP/partners/audience flags/privacy options/app-ads.txt verified.
-- [ ] Production Firebase app/package/certificates, Analytics/Crashlytics toggles, retention and data sharing verified—or SDK removal is approved and declarations updated.
+- [x] Developer analytics/crash-reporting SDK removal is approved for this cycle; dependencies, manifest, UI, policy, and declarations are updated.
 - [ ] Live traffic is never clicked for QA; test-device/test-ad evidence is retained.
 
 ## QA, listing, privacy, and Play
@@ -29,4 +29,3 @@ Use this list for one exact AAB. A box is evidence, not intent. Current M5 state
 - [ ] Developer/package verification, app creation, device catalog, pre-launch report, closed-test applicability/evidence and production access are green.
 - [ ] Rollout/hotfix decision owner and observation channel are staffed; first-release limitation is understood.
 - [ ] Owner gives explicit final upload and production-release approval for the recorded hash.
-

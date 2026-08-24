@@ -8,7 +8,7 @@ Research date: **2026-08-19**. Re-check every dated policy immediately before Pl
 |---|---|---|
 | Package / namespace | `com.rameshta.magnetrail` | Owner must confirm it is permanent and not already registered elsewhere. |
 | Name / locale | Magnetrail / en-US | Owner approval required. Do not publish machine translations. |
-| Version | code `1`, name `1.0` | Owner must confirm version code 1 has never been uploaded. |
+| Version | code `2`, name `1.1` | Owner must confirm version code 2 has never been uploaded. |
 | SDK | min 24, target 36, compile 37 | Repository-verified; device/Play checks remain. |
 | Listing | Game / Puzzle; free; contains ads | Owner and Play Console confirmation required. |
 | Audience | Undecided | Live ads and production upload remain blocked. |
@@ -36,7 +36,7 @@ The version is centralized in `gradle.properties`. Increment `magnetrail.version
 
 - Google Mobile Ads SDK 25.4.0 disclosures include approximate location derived from IP, product interactions, diagnostics, and identifiers for advertising, analytics, and fraud/security purposes; the exact console answers depend on configuration and use. [AdMob Play data disclosure](https://developers.google.com/admob/android/privacy/play-data-disclosure)
 - UMP 4.0.0 must request updated consent information each launch where production monetization is enabled, honor `canRequestAds`, and expose privacy options when required. [UMP setup](https://developers.google.com/admob/android/privacy) · [Consent mode](https://developers.google.com/admob/android/privacy/consent-mode)
-- Firebase disclosures vary by product. Crashlytics can process stack traces, application/device state and installation identifiers; Analytics processes event and device/identifier data. Console retention and data-sharing choices must be recorded. [Firebase Play disclosure](https://firebase.google.com/docs/android/play-data-disclosure) · [Firebase privacy](https://firebase.google.com/support/privacy)
+- No developer analytics or crash-reporting SDK is authorized for this release cycle. Reconfirm the signed artifact remains free of those dependencies before submission.
 - AdMob publishers may need an authorized seller entry at `app-ads.txt`; new-app verification rules also require an owner/console check. [app-ads.txt setup](https://support.google.com/admob/answer/9363762) · [app verification](https://support.google.com/admob/answer/14538460)
 
 ## Engineering choices and deliberate limits
@@ -44,6 +44,7 @@ The version is centralized in `gradle.properties`. Increment `magnetrail.version
 - `compileSdk 37` resolves the AndroidX 1.19.0/2.11.0 min-compile requirement while `targetSdk 36` opts into the current intended runtime behavior.
 - Mobile Ads 25.4.0 transitively requested obsolete WorkManager 2.7.0, which crashed the R8-optimized benchmark build on Android 16 during `WorkDatabase` initialization. The app pins current stable WorkManager 2.11.2 (min SDK 23, compatible with Magnetrail's min 24) and release-startup testing guards the fix. [WorkManager releases](https://developer.android.com/jetpack/androidx/releases/work)
 - Release builds enable R8 optimization and resource shrinking, disable cleartext and backup, verify the merged manifest, reject sample IDs in the release artifact, and stay structurally non-monetized until all production inputs are valid.
+- Developer analytics/crash reporting is explicitly deferred to the next release cycle; current builds use no-op abstractions and contain no provider SDK/plugin/configuration.
 - The Baseline Profile Gradle plugin is pinned to `1.5.0-rc01` because stable 1.4.1 rejects the AGP 9.1 application model. ProfileInstaller remains stable 1.4.1. This release-candidate dependency must be revisited before submission against [Google Maven](https://maven.google.com/web/index.html?q=baselineprofile) and [Baseline Profile guidance](https://developer.android.com/topic/performance/baselineprofiles/overview).
 - No notification icon is added because the app has no notification feature.
 - No upload, key generation, console mutation, live-ad impression, or publishing operation is authorized by M5.

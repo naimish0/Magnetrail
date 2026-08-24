@@ -1,5 +1,8 @@
 # Magnetrail M5 binary report
 
+> Historical artifact: this report describes the 2026-08-19 candidate and is superseded by later
+> source/configuration changes. Its hashes and binary observations must not be used for the next release.
+
 Verification date: **2026-08-19, Asia/Kolkata**  
 Source base: `656688898cc5eecbfdaa7564868150dd80dc793b` plus the uncommitted M5 working-tree changes  
 Status: **structurally verified, unsigned, not uploadable**
@@ -53,4 +56,3 @@ These APK sets were signed with the standard local Android debug key only so bun
 | Current bundletool validation/16 KB alignment/final split cold launch | Passed |
 
 Not run or not proven: API 24, mid-range/API 35, tablet/foldable, full human TalkBack/Switch Access, production UMP/AdMob/Firebase flows, Play pre-launch/device catalog, true uploaded-version upgrade, closed test, vitals volume, upload signing, or console declarations. These remain release blockers.
-

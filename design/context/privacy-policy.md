@@ -1,6 +1,6 @@
 # Magnetrail Privacy Policy
 
-Last updated: 23 August 2026
+Last updated: 24 August 2026
 
 Status: deployable policy text with a configured public HTTPS URL. The publisher must still verify that the hosted page matches the exact release binary and complete the applicable legal and Google Play review before publication.
 
@@ -8,7 +8,7 @@ Status: deployable policy text with a configured public HTTPS URL. The publisher
 
 Magnetrail is an offline-first puzzle game. It does not require an account. Numbered-campaign progress, Auto Journey boards and uniqueness history, settings, rewards, and local records are stored on the device.
 
-The app includes third-party Google software for advertising and consent. A production build may also use Firebase Analytics and Firebase Crashlytics if the owner supplies a valid Firebase configuration and the player enables optional diagnostics under an applicable consent state. These services can transmit data even though puzzle gameplay itself works offline.
+The app includes third-party Google software for advertising and consent. No developer analytics or crash-reporting SDK is included in this release. Advertising and consent services can transmit data even though puzzle gameplay itself works offline.
 
 ## Data stored locally
 
@@ -41,17 +41,7 @@ Campaign Levels 1–10 are excluded from interstitial counting. Completing Campa
 
 An eligible interstitial is evaluated immediately after the solved board is safely recorded and may appear over the Celebration screen; it is not triggered by the Next button. Magnetrail applies no daily interstitial limit or general interstitial cooldown. An interstitial is suppressed for 60 seconds after—and only after—a rewarded ad is completed and its reward is earned. Missing consent, an unavailable ad, or another failed eligibility check never blocks gameplay, and a skipped opportunity creates no delayed “ad debt.”
 
-## Optional usage and crash diagnostics
-
-Firebase Analytics and Firebase Crashlytics libraries are included. In this repository, automatic collection is disabled in the Android manifest. Collection is enabled only when all of the following apply:
-
-1. the production binary contains a valid Firebase configuration;
-2. the player enables **Usage & crash diagnostics** in Settings; and
-3. the applicable consent state permits collection.
-
-When enabled, Firebase Analytics may process coarse app-use events and associated device/app identifiers and metadata. Firebase Crashlytics may process crash and ANR stack traces, relevant app state, device metadata, and a Crashlytics installation identifier. Magnetrail's event allow-list does not intentionally include canonical board state, free-text playtest comments, raw consent strings, or advertising identifiers. See [Firebase privacy and security](https://firebase.google.com/support/privacy) and [Firebase's Android data-disclosure guidance](https://firebase.google.com/docs/android/play-data-disclosure).
-
-Optional diagnostics can be disabled in Settings. The app asks Crashlytics to delete unsent reports when collection is disabled. Data already received by Google is subject to Google's retention and deletion controls.
+An App Open ad may be shown when Magnetrail returns to the foreground if consent permits ads, an ad has already loaded, the activity is resumed, and no other full-screen content is active. At most one App Open ad may be shown per hour. Magnetrail also suppresses it for at least 60 seconds after another full-screen ad is dismissed. An unavailable or ineligible App Open ad is skipped immediately and never blocks startup or resume.
 
 ## User-initiated sharing
 
@@ -59,13 +49,13 @@ The Celebration screen includes a Share button. When selected, Magnetrail captur
 
 ## Sharing and purposes
 
-Magnetrail does not sell an account profile because it does not operate an account system. Data may be shared with or processed by Google and its advertising partners through Mobile Ads and UMP for ad delivery, measurement, consent management, security, and fraud prevention. If optional diagnostics are configured and enabled, Google may process Analytics and Crashlytics data to understand app use and diagnose reliability problems.
+Magnetrail does not sell an account profile because it does not operate an account system. Data may be shared with or processed by Google and its advertising partners through Mobile Ads and UMP for ad delivery, measurement, consent management, security, and fraud prevention.
 
 No other application network client, backend API, social login, payment SDK, or cloud gameplay database was found in the audited source as of the last-updated date.
 
 ## Security
 
-The app disables cleartext network traffic, stores progress in private app storage, excludes app data from Android backup and device transfer, limits diagnostic event fields, and requires release builds to fail closed when production advertising, signing, audience, Firebase, or privacy-URL configuration is incomplete. Celebration screenshots are shared through a read-only, temporary content URI rather than broad storage access. No security measure eliminates every risk.
+The app disables cleartext network traffic, stores progress in private app storage, excludes app data from Android backup and device transfer, and requires release builds to fail closed when production advertising, signing, audience, or privacy-URL configuration is incomplete. Celebration screenshots are shared through a read-only, temporary content URI rather than broad storage access. No security measure eliminates every risk.
 
 ## Children and target audience
 
@@ -74,7 +64,6 @@ The source requires an owner-reviewed `general` target-audience configuration be
 ## Your choices and deletion
 
 - Use **Privacy options** in Settings when UMP indicates that the entry point is required.
-- Disable **Usage & crash diagnostics** in Settings.
 - Choose whether and where to share a Celebration screenshot.
 - Clear app storage or uninstall Magnetrail to remove locally stored progress and Auto Journey history.
 - Use Google's own privacy and ad controls for data processed by Google.

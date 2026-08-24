@@ -74,13 +74,6 @@ fun SettingsScreen(
                     checked = settings.soundEnabled,
                     onCheckedChange = { onSettingChanged(SettingKey.SOUND, it) },
                 )
-                HorizontalDivider()
-                SettingToggle(
-                    title = "Usage & crash diagnostics",
-                    detail = "Optional consent-aware usage events and crash reports",
-                    checked = settings.diagnosticsEnabled,
-                    onCheckedChange = { onSettingChanged(SettingKey.DIAGNOSTICS, it) },
-                )
                 if (privacyOptionsRequired) {
                     HorizontalDivider()
                     SettingsAction(

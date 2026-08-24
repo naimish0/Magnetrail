@@ -1,9 +1,9 @@
 # Magnetrail M4 event catalog
 
-Status: implemented, collection-disabled by default  
-Last reviewed: 2026-08-19
+Status: dormant schema; no provider is shipped
+Last reviewed: 2026-08-24
 
-All events are constructed as typed `AnalyticsEvent` values in the Android `:app` layer. They are discarded by the no-op tracker when Firebase is not configured and by the Firebase tracker unless both the local diagnostics opt-in and the effective consent policy allow collection. No event changes gameplay or economy state.
+All events are constructed as typed `AnalyticsEvent` values in the Android `:app` layer, then discarded by the no-op tracker used in every current build. No event is transmitted, and no event changes gameplay or economy state. This schema is retained for possible review in a later release cycle.
 
 ## Product events
 
@@ -37,7 +37,7 @@ All events are constructed as typed `AnalyticsEvent` values in the Android `:app
 | `app_open_dismiss` | SDK dismissal callback | none | Was foreground app usage resumed after display? | Ad interaction |
 | `ad_show_failure` | SDK show-failure callback | `format`, `category` | Are full-screen displays failing? | Ad diagnostics; coarse category, no SDK payload |
 
-Expected load no-fill, network loss, and offline conditions are Analytics result categories only. They are not Crashlytics non-fatals.
+Expected load no-fill, network loss, and offline conditions are typed local result categories only; the current no-op tracker discards them.
 
 ## Consent and settings events
 
@@ -52,7 +52,7 @@ Expected load no-fill, network loss, and offline conditions are Analytics result
 - Count buckets: `0`, `1_2`, `3_5`, `6_10`, `11_plus`.
 - Duration buckets: `under_30s`, `30_59s`, `1_2m`, `3_9m`, `10m_plus`.
 - Custom names are lowercase snake_case and at most 40 characters.
-- Typed events reject known forbidden parameter keys and string values longer than 100 characters before Firebase mapping.
-- No custom Firebase user ID is set.
-- Never add name, email, phone, contacts, precise location, free text, advertising ID, Firebase installation ID, raw consent data, date of birth, exact local date, daily seed, user-generated identifier, or full board state.
+- Typed events reject known forbidden parameter keys and string values longer than 100 characters before any future provider mapping.
+- No custom analytics user ID is set.
+- Never add name, email, phone, contacts, precise location, free text, advertising ID, provider installation ID, raw consent data, date of birth, exact local date, daily seed, user-generated identifier, or full board state.
 - Completion and deadlock events originate from committed result boundaries; ad events originate from SDK callbacks/coordinator decisions; Compose recomposition emits none of them.

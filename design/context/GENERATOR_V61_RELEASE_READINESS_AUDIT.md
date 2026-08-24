@@ -21,6 +21,7 @@ The repository can build a structurally hardened release, but the product is not
 - The merged SDK manifest truthfully contains Internet/network, advertising-ID/Privacy Sandbox, wake-lock, foreground-service, and install-referrer declarations; these are reflected in Data Safety documentation.
 - Both shipped ARM64 native libraries have 16 KiB `LOAD` alignment. No device page-size execution was performed.
 - Privacy Markdown/HTML and Data Safety mapping exist; Settings has a local accessible fallback when a verified HTTPS URL cannot open.
+- Developer analytics/crash reporting is deferred; provider SDKs, plugins, configuration, manifest entries, and public diagnostics controls are absent from this release.
 - Interstitial eligibility is transactionally tied to first clears, has five-clear cadence, tutorial/replay/rewarded exclusions, 120-second minimum full-screen cooldown, and no ad debt.
 - Auto Journey generation/certification is dispatched off the main thread; exact persisted JSON/identity/certificate restores after process death and collision history is authoritative rather than Bloom-only.
 
@@ -38,7 +39,6 @@ The repository can build a structurally hardened release, but the product is not
 - Privacy contact and any required postal address/decision.
 - Public, non-editable, active HTTPS privacy-policy URL (`MAGNETRAIL_PRIVACY_POLICY_URL`).
 - Production AdMob App ID and interstitial/rewarded unit IDs plus console/UMP configuration.
-- Firebase production configuration and owner-approved Analytics/Crashlytics collection/retention choices, or removal of those services.
 - Upload signing keystore/alias/password inputs.
 - Google Play target-audience, Ads, Data Safety, App content, consent, and privacy declarations.
 

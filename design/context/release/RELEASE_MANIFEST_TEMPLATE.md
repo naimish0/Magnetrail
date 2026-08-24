@@ -30,7 +30,7 @@ bundletool_version_sha256:
 generated_apks_paths_sha256:
 
 production_input_names_present: [names only]
-firebase_project/app identifier: non-secret identifier approved for record
+developer_analytics/crash_sdk: absent for this release
 admob app/unit ownership verified: yes/no + console evidence link
 privacy_policy_url:
 support_url/email:
@@ -46,4 +46,3 @@ known_issues/blockers:
 rollout_decision/timestamp:
 superseding_version/hotfix:
 ```
-
