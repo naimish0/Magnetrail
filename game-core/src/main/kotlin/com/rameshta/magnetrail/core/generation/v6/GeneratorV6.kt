@@ -229,6 +229,7 @@ class GeneratorV6(
                     engineGuided.level,
                     engineGuided.bindings,
                     request.knownFingerprints,
+                    request.knownFingerprintIndex,
                 )
                 lastCandidate = evaluated.first
                 evaluated.second?.let { certificate -> return V6GenerationResult.Generated(evaluated.first, certificate) }
@@ -280,7 +281,15 @@ class GeneratorV6(
             }
             realization as V6RealizationResult.Realized
             val (level, bindings) = geometryCompiler.materialize(request, spec, problem, realization.assignment)
-            val evaluated = evaluate(identity, profile, spec, level, bindings, request.knownFingerprints)
+            val evaluated = evaluate(
+                identity,
+                profile,
+                spec,
+                level,
+                bindings,
+                request.knownFingerprints,
+                request.knownFingerprintIndex,
+            )
             lastCandidate = if (evaluated.second == null) {
                 evaluated.first.copy(
                     rejections = listOf(
@@ -309,6 +318,7 @@ class GeneratorV6(
         rawLevel: LevelDefinition,
         bindings: Map<String, String>,
         archive: List<V6FingerprintBundle>,
+        fingerprintIndex: V61FingerprintIndex?,
     ): Pair<V6Candidate, V6TechnicalCertificate?> {
         val rejections = mutableListOf<V6Rejection>()
         var replay = rawLevel.initialState()
@@ -460,30 +470,51 @@ class GeneratorV6(
                 rejections = rejections.distinct(),
             ) to null
         }
-        val provisionalFingerprints = SemanticFingerprintBuilderV6(
+        val fingerprintBase = SemanticFingerprintBuilderV6(
             ExactColoredGraphCanonicalizerV6(profile.budgets.canonicalBacktrackingStates),
-        ).build(rawLevel, spec, dag, occupancy, archive).getOrElse { error ->
+        ).build(rawLevel, spec, dag, occupancy, archive.takeIf { fingerprintIndex == null }.orEmpty()).getOrElse { error ->
             rejections += V6Rejection(V6RejectionCode.CANONICALIZATION_CAP, error.message.orEmpty())
             return V6Candidate(
                 identity, profile, spec, rawLevel, bindings, causal.witnesses, dag, occupancy, rejections = rejections,
             ) to null
         }
+        val provisionalFingerprints = fingerprintIndex?.attachExactNearest(fingerprintBase) ?: fingerprintBase
+        val indexedDuplicateCode = fingerprintIndex?.duplicateReason(provisionalFingerprints)
+            ?.let(::duplicateRejectionCodeV6)
         val duplicate = archive.firstOrNull { existing ->
             existing.exactLayout == provisionalFingerprints.exactLayout ||
                 existing.d4Layout == provisionalFingerprints.d4Layout ||
+                existing.arrowLayout == provisionalFingerprints.arrowLayout ||
+                existing.interactiveLayout == provisionalFingerprints.interactiveLayout ||
+                existing.perceptualLayout == provisionalFingerprints.perceptualLayout ||
+                existing.relevancePrunedD4Layout == provisionalFingerprints.relevancePrunedD4Layout ||
                 existing.causalHypergraph == provisionalFingerprints.causalHypergraph ||
                 existing.quotientDecisionDag == provisionalFingerprints.quotientDecisionDag ||
                 existing.solutionPolicy == provisionalFingerprints.solutionPolicy
         }
-        if (duplicate != null) {
-            val code = when {
-                duplicate.exactLayout == provisionalFingerprints.exactLayout -> V6RejectionCode.EXACT_DUPLICATE
-                duplicate.d4Layout == provisionalFingerprints.d4Layout -> V6RejectionCode.D4_DUPLICATE
-                duplicate.causalHypergraph == provisionalFingerprints.causalHypergraph -> V6RejectionCode.CAUSAL_DUPLICATE
-                duplicate.quotientDecisionDag == provisionalFingerprints.quotientDecisionDag -> V6RejectionCode.DECISION_DAG_DUPLICATE
+        val archivedDuplicateCode = duplicate?.let { collision ->
+            when {
+                collision.exactLayout == provisionalFingerprints.exactLayout -> V6RejectionCode.EXACT_DUPLICATE
+                collision.d4Layout == provisionalFingerprints.d4Layout -> V6RejectionCode.D4_DUPLICATE
+                collision.arrowLayout == provisionalFingerprints.arrowLayout -> V6RejectionCode.ARROW_LAYOUT_DUPLICATE
+                collision.interactiveLayout == provisionalFingerprints.interactiveLayout ->
+                    V6RejectionCode.INTERACTIVE_LAYOUT_DUPLICATE
+                collision.perceptualLayout == provisionalFingerprints.perceptualLayout ->
+                    V6RejectionCode.PERCEPTUAL_LAYOUT_DUPLICATE
+                collision.relevancePrunedD4Layout == provisionalFingerprints.relevancePrunedD4Layout ->
+                    V6RejectionCode.RELEVANCE_DUPLICATE
+                collision.causalHypergraph == provisionalFingerprints.causalHypergraph -> V6RejectionCode.CAUSAL_DUPLICATE
+                collision.quotientDecisionDag == provisionalFingerprints.quotientDecisionDag ->
+                    V6RejectionCode.DECISION_DAG_DUPLICATE
                 else -> V6RejectionCode.SOLUTION_POLICY_DUPLICATE
             }
-            rejections += V6Rejection(code, "semantic collision with ${duplicate.exactLayout}")
+        }
+        if (indexedDuplicateCode != null || duplicate != null) {
+            val code = indexedDuplicateCode ?: requireNotNull(archivedDuplicateCode)
+            rejections += V6Rejection(
+                code,
+                "uniqueness collision with ${duplicate?.exactLayout ?: provisionalFingerprints.nearestSemanticFingerprint}",
+            )
             return V6Candidate(
                 identity,
                 profile,

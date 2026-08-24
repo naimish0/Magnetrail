@@ -41,6 +41,7 @@ class M4AnalyticsTest {
             AnalyticsEvent.ConsentFlowResult("obtained"),
             AnalyticsEvent.RewardedLoadResult("no_fill"),
             AnalyticsEvent.InterstitialEligible("cooldown", "skip"),
+            AnalyticsEvent.AppOpenEligible("cooldown", "skip"),
             AnalyticsEvent.DailyComplete("advanced", 2, "3_5"),
         )
         events.forEach(AnalyticsPrivacyGuard::requireSafe)

@@ -31,6 +31,10 @@ All events are constructed as typed `AnalyticsEvent` values in the Android `:app
 | `interstitial_eligible` | Every accepted campaign completion `Next level` evaluation | `reason`, `outcome` | Which policy gate showed or skipped an ad? | Monetization policy; coarse reason |
 | `interstitial_show` | SDK full-screen shown callback | none | Did an eligible boundary ad display? | Ad interaction |
 | `interstitial_dismiss` | SDK dismissal callback | none | Was normal navigation resumed after display? | Ad interaction |
+| `app_open_eligible` | Foreground-entry policy evaluation | `reason`, `outcome` | Which policy gate showed or skipped an app-open ad? | Monetization policy; coarse reason |
+| `app_open_load_result` | SDK load callback | `result` | Are app-open loads healthy? | Ad diagnostics; coarse result only |
+| `app_open_show` | SDK full-screen shown callback | none | Did an eligible app-open ad display? | Ad interaction |
+| `app_open_dismiss` | SDK dismissal callback | none | Was foreground app usage resumed after display? | Ad interaction |
 | `ad_show_failure` | SDK show-failure callback | `format`, `category` | Are full-screen displays failing? | Ad diagnostics; coarse category, no SDK payload |
 
 Expected load no-fill, network loss, and offline conditions are Analytics result categories only. They are not Crashlytics non-fatals.
@@ -52,4 +56,3 @@ Expected load no-fill, network loss, and offline conditions are Analytics result
 - No custom Firebase user ID is set.
 - Never add name, email, phone, contacts, precise location, free text, advertising ID, Firebase installation ID, raw consent data, date of birth, exact local date, daily seed, user-generated identifier, or full board state.
 - Completion and deadlock events originate from committed result boundaries; ad events originate from SDK callbacks/coordinator decisions; Compose recomposition emits none of them.
-

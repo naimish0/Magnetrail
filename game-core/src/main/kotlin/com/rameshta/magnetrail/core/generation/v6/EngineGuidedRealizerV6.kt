@@ -90,6 +90,10 @@ class EngineGuidedSpatialRealizerV6(
                 boardIndex + mutationRound * cap,
                 shapeOverride,
             )
+            request.knownFingerprintIndex?.layoutDuplicateReason(raw)?.let { reason ->
+                reject(duplicateRejectionCodeV6(reason))
+                return@repeat
+            }
             val dag = request.analysisCache?.decisionDag(
                 raw,
                 profile.budgets.decisionDagStates,
@@ -213,26 +217,26 @@ class EngineGuidedSpatialRealizerV6(
             }
             val fingerprints = request.knownFingerprintIndex?.attachExactNearest(fingerprintBase) ?: fingerprintBase
             val indexedDuplicate = request.knownFingerprintIndex?.duplicateReason(fingerprints)
-            val duplicateCode = indexedDuplicate?.let { reason ->
-                when (reason) {
-                    "REJECT_EXACT_DUPLICATE" -> V6RejectionCode.EXACT_DUPLICATE
-                    "REJECT_D4_DUPLICATE" -> V6RejectionCode.D4_DUPLICATE
-                    "REJECT_CAUSAL_DUPLICATE" -> V6RejectionCode.CAUSAL_DUPLICATE
-                    "REJECT_DECISION_DAG_DUPLICATE" -> V6RejectionCode.DECISION_DAG_DUPLICATE
-                    "REJECT_SOLUTION_POLICY_DUPLICATE" -> V6RejectionCode.SOLUTION_POLICY_DUPLICATE
-                    "REJECT_NEAR_SEMANTIC_DUPLICATE" -> V6RejectionCode.NEAR_SEMANTIC_CLONE
-                    else -> V6RejectionCode.D4_DUPLICATE
+            val duplicateCode = indexedDuplicate?.let(::duplicateRejectionCodeV6)
+                ?: request.knownFingerprints.firstNotNullOfOrNull { known ->
+                    when {
+                        known.exactLayout == fingerprints.exactLayout -> V6RejectionCode.EXACT_DUPLICATE
+                        known.d4Layout == fingerprints.d4Layout -> V6RejectionCode.D4_DUPLICATE
+                        known.arrowLayout == fingerprints.arrowLayout -> V6RejectionCode.ARROW_LAYOUT_DUPLICATE
+                        known.interactiveLayout == fingerprints.interactiveLayout ->
+                            V6RejectionCode.INTERACTIVE_LAYOUT_DUPLICATE
+                        known.perceptualLayout == fingerprints.perceptualLayout ->
+                            V6RejectionCode.PERCEPTUAL_LAYOUT_DUPLICATE
+                        known.relevancePrunedD4Layout == fingerprints.relevancePrunedD4Layout ->
+                            V6RejectionCode.RELEVANCE_DUPLICATE
+                        known.causalHypergraph == fingerprints.causalHypergraph -> V6RejectionCode.CAUSAL_DUPLICATE
+                        known.quotientDecisionDag == fingerprints.quotientDecisionDag ->
+                            V6RejectionCode.DECISION_DAG_DUPLICATE
+                        known.solutionPolicy == fingerprints.solutionPolicy ->
+                            V6RejectionCode.SOLUTION_POLICY_DUPLICATE
+                        else -> null
+                    }
                 }
-            } ?: request.knownFingerprints.firstNotNullOfOrNull { known ->
-                when {
-                    known.exactLayout == fingerprints.exactLayout -> V6RejectionCode.EXACT_DUPLICATE
-                    known.d4Layout == fingerprints.d4Layout -> V6RejectionCode.D4_DUPLICATE
-                    known.causalHypergraph == fingerprints.causalHypergraph -> V6RejectionCode.CAUSAL_DUPLICATE
-                    known.quotientDecisionDag == fingerprints.quotientDecisionDag -> V6RejectionCode.DECISION_DAG_DUPLICATE
-                    known.solutionPolicy == fingerprints.solutionPolicy -> V6RejectionCode.SOLUTION_POLICY_DUPLICATE
-                    else -> null
-                }
-            }
             if (duplicateCode != null) {
                 reject(duplicateCode)
                 return@repeat

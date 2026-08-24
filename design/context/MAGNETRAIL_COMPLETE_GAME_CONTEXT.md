@@ -1320,9 +1320,12 @@ Current implemented advertising formats:
 1. Rewarded ad for one solver hint credit.
 2. Rewarded ad to skip the current Campaign/Infinite level and grant its 10-coin progression reward.
 3. Interstitial at a natural campaign completion boundary.
+4. App-open ad when returning to the foreground, with a persisted one-hour cooldown.
 
-No banners, native ads, app-open ads, rewarded interstitials, offerwalls, splash ads, pause/failure
-ads, mediation, cross-promotion, or Billing exist.
+No banners, native ads, rewarded interstitials, offerwalls, splash/failure/pause ads, mediation,
+cross-promotion, or Billing exist. App-open ads are preloaded after consent, never delayed into
+interactive content after a cold-start miss, expire after four hours, and cannot overlap another
+full-screen surface.
 
 ### 16.1 Rewarded hint
 

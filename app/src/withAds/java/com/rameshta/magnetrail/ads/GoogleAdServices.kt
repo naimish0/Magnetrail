@@ -259,19 +259,7 @@ class GoogleInterstitialAdService(
     }
 }
 
-class RewardedCallbackLedger(private val transactionId: String) {
-    private val rewarded = AtomicBoolean(false)
-
-    fun rewardCallback(): Boolean = rewarded.compareAndSet(false, true)
-
-    fun dismiss(): RewardedOutcome = if (rewarded.get()) {
-        RewardedOutcome.Earned(transactionId)
-    } else {
-        RewardedOutcome.DismissedWithoutReward
-    }
-}
-
-private fun AdError.coarseCategory(): String = when (code) {
+internal fun AdError.coarseCategory(): String = when (code) {
     0 -> "internal"
     1 -> "invalid_request"
     2 -> "network"

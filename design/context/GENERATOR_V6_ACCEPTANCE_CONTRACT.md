@@ -34,7 +34,8 @@ A technically accepted candidate must satisfy every item:
 - V4 and Quality complete without essential truncation or rejection;
 - a simple/low-budget policy does not reliably solve bucket 5;
 - no decision requires indistinguishable guessing;
-- exact, D4, causal, decision-DAG and solution-policy fingerprints are unique;
+- exact, D4, arrow-layout, interactive-layout, perceptual-template, relevance-pruned, causal,
+  decision-DAG, solution-policy and synthesis-graph fingerprints are unique;
 - near-semantic similarity does not exceed frozen threshold `0.92`;
 - regeneration is byte-identical for identical inputs.
 

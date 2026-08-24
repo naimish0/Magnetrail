@@ -328,6 +328,10 @@ class MainActivity : ComponentActivity() {
         if (services.privacyManager.state.value.canRequestAds) {
             services.rewardedAdService.preloadIfAllowed()
             services.interstitialAdService.preloadIfAllowed()
+            services.appOpenAdService.preloadIfAllowed()
+        }
+        lifecycleScope.launch {
+            services.appOpenAdService.showIfEligible(this@MainActivity)
         }
     }
 

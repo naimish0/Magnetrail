@@ -1,24 +1,29 @@
 # Magnetrail M4 implementation and compliance inventory
 
-Access/review date: **2026-08-19**  
+Access/review date: **2026-08-24**
 Scope: implementation inventory for M5 decisions; **not legal advice and not a claim of legal compliance**.
 
 ## Implementation status
 
-M4 adds app-layer UMP consent orchestration, one voluntary rewarded hint placement, capped campaign-boundary interstitials, consent-aware Firebase interfaces, schema-v4 persistence, typed events, and safe no-op behavior. `:game-core`, solver, generator, certification, campaign JSON, and daily fallback JSON were not changed.
+The app layer includes UMP consent orchestration, voluntary rewarded placements, capped
+campaign-boundary interstitials, a one-hour-capped app-open placement, consent-aware Firebase
+interfaces, schema-v4 persistence, typed events, and safe no-op behavior. `:game-core`, solver,
+generator, certification, campaign JSON, and daily fallback JSON are outside this inventory.
 
 External/account inputs found at implementation time:
 
 | Input | Status |
 |---|---|
-| AdMob App ID | Missing; debug uses Google's official sample App ID |
-| Rewarded ad unit ID | Missing; debug uses Google's rewarded test unit |
-| Interstitial ad unit ID | Missing; debug uses Google's interstitial test unit |
+| AdMob App ID | Owner-provided production ID tracked in `gradle.properties`; debug still uses Google's official sample App ID |
+| Rewarded ad unit ID | Owner-provided production ID tracked in `gradle.properties`; debug still uses Google's rewarded test unit |
+| Interstitial ad unit ID | Owner-provided production ID tracked in `gradle.properties`; debug still uses Google's interstitial test unit |
+| App-open ad unit ID | Owner-provided production ID tracked in `gradle.properties`; debug still uses Google's app-open test unit |
 | Firebase Android configuration | Missing; no `google-services.json`, so observability factories remain no-op |
 | Published privacy-policy URL | Missing; debug shows a clearly labeled disabled placeholder |
 | Target audience/age classification | Missing; age-treatment request fields remain SDK-default `UNSPECIFIED` and live ads are blocked |
 
-Release is **not monetization-ready**. No production identifier, Firebase file, privacy claim, target-audience choice, or console state was invented.
+Release is **not monetization-ready**. The owner-provided production AdMob identifiers are configured,
+but no Firebase file, target-audience choice, signing credential, or console state was invented.
 
 ## SDKs and resolved versions
 
@@ -73,11 +78,12 @@ These sources and final console configuration must be rechecked during M5 becaus
 
 ## Build and ID separation
 
-- Debug/QA: official sample App ID `ca-app-pub-3940256099942544~3347511713`, rewarded test ID `ca-app-pub-3940256099942544/5224354917`, and interstitial test ID `ca-app-pub-3940256099942544/1033173712`.
+- Debug/QA: official sample App ID `ca-app-pub-3940256099942544~3347511713`, rewarded test ID `ca-app-pub-3940256099942544/5224354917`, interstitial test ID `ca-app-pub-3940256099942544/1033173712`, and app-open test ID `ca-app-pub-3940256099942544/9257395921`.
+- No Ads: the release-like `noAds` build type uses application ID suffix `.noads`, disables the global monetization gate, clears every ad-unit BuildConfig value, compiles only no-op monetization services, excludes the Mobile Ads and UMP SDKs from its runtime, and removes AdMob metadata plus advertising-ID permissions from its merged manifest. It is debug-signed only so local QA can install it alongside the other variants.
 - No personal test-device IDs are committed.
-- Release reads non-source Gradle properties: `MAGNETRAIL_ADMOB_APP_ID`, `MAGNETRAIL_REWARDED_AD_UNIT_ID`, `MAGNETRAIL_INTERSTITIAL_AD_UNIT_ID`, `MAGNETRAIL_PRIVACY_POLICY_URL`, `MAGNETRAIL_TARGET_AUDIENCE`, and explicit `MAGNETRAIL_ENABLE_LIVE_ADS=true`.
+- Release reads non-source Gradle properties: `MAGNETRAIL_ADMOB_APP_ID`, `MAGNETRAIL_REWARDED_AD_UNIT_ID`, `MAGNETRAIL_INTERSTITIAL_AD_UNIT_ID`, `MAGNETRAIL_APP_OPEN_AD_UNIT_ID`, `MAGNETRAIL_PRIVACY_POLICY_URL`, `MAGNETRAIL_TARGET_AUDIENCE`, and explicit `MAGNETRAIL_ENABLE_LIVE_ADS=true`.
 - Release live ads enable only when all values are present and the explicitly reviewed target audience is `general`. `mixed` and `children` deliberately remain build-blocked pending the required Families/age-treatment redesign. Otherwise services are no-op and the sample App ID is only a safe manifest fallback; no ad request is made.
-- Do not put real IDs or the privacy URL into committed source. Supply them through the release environment's protected Gradle properties/resource mechanism.
+- Owner-approved public AdMob identifiers and the public privacy URL are tracked in `gradle.properties`. Keep signing keys, passwords, Firebase configuration, and other credentials outside Git.
 - Automated unit tests use pure fakes/no-op interfaces and make no SDK/network calls.
 
 ## Consent, privacy options, and diagnostics
@@ -96,8 +102,9 @@ Implemented formats only:
 
 - Rewarded: explicit `Watch an ad for one hint` alternative to `Use 30 coins`.
 - Interstitial: only after the user taps `Next level` on a completed campaign level.
+- App open: only when returning to the foreground with a preloaded, unexpired ad; capped to one impression per hour and suppressed immediately after another full-screen ad.
 
-Intentionally excluded: banners, native, app-open, rewarded interstitial, splash/failure/pause/deadlock ads, cross-promotion, mediation, billing, and all other rewarded placements.
+Intentionally excluded: banners, native, rewarded interstitial, splash/failure/pause/deadlock ads, cross-promotion, mediation, billing, and all other rewarded placements.
 
 Rewarded rules:
 

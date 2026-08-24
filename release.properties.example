@@ -1,13 +1,15 @@
-# Copy values into ~/.gradle/gradle.properties, CI secrets, environment variables,
-# or an untracked release.properties loader approved by the owner. Never commit real values.
+# Copy this file to release.properties for repo-local release switches and signing values, or
+# provide the same keys through ~/.gradle/gradle.properties, CI secrets, or environment variables.
+# The app's public AdMob identifiers are tracked in gradle.properties. Never commit credentials.
 
 # Set true only for an owner-approved, uploadable production build.
 MAGNETRAIL_PRODUCTION_RELEASE=false
 
-# Production AdMob configuration. Google sample/test IDs are rejected.
+# Optional authorized AdMob overrides. Google sample/test IDs are rejected for production.
 MAGNETRAIL_ADMOB_APP_ID=ca-app-pub-XXXXXXXXXXXXXXXX~YYYYYYYYYY
 MAGNETRAIL_REWARDED_AD_UNIT_ID=ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY
 MAGNETRAIL_INTERSTITIAL_AD_UNIT_ID=ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY
+MAGNETRAIL_APP_OPEN_AD_UNIT_ID=ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY
 MAGNETRAIL_ENABLE_LIVE_ADS=false
 
 # M5 currently permits live ads only after the owner confirms a general-audience launch.
