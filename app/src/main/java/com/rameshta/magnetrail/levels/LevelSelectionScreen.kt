@@ -41,10 +41,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.unit.dp
 import com.rameshta.magnetrail.core.model.LevelDefinition
+import com.rameshta.magnetrail.R
 import com.rameshta.magnetrail.data.LevelRecord
+import com.rameshta.magnetrail.localization.localizedDifficultyName
+import com.rameshta.magnetrail.localization.localizedLevelTitle
+import com.rameshta.magnetrail.localization.localizedPackName
 import com.rameshta.magnetrail.ui.theme.LocalMagnetrailSpacing
 import com.rameshta.magnetrail.ui.theme.MagnetrailBorder
 import com.rameshta.magnetrail.ui.theme.MagnetrailMuted
@@ -73,6 +78,9 @@ fun LevelSelectionScreen(
     var goToText by rememberSaveable { mutableStateOf("") }
     val range = LevelRangeNavigator.window(pageIndex, levels.size)
     val visibleLevels = levels.subList(range.startIndex, range.endIndexExclusive)
+    val closeDescription = stringResource(R.string.close_level_selection)
+    val openProgressiveDescription = stringResource(R.string.open_progressive_journey, infiniteLevelCount)
+    val visibleRangeDescription = stringResource(R.string.visible_level_range)
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
             Box(
@@ -81,18 +89,23 @@ fun LevelSelectionScreen(
                 TextButton(
                     onClick = onBack,
                     modifier = Modifier.align(Alignment.CenterStart)
-                        .semantics { contentDescription = "Close level selection" },
-                ) { Text("Back") }
+                        .semantics { contentDescription = closeDescription },
+                ) { Text(stringResource(R.string.back)) }
                 Text(
-                    "Campaign",
+                    stringResource(R.string.campaign),
                     modifier = Modifier.align(Alignment.Center).semantics { heading() },
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                 )
             }
             Text(
-                text = "${completedLevelIds.size} of ${levels.size} boards cleared · " +
-                    "${recordsByLevel.values.sumOf { it.bestStars }} of ${levels.size * 3} stars",
+                text = stringResource(
+                    R.string.campaign_progress,
+                    completedLevelIds.size,
+                    levels.size,
+                    recordsByLevel.values.sumOf { it.bestStars },
+                    levels.size * 3,
+                ),
                 modifier = Modifier.padding(horizontal = spacing.screenHorizontal),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MagnetrailMuted,
@@ -105,21 +118,20 @@ fun LevelSelectionScreen(
                         .padding(horizontal = spacing.screenHorizontal, vertical = spacing.sm)
                         .testTag("open_progressive_journey")
                         .semantics {
-                            contentDescription =
-                                "Open Progressive Journey with $infiniteLevelCount certified puzzles"
+                            contentDescription = openProgressiveDescription
                         },
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(containerColor = MagnetrailPullSoft),
                 ) {
                     Column(modifier = Modifier.padding(spacing.md)) {
                         Text(
-                            "Progressive Journey · $infiniteLevelCount puzzles",
+                            stringResource(R.string.progressive_journey_puzzles, infiniteLevelCount),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = MagnetrailPull,
                         )
                         Text(
-                            "Easy and Medium first, then a changing mix through Master.",
+                            stringResource(R.string.progressive_journey_card_detail),
                             modifier = Modifier.padding(top = spacing.xxs),
                             style = MaterialTheme.typography.bodySmall,
                             color = MagnetrailMuted,
@@ -135,17 +147,21 @@ fun LevelSelectionScreen(
                 TextButton(
                     onClick = { pageIndex = (pageIndex - 1).coerceAtLeast(0) },
                     enabled = range.hasPrevious,
-                ) { Text("Previous") }
+                ) { Text(stringResource(R.string.previous)) }
                 Text(
-                    text = if (levels.isEmpty()) "No levels" else "Levels ${range.startLevelNumber}–${range.endLevelNumber}",
-                    modifier = Modifier.semantics { contentDescription = "Visible level range" },
+                    text = if (levels.isEmpty()) {
+                        stringResource(R.string.no_levels)
+                    } else {
+                        stringResource(R.string.levels_range, range.startLevelNumber, range.endLevelNumber)
+                    },
+                    modifier = Modifier.semantics { contentDescription = visibleRangeDescription },
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
                 )
                 TextButton(
                     onClick = { pageIndex = (pageIndex + 1).coerceAtMost((range.pageCount - 1).coerceAtLeast(0)) },
                     enabled = range.hasNext,
-                ) { Text("Next") }
+                ) { Text(stringResource(R.string.next)) }
             }
             Row(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = spacing.screenHorizontal),
@@ -156,7 +172,7 @@ fun LevelSelectionScreen(
                     value = goToText,
                     onValueChange = { value -> goToText = value.filter(Char::isDigit).take(6) },
                     modifier = Modifier.weight(1f).testTag("go_to_level_input"),
-                    label = { Text("Go to level") },
+                    label = { Text(stringResource(R.string.go_to_level)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
@@ -167,7 +183,7 @@ fun LevelSelectionScreen(
                         }
                     },
                     modifier = Modifier.width(64.dp).testTag("go_to_level_action"),
-                ) { Text("Go") }
+                ) { Text(stringResource(R.string.go)) }
             }
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
@@ -192,17 +208,17 @@ fun LevelSelectionScreen(
                         ) {
                             Column(modifier = Modifier.fillMaxWidth().padding(top = spacing.sm)) {
                                 Text(
-                                    packId.replace('-', ' ').replaceFirstChar { it.uppercase() },
+                                    localizedPackName(packId),
                                     modifier = Modifier.semantics { heading() },
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold,
                                 )
                                 Text(
                                     if (packDifficultyBands.size > 1) {
-                                        "Mixed difficulty"
+                                        stringResource(R.string.difficulty_mixed)
                                     } else {
-                                        packDifficultyBands.singleOrNull()?.lowercase()
-                                            ?.replaceFirstChar { it.uppercase() } ?: "Intro"
+                                        packDifficultyBands.singleOrNull()?.let { localizedDifficultyName(it) }
+                                            ?: stringResource(R.string.difficulty_intro)
                                     },
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MagnetrailMuted,
@@ -214,22 +230,31 @@ fun LevelSelectionScreen(
                     val stars = recordsByLevel[level.id]?.bestStars ?: 0
                     val progressionUnlocked = index < highestUnlockedLevel
                     val available = progressionUnlocked || debugUnlockAll
-                    val stateLabel = when {
-                        completed -> "completed"
-                        progressionUnlocked -> "available"
-                        debugUnlockAll -> "available for debug"
-                        else -> "locked"
-                    }
                     item(key = level.id) {
+                    val levelTitle = localizedLevelTitle(level)
+                    val stateLabel = stringResource(
+                        when {
+                            completed -> R.string.level_state_completed
+                            progressionUnlocked -> R.string.level_state_available
+                            debugUnlockAll -> R.string.level_state_debug
+                            else -> R.string.level_state_locked
+                        },
+                    )
+                    val levelDescription = stringResource(
+                        R.string.level_description,
+                        level.number,
+                        levelTitle,
+                        stateLabel,
+                    )
+                    val starsDescription = stringResource(R.string.stars_description, stars)
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(112.dp)
                             .testTag("level_${level.number}")
                             .semantics {
-                                contentDescription =
-                                    "Level ${level.number}: ${level.title}, $stateLabel"
-                                stateDescription = "$stars stars"
+                                contentDescription = levelDescription
+                                stateDescription = starsDescription
                                 role = Role.Button
                                 if (!available) disabled()
                             }
@@ -255,7 +280,10 @@ fun LevelSelectionScreen(
                             Text(
                                 text = when {
                                     completed -> "✓ ${level.number.toString().padStart(2, '0')}"
-                                    !available -> "LOCK ${level.number.toString().padStart(2, '0')}"
+                                    !available -> stringResource(
+                                        R.string.lock_level,
+                                        level.number.toString().padStart(2, '0'),
+                                    )
                                     else -> level.number.toString().padStart(2, '0')
                                 },
                                 style = MaterialTheme.typography.titleLarge,
@@ -263,7 +291,7 @@ fun LevelSelectionScreen(
                                 color = if (available) MaterialTheme.colorScheme.primary else MagnetrailMuted,
                             )
                             Text(
-                                text = level.title,
+                                text = levelTitle,
                                 modifier = Modifier.padding(top = spacing.xxs),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = if (available) MaterialTheme.colorScheme.onSurface else MagnetrailMuted,
@@ -286,7 +314,7 @@ fun LevelSelectionScreen(
                     if (debugUnlockAll && highestUnlockedLevel < levels.size) {
                         Row(modifier = Modifier.fillMaxWidth().padding(top = spacing.xs)) {
                             Text(
-                                "Debug build: locked boards remain open for QA.",
+                                stringResource(R.string.debug_levels_note),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MagnetrailMuted,
                             )

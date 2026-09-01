@@ -1,0 +1,19 @@
+filename,creative_angle,level_id,orientation,dimensions,duration,intended_campaign_use
+images/final/landscape/dense_challenge_level300_landscape_1200x628.png,Dense readable challenge,campaign-300,landscape,1200x628,,App campaign and Performance Max image
+images/final/landscape/meaningful_middle_level045_landscape_1200x628.png,One meaningful middle move,campaign-045,landscape,1200x628,,App campaign and Performance Max image
+images/final/landscape/order_cancellation_level075_landscape_1200x628.png,Order and cancellation,campaign-075,landscape,1200x628,,App campaign and Performance Max image
+images/final/landscape/signature_polarity_level013_landscape_1200x628.png,Signature pull/push polarity,campaign-013,landscape,1200x628,,App campaign and Performance Max image
+images/final/square/balanced_choice_level151_square_1200x1200.png,Balanced strategic choice,campaign-151,square,1200x1200,,App campaign and Performance Max image
+images/final/square/dense_endgame_level300_square_1200x1200.png,Dense endgame decision,campaign-300,square,1200x1200,,App campaign and Performance Max image
+images/final/square/objective_complete_level003_square_1200x1200.png,Objective and completion,proto-003,square,1200x1200,,App campaign and Performance Max image
+images/final/square/signature_after_flip_level013_square_1200x1200.png,Cause and effect after a flip,campaign-013,square,1200x1200,,App campaign and Performance Max image
+images/final/vertical/balanced_after_two_level151_vertical_1200x1500.png,Board simplification,campaign-151,vertical,1200x1500,,App campaign and Performance Max image
+images/final/vertical/balanced_board_level045_vertical_1200x1500.png,Readable medium board,campaign-045,vertical,1200x1500,,App campaign and Performance Max image
+images/final/vertical/cancellation_state_level075_vertical_1200x1500.png,Meaningful order decision,campaign-075,vertical,1200x1500,,App campaign and Performance Max image
+images/final/vertical/dense_start_level300_vertical_1200x1500.png,Dense challenge opening,campaign-300,vertical,1200x1500,,App campaign and Performance Max image
+videos/final/horizontal/concept_a_signature_mechanic_horizontal_1920x1080.mp4,Signature mechanic and polarity cause/effect,campaign-013,horizontal,1920x1080,16.000,Primary App campaign video; Performance Max video
+videos/final/horizontal/concept_b_challenge_satisfaction_horizontal_1920x1080.mp4,"Near-miss, challenge, and satisfying clear",campaign-300,horizontal,1920x1080,20.000,Challenge App campaign video; Performance Max video
+videos/final/square/concept_a_signature_mechanic_square_1080x1080.mp4,Signature mechanic and polarity cause/effect,campaign-013,square,1080x1080,16.000,Primary App campaign video; Performance Max video
+videos/final/square/concept_b_challenge_satisfaction_square_1080x1080.mp4,"Near-miss, challenge, and satisfying clear",campaign-300,square,1080x1080,20.000,Challenge App campaign video; Performance Max video
+videos/final/vertical/concept_a_signature_mechanic_vertical_1080x1920.mp4,Signature mechanic and polarity cause/effect,campaign-013,vertical,1080x1920,16.000,Primary App campaign video; Performance Max video
+videos/final/vertical/concept_b_challenge_satisfaction_vertical_1080x1920.mp4,"Near-miss, challenge, and satisfying clear",campaign-300,vertical,1080x1920,20.000,Challenge App campaign video; Performance Max video

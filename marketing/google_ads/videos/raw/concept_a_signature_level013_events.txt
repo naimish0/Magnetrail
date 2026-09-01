@@ -1,0 +1,9 @@
+08-26 19:16:30.531  8203  8203 I MagnetrailCapture: capture-action start=a1 move=1
+08-26 19:16:30.768  8203  8203 I MagnetrailCapture: capture-action done=a1 move=1
+08-26 19:16:31.998  8203  8203 I MagnetrailCapture: capture-action start=a3 move=2
+08-26 19:16:32.521  8203  8203 I MagnetrailCapture: capture-action done=a3 move=2
+08-26 19:16:33.785  8203  8203 I MagnetrailCapture: capture-action start=a2 move=3
+08-26 19:16:34.346  8203  8203 I MagnetrailCapture: capture-action done=a2 move=3
+08-26 19:16:35.576  8203  8203 I MagnetrailCapture: capture-action start=a4 move=4
+08-26 19:16:36.447  8203  8203 I MagnetrailCapture: capture-action done=a4 move=4
+08-26 19:16:37.656  8203  8203 I MagnetrailCapture: capture-finished level=13

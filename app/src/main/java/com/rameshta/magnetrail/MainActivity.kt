@@ -1,6 +1,7 @@
 package com.rameshta.magnetrail
 
 import android.animation.ValueAnimator
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -34,6 +35,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.drawToBitmap
 import androidx.lifecycle.lifecycleScope
@@ -54,6 +56,7 @@ import com.rameshta.magnetrail.game.GameMode
 import com.rameshta.magnetrail.game.GameViewModel
 import com.rameshta.magnetrail.game.MagnetrailApp
 import com.rameshta.magnetrail.infinite.InfiniteModeService
+import com.rameshta.magnetrail.localization.AppLanguageManager
 import com.rameshta.magnetrail.playtest.DataStoreHumanPlaytestRepository
 import com.rameshta.magnetrail.playtest.HumanPlaytestExport
 import com.rameshta.magnetrail.privacy.ExternalUrlPolicy
@@ -66,6 +69,10 @@ import kotlinx.coroutines.withContext
 class MainActivity : ComponentActivity() {
     private lateinit var feedbackController: FeedbackController
     private val startupStartedMillis = SystemClock.elapsedRealtime()
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(AppLanguageManager.wrapBaseContext(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,15 +156,20 @@ class MainActivity : ComponentActivity() {
                             val export = pendingHumanPlaytestExport
                             pendingHumanPlaytestExport = null
                             val message = when {
-                                uri == null -> "Export cancelled."
-                                export == null -> "Unable to export: no result data was prepared."
+                                uri == null -> getString(R.string.export_cancelled)
+                                export == null -> getString(R.string.export_no_data)
                                 else -> runCatching {
                                     contentResolver.openOutputStream(uri, "wt")?.bufferedWriter()?.use { writer ->
                                         writer.write(export.content)
                                     } ?: error("The selected file could not be opened")
                                 }.fold(
-                                    onSuccess = { "Results exported successfully." },
-                                    onFailure = { "Unable to export results: ${it.message ?: "unknown error"}" },
+                                    onSuccess = { getString(R.string.export_success) },
+                                    onFailure = {
+                                        getString(
+                                            R.string.export_error,
+                                            it.message ?: getString(R.string.unknown_error),
+                                        )
+                                    },
                                 )
                             }
                             gameViewModel.onAction(GameAction.HumanPlaytestExportFinished(message))
@@ -290,6 +302,10 @@ class MainActivity : ComponentActivity() {
                                 }
                             },
                             showHumanPlaytest = gameViewModel.humanPlaytestEnabled,
+                            selectedLanguageTag = AppLanguageManager.selectedLanguageTag(this@MainActivity),
+                            onLanguageSelected = { languageTag ->
+                                AppLanguageManager.setLanguage(this@MainActivity, languageTag)
+                            },
                         )
                         LaunchedEffect(Unit) {
                             reportFullyDrawn()
@@ -301,8 +317,8 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     },
-                    onFailure = { error ->
-                        CatalogErrorScreen(error)
+                    onFailure = {
+                        CatalogErrorScreen()
                     },
                 ) ?: CatalogLoadingScreen()
             }
@@ -437,7 +453,7 @@ private fun CatalogLoadingScreen() {
         ) {
             CircularProgressIndicator()
             Text(
-                text = "Loading campaign…",
+                text = stringResource(R.string.catalog_loading),
                 modifier = Modifier.padding(top = 16.dp),
                 style = MaterialTheme.typography.titleMedium,
             )
@@ -446,7 +462,7 @@ private fun CatalogLoadingScreen() {
 }
 
 @androidx.compose.runtime.Composable
-private fun CatalogErrorScreen(error: Throwable) {
+private fun CatalogErrorScreen() {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -455,9 +471,9 @@ private fun CatalogErrorScreen(error: Throwable) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("Level catalog unavailable", style = MaterialTheme.typography.headlineSmall)
+            Text(stringResource(R.string.catalog_unavailable), style = MaterialTheme.typography.headlineSmall)
             Text(
-                text = error.message ?: "The canonical level asset could not be loaded.",
+                text = stringResource(R.string.catalog_load_error),
                 modifier = Modifier.padding(top = 12.dp),
                 color = MaterialTheme.colorScheme.error,
             )

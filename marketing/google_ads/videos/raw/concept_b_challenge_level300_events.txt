@@ -1,0 +1,36 @@
+08-26 19:17:47.757  8475  8475 I MagnetrailCapture: capture-action near-miss=mustA
+08-26 19:17:47.757  8475  8475 I MagnetrailCapture: capture-action start=mustA move=1
+08-26 19:17:48.845  8475  8475 I MagnetrailCapture: capture-action done=mustA move=1
+08-26 19:17:49.232  8475  8475 I MagnetrailCapture: capture-action start=must0 move=2
+08-26 19:17:49.547  8475  8475 I MagnetrailCapture: capture-action done=must0 move=2
+08-26 19:17:49.763  8475  8475 I MagnetrailCapture: capture-action start=reveal0 move=3
+08-26 19:17:50.610  8475  8475 I MagnetrailCapture: capture-action done=reveal0 move=3
+08-26 19:17:50.773  8475  8475 I MagnetrailCapture: capture-action start=long0 move=4
+08-26 19:17:51.072  8475  8475 I MagnetrailCapture: capture-action done=long0 move=4
+08-26 19:17:51.200  8475  8475 I MagnetrailCapture: capture-action start=mustA move=5
+08-26 19:17:51.430  8475  8475 I MagnetrailCapture: capture-action done=mustA move=5
+08-26 19:17:51.561  8475  8475 I MagnetrailCapture: capture-action start=revealA move=6
+08-26 19:17:52.159  8475  8475 I MagnetrailCapture: capture-action done=revealA move=6
+08-26 19:17:52.302  8475  8475 I MagnetrailCapture: capture-action start=revealB move=7
+08-26 19:17:53.002  8475  8475 I MagnetrailCapture: capture-action done=revealB move=7
+08-26 19:17:53.290  8475  8475 I MagnetrailCapture: capture-action start=long1 move=8
+08-26 19:17:53.586  8475  8475 I MagnetrailCapture: capture-action done=long1 move=8
+08-26 19:17:53.790  8475  8475 I MagnetrailCapture: capture-action start=gateA move=9
+08-26 19:17:54.777  8475  8475 I MagnetrailCapture: capture-action done=gateA move=9
+08-26 19:17:55.059  8475  8475 I MagnetrailCapture: capture-action start=eastGate move=10
+08-26 19:17:56.038  8475  8475 I MagnetrailCapture: capture-action done=eastGate move=10
+08-26 19:17:56.149  8475  8475 I MagnetrailCapture: capture-action start=v10a01 move=11
+08-26 19:17:56.350  8475  8475 I MagnetrailCapture: capture-action done=v10a01 move=11
+08-26 19:17:56.544  8475  8475 I MagnetrailCapture: capture-action start=v10a02 move=12
+08-26 19:17:56.912  8475  8475 I MagnetrailCapture: capture-action done=v10a02 move=12
+08-26 19:17:57.022  8475  8475 I MagnetrailCapture: capture-action start=v10a03 move=13
+08-26 19:17:57.221  8475  8475 I MagnetrailCapture: capture-action done=v10a03 move=13
+08-26 19:17:57.328  8475  8475 I MagnetrailCapture: capture-action start=v10a04 move=14
+08-26 19:17:57.804  8475  8475 I MagnetrailCapture: capture-action done=v10a04 move=14
+08-26 19:17:57.913  8475  8475 I MagnetrailCapture: capture-action start=v10a06 move=15
+08-26 19:17:58.628  8475  8475 I MagnetrailCapture: capture-action done=v10a06 move=15
+08-26 19:17:58.836  8475  8475 I MagnetrailCapture: capture-action start=v10a05 move=16
+08-26 19:17:59.887  8475  8475 I MagnetrailCapture: capture-action done=v10a05 move=16
+08-26 19:18:00.088  8475  8475 I MagnetrailCapture: capture-action start=mustB move=17
+08-26 19:18:01.009  8475  8475 I MagnetrailCapture: capture-action done=mustB move=17
+08-26 19:18:01.358  8475  8475 I MagnetrailCapture: capture-finished level=300
