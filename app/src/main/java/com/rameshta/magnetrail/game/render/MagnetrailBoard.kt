@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
@@ -40,6 +41,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.rameshta.magnetrail.core.engine.ResolutionResult
+import com.rameshta.magnetrail.R
 import com.rameshta.magnetrail.core.model.Arrow
 import com.rameshta.magnetrail.core.model.BoardState
 import com.rameshta.magnetrail.core.model.Direction
@@ -48,6 +50,7 @@ import com.rameshta.magnetrail.core.model.Polarity
 import com.rameshta.magnetrail.core.model.Wall
 import com.rameshta.magnetrail.game.BoardGeometry
 import com.rameshta.magnetrail.game.MotionPolicy
+import com.rameshta.magnetrail.localization.localizedName
 import com.rameshta.magnetrail.ui.theme.MagnetrailBorder
 import com.rameshta.magnetrail.ui.theme.MagnetrailError
 import com.rameshta.magnetrail.ui.theme.MagnetrailGrid
@@ -83,15 +86,17 @@ fun MagnetrailBoard(
     var geometry by remember(boardState.width, boardState.height) {
         mutableStateOf<BoardGeometry?>(null)
     }
-    val polaritySummary = boardState.magnets.joinToString { magnet ->
-        "Magnet ${magnet.id}, ${magnet.polarity.name}"
-    }
+    val polaritySummary = boardState.magnets.map { magnet ->
+        stringResource(R.string.board_magnet_summary, magnet.id, magnet.polarity.localizedName())
+    }.joinToString()
+    val boardDescription = stringResource(
+        R.string.board_description,
+        boardState.arrows.size,
+        if (polaritySummary.isEmpty()) "" else ", $polaritySummary",
+    )
 
     Box(modifier = modifier.semantics {
-        contentDescription = buildString {
-            append("Magnetrail board, ${boardState.arrows.size} arrows remaining")
-            if (polaritySummary.isNotEmpty()) append(", $polaritySummary")
-        }
+        contentDescription = boardDescription
     }) {
         Canvas(
             modifier = Modifier
@@ -214,6 +219,14 @@ fun MagnetrailBoard(
                 val cellDp = with(density) { boardGeometry.cellSize.toDp() }
                 val suggested = arrow.id == suggestedArrowId
                 val tutorialFocus = arrow.id == tutorialArrowId
+                val arrowDescription = stringResource(
+                    R.string.arrow_description,
+                    arrow.id,
+                    arrow.printedDirection.localizedName(),
+                    if (suggested) stringResource(R.string.suggested_hint_suffix) else "",
+                    if (tutorialFocus) stringResource(R.string.tutorial_focus_suffix) else "",
+                )
+                val launchDescription = stringResource(R.string.launch_arrow, arrow.id)
                 Box(
                     modifier = Modifier
                         .offset {
@@ -224,22 +237,26 @@ fun MagnetrailBoard(
                         }
                         .size(cellDp)
                         .semantics {
-                            contentDescription = buildString {
-                                append("Arrow ${arrow.id}, points ${arrow.printedDirection.name.lowercase()}")
-                            if (suggested) append(", suggested hint")
-                            if (tutorialFocus) append(", tutorial focus")
-                            }
+                            contentDescription = arrowDescription
                             role = Role.Button
                         }
                         .clickable(
                             enabled = inputEnabled,
-                            onClickLabel = "Launch arrow ${arrow.id}",
+                            onClickLabel = launchDescription,
                         ) { onArrowTapped(arrow.id) },
                 )
             }
             boardState.magnets.forEach { magnet ->
                 val center = boardGeometry.cellCenter(magnet.position)
                 val cellDp = with(density) { boardGeometry.cellSize.toDp() }
+                val magnetDescription = stringResource(
+                    R.string.magnet_description,
+                    magnet.id,
+                    magnet.polarity.localizedName(),
+                    stringResource(
+                        if (magnet.polarity == Polarity.PULL) R.string.inward_field else R.string.outward_field,
+                    ),
+                )
                 Box(
                     modifier = Modifier
                         .offset {
@@ -250,12 +267,7 @@ fun MagnetrailBoard(
                         }
                         .size(cellDp)
                         .semantics {
-                            contentDescription = "Magnet ${magnet.id}, ${magnet.polarity.name}, " +
-                                if (magnet.polarity == Polarity.PULL) {
-                                    "inward field"
-                                } else {
-                                    "outward field"
-                                }
+                            contentDescription = magnetDescription
                         },
                 )
             }

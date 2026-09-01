@@ -1,0 +1,11 @@
+Mode: built-in image generation with two local reference images
+Use case: ads-marketing
+Asset type: Google Play game feature graphic, final crop 1024 x 500 pixels
+
+Create a premium, gameplay-focused feature graphic for the Android magnetic logic puzzle game Magnetrail. Show a polished top-down magnetic puzzle board with several white rail-dart arrows, cyan PULL magnetic fields, amber PUSH magnetic fields, dark navy rails and obstacles, and graceful curved trajectory lines that clearly suggest bending paths and clearing the board.
+
+Use the existing feature graphic and app icon only as visual-identity references. Preserve their navy, cyan, amber, warm-white palette and recognizable split magnetic-field / rail-dart language, but create a richer gameplay scene. Use a clean pale technical-grid backdrop, crisp vector-like silhouettes, refined soft shadows, tactile matte pieces, bright studio lighting, one readable central focal point, and safe edge margins.
+
+Remove circular logo or goal discs from the scene. Let rail-dart arrows enter from the left edge, bend through cyan and amber magnetic fields on the board, and exit naturally at the right edge without implying a goal object or target.
+
+No text, wordmark, tagline, app icon tile, device frame, hands, characters, UI labels, Google Play badge, rating, ranking, price, discount, award, call to action, third-party branding, or watermark. No generic neon sci-fi treatment, clutter, excessive glow, illegible symbols, cropped focal objects, or misleading UI. Use an opaque edge-to-edge background.

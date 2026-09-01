@@ -38,6 +38,8 @@ fun MagnetrailApp(
     onPrivacyOptions: () -> Unit = {},
     onPrivacyPolicy: () -> Unit = {},
     showHumanPlaytest: Boolean = false,
+    selectedLanguageTag: String = "",
+    onLanguageSelected: (String) -> Unit = {},
 ) {
     BackHandler(enabled = uiState.destination != AppDestination.HOME) {
         onAction(
@@ -100,6 +102,8 @@ fun MagnetrailApp(
             showPrivacyPolicyPlaceholder = showPrivacyPolicyPlaceholder,
             onPrivacyOptions = onPrivacyOptions,
             onPrivacyPolicy = onPrivacyPolicy,
+            selectedLanguageTag = selectedLanguageTag,
+            onLanguageSelected = onLanguageSelected,
         )
         AppDestination.PRIVACY_POLICY -> PrivacyPolicyScreen(
             onBack = { onAction(GameAction.ClosePrivacyPolicy) },

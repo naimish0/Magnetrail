@@ -212,6 +212,11 @@ android {
             buildConfigField("boolean", "UPLOAD_SIGNING_CONFIGURED", "false")
         }
     }
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11

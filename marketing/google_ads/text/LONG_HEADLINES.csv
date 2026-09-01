@@ -1,0 +1,6 @@
+id,text,character_count,creative_angle,verified_feature_source,recommended_priority
+LH01,"Clear every arrow by reading magnets that pull, push, and change polarity",73,"Objective and signature mechanic","Engine win condition; magnet polarity model",high
+LH02,"Plan the right launch as every successful magnetic move changes the board",73,"Strategy and cause and effect","Launch action; arrow removal; controller polarity flip",high
+LH03,"Magnetrail turns one simple tap into a shifting puzzle of order and polarity",76,"Brand and control","Tap launch; order dependency; polarity dependency",high
+LH04,"Start with a readable board, then solve the chain reaction one arrow at a time",78,"Learning and mastery","Intro campaign levels; designed solution order",medium
+LH05,"Find the safe order, flip magnetic fields, and finish each deterministic puzzle",79,"Challenge and completion","Catalog designed solutions; polarity flip; engine win condition",high

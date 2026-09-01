@@ -1,0 +1,16 @@
+id,text,character_count,creative_angle,verified_feature_source,recommended_priority
+SH01,"Bend the path",13,"Signature mechanic","Game engine route resolution; tutorial copy",high
+SH02,"Clear every arrow",17,"Instant objective","GameScreen remaining-arrow objective; engine win condition",high
+SH03,"Plan each magnetic move",23,"Strategy","DefaultGameEngine magnet control and order dependency",high
+SH04,"Pull, push, then flip",21,"Signature mechanic","Magnet polarity model; successful controller flip",high
+SH05,"Master the changing field",25,"Mastery","Polarity dependency; completion progression",medium
+SH06,"Tap the right arrow first",25,"Meaningful decision","GameAction.LaunchArrow; valid-first-action metadata",high
+SH07,"Solve with magnetic logic",25,"Core gameplay","Game engine; solver; shipped campaign levels",medium
+SH08,"Every move changes the board",28,"Cause and effect","Successful move removal and controlling-magnet polarity flip",high
+SH09,"Can you read the field?",23,"Challenge","Visible aligned magnet control rule",medium
+SH10,"Outsmart each magnet",20,"Challenge","Pull and push controller behavior",medium
+SH11,"Find the safe launch",20,"Near-miss strategy","Collision/invalid-exit overload behavior",high
+SH12,"Clear Magnetrail puzzles",24,"Brand and objective","App name; engine win condition",medium
+SH13,"Choose. Launch. Adapt.",22,"Decision loop","Tap launch; result; polarity-dependent next state",medium
+SH14,"One move flips the field",24,"Signature mechanic","Successful magnet-controlled move flips controller polarity",high
+SH15,"Turn polarity into progress",27,"Progression","Polarity mechanic; deterministic level progression",medium

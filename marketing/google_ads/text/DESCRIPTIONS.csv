@@ -1,0 +1,6 @@
+id,text,character_count,creative_angle,verified_feature_source,recommended_priority
+DS01,"Tap an arrow, read the nearest magnet, and plan how its polarity will change.",77,"Control and signature mechanic","Launch action; nearest visible aligned controller; polarity flip",high
+DS02,"Clear the board in the right order as pull and push fields reshape each move.",77,"Objective and strategy","Order dependency; pull/push controller behavior",high
+DS03,"Magnetrail combines quick controls with deep, deterministic magnetic puzzles.",77,"Brand and positioning","Single-tap control; shipped deterministic catalog",high
+DS04,"Choose carefully: a safe launch can open the route for every arrow that follows.",80,"Meaningful decision","Occlusion; exposure reveal; order dependency",high
+DS05,"Complete levels, earn stars, and sharpen your plan across changing boards.",74,"Completion and progression","Grading; completion rewards; level progression",medium

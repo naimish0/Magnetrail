@@ -17,6 +17,8 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
+import com.rameshta.magnetrail.R
 import com.rameshta.magnetrail.ui.theme.LocalMagnetrailSpacing
 import com.rameshta.magnetrail.ui.theme.MagnetrailMuted
 
@@ -75,6 +77,16 @@ fun PrivacyPolicyScreen(
     modifier: Modifier = Modifier,
 ) {
     val spacing = LocalMagnetrailSpacing.current
+    val closeDescription = stringResource(R.string.close_privacy_policy)
+    val sections = listOf(
+        R.string.privacy_overview_heading to R.string.privacy_overview_body,
+        R.string.privacy_ads_heading to R.string.privacy_ads_body,
+        R.string.privacy_storage_heading to R.string.privacy_storage_body,
+        R.string.privacy_sharing_heading to R.string.privacy_sharing_body,
+        R.string.privacy_children_heading to R.string.privacy_children_body,
+        R.string.privacy_choices_heading to R.string.privacy_choices_body,
+        R.string.privacy_contact_heading to R.string.privacy_contact_body,
+    )
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(
             modifier = Modifier
@@ -85,35 +97,35 @@ fun PrivacyPolicyScreen(
         ) {
             TextButton(
                 onClick = onBack,
-                modifier = Modifier.semantics { contentDescription = "Close privacy policy" },
-            ) { Text("Back") }
+                modifier = Modifier.semantics { contentDescription = closeDescription },
+            ) { Text(stringResource(R.string.back)) }
             Text(
-                "Privacy Policy",
+                stringResource(R.string.privacy_policy),
                 modifier = Modifier.semantics { heading() },
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
             )
             Text(
-                "Last updated ${LocalPrivacyPolicy.lastUpdated}",
+                stringResource(R.string.privacy_last_updated),
                 modifier = Modifier.padding(top = spacing.xs),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MagnetrailMuted,
             )
-            LocalPrivacyPolicy.sections.forEach { (heading, body) ->
+            sections.forEach { (heading, body) ->
                 Text(
-                    heading,
+                    stringResource(heading),
                     modifier = Modifier.fillMaxWidth().padding(top = spacing.lg).semantics { this.heading() },
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
-                    body,
+                    stringResource(body),
                     modifier = Modifier.fillMaxWidth().padding(top = spacing.xs),
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
             Text(
-                "Provider information: policies.google.com/privacy",
+                stringResource(R.string.privacy_provider_info),
                 modifier = Modifier.padding(top = spacing.lg, bottom = spacing.screenBottom),
                 style = MaterialTheme.typography.bodySmall,
                 color = MagnetrailMuted,

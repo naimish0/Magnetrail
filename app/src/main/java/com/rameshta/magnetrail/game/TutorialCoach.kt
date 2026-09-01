@@ -28,6 +28,8 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.rameshta.magnetrail.R
 import com.rameshta.magnetrail.ui.theme.MagnetrailMuted
 import com.rameshta.magnetrail.ui.theme.MagnetrailPull
 import com.rameshta.magnetrail.ui.theme.MagnetrailPush
@@ -38,11 +40,24 @@ internal fun TutorialCoachCard(
     reducedMotion: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val title = stringResource(tutorialTitleResource(lesson.number))
+    val message = stringResource(tutorialMessageResource(lesson.number))
+    val prompt = when (lesson.prompt) {
+        "Nice. Follow the hand to the next arrow." -> stringResource(R.string.tutorial_next_prompt)
+        "The guided path changed. Restart to show the step-by-step sequence again." ->
+            stringResource(R.string.tutorial_restart_prompt)
+        else -> stringResource(tutorialPromptResource(lesson.number))
+    }
+    val tutorialDescription = stringResource(
+        R.string.tutorial_description,
+        lesson.number,
+        TUTORIAL_LEVEL_COUNT,
+        title,
+        message,
+        prompt,
+    )
     Card(
-        modifier = modifier.semantics {
-            contentDescription = "Tutorial ${lesson.number} of $TUTORIAL_LEVEL_COUNT. ${lesson.title}. " +
-                "${lesson.message} ${lesson.prompt}"
-        },
+        modifier = modifier.semantics { contentDescription = tutorialDescription },
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         shape = MaterialTheme.shapes.medium,
     ) {
@@ -54,19 +69,24 @@ internal fun TutorialCoachCard(
             TutorialGlyph(lesson.animation, reducedMotion)
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    "LEARN ${lesson.number} OF $TUTORIAL_LEVEL_COUNT · ${lesson.title.uppercase()}",
+                    stringResource(
+                        R.string.tutorial_header,
+                        lesson.number,
+                        TUTORIAL_LEVEL_COUNT,
+                        title.uppercase(),
+                    ),
                     style = MaterialTheme.typography.labelSmall,
                     color = MagnetrailPull,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
-                    lesson.message,
+                    message,
                     modifier = Modifier.padding(top = 2.dp),
                     style = MaterialTheme.typography.bodySmall,
                     color = MagnetrailMuted,
                 )
                 Text(
-                    lesson.prompt,
+                    prompt,
                     modifier = Modifier.padding(top = 4.dp),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.primary,
@@ -75,6 +95,45 @@ internal fun TutorialCoachCard(
             }
         }
     }
+}
+
+private fun tutorialTitleResource(number: Int): Int = when (number) {
+    1 -> R.string.tutorial_1_title
+    2 -> R.string.tutorial_2_title
+    3 -> R.string.tutorial_3_title
+    4 -> R.string.tutorial_4_title
+    5 -> R.string.tutorial_5_title
+    6 -> R.string.tutorial_6_title
+    7 -> R.string.tutorial_7_title
+    8 -> R.string.tutorial_8_title
+    9 -> R.string.tutorial_9_title
+    else -> R.string.tutorial_10_title
+}
+
+private fun tutorialMessageResource(number: Int): Int = when (number) {
+    1 -> R.string.tutorial_1_message
+    2 -> R.string.tutorial_2_message
+    3 -> R.string.tutorial_3_message
+    4 -> R.string.tutorial_4_message
+    5 -> R.string.tutorial_5_message
+    6 -> R.string.tutorial_6_message
+    7 -> R.string.tutorial_7_message
+    8 -> R.string.tutorial_8_message
+    9 -> R.string.tutorial_9_message
+    else -> R.string.tutorial_10_message
+}
+
+private fun tutorialPromptResource(number: Int): Int = when (number) {
+    1 -> R.string.tutorial_1_prompt
+    2 -> R.string.tutorial_2_prompt
+    3 -> R.string.tutorial_3_prompt
+    4 -> R.string.tutorial_4_prompt
+    5 -> R.string.tutorial_5_prompt
+    6 -> R.string.tutorial_6_prompt
+    7 -> R.string.tutorial_7_prompt
+    8 -> R.string.tutorial_8_prompt
+    9 -> R.string.tutorial_9_prompt
+    else -> R.string.tutorial_10_prompt
 }
 
 @Composable

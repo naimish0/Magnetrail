@@ -28,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -36,6 +37,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.rameshta.magnetrail.R
 import com.rameshta.magnetrail.game.GameUiState
+import com.rameshta.magnetrail.localization.localizedDifficultyName
+import com.rameshta.magnetrail.localization.localizedDateLabel
+import com.rameshta.magnetrail.localization.localizedRuntimeMessage
 import com.rameshta.magnetrail.ui.theme.LocalMagnetrailDimensions
 import com.rameshta.magnetrail.ui.theme.LocalMagnetrailSpacing
 import com.rameshta.magnetrail.ui.theme.MagnetrailMuted
@@ -57,6 +61,24 @@ fun HomeScreen(
         uiState.progress.infinite.selectionOrdinal + 1,
         uiState.progress.infinite.completedCount + 1,
     )
+    val playDifficulty = localizedDifficultyName(uiState.playDifficultyLabel)
+    val dailyDate = localizedDateLabel(uiState.dailyDateLabel)
+    val openSettingsDescription = stringResource(R.string.open_settings)
+    val playDescription = stringResource(
+        R.string.play_level_description,
+        playLevelNumber,
+        playDifficulty,
+    )
+    val dailyCompletionLabel = stringResource(
+        if (uiState.todayDailyCompleted) R.string.completed_today else R.string.not_completed_today,
+    )
+    val dailyDescription = stringResource(
+        R.string.daily_description,
+        dailyDate,
+        uiState.progress.currentStreak,
+        dailyCompletionLabel,
+    )
+    val openHumanPlaytestDescription = stringResource(R.string.open_human_playtest)
 
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(
@@ -79,7 +101,7 @@ fun HomeScreen(
                         onClick = onOpenSettings,
                         modifier = Modifier
                             .size(dimensions.iconButtonSize)
-                            .semantics { contentDescription = "Open settings" },
+                            .semantics { contentDescription = openSettingsDescription },
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_settings),
@@ -96,14 +118,14 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.Center,
             ) {
                 Text(
-                    text = "Magnetrail",
+                    text = stringResource(R.string.app_name),
                     modifier = Modifier.semantics { heading() },
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center,
                 )
                 Text(
-                    text = "Bend the path. Clear the board.",
+                    text = stringResource(R.string.home_tagline),
                     modifier = Modifier.padding(top = spacing.xxs),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MagnetrailMuted,
@@ -119,14 +141,14 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .height(68.dp)
                         .semantics {
-                            contentDescription = "Play Level $playLevelNumber, ${uiState.playDifficultyLabel} difficulty"
+                            contentDescription = playDescription
                         },
                     shape = MaterialTheme.shapes.small,
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Play · Level $playLevelNumber")
+                        Text(stringResource(R.string.play_level, playLevelNumber))
                         Text(
-                            uiState.playDifficultyLabel,
+                            playDifficulty,
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.82f),
                         )
@@ -141,29 +163,37 @@ fun HomeScreen(
                         .widthIn(max = 420.dp)
                         .fillMaxWidth()
                         .semantics {
-                            contentDescription = buildString {
-                                append("Daily Challenge for device local date ${uiState.dailyDateLabel}. ")
-                                append("Current streak ${uiState.progress.currentStreak}. ")
-                                append(if (uiState.todayDailyCompleted) "Completed today" else "Not completed today")
-                            }
+                            contentDescription = dailyDescription
                         },
                     enabled = !uiState.isDailyLoading,
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 ) {
                     Column(modifier = Modifier.padding(horizontal = spacing.lg, vertical = spacing.md)) {
-                        Text("DAILY CHALLENGE", style = MaterialTheme.typography.labelSmall, color = MagnetrailPull)
                         Text(
-                            if (uiState.todayDailyCompleted) "Today’s board cleared" else "A field for ${uiState.dailyDateLabel}",
+                            stringResource(R.string.daily_challenge_upper),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MagnetrailPull,
+                        )
+                        Text(
+                            if (uiState.todayDailyCompleted) {
+                                stringResource(R.string.todays_board_cleared)
+                            } else {
+                                stringResource(R.string.daily_field_for_date, dailyDate)
+                            },
                             modifier = Modifier.padding(top = spacing.xs),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                         )
                         Text(
                             if (uiState.isDailyLoading) {
-                                "Preparing a certified board…"
+                                stringResource(R.string.preparing_certified_board)
                             } else {
-                                "Current streak ${uiState.progress.currentStreak} · Best ${uiState.progress.bestStreak}"
+                                stringResource(
+                                    R.string.current_and_best_streak,
+                                    uiState.progress.currentStreak,
+                                    uiState.progress.bestStreak,
+                                )
                             },
                             modifier = Modifier.padding(top = spacing.xxs),
                             style = MaterialTheme.typography.bodyMedium,
@@ -173,8 +203,11 @@ fun HomeScreen(
                 }
 
                 uiState.dailyError?.let { message ->
+                    val localizedMessage = localizedRuntimeMessage(message).let { localized ->
+                        if (localized == message) stringResource(R.string.runtime_daily_error) else localized
+                    }
                     Text(
-                        message,
+                        localizedMessage,
                         modifier = Modifier.widthIn(max = 420.dp).padding(top = spacing.xs),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.error,
@@ -190,10 +223,10 @@ fun HomeScreen(
                             .fillMaxWidth()
                             .padding(top = spacing.md)
                             .height(56.dp)
-                            .semantics { contentDescription = "Open blind human difficulty playtest" },
+                            .semantics { contentDescription = openHumanPlaytestDescription },
                         shape = MaterialTheme.shapes.small,
                     ) {
-                        Text("Human Playtest")
+                        Text(stringResource(R.string.human_playtest))
                     }
                 }
             }
@@ -206,8 +239,9 @@ fun HomeScreen(
 @Composable
 private fun CoinBalanceChip(balance: Int) {
     val spacing = LocalMagnetrailSpacing.current
+    val balanceDescription = stringResource(R.string.coin_balance_description, balance)
     Surface(
-        modifier = Modifier.semantics { contentDescription = "Coin balance: $balance" },
+        modifier = Modifier.semantics { contentDescription = balanceDescription },
         shape = RoundedCornerShape(50),
         color = MaterialTheme.colorScheme.surfaceVariant,
     ) {

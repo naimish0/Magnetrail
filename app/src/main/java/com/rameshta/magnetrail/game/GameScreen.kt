@@ -48,6 +48,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -77,6 +78,11 @@ import com.rameshta.magnetrail.playtest.HumanPlaytestDifficulty
 import com.rameshta.magnetrail.playtest.HUMAN_PLAYTEST_FAIRNESS_ANCHORS
 import com.rameshta.magnetrail.playtest.HumanPlaytestGuessResponse
 import com.rameshta.magnetrail.playtest.HumanPlaytestOutcome
+import com.rameshta.magnetrail.localization.localizedCelebrationMessage
+import com.rameshta.magnetrail.localization.localizedDifficultyName
+import com.rameshta.magnetrail.localization.localizedDateLabel
+import com.rameshta.magnetrail.localization.localizedLevelTitle
+import com.rameshta.magnetrail.localization.localizedRuntimeMessage
 import kotlin.math.PI
 import kotlin.math.sin
 
@@ -115,26 +121,34 @@ fun GameScreen(
     )
     val tutorialLesson = uiState.activeTutorialLesson()
     val journeyNumber = uiState.progress.infinite.selectionOrdinal + 1
+    val localizedPlayDifficulty = localizedDifficultyName(uiState.playDifficultyLabel)
+    val localizedDailyDate = localizedDateLabel(uiState.dailyDateLabel)
     val headerEyebrow = when (uiState.gameMode) {
-        GameMode.DAILY -> "Daily Challenge"
+        GameMode.DAILY -> stringResource(R.string.daily_challenge)
         GameMode.INFINITE -> if (uiState.isAutoJourney) {
-            "Level ${uiState.currentLevel.number}"
+            stringResource(R.string.level_number_plain, uiState.currentLevel.number)
         } else if (
             uiState.infiniteDifficulty == com.rameshta.magnetrail.core.infinite.InfiniteDifficulty.PROGRESSIVE
         ) {
-            "Level $journeyNumber · Progressive"
+            stringResource(R.string.level_progressive, journeyNumber)
         } else {
-            "Infinite Puzzle"
+            stringResource(R.string.infinite_puzzle)
         }
-        GameMode.CAMPAIGN -> "Level ${uiState.currentLevel.number.toString().padStart(2, '0')}"
-        GameMode.PLAYTEST -> uiState.humanPlaytestAssignment?.blindId ?: "Blind Board"
+        GameMode.CAMPAIGN -> stringResource(
+            R.string.level_number,
+            uiState.currentLevel.number.toString().padStart(2, '0'),
+        )
+        GameMode.PLAYTEST -> uiState.humanPlaytestAssignment?.blindId ?: stringResource(R.string.blind_board)
     }
     val headerTitle = when (uiState.gameMode) {
-        GameMode.DAILY -> uiState.dailyDateLabel ?: uiState.currentLevel.title
-        GameMode.INFINITE -> if (uiState.isAutoJourney) "Auto Journey · ${uiState.playDifficultyLabel}" else
-            uiState.currentLevel.title.removePrefix("Infinite ")
-        GameMode.CAMPAIGN -> uiState.currentLevel.title
-        GameMode.PLAYTEST -> "Difficulty hidden"
+        GameMode.DAILY -> localizedDailyDate.ifBlank { localizedLevelTitle(uiState.currentLevel) }
+        GameMode.INFINITE -> if (uiState.isAutoJourney) {
+            stringResource(R.string.auto_journey_title, localizedPlayDifficulty)
+        } else {
+            localizedDifficultyName(uiState.currentLevel.title.removePrefix("Infinite "))
+        }
+        GameMode.CAMPAIGN -> localizedLevelTitle(uiState.currentLevel)
+        GameMode.PLAYTEST -> stringResource(R.string.difficulty_hidden)
     }
     val completionCelebration = if (uiState.isComplete && uiState.gameMode != GameMode.PLAYTEST) {
         completionCelebrationStyle(
@@ -167,7 +181,7 @@ fun GameScreen(
 
             if (uiState.gameMode == GameMode.INFINITE && uiState.infiniteFallbackUsed) {
                 Text(
-                    "Using the strongest available certified difficulty",
+                    stringResource(R.string.certified_fallback),
                     style = MaterialTheme.typography.bodySmall,
                     color = MagnetrailMuted,
                 )
@@ -258,12 +272,14 @@ private fun GameTopBar(
     onHome: () -> Unit,
     onSettings: () -> Unit,
 ) {
+    val homeDescription = stringResource(R.string.return_home)
+    val settingsDescription = stringResource(R.string.open_settings)
     Box(
         modifier = Modifier.fillMaxWidth().height(72.dp).padding(horizontal = 16.dp, vertical = 6.dp),
     ) {
         GameIconButton(
             icon = R.drawable.ic_home,
-            description = "Return home",
+            description = homeDescription,
             enabled = enabled,
             onClick = onHome,
             modifier = Modifier.align(Alignment.CenterStart),
@@ -290,7 +306,7 @@ private fun GameTopBar(
         }
         GameIconButton(
             icon = R.drawable.ic_settings,
-            description = "Open settings",
+            description = settingsDescription,
             enabled = enabled,
             onClick = onSettings,
             modifier = Modifier.align(Alignment.CenterEnd),
@@ -330,12 +346,15 @@ private fun GameIconButton(
 
 @Composable
 private fun GameStatusRow(uiState: GameUiState) {
-    val message = uiState.hintMessage ?: when {
-        uiState.animationPhase == TurnAnimationPhase.IMPACT -> "Path blocked"
-        uiState.animationPhase == TurnAnimationPhase.POLARITY_FLIP -> "The field flipped"
-        uiState.inFlightResult?.terminalEvent is TerminalEvent.InvalidPullExit -> "Try another arrow"
-        else -> "Find the sequence"
-    }
+    val message = uiState.hintMessage?.let { localizedRuntimeMessage(it) } ?: stringResource(
+        when {
+            uiState.animationPhase == TurnAnimationPhase.IMPACT -> R.string.status_path_blocked
+            uiState.animationPhase == TurnAnimationPhase.POLARITY_FLIP -> R.string.status_field_flipped
+            uiState.inFlightResult?.terminalEvent is TerminalEvent.InvalidPullExit ->
+                R.string.status_try_another_arrow
+            else -> R.string.status_find_sequence
+        },
+    )
     val polarities = uiState.boardState.magnets.map { it.polarity }.distinct()
     val largeText = LocalDensity.current.fontScale >= 1.3f
     val content: @Composable () -> Unit = {
@@ -386,15 +405,17 @@ private fun GameStatusRow(uiState: GameUiState) {
 @Composable
 private fun PolarityChip(polarity: Polarity) {
     val pull = polarity == Polarity.PULL
+    val polarityDescription = stringResource(
+        if (pull) R.string.polarity_pull_description else R.string.polarity_push_description,
+    )
     Surface(
-        modifier = Modifier.semantics {
-            contentDescription = if (pull) "PULL, inward magnetic field" else "PUSH, outward magnetic field"
-        },
+        modifier = Modifier.semantics { contentDescription = polarityDescription },
         shape = RoundedCornerShape(999.dp),
         color = if (pull) MagnetrailPullSoft else com.rameshta.magnetrail.ui.theme.MagnetrailPushSoft,
     ) {
         Text(
-            text = if (pull) "PULL  ›‹" else "PUSH  ‹›",
+            text = stringResource(if (pull) R.string.polarity_pull else R.string.polarity_push) +
+                if (pull) "  ›‹" else "  ‹›",
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 7.dp),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
@@ -408,12 +429,20 @@ private fun GameplayMetrics(uiState: GameUiState) {
     val largeText = LocalDensity.current.fontScale >= 1.3f
     val content: @Composable () -> Unit = {
         MetricItem(
-            label = "Arrows",
+            label = stringResource(R.string.metric_arrows),
             value = "${uiState.remainingArrowCount}/${uiState.initialArrowCount}",
-            description = "Arrows remaining: ${uiState.remainingArrowCount}",
+            description = stringResource(R.string.arrows_remaining, uiState.remainingArrowCount),
         )
-        MetricItem("Actions", uiState.moves.toString(), "Actions: ${uiState.moves}")
-        MetricItem("Overloads", uiState.overloads.toString(), "Overloads: ${uiState.overloads}")
+        MetricItem(
+            stringResource(R.string.metric_actions),
+            uiState.moves.toString(),
+            stringResource(R.string.actions_description, uiState.moves),
+        )
+        MetricItem(
+            stringResource(R.string.metric_overloads),
+            uiState.overloads.toString(),
+            stringResource(R.string.overloads_description, uiState.overloads),
+        )
     }
     if (largeText) {
         Column(
@@ -468,9 +497,9 @@ private fun GameControls(
     val largeText = LocalDensity.current.fontScale >= 1.3f
     val controls: @Composable (Modifier, Modifier) -> Unit = { restartModifier, hintModifier ->
         ActionButton(
-            text = "Restart",
+            text = stringResource(R.string.restart),
             icon = R.drawable.ic_restart,
-            description = "Restart current level",
+            description = stringResource(R.string.restart_description),
             enabled = uiState.canRestart,
             onClick = { onAction(GameAction.Restart) },
             modifier = restartModifier,
@@ -478,19 +507,23 @@ private fun GameControls(
         )
         ActionButton(
             text = when {
-                uiState.gameMode == GameMode.PLAYTEST -> "Hint · recorded"
-                uiState.isHintLoading || uiState.isHintPurchaseInProgress -> "Finding…"
+                uiState.gameMode == GameMode.PLAYTEST -> stringResource(R.string.hint_recorded)
+                uiState.isHintLoading || uiState.isHintPurchaseInProgress -> stringResource(R.string.finding)
                 uiState.progress.coinBalance >= EconomyConfig.HINT_COST ->
-                    "Hint · ${EconomyConfig.HINT_COST} coins"
-                else -> "Hint · AD"
+                    stringResource(R.string.hint_coins, EconomyConfig.HINT_COST)
+                else -> stringResource(R.string.hint_ad)
             },
             icon = R.drawable.ic_hint,
             description = when {
-                uiState.gameMode == GameMode.PLAYTEST -> "Request a free hint; use is recorded for the playtest"
-                uiState.isHintLoading || uiState.isHintPurchaseInProgress -> "Hint loading"
+                uiState.gameMode == GameMode.PLAYTEST -> stringResource(R.string.hint_playtest_description)
+                uiState.isHintLoading || uiState.isHintPurchaseInProgress -> stringResource(R.string.hint_loading)
                 uiState.progress.coinBalance >= EconomyConfig.HINT_COST ->
-                    "Request a solver hint for ${EconomyConfig.HINT_COST} coins; balance ${uiState.progress.coinBalance}"
-                else -> rewardedOffer.supportingText
+                    stringResource(
+                        R.string.hint_coin_description,
+                        EconomyConfig.HINT_COST,
+                        uiState.progress.coinBalance,
+                    )
+                else -> localizedRuntimeMessage(rewardedOffer.supportingText)
             },
             enabled = uiState.canRequestHint &&
                 (uiState.gameMode == GameMode.PLAYTEST ||
@@ -533,9 +566,9 @@ private fun GameControls(
             }
             if (uiState.gameMode == GameMode.PLAYTEST) {
                 ActionButton(
-                    text = "Could not complete",
+                    text = stringResource(R.string.could_not_complete),
                     icon = R.drawable.ic_skip,
-                    description = "Stop this board and record it as not completed",
+                    description = stringResource(R.string.could_not_complete_description),
                     enabled = uiState.inputEnabled && uiState.inFlightResult == null && !uiState.isHintLoading,
                     onClick = { onAction(GameAction.AbandonHumanPlaytestBoard) },
                     modifier = Modifier.fillMaxWidth(),
@@ -543,9 +576,9 @@ private fun GameControls(
                 )
             } else if (uiState.gameMode != GameMode.DAILY) {
                 ActionButton(
-                    text = "Skip level · AD · +${EconomyConfig.LEVEL_COMPLETION_REWARD} coins",
+                    text = stringResource(R.string.skip_level_ad, EconomyConfig.LEVEL_COMPLETION_REWARD),
                     icon = R.drawable.ic_skip,
-                    description = rewardedSkipOffer.supportingText,
+                    description = localizedRuntimeMessage(rewardedSkipOffer.supportingText),
                     enabled = uiState.canRequestSkip && rewardedSkipOffer.enabled,
                     onClick = onRewardedSkip,
                     modifier = Modifier.fillMaxWidth(),
@@ -820,6 +853,19 @@ private fun CompletionCard(
     onShareCelebration: () -> Unit,
 ) {
     val spacing = LocalMagnetrailSpacing.current
+    val celebrationMessage = if (celebration.celebratesStrongPlay) {
+        localizedCelebrationMessage(celebration.message)
+    } else {
+        ""
+    }
+    val starsEarnedDescription = stringResource(
+        R.string.stars_earned,
+        uiState.completionReceipt?.grade?.stars ?: 1,
+    )
+    val resultingBalanceDescription = stringResource(
+        R.string.resulting_coin_balance,
+        uiState.completionReceipt?.rewards?.resultingBalance ?: uiState.progress.coinBalance,
+    )
     Card(
         modifier = Modifier.fillMaxWidth().padding(horizontal = spacing.screenHorizontal),
         shape = RoundedCornerShape(24.dp),
@@ -830,12 +876,12 @@ private fun CompletionCard(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             val receipt = uiState.completionReceipt
-            CompletionCelebration(motionPolicy, celebration)
+            CompletionCelebration(motionPolicy, celebration, celebrationMessage)
             if (celebration.celebratesStrongPlay) {
                 Text(
-                    celebration.message,
+                    celebrationMessage,
                     modifier = Modifier.semantics {
-                        contentDescription = celebration.message
+                        contentDescription = celebrationMessage
                         liveRegion = LiveRegionMode.Polite
                     },
                     style = MaterialTheme.typography.titleLarge,
@@ -848,7 +894,7 @@ private fun CompletionCard(
                 )
             }
             Text(
-                "Board cleared",
+                stringResource(R.string.board_cleared),
                 modifier = Modifier.semantics { heading() },
                 style = if (celebration.celebratesStrongPlay) {
                     MaterialTheme.typography.labelLarge
@@ -863,25 +909,28 @@ private fun CompletionCard(
                     repeat(3) { star -> append(if (star < (receipt?.grade?.stars ?: 1)) "★" else "☆") }
                 },
                 modifier = Modifier.padding(top = spacing.xs).semantics {
-                    contentDescription = "${receipt?.grade?.stars ?: 1} stars earned"
+                    contentDescription = starsEarnedDescription
                 },
                 style = MaterialTheme.typography.headlineSmall,
                 color = MagnetrailPush,
             )
             val completionMetrics: @Composable () -> Unit = {
+                val movesDescription = stringResource(R.string.moves_description, uiState.moves)
+                val overloadsDescription = stringResource(R.string.overloads_description, uiState.overloads)
+                val hintsDescription = stringResource(R.string.hints_description, uiState.hintsUsed)
                 Text(
-                    "Actions ${uiState.moves}",
-                    modifier = Modifier.semantics { contentDescription = "Moves: ${uiState.moves}" },
+                    stringResource(R.string.completion_actions, uiState.moves),
+                    modifier = Modifier.semantics { contentDescription = movesDescription },
                     style = MaterialTheme.typography.labelLarge,
                 )
                 Text(
-                    "Overloads ${uiState.overloads}",
-                    modifier = Modifier.semantics { contentDescription = "Overloads: ${uiState.overloads}" },
+                    stringResource(R.string.completion_overloads, uiState.overloads),
+                    modifier = Modifier.semantics { contentDescription = overloadsDescription },
                     style = MaterialTheme.typography.labelLarge,
                 )
                 Text(
-                    "Hints ${uiState.hintsUsed}",
-                    modifier = Modifier.semantics { contentDescription = "Hints: ${uiState.hintsUsed}" },
+                    stringResource(R.string.completion_hints, uiState.hintsUsed),
+                    modifier = Modifier.semantics { contentDescription = hintsDescription },
                     style = MaterialTheme.typography.labelLarge,
                 )
             }
@@ -899,7 +948,11 @@ private fun CompletionCard(
             receipt?.let { completion ->
                 val best = completion.bestRecord
                 Text(
-                    "Best ${best.bestStars}★ · ${best.lowestActions ?: uiState.moves} actions",
+                    stringResource(
+                        R.string.best_result,
+                        best.bestStars,
+                        best.lowestActions ?: uiState.moves,
+                    ),
                     modifier = Modifier.padding(top = spacing.xs),
                     style = MaterialTheme.typography.bodySmall,
                     color = MagnetrailMuted,
@@ -909,36 +962,44 @@ private fun CompletionCard(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     if (completion.rewards.levelCompletionReward > 0) {
-                        Text("Level complete +${completion.rewards.levelCompletionReward} coins")
+                        Text(stringResource(R.string.reward_level_complete, completion.rewards.levelCompletionReward))
                     }
                     if (completion.rewards.firstClearReward > 0) {
-                        Text("First clear +${completion.rewards.firstClearReward} coins")
+                        Text(stringResource(R.string.reward_first_clear, completion.rewards.firstClearReward))
                     }
                     if (completion.rewards.dailyReward > 0) {
-                        Text("Daily clear +${completion.rewards.dailyReward} coins")
+                        Text(stringResource(R.string.reward_daily_clear, completion.rewards.dailyReward))
                     }
                     Text(
-                        "Balance ${completion.rewards.resultingBalance} coins",
+                        stringResource(R.string.coin_balance, completion.rewards.resultingBalance),
                         modifier = Modifier.semantics {
-                            contentDescription = "Resulting coin balance: ${completion.rewards.resultingBalance}"
+                            contentDescription = resultingBalanceDescription
                         },
                         style = MaterialTheme.typography.labelLarge,
                     )
                     if (uiState.gameMode == GameMode.DAILY) {
                         Text(
-                            "Current streak ${uiState.progress.currentStreak} · Best ${uiState.progress.bestStreak}",
+                            stringResource(
+                                R.string.current_and_best_streak,
+                                uiState.progress.currentStreak,
+                                uiState.progress.bestStreak,
+                            ),
                             style = MaterialTheme.typography.bodySmall,
                             color = MagnetrailMuted,
                         )
                     }
                     if (uiState.gameMode == GameMode.INFINITE && !uiState.isAutoJourney) {
                         Text(
-                            "Infinite streak ${uiState.progress.infinite.currentStreak} · Best ${uiState.progress.infinite.bestStreak}",
+                            stringResource(
+                                R.string.infinite_streak,
+                                uiState.progress.infinite.currentStreak,
+                                uiState.progress.infinite.bestStreak,
+                            ),
                             style = MaterialTheme.typography.bodySmall,
                             color = MagnetrailMuted,
                         )
                         Text(
-                            "Campaign progress remains separate",
+                            stringResource(R.string.campaign_progress_separate),
                             style = MaterialTheme.typography.bodySmall,
                             color = MagnetrailMuted,
                         )
@@ -949,34 +1010,37 @@ private fun CompletionCard(
                 onClick = onShareCelebration,
                 modifier = Modifier.fillMaxWidth().padding(top = spacing.sm),
             ) {
-                Text("Share celebration")
+                Text(stringResource(R.string.share_celebration))
             }
             Row(
                 modifier = Modifier.padding(top = spacing.xs),
                 horizontalArrangement = Arrangement.spacedBy(spacing.sm),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                TextButton(onClick = { onAction(GameAction.Replay) }) { Text("Replay") }
+                TextButton(onClick = { onAction(GameAction.Replay) }) {
+                    Text(stringResource(R.string.replay))
+                }
                 Button(
                     onClick = onNextLevel,
                     enabled = uiState.completionPersisted && !uiState.isAutoJourneyLoading,
                 ) {
                     Text(
                         when {
-                            !uiState.completionPersisted -> "Saving…"
-                            uiState.isAutoJourneyLoading -> "Preparing…"
-                            uiState.gameMode == GameMode.DAILY -> "Home"
-                            uiState.gameMode == GameMode.INFINITE && uiState.isAutoJourney -> "Next level"
-                            uiState.gameMode == GameMode.INFINITE -> "Next puzzle"
-                            uiState.hasNextLevel -> "Next level"
-                            else -> "Level selection"
+                            !uiState.completionPersisted -> stringResource(R.string.saving)
+                            uiState.isAutoJourneyLoading -> stringResource(R.string.preparing)
+                            uiState.gameMode == GameMode.DAILY -> stringResource(R.string.home)
+                            uiState.gameMode == GameMode.INFINITE && uiState.isAutoJourney ->
+                                stringResource(R.string.next_level)
+                            uiState.gameMode == GameMode.INFINITE -> stringResource(R.string.next_puzzle)
+                            uiState.hasNextLevel -> stringResource(R.string.next_level)
+                            else -> stringResource(R.string.level_selection)
                         },
                     )
                 }
             }
             uiState.autoJourneyPreparationMessage?.let { message ->
                 Text(
-                    message,
+                    localizedRuntimeMessage(message),
                     modifier = Modifier.padding(top = spacing.sm),
                     style = MaterialTheme.typography.bodySmall,
                     color = MagnetrailMuted,
@@ -992,6 +1056,7 @@ private fun BetweenGameConfetti(
     style: CompletionCelebrationStyle,
 ) {
     if (motionPolicy.reduced || !style.celebratesStrongPlay) return
+    val confettiDescription = stringResource(R.string.performance_confetti)
     val colors = listOf(
         MagnetrailPull,
         MagnetrailPush,
@@ -1012,7 +1077,7 @@ private fun BetweenGameConfetti(
     Canvas(
         modifier = Modifier
             .fillMaxSize()
-            .semantics { contentDescription = "Performance confetti animation" }
+            .semantics { contentDescription = confettiDescription }
             .testTag("between_game_confetti"),
     ) {
         val particleCount = if (style.intensity == CelebrationIntensity.EXCELLENT) {
@@ -1049,6 +1114,7 @@ private fun BetweenGameConfetti(
 private fun CompletionCelebration(
     motionPolicy: MotionPolicy,
     style: CompletionCelebrationStyle,
+    localizedMessage: String,
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
     val progress = remember { Animatable(if (motionPolicy.reduced) 1f else 0f) }
@@ -1065,13 +1131,14 @@ private fun CompletionCelebration(
         }
     }
     val height = if (style.celebratesStrongPlay) 58.dp else if (motionPolicy.showCelebrationParticles) 36.dp else 18.dp
+    val celebrationDescription = stringResource(R.string.celebration_description, localizedMessage)
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(height)
             .semantics {
                 if (style.celebratesStrongPlay) {
-                    contentDescription = "${style.message} Celebration"
+                    contentDescription = celebrationDescription
                 }
             },
         contentAlignment = Alignment.Center,
